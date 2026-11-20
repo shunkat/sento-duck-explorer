@@ -102,4 +102,4 @@ Created directly by the main Kiro agent on 2026-11-20 after the built-in spec su
   - [x] 11.3 One E candidate list for the action and the HUD hint; priority table in design.md
   - [x] 11.4 Objective and HUD follow the state (who is wet; locked vs unlocked sauna door)
   - [x] 11.5 Tests: `tests/controls-e.test.ts` (keyboard wiring, spots, priority, locker/F4, towel/F1/F2/F5, Duck, restore, E-only clear route)
-  - [ ] 11.6 Browser normal-input check of the new controls: Codex
+  - [x] 11.6 Browser normal-input check of the new controls: Codex, fixed `5a7866f`. E-only interaction route CLEAR, T/G inactive, exit drying, locker clothing, sauna dry-before-unlock, towel/F1 and `paidReturned` towel restore. Overview-assisted positioning; exact observations in `docs/shoulder-view-verification.md`.

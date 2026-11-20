@@ -76,12 +76,26 @@ Change: in the shoulder view a held or worn item shows no label (the status pane
 
 Low remaining items: the 受付台 label floats off the map edge in the overview; the scene wiring of the rule (`sizeLabels` with item owners) has no automated test; the hat-top test assumes the 0.08 m resting offset used in `scene.ts`.
 
-## Simpler controls (`5f2c93b` and the towel-anchor follow-up, Kiro Crew)
+## Simpler controls (`5a7866f`, Kiro Crew; normal-input verification by Codex)
 
 New version: T and G removed; E dries at the bath-side exits, dresses at the locker, and moves the towel between hand and head (Duck has no towel). Earlier sections describe the T/G build and stay as recorded.
 
 | Check | Result | By |
 | --- | --- | --- |
-| Automated tests incl. an E-only clear route and real key events | Passed (see the commit message for the count) | Crew A |
-| Build, publication check on source and `dist` | Passed | Crew A |
-| Normal-input browser play of the new controls and towel display | NOT RUN | — |
+| Automated tests incl. an E-only clear route and keyboard-event integration | 160 passed on `5a7866f` | Crew A, independently re-run by Crew B |
+| Build, publication check on source and `dist` | Passed on `5a7866f` | Crew A, Crew B |
+| Independent core/input and view reviews | No remaining required findings; the floating held-towel issue was corrected in `5a7866f` | Codex reviewers; Crew B final re-review |
+| Normal-input full route with the new E controls | CLEAR on `5a7866f` | Codex |
+| Towel display and a real failure/restart restoring the saved towel | Passed within the observations below | Codex |
+
+The source remained frozen at `5a7866f821cd8bc42b4f1cb929349c6f2f40e734` throughout the run. The game was reloaded normally, then operated through native keyboard controls. No runtime state inspection, injection or teleportation was used. The overview assisted positioning; shoulder views were used to inspect the models and attachments. This was not an exclusively shoulder-view playthrough.
+
+- Duck's E did not give it a towel. Child's E moved the towel from hand to head while the body stayed wet. Q with the towel on the head showed an explanation without game-over; E back to hand followed by Q in the tub caused F1. Both humans' held towels were visibly connected to their right hands.
+- At the changing-room exit, T and G did nothing. E dried only the active human and put its towel on its head; the other human stayed wet until separately dried. At the locker, T/G remained inactive and E changed clothes. The clothed Adult and its head towel were observed in the shoulder view.
+- The normal coin, payment and return route passed. After `paidReturned` was saved, Adult was walked into the tub, switched its towel to the hand and triggered F1 with Q. R restored both humans dry and Adult's head towel. E handed the key to Child instead of toggling the towel.
+- Child was deliberately made wet before the locked sauna. The first E dried Child and left the door locked; the hint changed to unlocking. The next E unlocked the door. Both humans entered, and Child borrowed the hat and returned through the crowd gaps.
+- E equipped Duck's hat, picked Duck up, and placed it in the pond without being intercepted by the towel toggle. Duck wearing the hat, and Adult carrying Duck with its hat while also wearing a head towel, were observed in shoulder views. The full route ended at the clear overlay with the hat-wearing Duck at the pond goal and both humans at the pond entrance.
+
+The held hat's mesh was not sufficiently visible during this run because of the wall/HUD; its ownership was confirmed in the HUD. That observation does not replace the earlier held-hat visual check on `a72b765`, and it does not complete the separate held-hat/key label checklist. The full F1–F7 and all-four-checkpoint manual suite was not repeated; those earlier results retain their original versions above. This run specifically rechecked F1 and the `paidReturned` towel restore, while the automated suite covered the other rules and checkpoint state.
+
+The towel remains a provisional mesh, independent of outfit variants. Its head position uses body height and model bounds; the held towel hangs from the hand socket. The four existing GLBs and their hashes/licenses were unchanged. Final towel art still requires the image → Image-to-3D → Blender pipeline.
