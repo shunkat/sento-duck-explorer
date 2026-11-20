@@ -6,6 +6,7 @@ import { Box3, Group, type Object3D, Quaternion, Vector3 } from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { describe, expect, it } from "vitest";
 import { CHARACTER_MODEL_URLS, ITEM_MODEL_URLS } from "../src/view/modelEntry";
+import { ITEM_LABEL_Y, itemLabelShown, LABEL_CENTER_Y } from "../src/view/labels";
 import { modelRotationY, placeAtSocket } from "../src/view/shoulder";
 
 const file = (url: string) => readFileSync(new URL(`../public/${url}`, import.meta.url));
@@ -106,5 +107,25 @@ describe("connected models (shoulder-view Req 6)", () => {
     expect(Math.abs(hat.quaternion.dot(q))).toBeCloseTo(1, 6);
     expect(hat.scale.toArray()).toEqual([1, 1, 1]);
     expect(socketWorld.y).toBeCloseTo(0.27, 3); // top of the 0.30 m Duck (root at 0)
+  });
+});
+
+describe("item labels do not hide small models (shoulder-view Req 7.5)", () => {
+  it("held or worn items show no label in the shoulder view; resting items and the overview keep it", () => {
+    for (const id of ["duck", "child", "adult"] as const) {
+      expect(itemLabelShown({ kind: "character", id }, false)).toBe(false);
+      expect(itemLabelShown({ kind: "character", id }, true)).toBe(true);
+    }
+    expect(itemLabelShown({ kind: "node", id: "sauna_hat_shelf" }, false)).toBe(true);
+  });
+
+  it("a resting item's label sits wholly above its model (bottom-anchored above the model top)", async () => {
+    expect(LABEL_CENTER_Y.item).toBe(0);
+    // The hat model rests with its base at center − 0.08 m (the primitive's half height).
+    const hat = await parse(file(ITEM_MODEL_URLS.hat!));
+    const top = new Box3().setFromObject(hat).max.y - 0.08;
+    expect(top).toBeLessThan(ITEM_LABEL_Y);
+    // Primitive coin (0.03 m) and key (0.04 m) are centered on the group.
+    expect(0.02).toBeLessThan(ITEM_LABEL_Y);
   });
 });

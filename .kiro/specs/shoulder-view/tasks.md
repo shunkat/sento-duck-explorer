@@ -44,6 +44,11 @@ Created 2026-11-20 by the Crew implementer (Kiro Crew worker) directly from the 
   - [x] 9.2 N-6: body between camera and controlled character fades (`bodyOpacity`); test at the Child start — Req 7.4
   - [x] 9.3 N-5: declutter moves labels instead of hiding them; route rooms ranked up; overview names not cut by walls; tests — Req 7.3
   - [x] 9.4 Browser with held keys: hat on shelf → Child → Duck → carried; Codex, `a72b765`
+- [x] 11. Item labels vs small models (Kiro, after the normal-input run)
+  - [x] 11.1 `itemLabelShown`: held/worn item labels hidden in the shoulder view; overview keeps them — Req 7.5
+  - [x] 11.2 Item labels bottom-anchored at `ITEM_LABEL_Y` 0.25 m, above the hat model top — Req 7.5
+  - [x] 11.3 Tests in `tests/assets.test.ts` (fail on the previous labels/scene code)
+  - [ ] 11.4 Browser check of held/equipped hat and key without labels: Codex
 - [x] 5. Verification
   - [x] 5.1 Kiro round 4: 116 tests passed. Codex human-connection follow-up: 122 tests passed, `npm run build` passed; publication checks on source/index and `dist` passed. These are not full-route gameplay results.
   - [x] 5.2 Browser: full route, human textures/outfits, narrow hole, sauna, held/equipped/carried hat, pond, six failure conditions and four restores passed on `a72b765`. F3 and subsequent ordinary walking passed after the input-only change `461ca315`. Overview assisted positioning; see `docs/shoulder-view-verification.md` for exact scope.

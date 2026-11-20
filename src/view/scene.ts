@@ -12,6 +12,8 @@ import { CEILING_Y, type FacingTracker, forwardOf, HOLE_LID_Y, bodyOpacity, mode
 import {
   CHARACTER_LABEL_GAP,
   LABEL_CANVAS_H,
+  ITEM_LABEL_Y,
+  itemLabelShown,
   LABEL_CENTER_Y,
   LABEL_HIDE_DISTANCE,
   LABEL_PRIORITY,
@@ -52,6 +54,8 @@ interface Label {
   aspect: number;
   /** Hidden while this character is active (the ring already marks it). */
   owner?: CharacterId;
+  /** Item labels: hidden while the item is held or worn (Req 7.5). */
+  item?: ItemId;
   /** Overrides the kind's priority (route rooms rank with fixtures, review N-5). */
   priority?: number;
 }
@@ -145,14 +149,15 @@ export class GameScene {
    * The controlled character's own label shows only in the overview (the ring
    * marks it in the shoulder view).
    */
-  private sizeLabels(active: CharacterId, overview: boolean): void {
+  private sizeLabels(active: CharacterId, overview: boolean, items: View["items"]): void {
     const camPos = this.camera.position;
     const cand: { l: Label; rect: ScreenRect }[] = [];
     for (const l of this.labels) {
       l.sprite.getWorldPosition(this.tmp);
       const dist = this.tmp.distanceTo(camPos);
       const own = l.owner === active;
-      const hidden = (own && !overview) || dist < LABEL_HIDE_DISTANCE;
+      const held = l.item !== undefined && !itemLabelShown(items[l.item].owner, overview);
+      const hidden = (own && !overview) || held || dist < LABEL_HIDE_DISTANCE;
       l.sprite.visible = !hidden;
       if (hidden) continue;
       const textPx = labelPixelHeight(l.kind, dist);
@@ -312,7 +317,8 @@ export class GameScene {
       const g = new THREE.Group();
       g.add(mesh);
       const l = this.label(ITEM_NAME[id], "item", "#ffe");
-      l.position.set(0, 0.25, 0);
+      this.labels[this.labels.length - 1]!.item = id;
+      l.position.set(0, ITEM_LABEL_Y, 0);
       g.add(l);
       this.scene.add(g);
       this.items[id] = g;
@@ -449,7 +455,7 @@ export class GameScene {
     this.camera.position.set(pose.eye.x, pose.eye.y, pose.eye.z);
     this.camera.lookAt(pose.target.x, pose.target.y, pose.target.z);
     this.camera.updateMatrixWorld();
-    this.sizeLabels(view.active, overview);
+    this.sizeLabels(view.active, overview, view.items);
     this.renderer.render(this.scene, this.camera);
   }
 }

@@ -1,7 +1,7 @@
 // Screen-space sizing for 3D text labels (pure). Labels shrink with distance
 // but stay within a readable pixel range, so a nearby label never covers the
 // screen in Duck's low view and distant labels stay legible in the overview.
-import type { ZoneId } from "../core/types";
+import type { Owner, ZoneId } from "../core/types";
 import type { AABB } from "../sim/geometry";
 import type { PerspectiveCamera, Vector3 } from "three";
 
@@ -30,7 +30,24 @@ export const LABEL_HIDE_DISTANCE = 0.6;
 /** Gap (m) between a character's head and the bottom of its name label. */
 export const CHARACTER_LABEL_GAP = 0.1;
 
-export const LABEL_CENTER_Y: Record<LabelKind, number> = { character: 0, zone: 0.5, item: 0.5, fixture: 0.5 };
+export const LABEL_CENTER_Y: Record<LabelKind, number> = { character: 0, zone: 0.5, item: 0, fixture: 0.5 };
+
+/**
+ * Item label anchor above the item's group center (m). Item labels are
+ * bottom-anchored there, so the whole label sits above the item model
+ * (tallest: the hat, top ≤ 0.12 m above the center) (shoulder-view Req 7.5).
+ */
+export const ITEM_LABEL_Y = 0.25;
+
+/**
+ * Whether an item's label is drawn. In the shoulder view a held or worn item
+ * (owned by a character) shows no label: the small model in the hand or on
+ * Duck's head stays visible, and the status panel names the holder. Items
+ * lying on a shelf, desk or node keep their label; the overview keeps all.
+ */
+export function itemLabelShown(owner: Owner, overview: boolean): boolean {
+  return overview || owner.kind !== "character";
+}
 
 /**
  * Where a zone's name label sits. Small inner zones that characters stand in
