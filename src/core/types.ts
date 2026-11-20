@@ -54,13 +54,19 @@ export interface CharacterState {
 
 export interface HumanState extends CharacterState {
   clothing: "clothed" | "unclothed";
-  /** Each human always holds one towel in the prototype. */
-  towel: "held";
+  /**
+   * Each human has one towel from the start: in the hand or on the head.
+   * Duck never has a towel. Separate from the Duck's sauna hat.
+   */
+  towel: "held" | "head";
 }
 
 export interface DuckState extends CharacterState {
-  /** Adult is the only carrier (provisional). Duck never carries itself. */
-  carriedBy: "adult" | null;
+  /**
+   * Who holds Duck: Child before the hat is equipped (to bring it to the coin
+   * channel), Adult from the hat to the pond. Duck never carries itself.
+   */
+  carriedBy: HumanId | null;
   inPond: boolean;
 }
 
@@ -106,9 +112,7 @@ export interface InputFrame {
   interact: boolean;
   confirm: boolean;
   cancel: boolean;
-  dry: boolean;
   dipTowel: boolean;
-  toggleClothes: boolean;
   shout: boolean;
   push: boolean;
   restart: boolean;
@@ -137,9 +141,7 @@ export const EMPTY_INPUT: InputFrame = Object.freeze({
   interact: false,
   confirm: false,
   cancel: false,
-  dry: false,
   dipTowel: false,
-  toggleClothes: false,
   shout: false,
   push: false,
   restart: false,

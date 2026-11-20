@@ -1,0 +1,17 @@
+Child / Smiling Cartoon Boy
+Generated with Meshy (https://www.meshy.ai/), Meshy 6 Lite, 2026-11-20.
+License: Creative Commons Attribution 4.0 International (CC BY 4.0).
+https://creativecommons.org/licenses/by/4.0/
+
+Modified by the Sento Duck Explorer project, through Codex and Blender 5.2.4 LTS:
+source-mesh polygon reduction, smooth normals, shoulder shaping and arm lowering,
+project-color UV baking, a simplified opaque bathing-state derivative,
+metric scale, bottom-center origin, hand/label sockets, and GLB export.
+The original generated face and hair are retained in both outfit variants.
+
+Source and provenance:
+https://github.com/shunkat/sento-duck-explorer/tree/main/assets/child
+
+Retain attribution and the license link, and indicate further changes.
+No endorsement by Meshy is implied. These assets' license is separate from
+the repository's MIT code license.

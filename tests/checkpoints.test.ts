@@ -44,7 +44,8 @@ describe("checkpoint restore (Req 5.4, 6.9, 10.3–10.8)", () => {
     expect(sim.owner("key")).toBe("character:child");
     expect(sim.state.saunaDoor).toBe("unlocked");
     expect(sim.state.duck.carriedBy).toBeNull();
-    for (const id of ["duck", "child", "adult"] as const) expect(sim.state[id].zone).toBe("bath");
+    for (const id of ["child", "adult"] as const) expect(sim.state[id].zone).toBe("bath");
+    expect(sim.state.duck.zone).toBe("bathwater"); // Duck on the water, not the floor
 
     R.adultCarriesDuckToPond(sim);
     R.duckSwimsToGoal(sim);

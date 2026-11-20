@@ -11,19 +11,25 @@ Inventory of code, dependencies and assets. Last checked against the repository 
 | Development dependencies: `@types/node`, `@types/three`, `fast-check`, `vite`, `vitest` | npm | MIT | Not shipped in the runtime build. Recorded in `THIRD_PARTY_NOTICES.md`. |
 | Development dependency: `typescript` | npm | Apache-2.0 | Not shipped in the runtime build. |
 
-## External models, images and audio
+## Images and 3D assets
 
-None are integrated. This was checked by listing the tracked files (`git ls-files`) for image, 3D model, audio, font and Blender extensions (png, jpg, gif, svg, webp, glb, gltf, obj, fbx, blend, mp3, wav, ogg, woff, ttf) and finding none. The source and `index.html` also contain no texture, glTF or audio loader and no asset imports.
+The runtime loads four GLBs from `public/models/`: Duck, Child, Adult and the sauna hat. Each has a final-stage ledger row, a recorded hash, an attribution sidecar and a matching source history. The project records original OpenAI-generated reference images separately from Meshy-generated meshes and Blender modifications.
 
-All characters and scenery are generated in code as procedural primitive geometry (Three.js box, sphere, capsule, cone, cylinder and ring geometries). Colors and on-screen text are written in the source and are part of the MIT-licensed code.
+| Material | Recorded license / status | Evidence |
+| --- | --- | --- |
+| Project rights in original reference PNGs | MIT; subject to applicable output rights | Per-asset reference README and ledger |
+| Meshy Free / Meshy 6 Lite raw models | CC BY 4.0, redistributable according to the recorded service review | `assets/service-selection.md`, per-asset attribution and ledger |
+| Blender-adjusted models and game GLBs | CC BY 4.0, with modifications identified | `.blend` sources, `public/models/*.LICENSE.txt`, `THIRD_PARTY_NOTICES.md` |
+| Provisional level geometry, towel and remaining small props | Code-generated placeholders, not completed final assets | `src/view/scene.ts` |
+| Box GLB under `tests/fixtures/` | Locally generated test fixture, not a final asset or runtime model | `scripts/make-test-glb.mjs` |
 
-## Checklist before adding final assets
+Human models contain embedded textures and two outfit variants; no shared skeleton or skeletal animations are claimed. No audio or custom font asset is listed in the current inventory. The [ledger](../assets/ledger.csv) and [manifest](../assets/manifest.json) are the detailed file/measurement records. Code MIT does not replace the models' separate CC BY 4.0 terms.
 
-Not done yet. Complete it for every asset before it is added to the repository.
+## Checks for future assets
 
-- [ ] Source image: who made it, and does the project have the right to use it as input to an Image to 3D service and to publish the result? Keep the original file or a record of it.
-- [ ] Image to 3D service: has one been chosen (none is decided; no paid plan is agreed)? Read its terms for ownership of outputs, commercial and public use, redistribution of the generated files inside an open-source repository, and any attribution requirement. Record the terms version and date.
-- [ ] Blender files (`.blend`) and exported glTF: keep them linked to their source image and generated model, and confirm they may be redistributed under the repository license or note the separate license that applies.
-- [ ] Any texture, audio, font or other third-party asset: record source URL, author, license, attribution text and redistribution permission in `THIRD_PARTY_NOTICES.md`.
-- [ ] Consistency with the English submission text (`docs/submission-en.md`) and the Devpost entry.
-- [ ] Re-run `python3 scripts/check-publication.py`. It does not audit asset rights or image metadata, so those need a manual check.
+- Keep the reference → generated → Blender → final lineage, hashes, creator and actual modifications.
+- Record input-image rights, service/plan terms, redistribution permission and attribution before including an asset in a public build. The initial Meshy free workflow is authorized; new payments are not.
+- Include attribution and license notices with distributed files; update this inventory and the English draft.
+- Inspect binary metadata and provenance separately from the publication scanner, which cannot establish asset rights.
+
+The 2026-11-20 integration reads the existing provenance records and verifies file hashes through the automated asset tests; it does not claim a fresh legal review of service terms.

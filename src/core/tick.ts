@@ -1,9 +1,9 @@
 // The only way game state changes. Pure: never mutates its input state.
 import type { Level } from "../level/layout";
-import { stepWalk, wallsFor } from "../sim/movement";
+import { stepDuckWater, stepWalk, wallsFor } from "../sim/movement";
 import { stepPond } from "../sim/pond";
-import { isSauna, isWetSource, zoneAtOr } from "../sim/zones";
-import { type Ctx, dry, interact, resolveDialog, toggleClothes } from "./actions";
+import { inBathWater, isSauna, isWetSource, zoneAtOr } from "../sim/zones";
+import { type Ctx, interact, resolveDialog } from "./actions";
 import { restoreLatest, saveCheckpointIfReached } from "./checkpoints";
 import { applyHumanMove } from "./pair";
 import { decideOutcome, isCleared, npcWithinPushReach, stepsOnSoap } from "./rules";
@@ -51,10 +51,12 @@ export function tick(state: GameState, input: InputFrame, level: Level): TickRes
   const activeBefore = s.active;
   const human = s.active === "duck" ? null : s.active;
   if (input.interact) interact(c);
-  else if (input.dry) dry(c);
-  else if (input.toggleClothes) toggleClothes(c);
   else if (input.dipTowel) {
-    if (human && s[human].zone === "bathwater") c.pending.push("F1");
+    // F1 only when the towel actually goes into the water: it must be in the hand.
+    if (human && inBathWater(level, s[human].pos)) {
+      if (s[human].towel === "held") c.pending.push("F1");
+      else events.push({ kind: "prompt", text: MSG.towelOnHead });
+    }
   } else if (input.shout) {
     if (human && isSauna(s[human].zone)) c.pending.push("F6");
     else if (human) events.push({ kind: "prompt", text: MSG.shoutOutsideSauna });
@@ -74,7 +76,8 @@ export function tick(state: GameState, input: InputFrame, level: Level): TickRes
           d.pos = r.pos;
           d.vel = r.vel;
         } else {
-          d.pos = stepWalk("duck", d.pos, input.move, false, walls);
+          // Outside the pond Duck only swims on water; across the floor a human carries it.
+          d.pos = stepDuckWater(d.pos, input.move, walls, level.duckWater);
         }
         d.zone = zoneAtOr(level, d.pos, d.zone);
       }
@@ -90,15 +93,16 @@ export function tick(state: GameState, input: InputFrame, level: Level): TickRes
     }
   }
 
-  // Carried Duck sits exactly at Adult's carry anchor (Req 2.5).
-  if (s.duck.carriedBy === "adult") {
-    s.duck.pos = { ...s.adult.pos };
-    s.duck.zone = s.adult.zone;
+  // Carried Duck sits exactly at its carrier's anchor (Req 2.5).
+  const carrier = s.duck.carriedBy;
+  if (carrier) {
+    s.duck.pos = { ...s[carrier].pos };
+    s.duck.zone = s[carrier].zone;
   }
 
   // 6. Wetness from water zones (Req 6.3, 6.5).
   for (const ch of [s.duck, s.child, s.adult]) {
-    if (isWetSource(ch.zone)) ch.wet = "wet";
+    if (isWetSource(ch.zone) || inBathWater(level, ch.pos)) ch.wet = "wet";
   }
 
   // 7. Outcome: game over wins over clear (Req 7.9); then checkpoints.

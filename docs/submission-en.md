@@ -2,17 +2,14 @@
 
 Draft for the Kiroween 2026 English description. It is a working draft, not a submitted entry.
 
-## Status (read first)
+## Status (2026-11-20 merge integration)
 
-- Placeholder models only. Every character and object is built from procedural primitive geometry generated in code (boxes, spheres, capsules, cones, cylinders and rings in Three.js), with no imported model files.
-- The final asset pipeline (reference image, Image to 3D, Blender adjustment, integration into the game) has **not** been done.
-- In a browser, only the first half of the route has been checked (by Codex, 2026-11-20). The second half has not been checked in a browser. It passes only as an automated, input-driven test.
-- No user study has been run. This document makes no claim about learning effects or accident reduction.
-- No deployed URL and no demo video exist yet. A local dev server address is not a submission URL.
-- **Earlier cloud run (failure record, kept as is):** `npm ci` failed with HTTP 403 (the sandbox allows repository access only), so tests and build were **not run**. The 83 passing tests recorded in `.kiro/specs/prototype-core-gameplay/progress.md` come from earlier verification on the Mac side on 2026-11-20. Treat that as a prior record, not a result of this run. Only `python3 scripts/check-publication.py`, diff checks and a comparison of the text with `src/` were done in that run.
-- **Earlier Mac-side record:** the 83 passing tests above are from 2026-11-20 on the Mac side. They are a separate record from the run below.
-- **This run (2026-11-20 UTC, after `registry.npmjs.org` allowlisting):** `registry.npmjs.org` was added as a custom allowed domain (access level still Repository access only). With Node v22.23.4 and npm 11.4.2, `npm ci` succeeded (100 packages added, 0 vulnerabilities). `npm test`: 9 files, 83 tests passed. `npm run build`: succeeded (Vite chunk-size warning only). `python3 scripts/check-publication.py`: PASS (118 files inspected, 0 findings). `python3 scripts/check-publication.py --root dist`: PASS (3 files, 0 findings). No browser check was run. `node_modules/` and `dist/` are git-ignored.
-- No browser check was done in this run. No browser tool was available among the tools exposed to this run. This says nothing about what Kiro Web offers in general.
+- Duck, Child, Adult and the sauna hat are real GLBs from original reference images → Meshy Free / Meshy 6 Lite → Blender adjustment. Clothing variants and item/carrier attachments follow game state. The reference, generated, Blender and final stages are recorded in the asset ledger.
+- Humans have static poses. The environment and props other than the hat remain provisional; skeletal animation and a finished visual presentation remain open.
+- Codex recorded complete normal-input routes, using the overview for positioning and shoulder views for model/attachment observations. The latest Child-carry run began on `617ca58`, paused for the carrier-label correction, and continued on fixed `83cc945` to CLEAR, including Child-held payment-checkpoint recovery after F3. This is not an exclusively shoulder-view playthrough. The complete F1–F7 and four-recovery suite was not repeated on that version; earlier observations retain their own commit boundaries. See [verification](shoulder-view-verification.md).
+- The ModelLibrary and property-test merge integration passed 219 tests across 16 files and the production build. It did not repeat normal-input/browser checks. The earlier cloud failure and 83-test success are preserved as separate historical records in the [prototype progress](../.kiro/specs/prototype-core-gameplay/progress.md).
+- No user study, learning effect or accident reduction is claimed.
+- No public deployment URL or demo video is recorded. This is a draft, not a Devpost submission.
 
 ## Summary
 
@@ -26,14 +23,14 @@ The game is built with Vite, TypeScript and Three.js. Game logic is pure code in
 | --- | --- |
 | Duck | Fits through a narrow hole to find a 500-yen coin, hands it to the adult, and is later carried to the pond and steered along its current to the goal. |
 | Adult | Receives the coin, pays the sauna fee at reception, gets the sauna key and hands it to the child. Carries the duck to the pond. |
-| Child | Receives the key, opens the sauna, slips through gaps in the sauna crowd that only a child can pass, takes the duck-sized sauna hat and puts it on the duck. |
+| Child | Carries Duck from the tub across dry floor to the separate coin channel before the hat. Receives the key, opens the sauna, slips through gaps in the sauna crowd that only a child can pass, takes the duck-sized sauna hat and puts it on the duck. |
 
 The child and adult are a parent-child pair. They must stay within 3 m of each other to move between areas together.
 
 ## The 10-step route
 
 1. Start as the duck.
-2. Find a 500-yen coin in a hole only the duck can enter.
+2. Child carries Duck across the dry gap to the water channel. Duck then swims into its narrow hole and finds the family's 500-yen coin.
 3. The duck gives the coin to the adult.
 4. The adult leaves the bath, pays the sauna fee and gets the sauna key.
 5. The adult gives the key to the child.
@@ -67,7 +64,7 @@ F6 is a deliberate rule-break action: the V key makes the child or adult let out
 
 ## How Kiro was used
 
-Two runs are described separately.
+The original Spec, cloud documentation work and later Crew implementation are recorded separately.
 
 - **Spec (requirements-first):** `requirements.md` was generated with the built-in requirements workflow and refined per requirement with the requirement-detailer sub-agent. The built-in design sub-agent failed twice, so `design.md` and `tasks.md` were written directly by the main Kiro agent.
 - **Steering:** `.kiro/steering/project-autonomy.md` supplied provisional decisions and the working style.
@@ -76,19 +73,19 @@ Two runs are described separately.
 
 At the time of the prototype Spec, Hooks, MCP servers, Powers, Skills and custom agents were not used. The handoff document plans hooks, but none have been created.
 
-### This cloud run (English draft and review fixes)
+### Original cloud run (English draft and review fixes)
 
 - The GitHub Power was used for repository work (branch, commits, pull request #1).
 - The orchestrated planner, coder and reviewer agents were used to plan the draft, write it and review it. Their findings led to the corrections in this document.
-- Verified in the latest run: tests, build and publication scans (see Status). Not verified: browser behavior.
+- That cloud run verified 83 tests, build and publication scans, without a browser check. Those results are historical, not a validation of the later integrated code.
+
+### Kiro Crew
+
+Crew implemented the shoulder camera, contextual controls, water-only Duck movement and Child/Adult cooperation. The implementer and independent reviewer recorded their version-specific checks and findings. Kiro Web authored the ModelAdapter and property-test PRs.
 
 ## Role of Codex
 
-- Operated Chrome for the first-half browser check on 2026-11-20 and reported the results.
-- Added the publication scanner (`scripts/check-publication.py`), the publication and hackathon steering file, the third-party notice and the Three.js license inclusion in the build.
-- Wrote and edited steering and documentation for publication and scheduled work.
-
-The game implementation is Kiro-authored.
+Codex produced the original reference images, operated the authorized free Meshy workflow, adjusted and exported the models in Blender, and recorded their provenance. Codex supplied limited integration assistance after Crew communication failures, performed the recorded independent reviews and normal-input checks, and maintained publication checks and development records. During PR integration, Codex resolved overlapping model-loading paths, updated the earlier property tests to the current game rules and synchronized this draft. Kiro remains the primary game implementer; these contributions are recorded separately.
 
 ## Run it locally
 
@@ -101,8 +98,7 @@ Controls are listed in the English section of `README.md`.
 
 ## Not yet done
 
-- Browser check of the second half of the route, the camera transition and the F2 to F7 screens.
-- Final models through the Image to 3D and Blender pipeline, and the asset rights review (see `docs/assets-and-licenses.md`).
-- Public deployment URL.
-- Demo video under 3 minutes, in English or with English subtitles.
-- Devpost submission.
+- Remaining visual checks identified in the verification record, including held-hat/key alignment; an exclusively shoulder-view route has not been demonstrated.
+- Skeletal animation, finished environment and remaining prop assets; minor held-item overlap polish.
+- Costume Contest presentation remains a proposal, not a user-adopted feature.
+- Public deployment URL, a demo video under 3 minutes in English or with English subtitles, and Devpost submission.

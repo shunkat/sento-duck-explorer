@@ -1,0 +1,429 @@
+{
+  "note": "Planned limits are provisional (see .kiro/specs/final-assets/design.md). 'measured' stays null until a GLB is exported and measured in Blender. Units: meters, +Y up, front +Z, origin at bottom center.",
+  "assets": {
+    "duck": {
+      "stage": 2,
+      "status": "exported",
+      "collider_radius": 0.15,
+      "limits": {
+        "height": [
+          0.28,
+          0.32
+        ],
+        "max_width": 0.36,
+        "triangles": 6000,
+        "materials": 1,
+        "texture_px": 1024,
+        "glb_mb": 1.5
+      },
+      "sockets": [
+        "socket_hat",
+        "socket_label"
+      ],
+      "measured": {
+        "height": 0.30000001192092896,
+        "max_width": 0.30243322253227234,
+        "width": 0.196388378739357,
+        "depth": 0.30243322253227234,
+        "triangles": 5800,
+        "vertices": 2902,
+        "materials": 1,
+        "textures": 0,
+        "nonmanifold_edges": 0,
+        "texture_px": 0,
+        "glb_bytes": 141096,
+        "glb_mb": 0.141096,
+        "bounds": {
+          "min": [
+            -0.0981941893696785,
+            0.0,
+            -0.15121661126613617
+          ],
+          "max": [
+            0.0981941893696785,
+            0.30000001192092896,
+            0.15121661126613617
+          ]
+        },
+        "sha256": "ab9b26501b25c3b1678b068cd286fecb7a83b884cd66577c04a228d50abd089e",
+        "measured_date": "2026-11-20",
+        "tool": "Blender 5.2.4 LTS; reimported exported GLB"
+      },
+      "root_rule": "rootY = centerY - 0.15 (land 0.00, pond -0.05, carried 0.90)",
+      "socket_positions": {
+        "socket_hat": {
+          "x": -0.002285670256242156,
+          "y": 0.27000001072883606,
+          "z": 0.04379032179713249,
+          "meaning": "hat inner-base anchor; fitted 0.03 m below head top"
+        },
+        "socket_label": {
+          "x": -0.002285670256242156,
+          "y": 0.46000000834465027,
+          "z": 0.04379032179713249,
+          "meaning": "label anchor above the equipped hat (provisional 0.46 m); empty excluded from mesh bounds"
+        }
+      }
+    },
+    "hat_sauna_duck": {
+      "stage": 2,
+      "status": "exported",
+      "limits": {
+        "base_diameter": [
+          0.16,
+          0.22
+        ],
+        "height": [
+          0.12,
+          0.18
+        ],
+        "triangles": 1500,
+        "materials": 1,
+        "texture_px": 512,
+        "glb_mb": 0.3
+      },
+      "origin": "center of inner base",
+      "measured": {
+        "base_diameter": 0.18010373413562775,
+        "height": 0.13997289538383484,
+        "width": 0.18010373413562775,
+        "depth": 0.1800789088010788,
+        "triangles": 1440,
+        "vertices": 718,
+        "materials": 1,
+        "textures": 0,
+        "texture_px": 0,
+        "glb_bytes": 27208,
+        "glb_mb": 0.027208,
+        "bounds": {
+          "min": [
+            -0.09005186706781387,
+            0,
+            -0.0900394544005394
+          ],
+          "max": [
+            0.09005186706781387,
+            0.13997289538383484,
+            0.0900394544005394
+          ]
+        },
+        "sha256": "027796c5bba9e2f27fe8e9f5d6a5017f19e55521961e15998b8f90ba6bbe9102",
+        "measured_date": "2026-11-20",
+        "tool": "Blender 5.2.4 LTS; reimported exported GLB",
+        "underside": "Open inner shell visually inspected; central upward rays first hit the inner crown"
+      }
+    },
+    "bath_section_kit": {
+      "stage": 2,
+      "status": "planned",
+      "limits": {
+        "triangles_drawn": 25000,
+        "materials": 4,
+        "textures": 4,
+        "texture_px": 1024,
+        "glb_mb_total": 5,
+        "narrow_hole_clear": [
+          0.4,
+          0.45
+        ],
+        "door_clear": [
+          1.2,
+          1.25
+        ],
+        "wall_visual_height": [
+          1.0,
+          1.2
+        ]
+      },
+      "measured": null
+    },
+    "child": {
+      "stage": 3,
+      "status": "exported",
+      "collider_radius": 0.25,
+      "limits": {
+        "height": [
+          1.15,
+          1.25
+        ],
+        "shoulder_width": [
+          0.44,
+          0.56
+        ],
+        "triangles": 12000,
+        "materials": 2,
+        "texture_px": 1024,
+        "glb_mb": 3
+      },
+      "sockets": [
+        "socket_hand_r",
+        "socket_label"
+      ],
+      "outfits": [
+        "clothed",
+        "bath"
+      ],
+      "measured": {
+        "height": 1.2000000476837158,
+        "width": 0.5283557176589966,
+        "depth": 0.415083110332489,
+        "shoulder_width": 0.4648016542196274,
+        "shoulder_width_range": [
+          0.45139117538928986,
+          0.4648016542196274
+        ],
+        "shoulder_measurement": "outer upper-arm and shoulder silhouette in Y=0.64..0.80 m band",
+        "triangles": 11200,
+        "triangles_per_visible_variant": 5600,
+        "vertices": 9886,
+        "vertices_blender": 5604,
+        "materials": 2,
+        "materials_per_visible_variant": 1,
+        "textures": 2,
+        "texture_px": 1024,
+        "glb_bytes": 792720,
+        "glb_mb": 0.79272,
+        "bounds": {
+          "min": [
+            -0.2641778588294983,
+            0.0,
+            -0.2075415551662445
+          ],
+          "max": [
+            0.2641778588294983,
+            1.2000000476837158,
+            0.2075415551662445
+          ]
+        },
+        "variants": {
+          "outfit_clothed": {
+            "triangles": 5600,
+            "vertices": 2802,
+            "height": 1.2000000476837158,
+            "width": 0.5283557176589966,
+            "depth": 0.415083110332489,
+            "shoulder_width": 0.4648016542196274,
+            "shoulder_band_y": [
+              0.64,
+              0.8
+            ],
+            "bounds": {
+              "min": [
+                -0.2641778588294983,
+                0.0,
+                -0.2075415551662445
+              ],
+              "max": [
+                0.2641778588294983,
+                1.2000000476837158,
+                0.2075415551662445
+              ]
+            },
+            "vertices_gltf": 4943,
+            "nonmanifold_edges_after_uv_seam_weld": 0
+          },
+          "outfit_bath": {
+            "triangles": 5600,
+            "vertices": 2802,
+            "height": 1.2000000476837158,
+            "width": 0.5283557176589966,
+            "depth": 0.415083110332489,
+            "shoulder_width": 0.45139117538928986,
+            "shoulder_band_y": [
+              0.64,
+              0.8
+            ],
+            "bounds": {
+              "min": [
+                -0.2641778588294983,
+                0.0,
+                -0.2075415551662445
+              ],
+              "max": [
+                0.2641778588294983,
+                1.2000000476837158,
+                0.2075415551662445
+              ]
+            },
+            "vertices_gltf": 4943,
+            "nonmanifold_edges_after_uv_seam_weld": 0
+          }
+        },
+        "sha256": "9d15324acce1d81b932628a7139c03a73cf36943be996d8db5b14c712bd9edca",
+        "measured_date": "2026-11-20",
+        "tool": "Blender 5.2.4 LTS; reimported exported GLB",
+        "head_geometry_identical_between_variants": true
+      },
+      "outfit_nodes": {
+        "clothed": "outfit_clothed",
+        "bath": "outfit_bath"
+      },
+      "default_outfit": "clothed",
+      "visibility_policy": "Exactly one outfit mesh visible before first draw; static full-body alternatives with no head_shared node.",
+      "socket_positions": {
+        "socket_hand_r": {
+          "x": -0.23685123026371002,
+          "y": 0.3859201669692993,
+          "z": 0.07554710656404495,
+          "meaning": "actual right-hand anchor; negative X when facing +Z"
+        },
+        "socket_label": {
+          "x": 0.0,
+          "y": 1.340000033378601,
+          "z": -0.0,
+          "meaning": "label anchor above the head; excluded from mesh bounds"
+        }
+      }
+    },
+    "adult": {
+      "stage": 3,
+      "status": "exported",
+      "collider_radius": 0.35,
+      "limits": {
+        "height": [
+          1.65,
+          1.75
+        ],
+        "shoulder_width": [
+          0.64,
+          0.8
+        ],
+        "triangles": 12000,
+        "materials": 2,
+        "texture_px": 1024,
+        "glb_mb": 3
+      },
+      "sockets": [
+        "socket_hand_r",
+        "socket_carry",
+        "socket_label"
+      ],
+      "outfits": [
+        "clothed",
+        "bath"
+      ],
+      "measured": {
+        "height": 1.6999999284744263,
+        "width": 0.7154415845870972,
+        "depth": 0.5643295645713806,
+        "shoulder_width": 0.6556780934333801,
+        "shoulder_width_range": [
+          0.6514776051044464,
+          0.6556780934333801
+        ],
+        "shoulder_measurement": "upper-shoulder silhouette in Y=1.15..1.25 m band",
+        "triangles": 11600,
+        "triangles_per_visible_variant": 5800,
+        "vertices": 10553,
+        "vertices_blender": 5804,
+        "materials": 2,
+        "materials_per_visible_variant": 1,
+        "textures": 2,
+        "texture_px": 1024,
+        "glb_bytes": 723784,
+        "glb_mb": 0.723784,
+        "bounds": {
+          "min": [
+            -0.3577207922935486,
+            0.0,
+            -0.2821647822856903
+          ],
+          "max": [
+            0.3577207922935486,
+            1.6999999284744263,
+            0.2821647822856903
+          ]
+        },
+        "variants": {
+          "outfit_bath": {
+            "triangles": 5800,
+            "vertices_gltf": 5261,
+            "vertices_blender": 2902,
+            "height": 1.6999999284744263,
+            "shoulder_width": 0.6514776051044464,
+            "shoulder_band_y": [
+              1.15,
+              1.25
+            ],
+            "bounds": {
+              "min": [
+                -0.3577207922935486,
+                0.0,
+                -0.2821647822856903
+              ],
+              "max": [
+                0.3577207922935486,
+                1.6999999284744263,
+                0.2821647822856903
+              ]
+            }
+          },
+          "outfit_clothed": {
+            "triangles": 5800,
+            "vertices_gltf": 5292,
+            "vertices_blender": 2902,
+            "height": 1.6999999284744263,
+            "shoulder_width": 0.6556780934333801,
+            "shoulder_band_y": [
+              1.15,
+              1.25
+            ],
+            "bounds": {
+              "min": [
+                -0.3577207922935486,
+                0.0,
+                -0.2821647822856903
+              ],
+              "max": [
+                0.3577207922935486,
+                1.6999999284744263,
+                0.2821647822856903
+              ]
+            }
+          }
+        },
+        "sha256": "3ad862ac190776670c82df610c54a1def6a794914118cb11c1759b554e1cf270",
+        "measured_date": "2026-11-20",
+        "tool": "Blender 5.2.4 LTS; reimported exported GLB"
+      },
+      "socket_positions": {
+        "socket_carry": {
+          "x": -0.23999999463558197,
+          "y": 0.8999999761581421,
+          "z": 0.20000000298023224,
+          "meaning": "carried Duck bottom-origin root; static right-hand pose; Y=0.90 m core contract preserved"
+        },
+        "socket_hand_r": {
+          "x": -0.3077082633972168,
+          "y": 0.8723217844963074,
+          "z": 0.2201717048883438,
+          "meaning": "actual right-hand anchor; negative X when facing +Z"
+        },
+        "socket_label": {
+          "x": 0.0,
+          "y": 1.850000023841858,
+          "z": -0.0,
+          "meaning": "label anchor above the head; excluded from mesh bounds"
+        }
+      },
+      "outfit_nodes": {
+        "clothed": "outfit_clothed",
+        "bath": "outfit_bath"
+      },
+      "default_outfit": "clothed",
+      "visibility_policy": "Exactly one outfit mesh visible before first draw; static full-body alternatives with no head_shared node.",
+      "animation_status": "Static carry-ready pose only; no rig, walking, pickup or carry animation."
+    }
+  },
+  "scene_limits": {
+    "stage2_triangles_drawn": 60000,
+    "draw_calls": 120,
+    "stage2_download_mb": 12,
+    "full_download_mb": 30,
+    "target_fps": 60,
+    "resolution": [
+      1280,
+      720
+    ]
+  }
+}

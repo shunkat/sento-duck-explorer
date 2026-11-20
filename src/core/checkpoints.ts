@@ -48,7 +48,7 @@ export function takeSnapshot(s: GameState, id: CheckpointId, level: Level): Core
     case "paidReturned":
       place(level, snap.adult, sp.paidReturned.adult);
       place(level, snap.child, sp.paidReturned.child);
-      break;
+      break; // a Duck held by Child follows the carrier below
     case "hatEquipped":
       place(level, snap.duck, sp.hatEquipped.duck);
       place(level, snap.child, sp.hatEquipped.child);
@@ -61,6 +61,12 @@ export function takeSnapshot(s: GameState, id: CheckpointId, level: Level): Core
       place(level, snap.child, sp.duckInPondShore.child);
       snap.active = "duck";
       break;
+  }
+  // A carried Duck is stored exactly at its (possibly moved) carrier.
+  const carrier = snap.duck.carriedBy;
+  if (carrier) {
+    snap.duck.pos = { ...snap[carrier].pos };
+    snap.duck.zone = snap[carrier].zone;
   }
   return snap;
 }
