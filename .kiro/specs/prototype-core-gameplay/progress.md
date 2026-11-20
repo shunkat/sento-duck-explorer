@@ -64,3 +64,9 @@ Findings from that check:
 - Codex removed a personal task link from the handoff, expanded private-file ignore rules, and added an offline publication scanner. An independent Codex agent verified forced-added private paths, staged secrets with a clean working copy, and redacted output in temporary Git repositories. This is a heuristic check, not a remote/history or asset-rights audit.
 - Codex added always-included publication/hackathon steering, an official-rules review, and hourly Kiro Web task instructions. The local Git repository was initialized with a public handle and GitHub noreply commit identity. The user authorized publishing `shunkat/sento-duck-explorer` under MIT and connecting only that repository to Kiro. Current publication and schedule state is recorded in `docs/periodic-development.md`.
 - Codex added the installed Three.js license notice and automatic inclusion in the Vite build. The game implementation remains Kiro-authored; these publication and operations changes were made by Codex.
+
+## English submission draft and asset inventory, branch docs/english-submission-draft
+
+- The Kiro agent added `docs/submission-en.md` (English submission draft), `docs/assets-and-licenses.md` (asset and license inventory with a pending final-asset rights checklist) and an English section in `README.md`. Documentation only; no source, test or script was changed.
+- No browser verification was done for this work. `npm test` and `npm run build` were **not run** in this environment because `npm ci` failed with a 403 for a vitest dependency (`why-is-node-running`). The 83 passing tests recorded above (2026-11-20) are a prior record only. `python3 scripts/check-publication.py` was run before and after the edits.
+- No final-asset Spec was created.
