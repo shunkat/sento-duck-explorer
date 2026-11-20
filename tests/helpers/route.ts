@@ -142,8 +142,8 @@ export function childEquipsHat(sim: Sim): void {
   expect(sim.state.lastCheckpoint).toBe("hatEquipped");
 }
 
-/** Steps 8–9: Adult carries Duck to the pond entrance with Child, then places Duck in the pond. */
-export function adultCarriesDuckToPond(sim: Sim): void {
+/** Step 8: Adult picks up Duck and carries it to the pond entrance, Child comes along. */
+export function adultCarriesDuckToShore(sim: Sim): void {
   sim.switchTo("child");
   sim.walk([{ x: 14.5, z: 3.5 }]);
   sim.switchTo("adult");
@@ -158,6 +158,11 @@ export function adultCarriesDuckToPond(sim: Sim): void {
   sim.walk([{ x: 25.5, z: 4 }]);
   expect(sim.state.adult.zone).toBe("pond_entrance");
   expect(sim.state.child.zone).toBe("pond_entrance");
+}
+
+/** Steps 8–9: Adult carries Duck to the pond entrance with Child, then places Duck in the pond. */
+export function adultCarriesDuckToPond(sim: Sim): void {
+  adultCarriesDuckToShore(sim);
   sim.press("interact");
   expect(sim.active).toBe("duck");
   expect(sim.state.duck.inPond).toBe(true);

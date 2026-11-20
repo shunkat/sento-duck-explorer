@@ -54,25 +54,26 @@ Created directly by the main Kiro agent on 2026-11-20 after the built-in spec su
 
 - [x] 6. Checkpoint: run `npx vitest --run` and `npx tsc --noEmit`; fix failures
 
-- [ ] 7. Property-based tests (fast-check, ≥100 runs each)
-  - [ ]* 7.1 Random input sequence generator biased toward interaction points; reuse route prefixes to reach later stages
-  - [ ]* 7.2 **Property 1: Item uniqueness and invariants hold** — **Validates: Requirements 5.1, 5.3, 10.3–10.5**
-  - [ ]* 7.3 **Property 2: Switching rotates and preserves state** — **Validates: Requirements 1.2, 1.6, 1.7, 5.5, 10.1**
-  - [ ]* 7.4 **Property 3: Switching is blocked during dialogs and game over** — **Validates: Requirements 1.5**
-  - [ ]* 7.5 **Property 4: Inactive characters stay still** — **Validates: Requirements 1.3, 1.8, 8.5**
-  - [ ]* 7.6 **Property 6: Carried Duck follows Adult** — **Validates: Requirements 2.5, 2.6, 3.10**
-  - [ ]* 7.7 **Property 7: Cancelled transfers restore ownership** — **Validates: Requirements 5.2**
-  - [ ]* 7.8 **Property 8: Clear requires the hat-wearing Duck in the goal** — **Validates: Requirements 3.13–3.15, 8.4**
-  - [ ]* 7.9 **Property 9: Game over takes priority over clear** — **Validates: Requirements 7.9**
-  - [ ]* 7.10 **Property 10: State-based violations fire on entry** — **Validates: Requirements 4.1, 4.2, 4.4, 7.2, 7.4, 7.5**
-  - [ ]* 7.11 **Property 11: Walking never triggers F7** — **Validates: Requirements 7.7, 7.8**
-  - [ ]* 7.12 **Property 12: Game over freezes the game** — **Validates: Requirements 10.2**
-  - [ ]* 7.13 **Property 13: Checkpoint restore is consistent** — **Validates: Requirements 5.4, 6.9, 10.3–10.5**
-  - [ ]* 7.14 **Property 14: Wet and clothing states are independent** — **Validates: Requirements 6.1, 6.2, 6.7, 6.8**
-  - [ ]* 7.15 **Property 16: Only allowlisted transfers; hat moves only by Equip** — **Validates: Requirements 3.3, 3.5, 3.9, 5.8–5.10**
-  - [ ]* 7.16 **Property 17: Pond physics advances only while Duck is active** — **Validates: Requirements 1.8, 8.1, 8.2, 8.5**
-  - [ ]* 7.17 **Property 18: Pair doors keep Child with Adult** — **Validates: Requirements 4.9–4.12**
-  - [ ]* 7.18 **Property 19: duckInPond checkpoint requires both humans on the shore** — **Validates: Requirements 3.11, 10.7**
+- [x] 7. Property-based tests (fast-check, ≥100 runs each)
+  - [x]* 7.1 Random input sequence generator biased toward interaction points; reuse route prefixes to reach later stages
+    - Done in `tests/helpers/props.ts` (reachable stages built from the scripted route, held-direction frame generator) and `tests/properties.test.ts` (one test per property, `numRuns` 100 or more; Properties 2, 4, 6, 8, 17, 19 have extra sub-tests). Property 5 stays in `tests/level.test.ts` and Property 15 in `tests/view.test.ts`. No defect in `src/` was found by these properties. Properties 9, 10, 13 and the negative case of 8 start from states built by editing a reachable state (for example a wet human, or Duck already in the goal), because random play does not reach them reliably.
+  - [x]* 7.2 **Property 1: Item uniqueness and invariants hold** — **Validates: Requirements 5.1, 5.3, 10.3–10.5**
+  - [x]* 7.3 **Property 2: Switching rotates and preserves state** — **Validates: Requirements 1.2, 1.6, 1.7, 5.5, 10.1**
+  - [x]* 7.4 **Property 3: Switching is blocked during dialogs and game over** — **Validates: Requirements 1.5**
+  - [x]* 7.5 **Property 4: Inactive characters stay still** — **Validates: Requirements 1.3, 1.8, 8.5**
+  - [x]* 7.6 **Property 6: Carried Duck follows Adult** — **Validates: Requirements 2.5, 2.6, 3.10**
+  - [x]* 7.7 **Property 7: Cancelled transfers restore ownership** — **Validates: Requirements 5.2**
+  - [x]* 7.8 **Property 8: Clear requires the hat-wearing Duck in the goal** — **Validates: Requirements 3.13–3.15, 8.4**
+  - [x]* 7.9 **Property 9: Game over takes priority over clear** — **Validates: Requirements 7.9**
+  - [x]* 7.10 **Property 10: State-based violations fire on entry** — **Validates: Requirements 4.1, 4.2, 4.4, 7.2, 7.4, 7.5**
+  - [x]* 7.11 **Property 11: Walking never triggers F7** — **Validates: Requirements 7.7, 7.8**
+  - [x]* 7.12 **Property 12: Game over freezes the game** — **Validates: Requirements 10.2**
+  - [x]* 7.13 **Property 13: Checkpoint restore is consistent** — **Validates: Requirements 5.4, 6.9, 10.3–10.5**
+  - [x]* 7.14 **Property 14: Wet and clothing states are independent** — **Validates: Requirements 6.1, 6.2, 6.7, 6.8**
+  - [x]* 7.15 **Property 16: Only allowlisted transfers; hat moves only by Equip** — **Validates: Requirements 3.3, 3.5, 3.9, 5.8–5.10**
+  - [x]* 7.16 **Property 17: Pond physics advances only while Duck is active** — **Validates: Requirements 1.8, 8.1, 8.2, 8.5**
+  - [x]* 7.17 **Property 18: Pair doors keep Child with Adult** — **Validates: Requirements 4.9–4.12**
+  - [x]* 7.18 **Property 19: duckInPond checkpoint requires both humans on the shore** — **Validates: Requirements 3.11, 10.7**
 
 - [x] 8. View, input, and HUD
   - [x] 8.1 Write `src/view/deriveView.ts` (pure state → view model, `hatAttachedToDuck`)
@@ -93,5 +94,6 @@ Created directly by the main Kiro agent on 2026-11-20 after the built-in spec su
   - [x] 9.1 Run `npm run build` and `npx vitest --run`; fix failures
   - [ ] 9.2 Start the local dev server and record the local URL; manual checklist: camera switch, shapes and colors, HUD, labels
     - Done: dev server at http://127.0.0.1:5173/. Partly checked by Codex in Chrome (first half of the route up to paying at reception, F1 and restart, and the label fix; see `progress.md`). Open: the second half of the route, camera transition feel, and F2–F7 screens in the browser. This is not a user-approval checkpoint.
+    - Browser verification of the second half of the route and F2–F7 remains unverified: the browser tool could not reach the local server on 2026-11-20. The logic is covered by `tests/route.test.ts` and `tests/properties.test.ts` only.
   - [x] 9.3 Record in the spec which Kiro features were used and what remains (final-model pipeline is still required)
     - See `progress.md`
