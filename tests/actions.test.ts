@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { TRANSFER_ALLOWLIST } from "../src/core/actions";
+import { interactHint, TRANSFER_ALLOWLIST } from "../src/core/actions";
 import { createInitialState } from "../src/core/initialState";
 import { decideOutcome, isCleared } from "../src/core/rules";
 import { MSG } from "../src/core/text";
@@ -19,8 +19,8 @@ describe("transfer allowlist and hat equip (Req 3.3, 3.5, 3.9, 5.2, 5.8, 5.9)", 
   it("Duck cannot give the coin to Child", () => {
     const sim = new Sim();
     R.duckGetsCoin(sim);
-    sim.walk([{ x: 1, z: 5.5 }]);
-    sim.approach(sim.pos("child"), 0.5);
+    sim.walk([{ x: 0.95, z: 5.5 }]); // channel end, next to Child at the entrance
+    expect(Math.hypot(sim.pos().x - sim.pos("child").x, sim.pos().z - sim.pos("child").z)).toBeLessThan(0.6);
     expect(Math.hypot(sim.pos().x - sim.pos("adult").x, sim.pos().z - sim.pos("adult").z)).toBeGreaterThan(REACH.give);
     sim.press("interact");
     expect(sim.state.dialog).toBeNull();
@@ -30,8 +30,10 @@ describe("transfer allowlist and hat equip (Req 3.3, 3.5, 3.9, 5.2, 5.8, 5.9)", 
   it("cancelling the dialog keeps the owner", () => {
     const sim = new Sim();
     R.duckGetsCoin(sim);
-    sim.walk([{ x: 1, z: 5.5 }]);
-    sim.approach(sim.pos("adult"), REACH.give);
+    sim.walk([{ x: 0.95, z: 5.5 }]);
+    sim.switchTo("adult");
+    sim.walk([{ x: 3.4, z: 4.8 }, { x: LEVEL.channelEntrance.x, z: 4.9 }]);
+    sim.switchTo("duck");
     sim.press("interact");
     expect(sim.state.dialog).not.toBeNull();
     sim.press("switchCharacter"); // blocked while the dialog is open (Req 1.5)
@@ -75,13 +77,20 @@ describe("carrying Duck (Req 2.5, 2.6, 3.10)", () => {
     sim.walk([{ x: 9, z: 6.5 }]);
     expect(sim.pos("duck")).toEqual(sim.pos("adult"));
 
+    // On the floor, 2 m from the water: E is refused and Duck stays held.
+    sim.press("interact");
+    expect(sim.state.duck.carriedBy).toBe("adult");
+    expect(sim.lastEvents).toContainEqual({ kind: "rejected", reason: MSG.cannotPutDuckHere });
+
+    // Next to the tub: Duck goes onto the water, not the floor.
+    sim.walk([{ x: 7.6, z: 6.5 }]);
     sim.press("interact");
     expect(sim.state.duck.carriedBy).toBeNull();
-    expect(sim.pos("duck")).not.toEqual(sim.pos("adult"));
+    expect(sim.state.duck.zone).toBe("bathwater");
     sim.switchTo("duck");
     const before = sim.pos("duck");
-    sim.step({ move: { x: 1, z: 0 } });
-    expect(sim.pos("duck").x).toBeGreaterThan(before.x);
+    sim.step({ move: { x: -1, z: 0 } });
+    expect(sim.pos("duck").x).toBeLessThan(before.x);
   });
 
   it("Adult carrying Duck cannot leave the bath without Child", () => {
@@ -97,21 +106,23 @@ describe("carrying Duck (Req 2.5, 2.6, 3.10)", () => {
   });
 });
 
-describe("drying (Req 6.4, 6.6, 6.7)", () => {
-  it("cannot dry inside the bathwater; can dry outside; then dries a nearby Duck", () => {
+describe("drying with E (Req 6.4, 6.6, 6.7)", () => {
+  it("not in the bathwater; at the exit E dries; Duck on the water is not dried (it stays wet)", () => {
     const sim = new Sim();
     sim.switchTo("child");
-    sim.press("dry");
+    sim.walk([{ x: 4.6, z: 3.4 }]); // in the bathwater, away from Duck
+    sim.press("interact"); // towel toggle, not drying
     expect(sim.state.child.wet).toBe("wet");
     sim.switchTo("duck");
-    sim.walk([{ x: 3.4, z: 2.0 }]);
+    sim.walk([{ x: 2.3, z: 3.2 }]); // Duck stays on the water, at the tub's corner
     sim.switchTo("child");
     sim.walk([{ x: 3.6, z: 1.6 }]);
-    sim.press("dry");
+    sim.press("interact");
     expect(sim.state.child.wet).toBe("dry");
     expect(sim.state.child.clothing).toBe("unclothed");
-    sim.press("dry");
-    expect(sim.state.duck.wet).toBe("dry");
+    sim.walk([{ x: 2.3, z: 2.5 }]); // on the floor beside the tub
+    expect(interactHint(sim.state, LEVEL)).toBe("アヒルを抱える"); // no "dry the Duck" any more
+    expect(sim.state.duck.wet).toBe("wet"); // Duck lives on the water
   });
 });
 

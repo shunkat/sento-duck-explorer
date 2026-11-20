@@ -160,7 +160,9 @@ describe("Level data sanity", () => {
     const s = LEVEL.checkpointSpawns;
     expect(zoneAt(LEVEL, s.paidReturned.adult)).toBe("bath");
     expect(zoneAt(LEVEL, s.paidReturned.child)).toBe("bath");
-    for (const p of Object.values(s.hatEquipped)) expect(zoneAt(LEVEL, p)).toBe("bath");
+    expect(zoneAt(LEVEL, s.hatEquipped.child)).toBe("bath");
+    expect(zoneAt(LEVEL, s.hatEquipped.adult)).toBe("bath");
+    expect(zoneAt(LEVEL, s.hatEquipped.duck)).toBe("bathwater");
     expect(zoneAt(LEVEL, s.duckInPondShore.adult)).toBe("pond_entrance");
     expect(zoneAt(LEVEL, s.duckInPondShore.child)).toBe("pond_entrance");
     expect(zoneAt(LEVEL, LEVEL.pondSpawn)).toBe("pond");

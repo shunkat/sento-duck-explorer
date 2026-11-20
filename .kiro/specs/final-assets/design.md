@@ -100,7 +100,7 @@ The logic is unchanged. Visual models must look consistent with these logic valu
 | NarrowHole | 0.40 m clear | Rim mesh must not narrow the clear opening; visual opening 0.40–0.45 m | A visually narrower rim than the logic opening would look like Duck clips through the wall. |
 | CrowdGap | 0.60 m clear ×3 | Seated crowd figures (stage 3) keep the same clear gaps | Same reason |
 | Door | 1.20 m clear | Frame interior 1.20–1.25 m | Same reason |
-| Walls | thickness 0.2 m, collision only | Visual height 1.0–1.2 m (diorama cutaway) | The current follow cameras (eye heights 0.75–4.2 m) and the overview look over 1.0 m walls. Full-height walls would hide the active character unless a cutaway system is added. Revisit after the stage-2 style record. |
+| Walls | thickness 0.2 m, collision only | Visual height 1.0–1.2 m (diorama cutaway) | The current follow cameras (eye heights 0.75–4.2 m) and the overview look over 1.0 m walls. Full-height walls would hide the active character unless a cutaway system is added. Revisit after the stage-2 style record. **Open (2026-11-20):** the shoulder view (`.kiro/specs/shoulder-view`) uses 2.6 m walls with ceilings and keeps the cutaway only for the overview; the wall kit needs that height or a modular upper part. |
 
 Export convention for every GLB: meters, +Y up, front +Z, origin at the bottom center of the footprint.
 
@@ -109,11 +109,11 @@ The view model gives mesh **centers**, and the adapter places each GLB root at t
 | Case | Center Y in `deriveView` | Root (bottom) Y used by the adapter | Rule |
 | --- | --- | --- | --- |
 | Human | `height / 2` (Child 0.60, Adult 0.85) | 0.00 | `rootY = centerY − height / 2` |
-| Duck on land | 0.15 | 0.00 | `rootY = centerY − radius` |
+| Duck on tub/channel water | 0.15 | 0.00 | `rootY = centerY − radius`; no independent land movement |
 | Duck in the pond | 0.10 | −0.05 (bottom 5 cm below the water surface at Y = 0) | `rootY = centerY − radius` (the same rule; no separate waterline offset) |
 | Duck carried | 1.05 | 0.90 | Root parented to Adult's `socket_carry` at 0.90 m |
 
-One rule (`rootY = centerY − radius`) covers Duck in every case, so the final model sits exactly where the prototype sphere sits: on the floor on land, slightly sunk in the pond, and at a center of 1.05 m when carried.
+One rule (`rootY = centerY − radius`) covers Duck in every case, so the final model sits where the prototype sphere sits: partly submerged in the shallow drawn tub/channel water, slightly sunk in the pond, and at the carry anchor while held. Since the water-only movement correction, Duck does not have an independent land state. The numeric entries above retain the prototype placement convention; the integrated carried model follows Adult's actual `socket_carry`.
 
 ### Sockets
 
@@ -134,7 +134,7 @@ Hat GLB origin: center of the inner base, so attaching it to `socket_hat` needs 
   - `clothed`: everyday clothes.
   - `bath`: an abstract toy-figure body, like a wooden kokeshi or a capsule doll. It has a smooth, single-color body with no anatomical detail and **no towel on the body**, so no towel ever touches the bathwater. That would contradict F1, because towels must not go in the bath.
   - In bathwater and splash zones a soft steam layer at water level covers the body from the waist down. The follow cameras keep their current angle above the character, which reads as natural framing rather than censorship.
-  - The towel is the separate `towel` model. While a human is in the bathwater it is drawn folded on the human's head or on the tub edge, never in the water. It sits in the hand only outside the water, for drying (T).
+  - The towel is the separate `towel` model. While a human is in the bathwater it is drawn folded on the human's head or on the tub edge, never in the water. It sits in the hand only outside the water, for drying (T). *(Update 2026-11-20: T was removed; drying is E at the bath-side exits, and the towel can be moved between hand and head with E. The prototype draws a provisional towel box on the head, or hanging from the hand socket with its bottom above the drawn water surface; see shoulder-view Req 7.6.)*
 
 ## Budgets
 
@@ -221,7 +221,7 @@ Source: `docs/kiroween-review.md` proposes a night version of the fictional sent
 
 | Effect (proposal) | Driven by existing data | Supports | Notes |
 | --- | --- | --- | --- |
-| A small steam spirit follows the active character. When the character is wet and walks toward the changing-room or sauna door, the spirit holds up a towel (T). | `wet`, next area, `entryViolation` preview | F2, F5 | The same check as the pair-door rule, run as a preview. No new rule. |
+| A small steam spirit follows the active character. When the character is wet and walks toward the changing-room or sauna door, the spirit holds up a towel (drying key: E since 2026-11-20). | `wet`, next area, `entryViolation` preview | F2, F5 | The same check as the pair-door rule, run as a preview. No new rule. |
 | Lanterns along the route light toward the current objective's door or object. | `objective()` stage | Guidance from the 500-yen coin search onward | Replaces part of the text guide visually. The text stays. |
 | The lantern at a pair door glows when both humans are within 3 m and dims otherwise. | `JOIN_RADIUS`, positions | Parent-and-child accompaniment | Explains the existing door block before it happens. |
 | The spirit shivers and the floor ripples when the player holds Shift near the soap. | `run` input, distance to soap | F3 | Warning only. |

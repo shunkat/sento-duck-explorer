@@ -77,3 +77,9 @@ The scanner is a heuristic. It does not inspect history, the remote, binary meta
 - `tests/models.test.ts` no longer expects an empty manifest: it checks measured entries (duck, hat_sauna_duck, child, adult) against their limits, and checks that `public/models/duck.glb` and `hat_sauna_duck.glb` parse with heights matching the manifest.
 - Not done: connecting the real GLBs to the game (`useModels` is still not called) and browser verification.
 - Review follow-up: the `placeHat` decision moved into `placeHatOnSocket` (`src/view/models.ts`) with tests for the attached and detached cases. The manifest test no longer requires specific assets to be measured. Hat, carried Duck and label placement are still not verified in a browser.
+
+## Merge integration with the reviewed shoulder-view game (2026-11-20)
+
+The initial status and PR #3 standalone notes above are historical snapshots. Four real assets and the normal-input route are already recorded in the asset ledger and `docs/shoulder-view-verification.md`. Codex resolved the overlapping scene implementations after the user requested PR merges: ModelLibrary now loads the runtime assets, while useModels delegates to the Crew model setters, preserving outfits, facing and carrier/socket placement. This supersedes the earlier statement that useModels is uncalled. No gameplay-core or asset changes were made.
+
+Validation: 194 tests passed, including two new renderer-free tests for partial loading, invalid-human fallback, idempotent attachment and initial outfit selection. Production build and publication checks are recorded with the integration commit. Existing independent reviews and version-specific browser evidence are retained; this merge work did not repeat the playthrough. Non-hat final props, environment assets and animation remain unfinished.

@@ -4,6 +4,7 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it, vi } from "vitest";
 import * as THREE from "three";
 import fc from "fast-check";
+import { GameScene } from "../src/view/scene";
 import { type GltfSource, type ManifestLimits, ModelLibrary, SOCKET_NAMES, checkBounds, copySocketPose, measureModel, placeHatOnSocket } from "../src/view/models";
 
 function fixtureBytes(): ArrayBuffer {
@@ -12,6 +13,67 @@ function fixtureBytes(): ArrayBuffer {
 }
 
 const manifest = JSON.parse(readFileSync(new URL("../assets/manifest.json", import.meta.url), "utf8"));
+
+// Exercise the real adapter and placement methods with Three.js groups, without
+// a renderer. This catches integration regressions in partial/failed loads.
+function sceneHarness() {
+  const scene = Object.create(GameScene.prototype) as GameScene;
+  const chars = { duck: new THREE.Group(), child: new THREE.Group(), adult: new THREE.Group() };
+  const primitives = { duck: [new THREE.Object3D()], child: [new THREE.Object3D()], adult: [new THREE.Object3D()] };
+  for (const id of ["duck", "child", "adult"] as const) chars[id].add(...primitives[id]);
+  const items = { coin: new THREE.Group(), key: new THREE.Group(), hat: new THREE.Group() };
+  const hatPrimitive = new THREE.Mesh(new THREE.ConeGeometry(), new THREE.MeshBasicMaterial());
+  items.hat.add(hatPrimitive);
+  Object.assign(scene, { chars, primitives, items, models: {}, itemModels: {},
+    humanBody: {}, towels: {}, clothing: { child: "unclothed", adult: "unclothed" } });
+  return { scene, chars, primitives, items, hatPrimitive };
+}
+
+describe("ModelLibrary integration with the shoulder-view scene", () => {
+  it("keeps a failed human primitive while installing Duck and hat once", async () => {
+    const h = sceneHarness();
+    const lib = new ModelLibrary();
+    await lib.parse("duck", fixtureBytes());
+    await lib.parse("hat", fixtureBytes());
+    await lib.parse("child", fixtureBytes()); // lacks the human outfit contract
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    try {
+      h.scene.useModels(lib);
+      h.scene.useModels(lib);
+      expect(h.primitives.duck[0]!.visible).toBe(false);
+      expect(lib.get("duck")!.root.parent).toBe(h.chars.duck);
+      expect(lib.get("duck")!.root.position.y).toBeCloseTo(-0.15);
+      expect(h.chars.duck.children.filter((o) => o === lib.get("duck")!.root)).toHaveLength(1);
+      expect(h.hatPrimitive.visible).toBe(false);
+      expect(lib.get("hat")!.root.parent).toBe(h.items.hat);
+      expect(h.primitives.child[0]!.visible).toBe(true);
+      expect(lib.get("child")!.root.parent).toBeNull();
+      expect(h.primitives.adult[0]!.visible).toBe(true);
+      expect(warn).toHaveBeenCalled();
+    } finally { warn.mockRestore(); }
+  });
+
+  it("uses the human contract and current outfit when a later model arrives", async () => {
+    const h = sceneHarness();
+    const root = new THREE.Group();
+    for (const name of ["outfit_clothed", "outfit_bath", "socket_hand_r", "socket_label", "socket_carry"]) {
+      const node = new THREE.Object3D();
+      node.name = name;
+      if (name === "socket_carry") node.position.y = 0.9;
+      root.add(node);
+    }
+    const lib = new ModelLibrary({ loadAsync: async () => ({ scene: root }), parseAsync: async () => ({ scene: root }) });
+    h.scene.useModels(lib);
+    expect(h.primitives.adult[0]!.visible).toBe(true);
+    await lib.load("adult", "fixture-adult");
+    h.scene.useModels(lib);
+    expect(root.parent).toBe(h.chars.adult);
+    expect(root.position.y).toBeCloseTo(-0.85);
+    expect(root.getObjectByName("outfit_bath")!.visible).toBe(true);
+    expect(root.getObjectByName("outfit_clothed")!.visible).toBe(false);
+    expect(h.primitives.adult[0]!.visible).toBe(false);
+  });
+});
 
 describe("ModelLibrary", () => {
   it("returns null for an id that was never loaded", () => {
