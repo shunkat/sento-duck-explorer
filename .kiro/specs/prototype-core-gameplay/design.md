@@ -223,7 +223,7 @@ Duck is exempt from F2, F4, and F5 because they target human characters. Duck ca
 - `deriveView` produces mesh transforms, colors, labels, and `hatAttachedToDuck = hat.owner === duck && hat.equipped` (Req 10.6).
 - Placeholder shapes (Req 9.1, 9.5): Duck yellow sphere (r 0.15), Child blue capsule (r 0.25, h 1.2), Adult green capsule (r 0.35, h 1.7), Coin gold cylinder, Key silver box, Hat red cone. Each item and zone gets a text sprite label.
 - Zones (Req 9.2) render as translucent colored boxes with name labels.
-- Camera: third-person follow. On switch, the camera lerps target and offset over 0.4 s (Req 1.4). Duck uses a low offset to show the small viewpoint.
+- Camera: replaced by the over-the-shoulder camera with camera-relative movement in `.kiro/specs/shoulder-view` (2026-11-20). The original fixed-direction follow camera ("W = up the screen") no longer applies. On switch, the camera still blends over 0.4 s (Req 1.4), and Duck keeps the lowest eye line.
 - HUD (Req 9.6): always-visible panel listing active character, each character's zone, WetState, ClothingState (humans), Duck's carriedBy, each item's owner and status, door state, last checkpoint, and the current prompt.
 - GameOverScreen (provisional, Req 7.10): violation ID, reason, the correct manner (from `text.ts`), and "Rキーで直前のチェックポイントから再開".
 
