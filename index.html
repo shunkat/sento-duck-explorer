@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>アヒルと子どもと大人の銭湯探検（仮モデル）</title>
+    <style>
+      html, body { margin: 0; height: 100%; overflow: hidden; background: #1d2330; font-family: system-ui, "Hiragino Sans", sans-serif; }
+      #app { position: fixed; inset: 0; }
+      #hud { position: fixed; inset: 0; pointer-events: none; color: #fff; font-size: 13px; line-height: 1.55; }
+      #hud > div { position: absolute; background: rgba(0,0,0,0.62); border-radius: 6px; padding: 8px 12px; white-space: pre-wrap; }
+      .hud-status { top: 10px; left: 10px; max-width: 360px; }
+      .hud-guide { top: 10px; left: 50%; transform: translateX(-50%); max-width: 640px; text-align: center; }
+      .hud-goal { font-size: 15px; font-weight: bold; color: #ffe27a; }
+      .hud-hints { margin-top: 4px; color: #bff; }
+      .hud-hints:empty { display: none; }
+      .hud-keys { bottom: 10px; left: 10px; font-size: 12px; color: #ddd; }
+      .hud-toast { bottom: 10px; left: 50%; transform: translateX(-50%); font-size: 15px; transition: opacity 0.3s; }
+      .hud-dev { bottom: 10px; right: 10px; color: #f88; font-size: 11px; }
+      .hud-dev:empty { display: none; }
+      #hud > .hud-overlay { inset: 0; display: none; align-items: center; justify-content: center; flex-direction: column; text-align: center; background: rgba(10,15,25,0.72); border-radius: 0; font-size: 16px; }
+      .hud-overlay.dialog { background: rgba(10,15,25,0.45); }
+      .hud-overlay h2 { margin: 0 0 12px; font-size: 26px; }
+      .hud-overlay .reason { font-size: 20px; color: #ffb4a8; }
+      .hud-overlay .small { font-size: 12px; color: #ccc; }
+      .hud-overlay .key { margin-top: 16px; font-size: 18px; color: #ffe27a; }
+      .hud-overlay.cleared h2 { color: #ffe27a; }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <div id="hud"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
