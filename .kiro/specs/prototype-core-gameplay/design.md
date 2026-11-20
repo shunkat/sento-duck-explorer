@@ -292,7 +292,7 @@ interface HumanState extends CharacterState {
 }
 
 interface DuckState extends CharacterState {
-  carriedBy: "adult" | null;   // Adult is the only carrier (provisional)
+  carriedBy: HumanId | null;   // Child before the hat, Adult after it (2026-11-20; split by hat stage: provisional)
   inPond: boolean;
 }
 

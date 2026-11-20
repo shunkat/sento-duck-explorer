@@ -72,7 +72,8 @@ export interface Level {
   pondSpawn: Vec2;
   /**
    * Water surfaces where Duck can swim on its own outside the pond: the tub,
-   * a short channel from the tub to the NarrowHole, and the water in the hole.
+   * the coin channel (separate from the tub; Child carries Duck across the
+   * dry gap) leading into the NarrowHole, and the water in the hole.
    * Duck's center must stay inside their union. Splash (wet floor) is not
    * swimmable. One source for movement, drop points and rendering.
    */
