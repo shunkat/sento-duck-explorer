@@ -112,7 +112,7 @@ export function statusLines(s: GameState): string[] {
   const hat = s.items.hat;
   return [
     `操作中：${CHARACTER_NAME[s.active]}（${ZONE_NAME[s[s.active].zone]}）`,
-    `アヒル：${ZONE_NAME[s.duck.zone]}・${wet(s.duck.wet)}${s.duck.carriedBy ? "・大人が抱えている" : ""}${s.items.hat.status === "equipped" ? "・帽子あり" : ""}`,
+    `アヒル：${ZONE_NAME[s.duck.zone]}・${wet(s.duck.wet)}${s.duck.carriedBy ? `・${CHARACTER_NAME[s.duck.carriedBy]}が抱えている` : ""}${s.items.hat.status === "equipped" ? "・帽子あり" : ""}`,
     `子ども：${ZONE_NAME[s.child.zone]}・${wet(s.child.wet)}・${clothes(s.child.clothing)}`,
     `大人　：${ZONE_NAME[s.adult.zone]}・${wet(s.adult.wet)}・${clothes(s.adult.clothing)}`,
     `${ITEM_NAME.coin}：${s.items.coin.status === "paid" ? "支払い済み" : ownerText(s.items.coin.owner)}`,

@@ -10,7 +10,7 @@ import { CHARACTER_RADIUS, LEVEL } from "../src/level/layout";
 import { circleOverlapsBox } from "../src/sim/geometry";
 import { shoreBoxes, stepDuckWater, wallsFor } from "../src/sim/movement";
 import { inBathWater } from "../src/sim/zones";
-import { BODY_HEIGHT, CARRY_CENTER_Y, deriveView } from "../src/view/deriveView";
+import { BODY_HEIGHT, CARRY_CENTER_Y, deriveView, statusLines } from "../src/view/deriveView";
 import { FacingTracker } from "../src/view/shoulder";
 import * as R from "./helpers/route";
 import { duckOnWater, Sim } from "./helpers/sim";
@@ -312,5 +312,23 @@ describe("Child as the early carrier: display and paidReturned restore", () => {
     expect(sim.state.duck.zone).toBe("bathwater");
     R.adultGivesKey(sim);
     R.childUnlocksSauna(sim);
+  });
+});
+
+describe("status panel names the actual carrier", () => {
+  it("Child carrying → 子どもが抱えている; Adult carrying → 大人が抱えている", () => {
+    const early = new Sim();
+    early.switchTo("child");
+    early.press("interact");
+    const line = statusLines(early.state)[1]!;
+    expect(line).toContain("子どもが抱えている");
+    expect(line).not.toContain("大人が抱えている");
+
+    const late = new Sim();
+    R.playUntilHatEquipped(late);
+    late.switchTo("adult");
+    late.approach(late.pos("duck"), REACH.pickUpDuck);
+    late.press("interact");
+    expect(statusLines(late.state)[1]).toContain("大人が抱えている");
   });
 });

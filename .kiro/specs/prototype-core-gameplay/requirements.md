@@ -62,7 +62,7 @@ Scope note: this spec ends when the full route is playable with placeholder shap
 
 1. THE Game SHALL support exactly three playable characters: Duck, Child, and Adult.
 2. WHEN the player triggers the character-switch action, THE Game SHALL change the ActiveCharacter to the next character in the fixed rotation (Duck → Child → Adult → Duck).
-3. WHILE a character is not the ActiveCharacter, THE Game SHALL keep that character stationary at their last position and ignore all movement and action inputs directed at that character, with two exceptions: Duck moves with Adult while CarriedBy is `adult`, and the companion human moves with the active human during a successful PairDoor crossing.
+3. WHILE a character is not the ActiveCharacter, THE Game SHALL keep that character stationary at their last position and ignore all movement and action inputs directed at that character, with two exceptions: Duck moves with its carrier while CarriedBy is set (Child before the hat, Adult after it), and the companion human moves with the active human during a successful PairDoor crossing.
 4. WHEN the player triggers the character-switch action, THE Game SHALL begin moving the camera to focus on the newly active character, completing the transition within 0.5 seconds.
 5. IF an item-transfer interaction is in progress or a GameOverCondition event is active, THEN THE Game SHALL ignore character-switch input and keep the current ActiveCharacter unchanged.
 6. WHEN the player triggers the character-switch action and no blocking condition is active, THE Game SHALL accept and process the input within one rendered frame.
