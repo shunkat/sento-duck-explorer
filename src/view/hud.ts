@@ -88,6 +88,7 @@ export class Hud {
       key = `over:${s.outcome.reason}:${s.lastCheckpoint}`;
       html =
         `<h2>ゲームオーバー（${s.outcome.reason}）</h2>` +
+        (v.speech ? `<p class="speech">${v.speech.speaker}「${v.speech.line}」</p>` : "") +
         `<p class="reason">${v.reason}</p>` +
         `<p>${v.manner}</p>` +
         `<p class="small">※このゲームの施設のルールです。実際のルールは施設ごとに確認しましょう。</p>` +

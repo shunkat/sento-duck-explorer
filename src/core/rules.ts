@@ -43,7 +43,30 @@ export function isCleared(s: CoreState): boolean {
   );
 }
 
-const ORDER: readonly ViolationId[] = ["F1", "F2", "F3", "F4", "F5", "F6", "F7"];
+const ORDER: readonly ViolationId[] = ["F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8"];
+
+/** Footprint margin (m) in front of the 女湯 step within which a push toward it counts. */
+export const WOMENS_ENTRY_MARGIN = 0.15;
+/** Minimum cosine between the move input and the inward direction (60°: straight and diagonal approaches). */
+const WOMENS_ENTRY_MIN_DOT = 0.5;
+
+/**
+ * F8 / free-Duck hint: a body of radius `r` at `pos` pushes its move input into
+ * the 女湯 entrance. The centre must be inside the doorway span (not the wall
+ * beside it), the front edge within the margin of the step face, and the input
+ * must point inward. Works whether or not the step collision stopped the body.
+ */
+export function pushesIntoWomensEntrance(level: Level, pos: Vec2, r: number, move: Vec2): boolean {
+  const { doorway, step, inward } = level.womensEntrance;
+  const len = Math.hypot(move.x, move.z);
+  if (!(len > 0)) return false;
+  if ((move.x * inward.x + move.z * inward.z) / len < WOMENS_ENTRY_MIN_DOT) return false;
+  // shortcut: the entrance faces −x or +x (vertical wall); extend for a z-facing doorway if one is added.
+  const lateralOk = pos.z >= doorway.minZ && pos.z <= doorway.maxZ;
+  const face = inward.x < 0 ? step.maxX : step.minX;
+  const gap = inward.x < 0 ? pos.x - r - face : face - (pos.x + r);
+  return lateralOk && gap >= -r && gap <= WOMENS_ENTRY_MARGIN;
+}
 
 /** Game over wins over clear when both happen in the same tick (Req 7.9). */
 export function decideOutcome(pending: readonly ViolationId[], cleared: boolean): Outcome {

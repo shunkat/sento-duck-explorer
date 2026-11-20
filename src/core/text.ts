@@ -8,7 +8,7 @@ export const CHARACTER_NAME: Record<CharacterId, string> = {
   adult: "大人",
 };
 
-export const VIOLATION_TEXT: Record<ViolationId, { reason: string; manner: string }> = {
+export const VIOLATION_TEXT: Record<ViolationId, { reason: string; manner: string; speech?: { speaker: string; line: string } }> = {
   F1: { reason: "タオルをお風呂につけてしまった", manner: "タオルは湯船に入れず、頭にのせるか湯船の外に置こう" },
   F2: { reason: "体を拭かずに更衣室に入ってしまった", manner: "浴室を出る前にタオルで体を拭こう" },
   F3: { reason: "走って石鹸を踏んでしまった", manner: "浴室は滑りやすいので歩こう" },
@@ -16,6 +16,11 @@ export const VIOLATION_TEXT: Record<ViolationId, { reason: string; manner: strin
   F5: { reason: "体を拭かずにサウナ室に入ってしまった", manner: "サウナに入る前に体を拭こう" },
   F6: { reason: "サウナ室で大声を出してしまった", manner: "サウナでは静かに。具合が悪い時や異変は、すぐ周りや従業員に知らせよう" },
   F7: { reason: "サウナ室で人を押しのけてしまった", manner: "押さずに、通れるすき間をゆっくり進もう" },
+  F8: {
+    reason: "女湯の入口に入ろうとしてしまった",
+    manner: "入口ののれんを見て、男湯の入口から入ろう",
+    speech: { speaker: "受付の人", line: "こら、そちらは女湯です！男湯はあちらですよ！" },
+  },
 };
 
 export const ITEM_TEXT = {
@@ -30,10 +35,11 @@ export const MSG = {
   moveTogether: (other: CharacterId) => `${CHARACTER_NAME[other]}と一緒に移動しましょう`,
   companionDry: (other: CharacterId) => `${CHARACTER_NAME[other]}も出口の前でEを押して体を拭きましょう（Tabで切り替え）`,
   companionDress: (other: CharacterId) => `${CHARACTER_NAME[other]}に服を着せましょう`,
-  needBothAtShore: "子どもと一緒に池の入口まで来ましょう",
+  needBothAtShore: "子どもと一緒に池のほとり（庭）まで来ましょう",
   shoutOutsideSauna: "大声は周りの迷惑になります",
   cannotPutDuckHere: "ここではアヒルを下ろせません。湯船か水路のそばでEを押そう",
   towelOnHead: "タオルは頭の上にあります（Eで手に持てます）",
+  duckStepTooHigh: "段差が高くて、アヒルでは越えられない",
 } as const;
 
 export const ZONE_NAME: Record<import("./types").ZoneId, string> = {
@@ -43,12 +49,12 @@ export const ZONE_NAME: Record<import("./types").ZoneId, string> = {
   narrow_hole: "小さな穴",
   changing: "更衣室",
   reception: "受付",
-  common: "休憩所",
-  exterior: "館外",
+  common: "ロビー（休憩所）",
+  exterior: "玄関（下足箱）",
   sauna_entry: "サウナ室（入口）",
-  sauna_crowd: "サウナ室（人混み）",
+  sauna_crowd: "サウナ室（座っている人たち）",
   open_air: "露天風呂",
-  pond_entrance: "池の入口",
+  pond_entrance: "庭（池のほとり）",
   pond: "秘密の池",
   pond_goal: "池の奥（ゴール）",
 };

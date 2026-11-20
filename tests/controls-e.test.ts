@@ -16,6 +16,10 @@ import { HEAD_TOP_TOLERANCE, headAnchor, TOWEL_DEPTH, towelPose } from "../src/v
 import * as R from "./helpers/route";
 import { Sim } from "./helpers/sim";
 
+
+const W = LEVEL.waypoints;
+/** From the tub along the dry aisle to just inside the bath door (the drying spot). */
+const TO_DOOR = [W.tubWest, W.bathAisle, { x: 1.4, z: 1.0 }];
 /** Press E like the game does, and check the HUD named exactly what happened. */
 function pressE(sim: Sim): string | null {
   const hint = interactHint(sim.state, LEVEL);
@@ -40,7 +44,7 @@ describe("keyboard wiring: T and G are inert, E is the action key", () => {
     const kb = new KeyboardState();
     const sim = new Sim();
     sim.switchTo("child");
-    sim.walk([{ x: 3.6, z: 1.6 }]);
+    sim.walk([W.tubWest, W.bathAisle, W.bathDoorDry]);
     let s: GameState = sim.state;
     const tap = (code: string) => {
       kb.keyDown(code);
@@ -61,7 +65,7 @@ describe("keyboard wiring: T and G are inert, E is the action key", () => {
     expect(KEY_HELP.join("\n")).not.toMatch(/(^|[^A-Z])[TG]：/m);
     const sim = new Sim();
     sim.switchTo("child");
-    sim.walk([{ x: 3.6, z: 1.6 }]);
+    sim.walk([W.tubWest, W.bathAisle, W.bathDoorDry]);
     for (const h of nearbyHints(sim.state, LEVEL)) expect(h).not.toMatch(/^[TG]:/);
   });
 });
@@ -70,7 +74,7 @@ describe("E at the bath exits dries the controlled wet human", () => {
   it("inside the spot near the changing-room door: dries itself only, towel goes on the head", () => {
     const sim = new Sim();
     sim.switchTo("child");
-    sim.walk([{ x: 2.6, z: 1.0 }]);
+    sim.walk(TO_DOOR);
     expect(pressE(sim)).toBe("タオルで体を拭く");
     expect(sim.state.child.wet).toBe("dry");
     expect(sim.state.child.towel).toBe("head");
@@ -85,7 +89,7 @@ describe("E at the bath exits dries the controlled wet human", () => {
 
     const far = new Sim();
     far.switchTo("adult");
-    far.walk([{ x: 5.4, z: 2.4 }, { x: 9, z: 1.5 }]); // bath floor, 6 m from the door
+    far.walk([W.tubNorth, W.bathMid]); // bath floor, far from both doors
     expect(far.state.adult.zone).toBe("bath");
     expect(pressE(far)).not.toBe("タオルで体を拭く");
     expect(far.state.adult.wet).toBe("wet");
@@ -93,7 +97,7 @@ describe("E at the bath exits dries the controlled wet human", () => {
     const side = new Sim();
     R.pairToChanging(side);
     side.switchTo("child");
-    side.walk([{ x: 3.4, z: -0.6 }]); // just through the door: changing room
+    side.walk([{ x: 2.4, z: -0.6 }]); // just through the door: changing room
     expect(side.state.child.zone).toBe("changing");
     expect(interactHint(side.state, LEVEL)).not.toBe("タオルで体を拭く");
   });
@@ -101,7 +105,7 @@ describe("E at the bath exits dries the controlled wet human", () => {
   it("already dry at the spot: E falls through to the next action (towel)", () => {
     const sim = new Sim();
     sim.switchTo("child");
-    sim.walk([{ x: 2.6, z: 1.0 }]);
+    sim.walk(TO_DOOR);
     pressE(sim);
     expect(pressE(sim)).toBe("タオルを手に持つ");
     expect(sim.state.child.towel).toBe("held");
@@ -111,14 +115,14 @@ describe("E at the bath exits dries the controlled wet human", () => {
   it("before the sauna door: a dry Child with the key unlocks; a wet one dries first, then unlocks", () => {
     const dry = readyForSauna();
     dry.switchTo("child");
-    R.walkDryToSaunaDoor(dry, { x: 2.0, z: 7.5 });
+    R.walkDryToSaunaDoor(dry, W.saunaDoorDry);
     expect(dry.state.child.wet).toBe("dry");
     expect(pressE(dry)).toBe("サウナ室の扉を鍵で開ける");
     expect(dry.state.saunaDoor).toBe("unlocked");
 
     const wet = readyForSauna();
     wet.switchTo("child");
-    wet.walk([{ x: 4, z: 6.5 }, { x: 2.0, z: 7.5 }]); // through the bathwater
+    wet.walk([W.bathMid, W.tubNorth, { x: 9.8, z: 5.8 }, W.tubNorth, W.bathMid, W.saunaDoorDry]); // through the bathwater
     expect(wet.state.child.wet).toBe("wet");
     expect(pressE(wet)).toBe("タオルで体を拭く");
     expect(wet.state.saunaDoor).toBe("locked");
@@ -140,9 +144,9 @@ describe("E at the bath exits dries the controlled wet human", () => {
   it("both humans wet: the HUD names who still needs drying", () => {
     const sim = new Sim();
     sim.switchTo("child");
-    sim.walk([{ x: 2.6, z: 1.0 }]);
+    sim.walk(TO_DOOR);
     sim.switchTo("adult");
-    sim.walk([{ x: 3.4, z: 2.4 }, { x: 3.6, z: 1.6 }]);
+    sim.walk([W.tubWest, W.bathAisle, { x: 1.0, z: 1.6 }]);
     expect(nearbyHints(sim.state, LEVEL)).toContain("子どもも濡れています（Tabで切り替えて出口の前でE）");
     pressE(sim);
     sim.switchTo("child");
@@ -152,17 +156,17 @@ describe("E at the bath exits dries the controlled wet human", () => {
   it("walking through wet still triggers F2 (towel on the head does not dry)", () => {
     const sim = new Sim();
     sim.switchTo("adult");
-    sim.walk([{ x: 3.4, z: 2.4 }, { x: 3.6, z: 1.6 }]);
+    sim.walk([W.tubWest, W.bathAisle, { x: 1.0, z: 1.6 }]);
     sim.switchTo("child");
-    sim.walk([{ x: 2.6, z: 1.6 }]);
+    sim.walk([W.tubWest, W.bathAisle, W.bathDoorDry]);
     pressE(sim); // child dries
     sim.switchTo("adult");
-    sim.walk([{ x: 9, z: 1.5 }]); // away from the spot: E only moves the towel
+    sim.walk([W.bathAisle, W.bathMid]); // away from the spot: E only moves the towel
     pressE(sim);
     expect(sim.state.adult.towel).toBe("head");
     expect(sim.state.adult.wet).toBe("wet");
     // Walk the wet Adult back next to the Child and through the door without pressing E.
-    sim.walk([{ x: 3.2, z: 1.0 }, { x: 2.6, z: -1 }], { allowEnd: true });
+    sim.walk([W.bathAisle, { x: 1.8, z: 1.2 }, W.changingIn], { allowEnd: true });
     expect(sim.state.outcome).toEqual({ kind: "gameOver", reason: "F2" });
   });
 });
@@ -172,16 +176,16 @@ describe("E at the locker dresses and undresses", () => {
     const sim = new Sim();
     R.pairToChanging(sim);
     sim.switchTo("adult");
-    sim.walk([{ x: 5.4, z: -2 }]);
+    sim.walk([{ x: LEVEL.locker.x + 0.3, z: LEVEL.locker.z }]);
     expect(pressE(sim)).toBe("服を着る");
     expect(sim.state.adult.clothing).toBe("clothed");
     expect(sim.state.adult.wet).toBe("dry");
     expect(pressE(sim)).toBe("服を脱ぐ");
     expect(sim.state.adult.clothing).toBe("unclothed");
     sim.switchTo("child");
-    sim.walk([{ x: 3.2, z: -3.0 }]);
+    sim.walk([W.lockerAisle, W.screenPassage, W.screenWait]);
     sim.switchTo("adult");
-    sim.walk([{ x: 2.6, z: -3.2 }, { x: 2.6, z: -5 }], { allowEnd: true });
+    sim.walk([W.lockerAisle, W.screenPassage, W.receptionDoorIn, W.receptionIn], { allowEnd: true });
     expect(sim.state.outcome).toEqual({ kind: "gameOver", reason: "F4" });
   });
 });
@@ -190,7 +194,7 @@ describe("towel on the head or in the hand", () => {
   it("starts held; on the head Q does not dip it (hint); back in the hand Q is F1", () => {
     const sim = new Sim();
     sim.switchTo("child");
-    sim.walk([{ x: 4.6, z: 3.4 }]); // in the bathwater, out of reach of Duck
+    sim.walk([{ x: 9.8, z: 6.2 }]); // in the bathwater, out of reach of Duck
     expect(sim.state.child.towel).toBe("held");
     pressE(sim);
     expect(sim.state.child.towel).toBe("head");
@@ -207,7 +211,7 @@ describe("towel on the head or in the hand", () => {
   it("walking through the water with the towel in hand is not F1", () => {
     const sim = new Sim();
     sim.switchTo("adult");
-    sim.walk([{ x: 6.5, z: 6.5 }, { x: 2.5, z: 3.5 }, { x: 6.5, z: 4 }]);
+    sim.walk([{ x: 9.8, z: 7.8 }, { x: 5.0, z: 6.0 }, W.tubNorth]);
     sim.expectPlaying();
   });
 
@@ -215,13 +219,13 @@ describe("towel on the head or in the hand", () => {
     const head = new Sim();
     head.switchTo("child");
     pressE(head); // to the head while in the tub
-    head.walk([{ x: 2.6, z: 1.0 }]);
+    head.walk(TO_DOOR);
     pressE(head);
     expect(head.state.child).toMatchObject({ wet: "dry", towel: "head" });
 
     const hand = new Sim();
     hand.switchTo("child");
-    hand.walk([{ x: 2.6, z: 1.0 }]);
+    hand.walk(TO_DOOR);
     expect(hand.state.child.towel).toBe("held");
     pressE(hand);
     expect(hand.state.child).toMatchObject({ wet: "dry", towel: "head" });
@@ -244,7 +248,7 @@ describe("towel on the head or in the hand", () => {
     const saved = sim.state.checkpoints.paidReturned!;
     expect(saved.child.towel).toBe("head"); // stowed when the Child dried
     sim.switchTo("child");
-    sim.walk([{ x: 4, z: 4.5 }]); // into the bathwater
+    sim.walk([W.bathAisle, W.tubNorth, { x: 7.0, z: 6.0 }]); // into the bathwater
     pressE(sim); // towel to the hand
     expect(sim.state.child.towel).toBe("held");
     sim.press("dipTowel");
@@ -297,20 +301,20 @@ describe("sauna objective follows the state (review P2)", () => {
     const sim = readyForSauna();
     expect(sim.state.child.wet).toBe("dry");
     expect(sim.state.adult.wet).toBe("dry");
-    expect(objective(sim.state)).toContain("子どもで浴室の下側にあるサウナの扉");
+    expect(objective(sim.state)).toContain("サウナの扉（茶色）の前に行きEで開けよう");
     expect(objective(sim.state)).not.toContain("拭");
 
     sim.switchTo("adult");
-    sim.walk([{ x: 4, z: 4.5 }]); // Adult gets wet in the bathwater
+    sim.walk([W.bathAisle, W.tubNorth, { x: 7.0, z: 6.0 }]); // Adult gets wet in the bathwater
     expect(objective(sim.state)).toContain("大人がEを押して体を拭こう");
     expect(objective(sim.state)).not.toContain("子どもと大人");
 
-    sim.walk([{ x: 1.6, z: 7.3 }]);
+    sim.walk([W.tubNorth, W.bathMid, W.saunaDoorDry]);
     expect(pressE(sim)).toBe("タオルで体を拭く"); // the hint and E agree with the objective
     expect(objective(sim.state)).not.toContain("拭");
 
     sim.switchTo("child");
-    R.walkDryToSaunaDoor(sim, { x: 2.0, z: 7.5 });
+    R.walkDryToSaunaDoor(sim, W.saunaDoorDry);
     pressE(sim);
     expect(sim.state.saunaDoor).toBe("unlocked");
     expect(objective(sim.state)).toContain("親子でサウナへ");

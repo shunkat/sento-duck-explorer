@@ -1,12 +1,12 @@
 // The only way game state changes. Pure: never mutates its input state.
-import type { Level } from "../level/layout";
+import { CHARACTER_RADIUS, type Level } from "../level/layout";
 import { stepDuckWater, stepWalk, wallsFor } from "../sim/movement";
 import { stepPond } from "../sim/pond";
 import { inBathWater, isSauna, isWetSource, zoneAtOr } from "../sim/zones";
 import { type Ctx, interact, resolveDialog } from "./actions";
 import { restoreLatest, saveCheckpointIfReached } from "./checkpoints";
 import { applyHumanMove } from "./pair";
-import { decideOutcome, isCleared, npcWithinPushReach, stepsOnSoap } from "./rules";
+import { decideOutcome, isCleared, npcWithinPushReach, pushesIntoWomensEntrance, stepsOnSoap } from "./rules";
 import { MSG } from "./text";
 import type { CharacterId, GameEvent, GameState, InputFrame, TickResult } from "./types";
 
@@ -78,6 +78,10 @@ export function tick(state: GameState, input: InputFrame, level: Level): TickRes
         } else {
           // Outside the pond Duck only swims on water; across the floor a human carries it.
           d.pos = stepDuckWater(d.pos, input.move, walls, level.duckWater);
+          // The 女湯 step stops a free Duck by collision; it only gets a hint, never F8.
+          if (pushesIntoWomensEntrance(level, d.pos, CHARACTER_RADIUS.duck, input.move)) {
+            events.push({ kind: "prompt", text: MSG.duckStepTooHigh });
+          }
         }
         d.zone = zoneAtOr(level, d.pos, d.zone);
       }
@@ -85,6 +89,12 @@ export function tick(state: GameState, input: InputFrame, level: Level): TickRes
       const id = s.active;
       const before = s[id].pos;
       const next = stepWalk(id, before, input.move, input.run, walls);
+      // F8: the player pushes this human into the 女湯 entrance. Checked before
+      // and after the move, so the step collision stopping the body still counts.
+      const r = CHARACTER_RADIUS[id];
+      if (pushesIntoWomensEntrance(level, before, r, input.move) || pushesIntoWomensEntrance(level, next, r, input.move)) {
+        c.pending.push("F8");
+      }
       if (next.x !== before.x || next.z !== before.z) {
         applyHumanMove(c, id, next);
         const moved = s[id].pos.x !== before.x || s[id].pos.z !== before.z;

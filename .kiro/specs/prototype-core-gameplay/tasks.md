@@ -127,3 +127,11 @@ Created directly by the main Kiro agent on 2026-11-20 after the built-in spec su
 Codex adapted the earlier Kiro property tests to the already-reviewed gameplay: current contextual E inputs, Child carrying before the hat and Adult afterward, the separated water channel, water-only drops and held-towel F1. Reachable stage generation reuses the current route helpers and adds a Child-carried stage; the coin-dialog and pond-shore prefixes are shared helpers. Core game code is unchanged. The state-edited cases are explicitly identified above; automatic state checks are not browser evidence. No repeated playthrough was performed.
 
 Integrated validation: 219 tests passed across 16 files; the production build passed. The existing large-bundle warning remains. Source/index and distribution publication checks are recorded with the integration commit.
+
+- [ ] 15. Women's bath entrance and F8 (2026-11-20 user request; Kiro Crew)
+  - [x] 15.1 Spec: Req 7.11–7.14, design table and trigger semantics
+  - [x] 15.2 Level: 男湯 noren, 女湯 doorway, opaque vestibule, raised step, receptionist behind a moved desk; `LEVEL.womensEntrance`
+  - [x] 15.3 Rules: `F8`, `pushesIntoWomensEntrance`, order after F7; free-Duck step hint; reprimand on the game-over screen
+  - [x] 15.4 Tests: Adult/Child attempts, carrying Duck, free Duck blocked without F8, idle/parallel/away/side-wall false positives, diagonal/run approaches, restart after F8, whole route (`tests/womens-entrance.test.ts`)
+  - [ ] 15.5 Final normal-input check (Codex, joins the existing final check)
+

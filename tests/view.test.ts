@@ -147,7 +147,7 @@ describe("keyboard-driven start of the route", () => {
     const sim = new Sim();
     let s = sim.state;
     // Duck alone stays in the tub: the channel is across dry floor.
-    s = keyWalk(kb, s, { x: 1, z: 5.5 });
+    s = keyWalk(kb, s, { x: LEVEL.waypoints.troughEnd.x, z: s.duck.pos.z }); // toward the trough: stops at the tub edge
     expect(s.duck.zone).toBe("bathwater");
     s = press(kb, s, "Tab"); // → Child
     expect(s.active).toBe("child");
@@ -161,11 +161,10 @@ describe("keyboard-driven start of the route", () => {
     s = keyWalk(kb, s, { x: LEVEL.nodes.narrow_hole_coin.x + 0.2, z: LEVEL.nodes.narrow_hole_coin.z });
     s = press(kb, s, "KeyE");
     expect(s.items.coin.owner).toEqual({ kind: "character", id: "duck" });
-    s = keyWalk(kb, s, { x: 0.95, z: 5.5 });
+    s = keyWalk(kb, s, LEVEL.waypoints.troughEnd);
     s = press(kb, s, "Tab"); // → Child
     s = press(kb, s, "Tab"); // → Adult
-    s = keyWalk(kb, s, { x: 3.4, z: 4.8 });
-    s = keyWalk(kb, s, { x: LEVEL.channelEntrance.x, z: 4.9 });
+    s = keyWalk(kb, s, LEVEL.waypoints.troughGive);
     s = press(kb, s, "Tab"); // → Duck
     s = press(kb, s, "KeyE");
     expect(s.dialog).toEqual({ item: "coin", from: "duck", to: "adult" });

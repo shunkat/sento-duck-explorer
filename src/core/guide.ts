@@ -16,9 +16,9 @@ export function objective(s: GameState): string {
   if (s.outcome.kind === "cleared") return "クリア！帽子を被ったアヒルが池の奥に着きました";
 
   if (coin.owner.kind === "node" && coin.owner.id === "narrow_hole_coin") {
-    if (s.duck.carriedBy === "child") return "子どもで湯船の左の「水路の入口」まで歩き、Eでアヒルを水路に下ろそう";
+    if (s.duck.carriedBy === "child") return "子どもで湯船の左奥、壁ぞいの「水路の入口」まで歩き、Eでアヒルを水路に下ろそう";
     if (s.duck.zone === "bathwater") {
-      return `500円玉は左の小さな穴の奥。アヒルだけでは湯船から水路へ行けないので、子どもでアヒルの近くでEを押して抱え、湯船の左の水路の入口へ運ぼう${switchTo(s, "child")}`;
+      return `500円玉は浴室の左奥の小さな穴の奥。アヒルだけでは湯船から水路へ行けないので、子どもでアヒルの近くでEを押して抱え、湯船の左の水路の入口へ運ぼう${switchTo(s, "child")}`;
     }
     return `アヒルで水路を泳いで小さな穴に入り、奥の500円玉を拾おう（アヒルは水の上だけ動けます）${switchTo(s, "duck")}`;
   }
@@ -31,20 +31,20 @@ export function objective(s: GameState): string {
     const inArea = (a: string) => both((h) => areaOf(s[h].zone) === a);
     if (inArea("reception")) return `大人で受付台の前に立ち、Eでサウナ代を払おう${switchTo(s, "adult")}`;
     if (inArea("changing")) {
-      if (both((h) => s[h].clothing === "clothed")) return "親子で受付へ行こう（更衣室の上の扉）";
-      return "ロッカー（オレンジの棚）の前でEを押し、子どもも大人も服を着よう";
+      if (both((h) => s[h].clothing === "clothed")) return "親子で受付へ行こう（ついたての奥、更衣室の右上の扉）";
+      return "更衣室の左の壁のロッカー（オレンジの棚）の前でEを押し、子どもも大人も服を着よう";
     }
     if (!both((h) => s[h].wet === "dry")) {
       const wet = (["child", "adult"] as const).filter((h) => s[h].wet === "wet").map(name).join("と");
       return `湯船から出て、浴室の出口（更衣室の扉）の前で${wet}がそれぞれEで体を拭こう（Tabで切り替え）`;
     }
-    return "親子で更衣室へ（浴室の上の扉）。2人が3m以内にいれば一緒に移動できます";
+    return "親子で更衣室へ（浴室の左上の扉）。2人が3m以内にいれば一緒に移動できます";
   }
 
   if (holds(s, "key", "adult")) {
     if (areaOf(s.adult.zone) !== "bath" || areaOf(s.child.zone) !== "bath") {
       if (s.adult.clothing === "clothed" || s.child.clothing === "clothed") return "更衣室のロッカーの前でEを押して2人とも服を脱ごう";
-      return "親子で浴室へ戻ろう（更衣室の下の扉）";
+      return "親子で浴室へ戻ろう（更衣室の左下の扉）";
     }
     return `大人で子どもに鍵を渡そう：子どもの近くでE${switchTo(s, "adult")}`;
   }
@@ -52,22 +52,22 @@ export function objective(s: GameState): string {
   // Who still has to dry before the sauna (the door's bath side is a drying spot).
   const wetNames = (["child", "adult"] as const).filter((h) => s[h].wet === "wet").map(name).join("と");
   if (s.saunaDoor === "locked") {
-    if (wetNames) return `サウナの扉（茶色）の前で${wetNames}がEを押して体を拭こう（Tabで切り替え）。そのあと子どもがEで扉を開けよう`;
-    return "子どもで浴室の下側にあるサウナの扉（茶色）の前に行きEで開けよう。大人も近くへ";
+    if (wetNames) return `浴室の右奥、水風呂のそばにあるサウナの扉（茶色）の前で${wetNames}がEを押して体を拭こう（Tabで切り替え）。そのあと子どもがEで扉を開けよう`;
+    return "子どもで浴室の右奥、洗い場の先にあるサウナの扉（茶色）の前に行きEで開けよう。大人も近くへ";
   }
 
   if (hat.owner.kind === "node") {
     if (!isSauna(s.child.zone)) {
       if (wetNames) return `サウナの扉の前で${wetNames}がEを押して体を拭こう（Tabで切り替え）`;
-      return "親子でサウナへ（扉の前で2人が3m以内）。子どもだけが人混みのすき間を通れます（押さず・静かに）";
+      return "親子でサウナへ（扉の前で2人が3m以内）。子どもだけが座っている人たちのすき間を通れます（押さず・静かに）";
     }
-    return "子どもで人混みのすき間を縫って、奥の棚の帽子を取ろう（E）";
+    return "子どもで座っている人たちのすき間を縫って、奥の棚の帽子を取ろう（E）。大人は入口で待ちます";
   }
   if (holds(s, "hat", "child")) return `子どもでサウナを出て、アヒルの近くでEを押して帽子を被せよう${switchTo(s, "child")}`;
 
   if (s.duck.inPond) return `流れに乗ってアヒルを池の奥の金色のゴールへ。WASDで向きを調整${switchTo(s, "duck")}`;
   if (s.duck.carriedBy === "adult") {
-    return "子どもと一緒に右の露天風呂を通って池の入口へ。入口でEを押すとアヒルを池に置けます（2人は3m以内で）";
+    return "子どもと一緒に浴室の右の扉から露天風呂へ出て、生け垣の門を通って池のほとりへ。ほとりでEを押すとアヒルを池に置けます（2人は3m以内で）";
   }
   return `大人で水辺のアヒルに近づき、Eで抱えよう（帽子を被ったアヒルは大人が池まで運びます）${switchTo(s, "adult")}`;
 }

@@ -75,7 +75,7 @@ export type TransferDialog =
   | { item: "coin"; from: "duck"; to: "adult" }
   | { item: "key"; from: "adult"; to: "child" };
 
-export type ViolationId = "F1" | "F2" | "F3" | "F4" | "F5" | "F6" | "F7";
+export type ViolationId = "F1" | "F2" | "F3" | "F4" | "F5" | "F6" | "F7" | "F8";
 
 export type CheckpointId = "start" | "paidReturned" | "hatEquipped" | "duckInPond";
 

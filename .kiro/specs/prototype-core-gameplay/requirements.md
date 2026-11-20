@@ -37,7 +37,8 @@ Scope note: this spec ends when the full route is playable with placeholder shap
 - **SaunaKey**: The key obtained from reception after the sauna fee is paid. Unlocks the SaunaRoom.
 - **SaunaHat**: The duck-sized sauna hat found in the SaunaRoom. Equips onto Duck.
 - **GameState**: The complete record of character positions, carried-by relationships, item ownership, item use state, wet/dry state, and clothed/unclothed state.
-- **GameOverCondition**: One of the seven defined player actions that immediately end the game.
+- **GameOverCondition**: One of the defined player actions that immediately end the game: F1–F7 from the original brief, plus F8 (attempting to enter the women's bath entrance, user request 2026-11-20).
+- **WomensEntrance**: The 女湯 entrance on the lobby wall: noren and sign, a shallow opaque vestibule and a raised threshold step. Only the entrance exists; there is no women's interior. The playable wing is the men's bath (男湯).
 - **WetState**: A per-character boolean flag: `wet` or `dry`. Applies to Duck, Child, and Adult.
 - **ClothingState**: A per-character state for human characters only: `clothed` or `unclothed`. Duck has no ClothingState.
 - **CarriedBy**: A Duck-specific state: `adult` or `none`. Only Adult can carry Duck *(Provisional)*. Duck can never carry itself.
@@ -198,6 +199,10 @@ Scope note: this spec ends when the full route is playable with placeholder shap
 8. WHEN a character moves through a CrowdGap using normal walking movement without a push action, THE Game SHALL NOT trigger GameOverCondition F7, even if incidental physics contact occurs.
 9. WHEN a GameOverCondition is triggered and a goal-clear condition would also be satisfied at the same moment, THE Game SHALL apply the GameOverCondition and NOT apply the game-clear state.
 10. WHEN a GameOverCondition is triggered, THE Game SHALL show the GameOverScreen with the violation ID, a short reason, the correct manner, and the restart key. *(Provisional format)*
+11. *(Added 2026-11-20, user: 「入浴導線だけ一つ修正してほしくて、今回は男湯だけど女湯の入り口だけ作ってほしい。ただ、人の状態で入ろうとすると受付の人に怒られてゲームオーバー。アヒルの状態だと段差を乗り越えられないので入れないような形にしたい」)* WHEN the ActiveCharacter is Child or Adult (also while carrying Duck) and its move input points into the WomensEntrance while its body is at the doorway, THE Game SHALL trigger GameOverCondition F8, even if the step collision stops the body. The GameOverScreen SHALL show the receptionist's reprimand, attributed to 受付の人.
+12. THE Game SHALL NOT trigger F8 for standing or idling near the entrance, moving parallel to it or away from it, looking at it, switching characters, a companion moved by a pair door, or contact with the wall beside the doorway.
+13. THE WomensEntrance SHALL let no character and no carried Duck through. A free Duck SHALL be stopped by the raised threshold's collision, SHALL NOT trigger F8 or the reprimand, and MAY see the hint 「段差が高くて、アヒルでは越えられない」. *(The normal route never puts a free Duck on the lobby floor; this is covered by direct collision and rule tests.)*
+14. F8 SHALL come after F1–F7 in the game-over priority (Criterion 9 still applies), and restarting from a checkpoint SHALL NOT immediately repeat F8.
 
 ---
 

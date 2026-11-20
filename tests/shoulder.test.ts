@@ -1,5 +1,6 @@
 import { Group, Object3D, PerspectiveCamera, Quaternion, Vector3 } from "three";
 import { describe, expect, it } from "vitest";
+import * as R from "./helpers/route";
 import { KeyboardState } from "../src/input/keyboard";
 import { CHARACTER_RADIUS, LEVEL } from "../src/level/layout";
 import type { AABB } from "../src/sim/geometry";
@@ -45,6 +46,13 @@ function crosses(a: { x: number; z: number }, b: { x: number; z: number }, box: 
   }
   return false;
 }
+
+
+/** Obstacles that block an eye at `eyeY` (full-height boxes plus low fixtures taller than the eye). */
+const blockersAt = (obs: ReturnType<typeof obstaclesFor>, eyeY: number) => [
+  ...obs.boxes,
+  ...obs.low.filter((l) => l.top > eyeY - CAMERA_MARGIN).map((l) => l.box),
+];
 
 describe("camera-relative movement (shoulder-view Req 3)", () => {
   it("yaw 0 keeps the old mapping; turning the camera turns W and D", () => {
@@ -109,10 +117,11 @@ describe("shoulder pose (Req 1, 4)", () => {
   });
 
   it("a wall behind the character pulls the camera in front of the wall", () => {
-    // Adult just inside the bath, back to the wall at z = 8.
-    const focus = { x: 8, y: 0.85, z: 7.5 };
+    // Adult in the east aisle, back to the bath's rear wall (z = 9).
+    const bath = LEVEL.zones.find((z) => z.id === "bath")!.box;
+    const focus = { x: LEVEL.waypoints.eastAisle.x, y: 0.85, z: bath.maxZ - 0.5 };
     const p = shoulderPose("adult", focus, 0, obs);
-    expect(p.eye.z).toBeLessThan(8 - 0.1 - CAMERA_MARGIN + 1e-6);
+    expect(p.eye.z).toBeLessThan(bath.maxZ - 0.1 - CAMERA_MARGIN + 1e-6);
     for (const b of obs.boxes) expect(crosses(focus, p.eye, b)).toBe(false);
   });
 
@@ -131,15 +140,20 @@ describe("shoulder pose (Req 1, 4)", () => {
   });
 
   it("never crosses an obstacle at sampled positions and yaws along the level", () => {
-    const spots: [("duck" | "child" | "adult"), number, number][] = [
-      ["duck", 4, 5], ["adult", 2.6, 0.6], ["adult", 3, -6], ["child", 2.6, 8.6], ["child", 9.5, 9.2],
-      ["child", 13.0, 10], ["adult", 20, 4], ["adult", 25.2, 3.6], ["duck", 28, 4], ["duck", 37, 4],
+    const W = LEVEL.waypoints;
+    const g = LEVEL.crowdGaps[0]!.box;
+    const at = (id: "duck" | "child" | "adult", q: { x: number; z: number }) => [id, q.x, q.z] as const;
+    const spots = [
+      at("duck", LEVEL.initialPositions.duck), at("adult", { x: 1.4, z: 0.6 }), at("adult", W.receptionIn), at("adult", W.screenPassage),
+      at("child", LEVEL.channelEntrance), at("child", { x: g.maxX + 0.4, z: (g.minZ + g.maxZ) / 2 }), at("child", LEVEL.nodes.sauna_hat_shelf),
+      at("adult", W.openAirIn), at("adult", LEVEL.checkpointSpawns.duckInPondShore.adult), at("duck", LEVEL.pondSpawn), at("duck", R.POND_PATH.at(-1)!),
+      at("child", W.bathMid), at("duck", W.troughEnd),
     ];
     for (const [id, x, z] of spots) {
       for (let k = 0; k < 8; k++) {
         const yaw = (k * Math.PI) / 4;
         const p = shoulderPose(id, { x, y: 0.5, z }, yaw, obs);
-        for (const b of obs.boxes) expect(crosses({ x, z }, p.eye, b)).toBe(false);
+        for (const b of blockersAt(obs, p.eye.y)) expect(crosses({ x, z }, p.eye, b)).toBe(false);
       }
     }
   });
@@ -267,15 +281,15 @@ describe("every pose FollowCamera.update returns is safe (Req 4.1, 4.2, 4.5)", (
   const at = (id: Id, x: number, z: number) => ({ id, focus: { x, y: id === "duck" ? 0.15 : id === "child" ? 0.6 : 0.85, z } });
   const check = (id: Id, focus: { x: number; z: number }, eye: { x: number; y: number; z: number }) => {
     expect(eye.y).toBeLessThanOrEqual(CEILING_Y - 0.15 + 1e-9);
-    for (const b of obs.boxes) expect(crosses(focus, eye, b)).toBe(false);
+    for (const b of blockersAt(obs, eye.y)) expect(crosses(focus, eye, b)).toBe(false);
   };
 
   it("character switches across walls: sampled frames never look through a wall or the ceiling", () => {
     const pairs = [
-      [at("duck", 4, 5), at("adult", 3, -2)], // bath → changing room (Codex repro a)
-      [at("adult", 3, -2), at("child", 2.6, 1.6)], // changing room → bath
-      [at("child", 2.6, 9.5), at("duck", -1.5, 5.5)], // sauna → inside the NarrowHole
-      [at("duck", 28, 4), at("adult", 25.2, 3.6)], // pond → shore
+      [at("duck", 6.0, 6.8), at("adult", 1.5, -3.0)], // bath → changing room (Codex repro a)
+      [at("adult", 1.5, -3.0), at("child", 1.6, 1.4)], // changing room → bath
+      [at("child", 15.0, 1.9), at("duck", -1.5, 8.5)], // sauna → inside the NarrowHole
+      [at("duck", 24, 8), at("adult", 21.8, 7.6)], // pond → garden
     ] as const;
     for (const [a, b] of pairs) {
       const cam = new FollowCamera();
@@ -362,8 +376,9 @@ describe("held A/D with the follow camera is stable (review N-1)", () => {
   });
 
   it("the start view looks toward the NarrowHole; a human beside the lens is faded (D-1)", () => {
-    const p = shoulderPose("duck", { x: 4, y: 0.15, z: 5 }, CHECKPOINT_VIEW_YAW.start, obs);
-    expect(p.target.x).toBeLessThan(4); // looks toward −X (the hole)
+    const d0 = LEVEL.initialPositions.duck;
+    const p = shoulderPose("duck", { x: d0.x, y: 0.15, z: d0.z }, CHECKPOINT_VIEW_YAW.start, obs);
+    expect(p.target.x).toBeLessThan(d0.x); // looks toward −X (the trough and the hole)
     for (const id of ["child", "adult"] as const) {
       const h = LEVEL.initialPositions[id];
       const toHuman = { x: h.x - p.eye.x, z: h.z - p.eye.z };
@@ -378,9 +393,10 @@ describe("held A/D with the follow camera is stable (review N-1)", () => {
   it("the sauna door view (Child unlocking) stays in the bath, locked or unlocked", () => {
     for (const door of ["locked", "unlocked"] as const) {
       const o = obstaclesFor(LEVEL, door);
-      const p = shoulderPose("child", { x: 2.6, y: 0.6, z: 7.4 }, Math.PI, o); // facing +Z, the door
-      expect(p.eye.z).toBeLessThan(8 - 0.1);
-      for (const b of o.boxes) expect(crosses({ x: 2.6, z: 7.4 }, p.eye, b)).toBe(false);
+      const f = LEVEL.waypoints.saunaDoorDry;
+      const p = shoulderPose("child", { x: f.x, y: 0.6, z: f.z }, Math.PI / 2, o); // facing +X, the door
+      expect(p.eye.x).toBeLessThan(12 - 0.1);
+      for (const b of blockersAt(o, p.eye.y)) expect(crosses(f, p.eye, b)).toBe(false);
     }
   });
 });

@@ -3,7 +3,7 @@
 import * as THREE from "three";
 import { CHARACTER_NAME, ITEM_NAME, ZONE_NAME } from "../core/text";
 import type { CharacterId, HumanId, ItemId } from "../core/types";
-import { CHARACTER_RADIUS, type Level } from "../level/layout";
+import { CHARACTER_RADIUS, type DecorKind, type FixtureKind, type Level } from "../level/layout";
 import type { AABB } from "../sim/geometry";
 import type { Pose } from "./camera";
 import { BODY_HEIGHT, type Vec3, type View } from "./deriveView";
@@ -37,7 +37,19 @@ const ZONE_COLORS: Record<string, number> = {
 const ROUTE_ZONES = new Set(["reception", "changing", "bath", "narrow_hole", "sauna_entry", "open_air", "pond_entrance", "pond_goal"]);
 
 /** Zones with a ceiling in the shoulder view (hidden in the overview). */
-const INDOOR = new Set(["reception", "common", "changing", "bath", "sauna_entry", "sauna_crowd"]);
+const INDOOR = new Set(["reception", "common", "exterior", "changing", "bath", "sauna_entry", "sauna_crowd"]);
+
+/** Provisional fixture colours (placeholders, not final assets). */
+const FIXTURE_COLORS: Record<FixtureKind, number> = {
+  screen: 0xd9c9a8, locker: 0xff9900, shoeLocker: 0xb08850, bench: 0x9b6b3d, desk: 0x8b5a2b, shelf: 0x6b4a2b,
+  stool: 0xf2f2f2, basin: 0x9ab8c8, plunge: 0x9ab8c8, outdoorBath: 0x7b7f78, heater: 0x4a4a4a,
+  holeSide: 0xd8d0e8, hedge: 0x3f7a3a, fence: 0x9c7b55, pondEdge: 0x8a8f86, rock: 0x8a8f86, shrub: 0x4f8a45,
+  step: 0xc9a46a, staff: 0x2f4f6f,
+};
+const DECOR_COLORS: Record<DecorKind, number> = {
+  mat: 0x6b8fb8, border: 0xdfe6ea, mirror: 0xcfe3f0, tap: 0xb0b0b0, bucket: 0xe8c547, shelf: 0xdfe6ea,
+  shower: 0xb0b0b0, curtain: 0x2a3f7a, deck: 0xa07850, stone: 0xb0aca0, norenMen: 0x2c5aa0, norenWomen: 0xc0392b,
+};
 /** View-only: the carried Duck is drawn this far in front of its carrier's placeholder (models: sockets). */
 const CARRY_FORWARD = 0.3;
 /** Wall height while the overview shows the map as a cutaway. */
@@ -125,7 +137,8 @@ export class GameScene {
   private doorBlocker: THREE.Mesh;
   private labels: Label[] = [];
   /** Full-height walls, cut down in the overview. */
-  private tallWalls: THREE.Mesh[] = [];
+  /** Meshes cut down to OVERVIEW_WALL_HEIGHT in the overview, with their own full height. */
+  private tallWalls: { mesh: THREE.Mesh; height: number }[] = [];
   /** Ceilings and the NarrowHole lintel, hidden in the overview. */
   private roofs: THREE.Object3D[] = [];
   /** Primitive meshes per character; hidden when a model replaces them. */
@@ -197,6 +210,13 @@ export class GameScene {
     });
   }
 
+  /** A fixture-kind label above the center of `b`. */
+  private fixtureLabel(text: string, b: AABB, y: number, color = "#fff"): void {
+    const l = this.label(text, "fixture", color);
+    l.position.set((b.minX + b.maxX) / 2, y, (b.minZ + b.maxZ) / 2);
+    this.scene.add(l);
+  }
+
   constructor(container: HTMLElement, level: Level) {
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -224,23 +244,37 @@ export class GameScene {
       if (w.minX === tubBox.minX && w.maxX === tubBox.maxX && w.minZ === tubBox.minZ && w.maxZ === tubBox.maxZ) continue;
       this.scene.add(boxMesh(w, 0.02, 0.014, ZONE_COLORS.bathwater!, 0.9));
     }
+    // Fixtures at their own height; every other wall is full height.
+    const fixtureBoxes = new Set<AABB>(level.fixtures.map((f) => f.box));
     for (const w of level.walls) {
-      // The NarrowHole corridor sides stop at its lid; every other wall is full height.
-      if (w.maxX <= hole.maxX + 1e-6 && w.minX >= hole.minX - 0.3) {
-        this.scene.add(boxMesh(w, HOLE_LID_Y, 0, 0xd8d0e8));
-        continue;
-      }
-      // Pond rocks are low boulders, not walls (they still block the camera).
-      const rock = w.minX > 27 && w.maxX - w.minX > 0.5 && w.maxZ - w.minZ > 0.5;
-      if (rock) {
-        this.scene.add(boxMesh(w, 1.0, 0, 0x8a8f86));
-        continue;
-      }
+      if (fixtureBoxes.has(w)) continue;
       const m = boxMesh(w, WALL_HEIGHT, 0, 0xe8e8e8);
-      this.tallWalls.push(m);
+      this.tallWalls.push({ mesh: m, height: WALL_HEIGHT });
       this.scene.add(m);
     }
-    // NarrowHole: lid over the corridor and the wall part above the opening.
+    for (const f of level.fixtures) {
+      const fm = boxMesh(f.box, f.height, 0, FIXTURE_COLORS[f.kind]);
+      if (f.height > OVERVIEW_WALL_HEIGHT) this.tallWalls.push({ mesh: fm, height: f.height });
+      this.scene.add(fm);
+      // Rimmed water that cannot be entered (cold plunge, outdoor bath, kakeyu basin) shows its water.
+      if (f.kind === "plunge" || f.kind === "outdoorBath" || f.kind === "basin") {
+        const r = 0.12;
+        const w = { minX: f.box.minX + r, minZ: f.box.minZ + r, maxX: f.box.maxX - r, maxZ: f.box.maxZ - r };
+        this.scene.add(boxMesh(w, 0.02, f.height + 0.002, f.kind === "plunge" ? 0x7fc4e8 : ZONE_COLORS.bathwater!, 0.9));
+      }
+      if (f.label) this.fixtureLabel(f.label, f.box, f.height + 0.35);
+      // Receptionist (provisional): the fixture box is the body; add a head.
+      if (f.kind === "staff") {
+        const hx = (f.box.maxX - f.box.minX) / 4;
+        const hz = (f.box.maxZ - f.box.minZ) / 4;
+        this.scene.add(boxMesh({ minX: f.box.minX + hx, minZ: f.box.minZ + hz, maxX: f.box.maxX - hx, maxZ: f.box.maxZ - hz }, 0.25, f.height, 0xf1c9a5));
+      }
+    }
+    for (const d of level.decor) {
+      this.scene.add(boxMesh(d.box, d.height, d.y0, DECOR_COLORS[d.kind], d.kind === "mirror" ? 0.85 : 1));
+      if (d.label) this.fixtureLabel(d.label, d.box, d.y0 + d.height + 0.3);
+    }
+    // NarrowHole alcove: lid over the corridor and the wall part above the opening.
     const lid = boxMesh({ minX: hole.minX - 0.2, minZ: hole.minZ - 0.2, maxX: hole.maxX, maxZ: hole.maxZ + 0.2 }, 0.05, HOLE_LID_Y, 0xd8d0e8);
     this.roofs.push(lid);
     this.scene.add(lid);
@@ -253,40 +287,28 @@ export class GameScene {
       this.roofs.push(c);
       this.scene.add(c);
     }
-    for (const n of level.npcs) this.scene.add(boxMesh(n, 1.6, 0, 0xc27ba0));
-    const crowd = this.label("サウナの人混み（押さない）", "fixture", "#ffd");
-    crowd.position.set(9.5, 2.0, 10);
-    this.scene.add(crowd);
+    // Sauna: occupied bench rows (seated bathers on a bench), placeholder shapes.
+    for (const n of level.npcs) {
+      this.scene.add(boxMesh(n, 0.45, 0, 0x8a5a32));
+      this.scene.add(boxMesh({ minX: n.minX + 0.1, minZ: n.minZ + 0.05, maxX: n.maxX - 0.1, maxZ: n.maxZ - 0.05 }, 0.75, 0.45, 0xc27ba0));
+    }
+    if (level.npcs.length > 0) {
+      const b = level.npcs.reduce((u, n) => ({ minX: Math.min(u.minX, n.minX), minZ: Math.min(u.minZ, n.minZ), maxX: Math.max(u.maxX, n.maxX), maxZ: Math.max(u.maxZ, n.maxZ) }));
+      this.fixtureLabel("座っている人たち（押さない）", b, 1.6, "#ffd");
+    }
 
     this.doorBlocker = boxMesh(level.saunaDoorBlocker, 2.2, 0, 0x5b3a1a);
     this.scene.add(this.doorBlocker);
-    const doorLabel = this.label("サウナの扉", "fixture", "#fda");
-    doorLabel.position.set((level.saunaDoorBlocker.minX + level.saunaDoorBlocker.maxX) / 2, 1.6, 7.7);
-    this.scene.add(doorLabel);
+    this.fixtureLabel("サウナの扉", level.saunaDoorBlocker, 1.6, "#fda");
 
-    // Fixtures.
-    const locker = boxMesh({ minX: level.locker.x + 0.3, minZ: level.locker.z - 0.6, maxX: level.locker.x + 0.7, maxZ: level.locker.z + 0.6 }, 1.6, 0, 0xff9900);
-    this.scene.add(locker);
-    const entrance = this.label("水路の入口（子どもがアヒルを下ろす）", "fixture", "#bdf");
-    entrance.position.set(level.channelEntrance.x, 0.9, level.channelEntrance.z);
-    this.scene.add(entrance);
-    const lockerLabel = this.label("ロッカー（E）", "fixture");
-    lockerLabel.position.set(level.locker.x + 0.5, 1.9, level.locker.z);
-    this.scene.add(lockerLabel);
-    const d = level.nodes.reception_desk;
-    this.scene.add(boxMesh({ minX: d.x - 1.2, minZ: d.z - 0.9, maxX: d.x + 1.6, maxZ: d.z - 0.4 }, 0.9, 0, 0x8b5a2b));
-    const deskLabel = this.label("受付台", "fixture");
-    deskLabel.position.set(d.x, 1.4, d.z - 0.6);
-    this.scene.add(deskLabel);
-    const shelf = level.nodes.sauna_hat_shelf;
-    this.scene.add(boxMesh({ minX: shelf.x + 0.2, minZ: shelf.z - 0.4, maxX: shelf.x + 0.5, maxZ: shelf.z + 0.4 }, 0.6, 0, 0x6b4a2b));
+    // Interaction spots without a fixture of their own.
+    const e = level.channelEntrance;
+    this.fixtureLabel("水路の入口（子どもがアヒルを下ろす）", { minX: e.x, maxX: e.x, minZ: e.z, maxZ: e.z }, 0.9, "#bdf");
     for (const soap of level.soaps) {
       const m = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.08, 0.18), new THREE.MeshStandardMaterial({ color: 0xffffff }));
       m.position.set(soap.pos.x, 0.05, soap.pos.z);
       this.scene.add(m);
-      const l = this.label("石鹸（走らない）", "fixture");
-      l.position.set(soap.pos.x, 0.5, soap.pos.z);
-      this.scene.add(l);
+      this.fixtureLabel("石鹸（走らない）", { minX: soap.pos.x, maxX: soap.pos.x, minZ: soap.pos.z, maxZ: soap.pos.z }, 0.5);
     }
 
     // Characters: Duck sphere, Child small capsule, Adult tall capsule.
@@ -434,10 +456,10 @@ export class GameScene {
   }
 
   private setOverview(on: boolean): void {
-    const h = on ? OVERVIEW_WALL_HEIGHT : WALL_HEIGHT;
-    for (const w of this.tallWalls) {
-      w.scale.y = h / WALL_HEIGHT;
-      w.position.y = h / 2;
+    for (const { mesh, height } of this.tallWalls) {
+      const h = on ? OVERVIEW_WALL_HEIGHT : height;
+      mesh.scale.y = h / height;
+      mesh.position.y = h / 2;
     }
     for (const r of this.roofs) r.visible = !on;
     // Overview: cut walls must not chop room names; shoulder view: names stay behind walls.

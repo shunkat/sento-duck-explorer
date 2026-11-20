@@ -1,6 +1,7 @@
 // Camera state: over-the-shoulder follow with orbit yaw (see
 // .kiro/specs/shoulder-view), the auxiliary overview, and the switch blend.
 import type { CharacterId } from "../core/types";
+import { LEVEL, type Level } from "../level/layout";
 import type { Vec3 } from "./deriveView";
 import { followYaw, type Obstacles, safeEye, shoulderPose } from "./shoulder";
 
@@ -11,7 +12,23 @@ export interface Pose {
   target: Vec3;
 }
 
-export const OVERVIEW: Pose = { eye: { x: 18, y: 34, z: 24 }, target: { x: 18, y: 0, z: 2 } };
+/**
+ * Fixed map view over the whole level: centred on the zones' bounds, looking
+ * down at the same angle as before (height 34 and 22 m south for a 43 m wide
+ * map), scaled to the level's width.
+ */
+export function overviewPose(level: Level): Pose {
+  const bs = level.zones.map((z) => z.box);
+  const minX = Math.min(...bs.map((b) => b.minX));
+  const maxX = Math.max(...bs.map((b) => b.maxX));
+  const minZ = Math.min(...bs.map((b) => b.minZ));
+  const maxZ = Math.max(...bs.map((b) => b.maxZ));
+  const k = Math.max(maxX - minX, (maxZ - minZ) * 1.6) / 43;
+  const target = { x: (minX + maxX) / 2, y: 0, z: (minZ + maxZ) / 2 };
+  return { eye: { x: target.x, y: 34 * k, z: target.z + 22 * k }, target };
+}
+
+export const OVERVIEW: Pose = overviewPose(LEVEL);
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 const lerp3 = (a: Vec3, b: Vec3, t: number): Vec3 => ({ x: lerp(a.x, b.x, t), y: lerp(a.y, b.y, t), z: lerp(a.z, b.z, t) });
