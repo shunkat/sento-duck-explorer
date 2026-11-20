@@ -61,3 +61,17 @@ The final 136-test suite and production build passed. Source/index, distribution
 Models retain **CC BY 4.0** with Meshy attribution and modification notices; project code remains MIT. Notices and sidecars are present in the build. Raw operator logs and browser/conversation screenshots are not published. Screenshot observations were made through the control tool; no game-only screenshot file was saved.
 
 The branch is for review. PR #3's ModelAdapter consolidation, skeletal animations, environment assets, Costume Contest presentation and submission/deployment remain separate work. The live browser was left at the initial Duck shoulder view with all keys released.
+
+## Item-label follow-up (`bef0a59`, Kiro Crew)
+
+Change: in the shoulder view a held or worn item shows no label (the status panel names the holder); resting items and the overview keep their label, bottom-anchored above the model (shoulder-view Req 7.5).
+
+| Check | Result | By |
+| --- | --- | --- |
+| `npm test` | 138 passed (2 new label tests fail on the previous code) | Crew A, re-run by Crew B |
+| `npm run build`, publication check on source and `dist` | Passed | Crew A, Crew B |
+| Browser, single keys: coin label above the coin, overview labels | Passed | Crew B |
+| Held/worn hat and key without labels during play | NOT RUN | — |
+| Full route on `bef0a59` | NOT RUN. Last full route: `a72b765`; input retest: `461ca315` | — |
+
+Low remaining items: the 受付台 label floats off the map edge in the overview; the scene wiring of the rule (`sizeLabels` with item owners) has no automated test; the hat-top test assumes the 0.08 m resting offset used in `scene.ts`.
