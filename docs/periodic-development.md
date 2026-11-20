@@ -4,7 +4,11 @@
 
 ## 状態
 
-**登録済み・ACTIVE。** [shunkat/sento-duck-explorer](https://github.com/shunkat/sento-duck-explorer) をPublic・MITで新規公開し、ローカル `origin/main` と公開先の一致を確認した。ユーザーがGitHubのブラウザー認証とKiro App接続を行い、CodexがGitHub設定の「Only select repositories」「Selected 1 repository」と対象名の一致を確認した。Scheduleを登録・有効化し、一覧のACTIVE表示と対象リポジトリを確認した。初回の実行結果は確認中。
+**登録済み・ACTIVE。** [shunkat/sento-duck-explorer](https://github.com/shunkat/sento-duck-explorer) をPublic・MITで新規公開し、ローカル `origin/main` と公開先の一致を確認した。ユーザーがGitHubのブラウザー認証とKiro App接続を行い、CodexがGitHub設定の「Only select repositories」「Selected 1 repository」と対象名の一致を確認した。Scheduleを登録・有効化し、一覧のACTIVE表示と対象リポジトリを確認した。初回を手動実行し、公開mainの取得と[PR #1](https://github.com/shunkat/sento-duck-explorer/pull/1)の作成を確認した。
+
+初回は英語文書のみの変更。クラウドの `npm ci` は `registry.npmjs.org` からの依存取得時に403となり、テスト・ビルドは未実施。設定画面ではNetwork accessが `Repository access only`、Custom allowed domainsが空だった。公式npm配布先だけの追加はユーザーに確認中で、設定変更は未保存。取得制限をミラー等で回避しない。以前のMac上の83件成功・ビルド成功をクラウドでの成功として扱わない。
+
+ブラウザー確認は初回に未実施。Kiro Web公式はChrome/Playwright等の提供を説明しているため、Kiro Web全体にブラウザー機能がないとは断定しない。接続と依存取得が整った実行で利用可能ツールを確認する。
 
 2026-11-20、ユーザーは `shunkat/sento-duck-explorer` のPublic・MITでの新規公開、このリポジトリだけへのKiro Agent接続、毎時開発の有効化を明示承認した。MITライセンスを採用済み。
 
@@ -56,4 +60,5 @@ cron(0 0-21 4 12 ? 2026)
 2. 確認済み：83件のテスト、ビルド、ソース・Git index・配布物の機密情報検査。コミットは公開用ハンドルとGitHub noreplyを使用。
 3. 確認済み：Kiro Agentのアクセス対象は当該リポジトリ1件のみ。
 4. 確認済み：期限付き3個のCRON、対象リポジトリ、一覧のACTIVE。毎時00分の設定で、次回日時の専用表示は未確認。
-5. 確認中：初回実行のリポジトリ取得・検査・作業結果。登録成功と実行結果の検証を区別する。
+5. 確認済み：初回が公開mainをcloneし、文書作成・機密検査を経てPR #1を作成。独立レビューで文書の表現修正を依頼中。クラウドのテスト・ビルド・ブラウザー検証は未完了。
+6. 確認済み：GitHubのSecret scanning・Push protectionは有効。確認時のopen secret alertsは0件。ただし検出範囲外の情報がない保証ではない。
