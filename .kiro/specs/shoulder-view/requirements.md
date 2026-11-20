@@ -34,6 +34,8 @@ Items marked *(Provisional)* are working choices under `.kiro/steering/project-a
 3. WHEN the ActiveCharacter changes, THE Game SHALL set CameraYaw to the new character's Facing and blend the camera within 0.5 s (existing Req 1.4).
 4. THE Game SHALL draw each character turned toward its Facing, so that the back is toward the camera while it walks forward.
 5. WHILE the active character moves, THE Game SHALL ease CameraYaw back behind its Facing (about 95 % of the gap in 1 s). Manual orbit input SHALL override this for 1 s after the last orbit input. Standing still SHALL keep CameraYaw, so the player can look around. Walking toward the camera (Facing more than 100° from CameraYaw) SHALL keep CameraYaw, so the view does not spin. *(Added 2026-11-20 after review F-1: the user wants facing and camera linked with the back visible.)*
+6. WHILE any move key stays held, THE Game SHALL map WASD against the CameraYaw from when the first move key went down, so the follow camera cannot feed back into the move direction. Holding A or D SHALL walk in a straight line. *(Added after review N-1.)*
+7. WHEN a checkpoint loads or a new game starts, THE Game SHALL set CameraYaw and every Facing to a fixed view per checkpoint, clearing the input latch. The start view SHALL look toward the NarrowHole. *(N-1, D-1.)*
 
 ### Requirement 2: Look around
 
@@ -94,3 +96,5 @@ Items marked *(Provisional)* are working choices under `.kiro/steering/project-a
 
 1. The 3 characters, the 10-step route, F1–F7, pair doors, item rules, and the 4 checkpoints SHALL behave as before. Existing automated tests (84) SHALL keep passing; tests for the old camera may be replaced by tests of the new camera.
 2. Labels SHALL keep the 12–22 px sizing. Zone and fixture labels SHALL be hidden behind walls in the ShoulderCamera.
+3. Shown labels SHALL NOT overlap on screen. When two would overlap, THE Game SHALL keep the one with higher priority: controlled character, key items (coin, key, hat), other characters, fixtures, rooms. *(Review D-4.)*
+4. A non-active character right next to the camera SHALL fade so it does not fill the view. *(Review D-1.)*

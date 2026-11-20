@@ -31,8 +31,16 @@ Created 2026-11-20 by the Crew implementer (Kiro Crew worker) directly from the 
   - [x] 6.4 F-2: checked, no change. `#hud` has `pointer-events: none`, inherited by every panel, so a drag that starts over the HUD reaches the canvas. Not tested with a real drag.
 - [ ] 7. Codex review fix: blended camera poses ignored walls and the ceiling (`camera.ts` lerped toward the final pose)
   - [ ] 7.1 Fixed in code: switch blend goes through `safeEye` every frame; C cuts instead of blending. Regression tests through `FollowCamera.update` (4 switches across walls/hole/pond, C return; 30–40 frames each) fail on the old code and pass now. Open until verifier B re-checks.
+- [ ] 8. Review round 3 (B's N-1 and the Conductor's list)
+  - [x] 8.1 N-1: input yaw latched while move keys are held; tests with held D, held A, W then W+D over 600 frames, latch release — Req 1.6
+  - [x] 8.2 Camera yaw, latch and facing reset on checkpoint load and new game (`CHECKPOINT_VIEW_YAW`) — Req 1.7
+  - [x] 8.3 D-1: start view toward the NarrowHole; near-lens fade of other characters; tests — Req 7.4
+  - [x] 8.4 D-4: label declutter by priority; tests — Req 7.3
+  - [x] 8.5 Sauna door view (Child unlocking) checked by test, locked and unlocked
+  - [x] 8.6 PR #3 `measured === null` test noted in the integration plan (step 7)
+  - [ ] 8.7 Duck GLB: the file in the main worktree changed while this round ran; its SHA-256 did not match the expected value, so it was not copied. Waiting for the Conductor
 - [ ] 5. Verification
-  - [x] 5.1 `npm test` 99 passed (84 before + 15 new), `npm run build`, publication check on the tree and `dist` PASS
+  - [x] 5.1 `npm test` 109 passed (84 before + 25 new), `npm run build`, publication check on the tree and `dist` PASS
   - [ ] 5.2 Browser: Crew single-key checks done (page renders in the shoulder view with Duck in front; Tab to Child shows Child's back with Adult ahead; C shows the cutaway overview and C returns). Not run: walking, orbit with J / L held, the NarrowHole, sauna, hat, carrying and pond in the shoulder view. These need held keys and are left to Codex via live takeover.
   - [x] 5.3 Pointed `prototype-core-gameplay/design.md` camera line to this spec
 - Not in this plan: final models (final-assets pipeline), merging PR #3, held-key playthrough.
@@ -40,6 +48,5 @@ Created 2026-11-20 by the Crew implementer (Kiro Crew worker) directly from the 
 ## Known issues
 
 - Some zone labels are partly hidden by the cut walls in the Overview because zone labels are now depth-tested.
-- Overview labels still overlap each other (子ども/アヒル, サウナ室/人混み/ハット, 小さな穴/500円玉), and the small bodies are hard to find (review D-4). Needs a label layout pass; not small.
-- Duck's start view is filled by the Child and Adult bodies (review D-1). Framing only; left as is.
+- D-4 and D-1: fixed in round 3 (tasks 8.3, 8.4). In the overview a lower-priority label may now be hidden instead of overlapping.
 - Fixed: pond rocks drawn 1.0 m (they still block the camera); Overview maps W to up the map (F-3, `FollowCamera.moveYaw`, tested); final-assets wall height noted as open there (F-4).

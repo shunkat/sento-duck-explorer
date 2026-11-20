@@ -60,3 +60,38 @@ export function worldHeightForPixels(px: number, distance: number, fovDeg: numbe
   const visible = 2 * distance * Math.tan((fovDeg * Math.PI) / 360);
   return (px * visible) / Math.max(1, viewportPx);
 }
+
+/**
+ * Draw priority (lower wins): the controlled character first, then the key
+ * items (coin, key, hat), then the other characters, fixtures, and room names.
+ */
+export const LABEL_PRIORITY = { active: 0, item: 1, character: 2, fixture: 3, zone: 4 } as const;
+
+export interface ScreenRect {
+  /** Left, top, right, bottom in CSS px. */
+  x0: number;
+  y0: number;
+  x1: number;
+  y1: number;
+  priority: number;
+}
+
+/**
+ * Which labels to show so none overlaps another: walk them by priority and
+ * hide any that overlaps one already shown (ties keep the input order).
+ * Returns one flag per input rect.
+ */
+export function declutter(rects: readonly ScreenRect[], gap = 2): boolean[] {
+  const order = rects.map((_, i) => i).sort((a, b) => rects[a]!.priority - rects[b]!.priority || a - b);
+  const shown: ScreenRect[] = [];
+  const out = rects.map(() => false);
+  for (const i of order) {
+    const r = rects[i]!;
+    const hit = shown.some((s) => r.x0 < s.x1 + gap && r.x1 + gap > s.x0 && r.y0 < s.y1 + gap && r.y1 + gap > s.y0);
+    if (!hit) {
+      shown.push(r);
+      out[i] = true;
+    }
+  }
+  return out;
+}

@@ -6,6 +6,9 @@ import { BODY_HEIGHT } from "../src/view/deriveView";
 import { CAMERA_PROFILE } from "../src/view/shoulder";
 import {
   CHARACTER_LABEL_GAP,
+  declutter,
+  LABEL_PRIORITY,
+  type ScreenRect,
   LABEL_CANVAS_H,
   LABEL_CENTER_Y,
   LABEL_MAX_PX,
@@ -84,5 +87,39 @@ describe("overview labels do not hide the characters (browser pilot: C view hid 
     const duckTop = screenY(new Vector3(duck.x, BODY_HEIGHT.duck, duck.z));
     const duckBottom = screenY(new Vector3(duck.x, 0, duck.z));
     expect(zoneTop > duckBottom || zoneBottom < duckTop).toBe(true);
+  });
+});
+
+describe("label declutter (review D-4)", () => {
+  const r = (x: number, y: number, priority: number): ScreenRect => ({ x0: x, y0: y, x1: x + 60, y1: y + 20, priority });
+
+  it("keeps the higher-priority label when two overlap, and both when apart", () => {
+    // zone first in the input, active character second: the character wins.
+    expect(declutter([r(0, 0, LABEL_PRIORITY.zone), r(10, 5, LABEL_PRIORITY.active)])).toEqual([false, true]);
+    expect(declutter([r(0, 0, LABEL_PRIORITY.zone), r(200, 0, LABEL_PRIORITY.fixture)])).toEqual([true, true]);
+  });
+
+  it("orders: controlled character > key items > other characters > fixtures > rooms", () => {
+    const p = LABEL_PRIORITY;
+    expect(p.active).toBeLessThan(p.item);
+    expect(p.item).toBeLessThan(p.character);
+    expect(p.character).toBeLessThan(p.fixture);
+    expect(p.fixture).toBeLessThan(p.zone);
+    const flags = declutter([r(0, 0, p.zone), r(5, 0, p.character), r(10, 0, p.item), r(300, 0, p.zone)]);
+    expect(flags).toEqual([false, false, true, true]);
+  });
+
+  it("no two shown labels overlap for a random set", () => {
+    let seed = 7;
+    const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+    const rects = Array.from({ length: 60 }, () => r(rnd() * 800, rnd() * 400, Math.floor(rnd() * 5)));
+    const flags = declutter(rects, 0);
+    const shown = rects.filter((_, i) => flags[i]);
+    for (let i = 0; i < shown.length; i++)
+      for (let j = i + 1; j < shown.length; j++) {
+        const a = shown[i]!;
+        const b = shown[j]!;
+        expect(a.x0 < b.x1 && a.x1 > b.x0 && a.y0 < b.y1 && a.y1 > b.y0).toBe(false);
+      }
   });
 });

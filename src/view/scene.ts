@@ -13,8 +13,11 @@ import {
   LABEL_CANVAS_H,
   LABEL_CENTER_Y,
   LABEL_HIDE_DISTANCE,
+  LABEL_PRIORITY,
   LABEL_TEXT_PX,
   type LabelKind,
+  type ScreenRect,
+  declutter,
   labelPixelHeight,
   worldHeightForPixels,
   zoneLabelAnchor,
@@ -93,6 +96,7 @@ export class GameScene {
   /** `socket_hat` of a loaded Duck model; the hat follows its position and rotation. */
   private duckHatSocket: THREE.Object3D | null = null;
   private viewportHeight = 1;
+  private viewportWidth = 1;
   private tmp = new THREE.Vector3();
 
   private label(text: string, kind: LabelKind, color = "#fff", owner?: CharacterId): THREE.Sprite {
@@ -104,19 +108,38 @@ export class GameScene {
     return sprite;
   }
 
-  /** Keep every label within a readable on-screen size (12–22 px text). */
-  private sizeLabels(active: CharacterId): void {
+  /**
+   * Keep every label within a readable on-screen size (12–22 px text), then
+   * hide labels that would overlap one with higher priority: the controlled
+   * character, key items, other characters, fixtures, rooms (review D-4).
+   * The controlled character's own label shows only in the overview (the ring
+   * marks it in the shoulder view).
+   */
+  private sizeLabels(active: CharacterId, overview: boolean): void {
     const camPos = this.camera.position;
+    const cand: { l: Label; rect: ScreenRect }[] = [];
     for (const l of this.labels) {
       l.sprite.getWorldPosition(this.tmp);
       const dist = this.tmp.distanceTo(camPos);
-      const hidden = l.owner === active || dist < LABEL_HIDE_DISTANCE;
+      const own = l.owner === active;
+      const hidden = (own && !overview) || dist < LABEL_HIDE_DISTANCE;
       l.sprite.visible = !hidden;
       if (hidden) continue;
       const textPx = labelPixelHeight(l.kind, dist);
-      const h = worldHeightForPixels((textPx * LABEL_CANVAS_H) / LABEL_TEXT_PX, dist, this.camera.fov, this.viewportHeight);
+      const hPx = (textPx * LABEL_CANVAS_H) / LABEL_TEXT_PX;
+      const h = worldHeightForPixels(hPx, dist, this.camera.fov, this.viewportHeight);
       l.sprite.scale.set(h * l.aspect, h, 1);
+      const ndc = this.tmp.project(this.camera);
+      if (ndc.z > 1) continue; // behind the camera: drawn nowhere, blocks nothing
+      const px = ((ndc.x + 1) / 2) * this.viewportWidth;
+      const py = ((1 - ndc.y) / 2) * this.viewportHeight;
+      const wPx = hPx * l.aspect;
+      const top = py - (1 - LABEL_CENTER_Y[l.kind]) * hPx;
+      const priority = own ? LABEL_PRIORITY.active : LABEL_PRIORITY[l.kind];
+      cand.push({ l, rect: { x0: px - wPx / 2, y0: top, x1: px + wPx / 2, y1: top + hPx, priority } });
     }
+    const keep = declutter(cand.map((c) => c.rect));
+    cand.forEach((c, i) => (c.l.sprite.visible = keep[i]!));
   }
 
   constructor(container: HTMLElement, level: Level) {
@@ -299,6 +322,7 @@ export class GameScene {
   resize(w: number, h: number): void {
     this.renderer.setSize(w, h);
     this.viewportHeight = h;
+    this.viewportWidth = w;
     this.camera.aspect = w / h;
     this.camera.updateProjectionMatrix();
   }
@@ -335,7 +359,7 @@ export class GameScene {
     this.camera.position.set(pose.eye.x, pose.eye.y, pose.eye.z);
     this.camera.lookAt(pose.target.x, pose.target.y, pose.target.z);
     this.camera.updateMatrixWorld();
-    this.sizeLabels(view.active);
+    this.sizeLabels(view.active, overview);
     this.renderer.render(this.scene, this.camera);
   }
 }

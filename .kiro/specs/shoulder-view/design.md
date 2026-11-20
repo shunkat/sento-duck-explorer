@@ -25,7 +25,7 @@ All new math is pure and tested without WebGL: `src/view/shoulder.ts`.
 | --- | --- | --- | --- |
 | Yaw convention | Yaw 0 looks toward −Z; forward = (sin y, −cos y), right = (cos y, sin y) | Provisional | Yaw 0 reproduces the old mapping, so tests that walk with WASD still hold at the start |
 | Orbit keys | J left, L right, 2.2 rad/s; mouse drag 0.005 rad/px | Provisional | Q, E, F, V, T, G, R, C are taken. Low cost: constants |
-| Camera follows facing? | Yes while moving: `followYaw` eases yaw toward the heading at rate 3/s. Manual orbit holds it for 1 s. No follow while standing (look around) or when the heading is over 100° off (walking toward the camera). Tab aligns at once | Provisional (changed after review F-1) | Holding A or D makes a wide circle, as in many third-person games. Constants in `shoulder.ts` |
+| Camera follows facing? | Yes while moving: `followYaw` eases yaw toward the heading at rate 3/s. Manual orbit holds it for 1 s. No follow while standing (look around) or when the heading is over 100° off (walking toward the camera). Tab aligns at once. WASD maps against a yaw **latched** when a move key goes down and kept until all move keys are up, so following does not feed back into the input | Provisional (F-1; latch added after review N-1) | Holding A or D walks straight sideways while the camera swings behind the walk; no circling. Constants in `shoulder.ts` |
 | Facing source | Direction of movement between frames, view-only | Matches PR #3 / final-assets ("facing from movement direction") | No logic field added |
 | Camera profiles | Duck: dist 1.1, eye 0.42, side 0.22, look 0.22. Child: 2.3 / 1.5 / 0.42 / 0.6. Adult: 2.6 / 2.0 / 0.5 / 0.9 (m) | Provisional (Child and Adult lowered look point after review D-2 so the whole body is in frame) | Eye height ordered Duck < Child < Adult; all below the 2.7 m ceiling and Duck below the hole lid |
 | Transitions | Character switch: 0.4 s blend, and each blended eye passes through `safeEye` (clear line to the new character, below the ceiling, under the hole lid). C on/off: instant cut | Provisional (Codex review fix) | A cut is simpler and safe; a fade can replace it later |
@@ -33,7 +33,9 @@ All new math is pure and tested without WebGL: `src/view/shoulder.ts`.
 | Wall height | Visual walls 2.6 m, indoor ceilings at 2.7 m; Overview cuts walls to 1.0 m and hides ceilings | Provisional; **conflicts with final-assets design** (see below) | |
 | NarrowHole | Visual lid over the corridor and a lintel above the hole at 0.55 m. Eye clamped to ≤ 0.45 m while it is inside the hole box | Provisional | The hole reads as a hole in the wall; the camera follows Duck inside |
 | Carried Duck | Drawn 0.3 m in front of Adult along Adult's Facing (hat follows) | Provisional, view-only. Matches PR #3's `socket_carry` (0, 0.90, 0.22), front +Z | Logic keeps `duck.pos = adult.pos` |
-| Labels | Zone and fixture labels depth-tested (hidden behind walls). Character and item labels stay on top | Provisional | Full-height walls would otherwise show every room's labels through walls |
+| Labels | Zone and fixture labels depth-tested (hidden behind walls). Character and item labels stay on top. Screen-space declutter each frame: controlled character > key items > other characters > fixtures > rooms; a label overlapping a higher one is hidden. The controlled character's label shows in the overview only | Provisional (review D-4) | Pure `declutter` in `labels.ts`, tested |
+| View after checkpoint load / new game | Camera yaw, input latch and facing reset to `CHECKPOINT_VIEW_YAW` (start looks toward the NarrowHole) | Provisional (N-1, D-1) | |
+| Bodies next to the lens | Non-active characters fade (`nearCameraOpacity`, 0.6–1.3 m) | Provisional (D-1) | |
 | Model entry point | `CHARACTER_MODEL_URLS` (empty) + `GameScene.setCharacterModel(id, root)`; loaded with three's `GLTFLoader` in `main.ts` | Provisional; narrow seam for PR #3 | See below |
 
 ## Alignment with PR #3 (ModelAdapter, open, not merged)
@@ -85,6 +87,7 @@ Unifying at integration (whoever merges second does this):
 4. Hat: replace `placeHat` with `placeAtSocket` (position and rotation). Keep the Req 6.5 test.
 5. Carry: with an Adult model, parent the Duck root to `socket_carry` and drop the 0.3 m offset.
 6. Run both test files (`tests/models.test.ts` from PR #3, `tests/shoulder.test.ts`) after the merge.
+7. PR #3's `tests/models.test.ts` asserts that every `assets/manifest.json` entry still has `measured === null`. That test cannot hold once a real asset is measured (the Duck GLB is the first). At integration the Web side replaces it with a bounds check of each measured entry against its limits (`checkBounds`), and keeps `null` allowed only for assets that do not exist yet.
 
 ### Incoming Duck model
 
