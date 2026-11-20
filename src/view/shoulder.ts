@@ -1,0 +1,154 @@
+// Over-the-shoulder camera math (pure). See .kiro/specs/shoulder-view.
+// Yaw 0 looks toward −Z: forward = (sin y, −cos y), right = (cos y, sin y).
+import type { CharacterId, Vec2 } from "../core/types";
+import type { Level } from "../level/layout";
+import { wallsFor } from "../sim/movement";
+import type { AABB } from "../sim/geometry";
+import type { Pose } from "./camera";
+import type { Vec3, View } from "./deriveView";
+
+export interface CameraProfile {
+  /** Distance behind the shoulder point (m). */
+  dist: number;
+  /** Eye height above the floor (m). */
+  eye: number;
+  /** Shoulder offset to the right (m). */
+  side: number;
+  /** Height of the look-at point (m). */
+  look: number;
+}
+
+export const CAMERA_PROFILE: Record<CharacterId, CameraProfile> = {
+  duck: { dist: 1.1, eye: 0.42, side: 0.22, look: 0.22 },
+  child: { dist: 2.0, eye: 1.45, side: 0.42, look: 1.05 },
+  adult: { dist: 2.4, eye: 1.95, side: 0.5, look: 1.45 },
+};
+
+/** Visual heights shared with the scene (m). */
+export const WALL_HEIGHT = 2.6;
+export const CEILING_Y = 2.7;
+export const HOLE_LID_Y = 0.55;
+/** Free space the camera keeps from any obstacle (m). */
+export const CAMERA_MARGIN = 0.12;
+/** How far ahead of the shoulder the camera looks (m). */
+const LOOK_AHEAD = 4;
+/** Orbit rates. */
+export const ORBIT_KEY_RATE = 2.2; // rad/s while J / L is held
+export const ORBIT_DRAG_RATE = 0.005; // rad per CSS px of horizontal drag
+
+export const forwardOf = (yaw: number): Vec2 => ({ x: Math.sin(yaw), z: -Math.cos(yaw) });
+export const rightOf = (yaw: number): Vec2 => ({ x: Math.cos(yaw), z: Math.sin(yaw) });
+
+/** Yaw whose forward points along `d` (d must be non-zero). */
+export const yawFromDirection = (d: Vec2): number => Math.atan2(d.x, -d.z);
+
+/**
+ * Rotate a screen-style move input (x = right, z = down, so W is z −1) into a
+ * world move for the camera's yaw. Length is preserved.
+ */
+export function cameraRelativeMove(move: Vec2, yaw: number): Vec2 {
+  if (move.x === 0 && move.z === 0) return move;
+  const f = forwardOf(yaw);
+  const r = rightOf(yaw);
+  return { x: r.x * move.x - f.x * move.z, z: r.z * move.x - f.z * move.z };
+}
+
+/** three.js rotation.y that turns a model's +Z front toward `yaw`. */
+export const modelRotationY = (yaw: number): number => Math.PI - yaw;
+
+
+/**
+ * Walk from `from` toward `to` and stop before the first box (grown by
+ * `margin`). Boxes that already contain `from` are ignored, so a start point
+ * close to a wall never collapses the camera.
+ */
+export function clipSegment(from: Vec2, to: Vec2, boxes: readonly AABB[], margin = CAMERA_MARGIN): Vec2 {
+  const dx = to.x - from.x;
+  const dz = to.z - from.z;
+  let tHit = 1;
+  for (const b of boxes) {
+    const minX = b.minX - margin;
+    const maxX = b.maxX + margin;
+    const minZ = b.minZ - margin;
+    const maxZ = b.maxZ + margin;
+    if (from.x > minX && from.x < maxX && from.z > minZ && from.z < maxZ) continue;
+    let t0 = 0;
+    let t1 = 1;
+    let ok = true;
+    for (const [p, d, lo, hi] of [
+      [from.x, dx, minX, maxX],
+      [from.z, dz, minZ, maxZ],
+    ] as const) {
+      if (Math.abs(d) < 1e-12) {
+        if (p <= lo || p >= hi) ok = false;
+        continue;
+      }
+      let a = (lo - p) / d;
+      let c = (hi - p) / d;
+      if (a > c) [a, c] = [c, a];
+      t0 = Math.max(t0, a);
+      t1 = Math.min(t1, c);
+      if (t0 >= t1) ok = false;
+    }
+    if (ok && t0 < tHit) tHit = t0;
+  }
+  const t = Math.max(0, tHit - (tHit < 1 ? 1e-3 : 0));
+  return { x: from.x + dx * t, z: from.z + dz * t };
+}
+
+export interface Obstacles {
+  boxes: readonly AABB[];
+  /** The NarrowHole corridor; inside it the eye stays under the lid. */
+  hole: AABB;
+}
+
+export const obstaclesFor = (level: Level, saunaDoor: "locked" | "unlocked"): Obstacles => ({
+  boxes: wallsFor(level, saunaDoor),
+  hole: level.narrowHole.box,
+});
+
+const inBox = (b: AABB, p: Vec2) => p.x >= b.minX && p.x <= b.maxX && p.z >= b.minZ && p.z <= b.maxZ;
+
+/** Camera pose behind and right of the character at `focus`, clipped by obstacles. */
+export function shoulderPose(id: CharacterId, focus: Vec3, yaw: number, obs: Obstacles): Pose {
+  const p = CAMERA_PROFILE[id];
+  const f = forwardOf(yaw);
+  const r = rightOf(yaw);
+  const base = { x: focus.x, z: focus.z };
+  const shoulder = clipSegment(base, { x: base.x + r.x * p.side, z: base.z + r.z * p.side }, obs.boxes);
+  const back = clipSegment(shoulder, { x: shoulder.x - f.x * p.dist, z: shoulder.z - f.z * p.dist }, obs.boxes);
+  // Keep a clear line from the character to the eye, so the character stays in view.
+  const eye2 = clipSegment(base, back, obs.boxes);
+  let eyeY = Math.min(p.eye, CEILING_Y - 0.15);
+  if (inBox(obs.hole, eye2) || inBox(obs.hole, base)) eyeY = Math.min(eyeY, HOLE_LID_Y - 0.1);
+  const lookY = Math.min(p.look, eyeY);
+  return {
+    eye: { x: eye2.x, y: eyeY, z: eye2.z },
+    target: { x: shoulder.x + f.x * LOOK_AHEAD, y: lookY, z: shoulder.z + f.z * LOOK_AHEAD },
+  };
+}
+
+/** View-only facing from movement between frames. A carried Duck faces like Adult. */
+export class FacingTracker {
+  private yaws: Record<CharacterId, number> = { duck: 0, child: 0, adult: 0 };
+  private last: Partial<Record<CharacterId, Vec2>> = {};
+
+  update(view: View): void {
+    for (const id of ["child", "adult", "duck"] as const) {
+      const c = view.characters[id];
+      const prev = this.last[id];
+      this.last[id] = { x: c.pos.x, z: c.pos.z };
+      if (id === "duck" && c.carried) {
+        this.yaws.duck = this.yaws.adult;
+        continue;
+      }
+      if (!prev) continue;
+      const d = { x: c.pos.x - prev.x, z: c.pos.z - prev.z };
+      if (Math.hypot(d.x, d.z) > 1e-4 && Math.hypot(d.x, d.z) < 0.5) this.yaws[id] = yawFromDirection(d);
+    }
+  }
+
+  yaw(id: CharacterId): number {
+    return this.yaws[id];
+  }
+}

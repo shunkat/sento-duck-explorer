@@ -5,7 +5,8 @@ import type { GameState } from "../src/core/types";
 import { KeyboardState } from "../src/input/keyboard";
 import { LEVEL } from "../src/level/layout";
 import { advance } from "../src/loop";
-import { blendPose, CAMERA_OFFSET, FollowCamera, followPose, SWITCH_SECONDS } from "../src/view/camera";
+import { blendPose, FollowCamera, SWITCH_SECONDS } from "../src/view/camera";
+import { CAMERA_PROFILE, obstaclesFor, shoulderPose } from "../src/view/shoulder";
 import { deriveView, statusLines } from "../src/view/deriveView";
 import * as R from "./helpers/route";
 import { Sim } from "./helpers/sim";
@@ -81,16 +82,19 @@ describe("view and guide along the full route", () => {
 });
 
 describe("camera", () => {
+  const obs = obstaclesFor(LEVEL, "locked");
+  const pose = (id: "duck" | "child" | "adult", x: number, y: number, z: number) => shoulderPose(id, { x, y, z }, 0, obs);
+
   it("Duck has the lowest eye line", () => {
-    expect(CAMERA_OFFSET.duck.y).toBeLessThan(CAMERA_OFFSET.child.y);
-    expect(CAMERA_OFFSET.child.y).toBeLessThan(CAMERA_OFFSET.adult.y);
-    expect(followPose("duck", { x: 0, y: 0.15, z: 0 }).eye.y).toBeLessThan(1);
+    expect(CAMERA_PROFILE.duck.eye).toBeLessThan(CAMERA_PROFILE.child.eye);
+    expect(CAMERA_PROFILE.child.eye).toBeLessThan(CAMERA_PROFILE.adult.eye);
+    expect(pose("duck", 4, 0.15, 5).eye.y).toBeLessThan(1);
   });
 
-  it("blends over 0.4 s after a switch", () => {
+  it("blends over 0.4 s after a switch and turns behind the new character", () => {
     expect(SWITCH_SECONDS).toBe(0.4);
-    const a = followPose("duck", { x: 0, y: 0, z: 0 });
-    const b = followPose("adult", { x: 10, y: 0.85, z: 0 });
+    const a = pose("duck", 4, 0.15, 5);
+    const b = pose("adult", 10, 0.85, 4);
     expect(blendPose(a, b, 0)).toEqual(a);
     expect(blendPose(a, b, 0.4)).toEqual(b);
     const mid = blendPose(a, b, 0.2);
@@ -98,12 +102,16 @@ describe("camera", () => {
     expect(mid.eye.x).toBeLessThan(b.eye.x);
 
     const cam = new FollowCamera();
-    cam.update("duck", { x: 0, y: 0, z: 0 }, 0.016);
-    const p1 = cam.update("adult", { x: 10, y: 0.85, z: 0 }, 0.1);
+    cam.update("duck", { x: 4, y: 0.15, z: 5 }, 0.016, 0, obs);
+    const p1 = cam.update("adult", { x: 10, y: 0.85, z: 4 }, 0.1, 0, obs);
     expect(p1.eye.x).toBeLessThan(b.eye.x);
     let p = p1;
-    for (let t = 0; t < 0.4; t += 0.1) p = cam.update("adult", { x: 10, y: 0.85, z: 0 }, 0.1);
+    for (let t = 0; t < 0.4; t += 0.1) p = cam.update("adult", { x: 10, y: 0.85, z: 4 }, 0.1, 0, obs);
     expect(p).toEqual(b);
+
+    // Switching aligns the yaw to the new character's facing.
+    cam.update("child", { x: 8, y: 0.6, z: 4 }, 0.016, 1.2, obs);
+    expect(cam.yaw).toBe(1.2);
   });
 });
 

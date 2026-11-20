@@ -7,7 +7,8 @@ import type { Level } from "../level/layout";
 import { statusLines } from "./deriveView";
 
 export const KEY_HELP = [
-  "WASD / 矢印：移動　Shift：走る",
+  "WASD / 矢印：移動（カメラの向き基準）　Shift：走る",
+  "J / L・マウスドラッグ：視点を左右に回す",
   "Tab：キャラクター切替（アヒル→子ども→大人）",
   "E：調べる・拾う・渡す・使う（確認はE / Enter、取消はEsc）",
   "T：タオルで体を拭く　G：ロッカーで服を着る/脱ぐ",

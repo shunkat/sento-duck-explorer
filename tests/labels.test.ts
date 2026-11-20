@@ -1,8 +1,9 @@
 import { PerspectiveCamera, Vector3 } from "three";
 import { describe, expect, it } from "vitest";
 import { LEVEL } from "../src/level/layout";
-import { CAMERA_OFFSET, OVERVIEW } from "../src/view/camera";
+import { OVERVIEW } from "../src/view/camera";
 import { BODY_HEIGHT } from "../src/view/deriveView";
+import { CAMERA_PROFILE } from "../src/view/shoulder";
 import {
   CHARACTER_LABEL_GAP,
   LABEL_CANVAS_H,
@@ -36,7 +37,7 @@ describe("label screen size (Chrome feedback: labels covered the screen in Duck'
   });
 
   it("Duck's eye-line distance gives a capped size, the overview keeps the minimum", () => {
-    const duckDist = Math.hypot(CAMERA_OFFSET.duck.y, CAMERA_OFFSET.duck.z);
+    const duckDist = Math.hypot(CAMERA_PROFILE.duck.dist, CAMERA_PROFILE.duck.eye);
     expect(labelPixelHeight("character", duckDist)).toBe(22);
     const overviewDist = OVERVIEW.eye.y;
     expect(labelPixelHeight("zone", overviewDist)).toBe(LABEL_MIN_PX);

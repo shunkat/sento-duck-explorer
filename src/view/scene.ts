@@ -3,10 +3,11 @@
 import * as THREE from "three";
 import { CHARACTER_NAME, ITEM_NAME, ZONE_NAME } from "../core/text";
 import type { CharacterId, ItemId } from "../core/types";
-import type { Level } from "../level/layout";
+import { CHARACTER_RADIUS, type Level } from "../level/layout";
 import type { AABB } from "../sim/geometry";
 import type { Pose } from "./camera";
 import { BODY_HEIGHT, type View } from "./deriveView";
+import { CEILING_Y, type FacingTracker, forwardOf, HOLE_LID_Y, modelRotationY, WALL_HEIGHT } from "./shoulder";
 import {
   CHARACTER_LABEL_GAP,
   LABEL_CANVAS_H,
@@ -25,6 +26,13 @@ const ZONE_COLORS: Record<string, number> = {
   sauna_entry: 0xb45f06, sauna_crowd: 0x8a4a12, open_air: 0x93c47d,
   pond_entrance: 0x6aa84f, pond: 0x2f7f8f, pond_goal: 0xffd24a,
 };
+/** Zones with a ceiling in the shoulder view (hidden in the overview). */
+const INDOOR = new Set(["reception", "common", "changing", "bath", "sauna_entry", "sauna_crowd"]);
+/** View-only: the carried Duck is drawn this far in front of Adult (final model: socket_carry). */
+const CARRY_FORWARD = 0.3;
+/** Wall height while the overview shows the map as a cutaway. */
+const OVERVIEW_WALL_HEIGHT = 1.0;
+
 const CHAR_COLORS: Record<CharacterId, number> = { duck: 0xffe033, child: 0x3fa0ff, adult: 0x3fc76a };
 
 interface Label {
@@ -75,12 +83,21 @@ export class GameScene {
   private items = {} as Record<ItemId, THREE.Object3D>;
   private doorBlocker: THREE.Mesh;
   private labels: Label[] = [];
+  /** Full-height walls, cut down in the overview. */
+  private tallWalls: THREE.Mesh[] = [];
+  /** Ceilings and the NarrowHole lintel, hidden in the overview. */
+  private roofs: THREE.Object3D[] = [];
+  /** Primitive meshes per character; hidden when a model replaces them. */
+  private primitives = {} as Record<CharacterId, THREE.Object3D[]>;
+  private models: Partial<Record<CharacterId, THREE.Object3D>> = {};
   private viewportHeight = 1;
   private tmp = new THREE.Vector3();
 
   private label(text: string, kind: LabelKind, color = "#fff", owner?: CharacterId): THREE.Sprite {
     const { sprite, aspect } = makeLabelSprite(text, color);
     sprite.center.set(0.5, LABEL_CENTER_Y[kind]);
+    // Room and fixture names stay behind walls in the shoulder view.
+    if (kind === "zone" || kind === "fixture") sprite.material.depthTest = true;
     this.labels.push({ sprite, kind, aspect, owner });
     return sprite;
   }
@@ -119,13 +136,36 @@ export class GameScene {
       label.position.set(at.x, at.y, at.z);
       this.scene.add(label);
     }
-    for (const w of level.walls) this.scene.add(boxMesh(w, 1.0, 0, 0xe8e8e8, 0.55));
+    const hole = level.narrowHole.box;
+    for (const w of level.walls) {
+      // The NarrowHole corridor sides stop at its lid; every other wall is full height.
+      if (w.maxX <= hole.maxX + 1e-6 && w.minX >= hole.minX - 0.3) {
+        this.scene.add(boxMesh(w, HOLE_LID_Y, 0, 0xd8d0e8));
+        continue;
+      }
+      const m = boxMesh(w, WALL_HEIGHT, 0, 0xe8e8e8);
+      this.tallWalls.push(m);
+      this.scene.add(m);
+    }
+    // NarrowHole: lid over the corridor and the wall part above the opening.
+    const lid = boxMesh({ minX: hole.minX - 0.2, minZ: hole.minZ - 0.2, maxX: hole.maxX, maxZ: hole.maxZ + 0.2 }, 0.05, HOLE_LID_Y, 0xd8d0e8);
+    this.roofs.push(lid);
+    this.scene.add(lid);
+    const lintel = boxMesh({ minX: hole.maxX - 0.1, minZ: hole.minZ, maxX: hole.maxX + 0.1, maxZ: hole.maxZ }, WALL_HEIGHT - HOLE_LID_Y, HOLE_LID_Y, 0xe8e8e8);
+    this.roofs.push(lintel);
+    this.scene.add(lintel);
+    for (const z of level.zones) {
+      if (!INDOOR.has(z.id)) continue;
+      const c = boxMesh(z.box, 0.05, CEILING_Y, 0x3a3f4a);
+      this.roofs.push(c);
+      this.scene.add(c);
+    }
     for (const n of level.npcs) this.scene.add(boxMesh(n, 1.6, 0, 0xc27ba0));
     const crowd = this.label("サウナの人混み（押さない）", "fixture", "#ffd");
     crowd.position.set(9.5, 2.0, 10);
     this.scene.add(crowd);
 
-    this.doorBlocker = boxMesh(level.saunaDoorBlocker, 1.4, 0, 0x5b3a1a);
+    this.doorBlocker = boxMesh(level.saunaDoorBlocker, 2.2, 0, 0x5b3a1a);
     this.scene.add(this.doorBlocker);
     const doorLabel = this.label("サウナの扉", "fixture", "#fda");
     doorLabel.position.set((level.saunaDoorBlocker.minX + level.saunaDoorBlocker.maxX) / 2, 1.6, 7.7);
@@ -163,12 +203,21 @@ export class GameScene {
           ? new THREE.Mesh(new THREE.SphereGeometry(r, 24, 16), mat)
           : new THREE.Mesh(new THREE.CapsuleGeometry(r, BODY_HEIGHT[id] - 2 * r, 8, 16), mat);
       g.add(body);
+      this.primitives[id] = [body];
+      // Front marker (+Z, the model front): beak for Duck, a face plate for humans,
+      // so the back is readable in the shoulder view. Placeholder only.
+      const front =
+        id === "duck"
+          ? new THREE.Mesh(new THREE.ConeGeometry(0.05, 0.1, 12), new THREE.MeshStandardMaterial({ color: 0xff8800 }))
+          : new THREE.Mesh(new THREE.BoxGeometry(r * 1.1, r * 0.6, 0.06), new THREE.MeshStandardMaterial({ color: 0xffe0c0 }));
       if (id === "duck") {
-        const beak = new THREE.Mesh(new THREE.ConeGeometry(0.05, 0.1, 12), new THREE.MeshStandardMaterial({ color: 0xff8800 }));
-        beak.rotation.x = -Math.PI / 2;
-        beak.position.set(0, 0.03, -0.17);
-        g.add(beak);
+        front.rotation.x = Math.PI / 2;
+        front.position.set(0, 0.03, 0.17);
+      } else {
+        front.position.set(0, BODY_HEIGHT[id] / 2 - r * 0.9, r * 0.95);
       }
+      g.add(front);
+      this.primitives[id].push(front);
       const label = this.label(CHARACTER_NAME[id], "character", "#fff", id);
       label.position.set(0, BODY_HEIGHT[id] / 2 + CHARACTER_LABEL_GAP, 0);
       g.add(label);
@@ -199,6 +248,32 @@ export class GameScene {
     }
   }
 
+  /**
+   * Show a loaded model instead of the primitive (shoulder-view Req 6.2). The
+   * model follows the final-assets contract: meters, +Y up, front +Z, origin at
+   * the bottom center. The group sits at the mesh center, so the root is
+   * lowered by the center-to-bottom distance.
+   */
+  setCharacterModel(id: CharacterId, root: THREE.Object3D): void {
+    const old = this.models[id];
+    if (old) this.chars[id].remove(old);
+    for (const p of this.primitives[id]) p.visible = false;
+    // Same rule as final-assets: rootY = centerY − radius (Duck), centerY − height / 2 (humans).
+    const centerToBottom = id === "duck" ? CHARACTER_RADIUS.duck : BODY_HEIGHT[id] / 2;
+    root.position.set(0, -centerToBottom, 0);
+    this.chars[id].add(root);
+    this.models[id] = root;
+  }
+
+  private setOverview(on: boolean): void {
+    const h = on ? OVERVIEW_WALL_HEIGHT : WALL_HEIGHT;
+    for (const w of this.tallWalls) {
+      w.scale.y = h / WALL_HEIGHT;
+      w.position.y = h / 2;
+    }
+    for (const r of this.roofs) r.visible = !on;
+  }
+
   resize(w: number, h: number): void {
     this.renderer.setSize(w, h);
     this.viewportHeight = h;
@@ -206,12 +281,17 @@ export class GameScene {
     this.camera.updateProjectionMatrix();
   }
 
-  render(view: View, pose: Pose, timeSeconds: number): void {
+  render(view: View, pose: Pose, timeSeconds: number, facing: FacingTracker, overview: boolean): void {
+    this.setOverview(overview);
+    const carry = forwardOf(facing.yaw("adult"));
+    const duckShift = view.characters.duck.carried ? { x: carry.x * CARRY_FORWARD, z: carry.z * CARRY_FORWARD } : { x: 0, z: 0 };
     for (const id of ["duck", "child", "adult"] as const) {
       const c = view.characters[id];
       let y = c.pos.y;
       if (id === "duck" && !c.carried) y += Math.sin(timeSeconds * 3) * 0.015; // gentle bobbing
-      this.chars[id].position.set(c.pos.x, y, c.pos.z);
+      const shift = id === "duck" ? duckShift : { x: 0, z: 0 };
+      this.chars[id].position.set(c.pos.x + shift.x, y, c.pos.z + shift.z);
+      this.chars[id].rotation.y = modelRotationY(facing.yaw(id));
       const ring = this.rings[id];
       ring.visible = c.active;
       ring.position.set(c.pos.x, 0.04, c.pos.z);
@@ -219,7 +299,8 @@ export class GameScene {
     for (const id of ["coin", "key", "hat"] as const) {
       const it = view.items[id];
       this.items[id].visible = it.visible;
-      this.items[id].position.set(it.pos.x, it.pos.y, it.pos.z);
+      const shift = id === "hat" && view.hatAttachedToDuck ? duckShift : { x: 0, z: 0 };
+      this.items[id].position.set(it.pos.x + shift.x, it.pos.y, it.pos.z + shift.z);
     }
     this.doorBlocker.visible = view.saunaDoorLocked;
     this.camera.position.set(pose.eye.x, pose.eye.y, pose.eye.z);

@@ -14,6 +14,8 @@ const MOVE_KEYS: Record<string, { x: number; z: number }> = {
   KeyD: { x: 1, z: 0 }, ArrowRight: { x: 1, z: 0 },
 };
 const RUN_KEYS = new Set(["ShiftLeft", "ShiftRight"]);
+/** Held keys that turn the shoulder camera (view only). */
+const ORBIT_KEYS: Record<string, number> = { KeyJ: -1, KeyL: 1 };
 const PRESS_KEYS: Record<string, PressAction> = {
   Tab: "switchCharacter",
   KeyE: "interact",
@@ -29,7 +31,13 @@ const PRESS_KEYS: Record<string, PressAction> = {
 };
 
 /** Keys whose browser default (focus change, scrolling) should be suppressed. */
-export const HANDLED_KEYS = new Set([...Object.keys(MOVE_KEYS), ...RUN_KEYS, ...Object.keys(PRESS_KEYS), "Space"]);
+export const HANDLED_KEYS = new Set([
+  ...Object.keys(MOVE_KEYS),
+  ...RUN_KEYS,
+  ...Object.keys(PRESS_KEYS),
+  ...Object.keys(ORBIT_KEYS),
+  "Space",
+]);
 
 export class KeyboardState {
   private held = new Set<string>();
@@ -49,6 +57,13 @@ export class KeyboardState {
   blur(): void {
     this.held.clear();
     this.pressed.clear();
+  }
+
+  /** −1 (J, turn left), 0, or 1 (L, turn right) from held keys; view only. */
+  orbit(): number {
+    let o = 0;
+    for (const [code, d] of Object.entries(ORBIT_KEYS)) if (this.held.has(code)) o += d;
+    return o;
   }
 
   /** View-only press (camera overview); consumed by the renderer, not the core. */

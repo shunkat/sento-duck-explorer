@@ -59,7 +59,7 @@ Conflicts to resolve when PR #3 is merged:
 
 ## Conflict with the prototype spec
 
-`prototype-core-gameplay/design.md` describes a fixed-direction follow camera ("W always means up the screen", in `camera.ts`). That line is replaced by a pointer to this spec. The old `followPose` stays only as the switch-blend helper.
+`prototype-core-gameplay/design.md` describes a fixed-direction follow camera ("W always means up the screen", in `camera.ts`). That line is replaced by a pointer to this spec. The old `followPose` and `CAMERA_OFFSET` are removed; `blendPose` stays for the switch blend.
 
 ## Components
 
