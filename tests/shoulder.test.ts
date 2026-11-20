@@ -159,9 +159,13 @@ describe("facing and orbit (Req 2, 3.4)", () => {
     const cam = new FollowCamera();
     cam.orbit(0.5);
     expect(cam.yaw).toBe(0.5);
+    expect(cam.moveYaw).toBe(0.5);
     cam.toggleOverview();
     cam.orbit(0.5);
     expect(cam.yaw).toBe(0.5);
+    expect(cam.moveYaw).toBe(0); // overview: W is up the map
+    cam.toggleOverview();
+    expect(cam.moveYaw).toBe(0.5);
   });
 });
 

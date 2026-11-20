@@ -145,6 +145,12 @@ export class GameScene {
         this.scene.add(boxMesh(w, HOLE_LID_Y, 0, 0xd8d0e8));
         continue;
       }
+      // Pond rocks are low boulders, not walls (they still block the camera).
+      const rock = w.minX > 27 && w.maxX - w.minX > 0.5 && w.maxZ - w.minZ > 0.5;
+      if (rock) {
+        this.scene.add(boxMesh(w, 1.0, 0, 0x8a8f86));
+        continue;
+      }
       const m = boxMesh(w, WALL_HEIGHT, 0, 0xe8e8e8);
       this.tallWalls.push(m);
       this.scene.add(m);

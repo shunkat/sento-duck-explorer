@@ -100,7 +100,7 @@ The logic is unchanged. Visual models must look consistent with these logic valu
 | NarrowHole | 0.40 m clear | Rim mesh must not narrow the clear opening; visual opening 0.40–0.45 m | A visually narrower rim than the logic opening would look like Duck clips through the wall. |
 | CrowdGap | 0.60 m clear ×3 | Seated crowd figures (stage 3) keep the same clear gaps | Same reason |
 | Door | 1.20 m clear | Frame interior 1.20–1.25 m | Same reason |
-| Walls | thickness 0.2 m, collision only | Visual height 1.0–1.2 m (diorama cutaway) | The current follow cameras (eye heights 0.75–4.2 m) and the overview look over 1.0 m walls. Full-height walls would hide the active character unless a cutaway system is added. Revisit after the stage-2 style record. |
+| Walls | thickness 0.2 m, collision only | Visual height 1.0–1.2 m (diorama cutaway) | The current follow cameras (eye heights 0.75–4.2 m) and the overview look over 1.0 m walls. Full-height walls would hide the active character unless a cutaway system is added. Revisit after the stage-2 style record. **Open (2026-11-20):** the shoulder view (`.kiro/specs/shoulder-view`) uses 2.6 m walls with ceilings and keeps the cutaway only for the overview; the wall kit needs that height or a modular upper part. |
 
 Export convention for every GLB: meters, +Y up, front +Z, origin at the bottom center of the footprint.
 

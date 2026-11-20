@@ -52,7 +52,7 @@ Items marked *(Provisional)* are working choices under `.kiro/steering/project-a
 #### Acceptance Criteria
 
 1. WHILE the Overview is off, THE Game SHALL rotate the WASD / arrow move input by CameraYaw before passing it to the game logic: W moves toward the camera's forward direction, D toward its right.
-2. WHILE the Overview is on, THE Game SHALL keep the camera yaw frozen and use the same mapping, so the move direction does not jump when C is pressed.
+2. WHILE the Overview is on, THE Game SHALL keep the camera yaw frozen and map W to up the map (yaw 0), because the Overview looks from a fixed direction. *(Changed 2026-11-20 after review F-3; before, W stayed camera-relative in the Overview.)*
 3. The rotated move input SHALL keep length ≤ 1 and SHALL NOT change walk, run, pond speed, or any rule.
 4. WHEN a character moves, THE Game SHALL set its Facing to the move direction. A carried Duck faces like Adult.
 

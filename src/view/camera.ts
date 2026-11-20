@@ -50,6 +50,11 @@ export class FollowCamera {
     return this.overview;
   }
 
+  /** Yaw used to map WASD: the view yaw, or 0 (W = up the map) in the fixed overview. */
+  get moveYaw(): number {
+    return this.overview ? 0 : this.yaw;
+  }
+
   /** Turn the view; ignored in the overview so the move mapping stays put. */
   orbit(delta: number): void {
     if (this.overview || delta === 0) return;

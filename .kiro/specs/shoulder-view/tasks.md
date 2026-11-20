@@ -39,8 +39,7 @@ Created 2026-11-20 by the Crew implementer (Kiro Crew worker) directly from the 
 
 ## Known issues
 
-- Pond rocks are drawn as full-height walls (2.6 m) in the shoulder view. Lower them when the pond kit is planned.
 - Some zone labels are partly hidden by the cut walls in the Overview because zone labels are now depth-tested.
 - Overview labels still overlap each other (子ども/アヒル, サウナ室/人混み/ハット, 小さな穴/500円玉), and the small bodies are hard to find (review D-4). Needs a label layout pass; not small.
 - Duck's start view is filled by the Child and Adult bodies (review D-1). Framing only; left as is.
-- In the Overview the yaw is frozen, so W is camera-relative, not "up the map", when yaw ≠ 0 (review F-3).
+- Fixed: pond rocks drawn 1.0 m (they still block the camera); Overview maps W to up the map (F-3, `FollowCamera.moveYaw`, tested); final-assets wall height noted as open there (F-4).

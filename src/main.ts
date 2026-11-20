@@ -66,10 +66,10 @@ document.addEventListener("visibilitychange", () => {
   accumulator = 0;
 });
 
-/** WASD is relative to the camera's yaw (shoulder-view Req 3.1). */
+/** WASD is relative to the camera's yaw; in the fixed overview W is up the map (shoulder-view Req 3.1, 3.2). */
 const takeFrame = (s: GameState) => {
   const f = kb.takeFrame(s.dialog !== null);
-  return { ...f, move: cameraRelativeMove(f.move, camera.yaw) };
+  return { ...f, move: cameraRelativeMove(f.move, camera.moveYaw) };
 };
 
 function frame(nowMs: number): void {
