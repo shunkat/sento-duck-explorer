@@ -7,7 +7,17 @@ import type { Level } from "../level/layout";
 import type { AABB } from "../sim/geometry";
 import type { Pose } from "./camera";
 import { BODY_HEIGHT, type View } from "./deriveView";
-import { LABEL_HIDE_DISTANCE, type LabelKind, labelPixelHeight, worldHeightForPixels } from "./labels";
+import {
+  CHARACTER_LABEL_GAP,
+  LABEL_CANVAS_H,
+  LABEL_CENTER_Y,
+  LABEL_HIDE_DISTANCE,
+  LABEL_TEXT_PX,
+  type LabelKind,
+  labelPixelHeight,
+  worldHeightForPixels,
+  zoneLabelAnchor,
+} from "./labels";
 
 const ZONE_COLORS: Record<string, number> = {
   bath: 0x6fa8dc, bathwater: 0x2f6fb3, splash: 0x9fc5e8, narrow_hole: 0x8e7cc3,
@@ -16,10 +26,6 @@ const ZONE_COLORS: Record<string, number> = {
   pond_entrance: 0x6aa84f, pond: 0x2f7f8f, pond_goal: 0xffd24a,
 };
 const CHAR_COLORS: Record<CharacterId, number> = { duck: 0xffe033, child: 0x3fa0ff, adult: 0x3fc76a };
-
-/** Canvas text height inside the label texture (the rest is padding). */
-const LABEL_TEXT_PX = 44;
-const LABEL_CANVAS_H = 64;
 
 interface Label {
   sprite: THREE.Sprite;
@@ -74,6 +80,7 @@ export class GameScene {
 
   private label(text: string, kind: LabelKind, color = "#fff", owner?: CharacterId): THREE.Sprite {
     const { sprite, aspect } = makeLabelSprite(text, color);
+    sprite.center.set(0.5, LABEL_CENTER_Y[kind]);
     this.labels.push({ sprite, kind, aspect, owner });
     return sprite;
   }
@@ -108,8 +115,8 @@ export class GameScene {
       const sub = z.id === "bathwater" || z.id === "splash" || z.id === "narrow_hole" || z.id === "pond_goal";
       this.scene.add(boxMesh(z.box, 0.02, sub ? 0.012 : 0, ZONE_COLORS[z.id] ?? 0xffffff, sub ? 0.9 : 0.75));
       const label = this.label(ZONE_NAME[z.id], "zone");
-      label.position.set((z.box.minX + z.box.maxX) / 2, 0.35, (z.box.minZ + z.box.maxZ) / 2);
-      if (z.id === "narrow_hole") label.position.set(z.box.minX + 0.8, 0.45, z.box.minZ - 0.3);
+      const at = zoneLabelAnchor(z.id, z.box);
+      label.position.set(at.x, at.y, at.z);
       this.scene.add(label);
     }
     for (const w of level.walls) this.scene.add(boxMesh(w, 1.0, 0, 0xe8e8e8, 0.55));
@@ -163,7 +170,7 @@ export class GameScene {
         g.add(beak);
       }
       const label = this.label(CHARACTER_NAME[id], "character", "#fff", id);
-      label.position.set(0, (id === "duck" ? 0.35 : BODY_HEIGHT[id] / 2 + 0.35), 0);
+      label.position.set(0, BODY_HEIGHT[id] / 2 + CHARACTER_LABEL_GAP, 0);
       g.add(label);
       this.scene.add(g);
       this.chars[id] = g;
