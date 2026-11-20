@@ -9,6 +9,7 @@ import {
   CAMERA_MARGIN,
   CAMERA_PROFILE,
   CEILING_Y,
+  CHECKPOINT_VIEW_YAW,
   angleDiff,
   cameraRelativeMove,
   clipSegment,
@@ -18,6 +19,7 @@ import {
   forwardOf,
   HOLE_LID_Y,
   modelRotationY,
+  nearCameraOpacity,
   obstaclesFor,
   placeAtSocket,
   rightOf,
@@ -267,5 +269,91 @@ describe("every pose FollowCamera.update returns is safe (Req 4.1, 4.2, 4.5)", (
     expect(o.eye.y).toBeGreaterThan(20); // the overview itself
     cam.toggleOverview(); // Codex repro b: 0.1 s later the eye was at 28.99 m
     for (let i = 0; i < 30; i++) check(a.id, a.focus, cam.update(a.id, a.focus, 1 / 60, 0, obs).eye);
+  });
+});
+
+describe("held A/D with the follow camera is stable (review N-1)", () => {
+  const obs = obstaclesFor(LEVEL, "locked");
+  /** Walk in open space with keys held, like main.ts does each frame. */
+  function walk(keys: { x: number; z: number }[], frames: number[], cam = new FollowCamera()) {
+    let pos = { x: 20, z: 4 }; // open-air bath, no walls near (camera clip irrelevant here)
+    let heading = cam.yaw;
+    const yaws: number[] = [];
+    const dirs: number[] = [];
+    keys.forEach((k, seg) => {
+      for (let i = 0; i < (frames[seg] ?? 0); i++) {
+        cam.setMoveHeld(true);
+        const m = cameraRelativeMove(k, cam.moveYaw);
+        pos = { x: pos.x + m.x * 0.04, z: pos.z + m.z * 0.04 };
+        heading = yawFromDirection(m);
+        dirs.push(heading);
+        cam.update("adult", { x: pos.x, y: 0.85, z: pos.z }, 1 / 60, heading, obs, true);
+        yaws.push(cam.yaw);
+      }
+    });
+    return { cam, yaws, dirs };
+  }
+  const span = (a: number[]) => Math.max(...a) - Math.min(...a);
+
+  it("holding D walks straight and the camera settles behind, without spinning", () => {
+    const { yaws, dirs } = walk([D], [600]);
+    expect(span(dirs)).toBeLessThan(1e-9); // straight line
+    expect(span(yaws)).toBeLessThan(Math.PI / 2 + 1e-6); // turned at most a quarter, never round and round
+    expect(Math.abs(angleDiff(yaws.at(-1)!, dirs.at(-1)!))).toBeLessThan(0.02); // ends behind the back
+  });
+
+  it("holding A behaves the same, mirrored", () => {
+    const { yaws, dirs } = walk([{ x: -1, z: 0 }], [600]);
+    expect(span(dirs)).toBeLessThan(1e-9);
+    expect(Math.abs(angleDiff(yaws.at(-1)!, dirs.at(-1)!))).toBeLessThan(0.02);
+    expect(Math.abs(angleDiff(0, yaws.at(-1)!))).toBeCloseTo(Math.PI / 2, 2);
+  });
+
+  it("W, then W+D held: one bounded turn, then straight", () => {
+    const diag = { x: Math.SQRT1_2, z: -Math.SQRT1_2 };
+    const { yaws, dirs } = walk([W, diag], [120, 600]);
+    expect(span(dirs.slice(120))).toBeLessThan(1e-9);
+    expect(span(yaws)).toBeLessThan(Math.PI / 4 + 1e-6);
+  });
+
+  it("releasing the keys latches the new view: W then goes where the camera now looks", () => {
+    const { cam } = walk([D], [300]);
+    cam.setMoveHeld(false);
+    cam.setMoveHeld(true);
+    close(cameraRelativeMove(W, cam.moveYaw), forwardOf(cam.yaw));
+  });
+
+  it("a checkpoint load drops stale yaw, latch and facing", () => {
+    const { cam } = walk([D], [300]);
+    cam.lookAlong(CHECKPOINT_VIEW_YAW.start);
+    expect(cam.yaw).toBe(-Math.PI / 2);
+    expect(cam.moveYaw).toBe(-Math.PI / 2);
+    const f = new FacingTracker();
+    f.lookAlong(CHECKPOINT_VIEW_YAW.duckInPond);
+    expect(f.yaw("duck")).toBe(Math.PI / 2);
+    expect(f.moving("duck")).toBe(false);
+  });
+
+  it("the start view looks toward the NarrowHole; a human beside the lens is faded (D-1)", () => {
+    const p = shoulderPose("duck", { x: 4, y: 0.15, z: 5 }, CHECKPOINT_VIEW_YAW.start, obs);
+    expect(p.target.x).toBeLessThan(4); // looks toward −X (the hole)
+    for (const id of ["child", "adult"] as const) {
+      const h = LEVEL.initialPositions[id];
+      const toHuman = { x: h.x - p.eye.x, z: h.z - p.eye.z };
+      const ahead = forwardOf(CHECKPOINT_VIEW_YAW.start);
+      const inFront = toHuman.x * ahead.x + toHuman.z * ahead.z > 0.3;
+      if (inFront) expect(nearCameraOpacity(Math.hypot(toHuman.x, toHuman.z))).toBeLessThan(0.5);
+    }
+    expect(nearCameraOpacity(0.3)).toBe(0.15);
+    expect(nearCameraOpacity(2)).toBe(1);
+  });
+
+  it("the sauna door view (Child unlocking) stays in the bath, locked or unlocked", () => {
+    for (const door of ["locked", "unlocked"] as const) {
+      const o = obstaclesFor(LEVEL, door);
+      const p = shoulderPose("child", { x: 2.6, y: 0.6, z: 7.4 }, Math.PI, o); // facing +Z, the door
+      expect(p.eye.z).toBeLessThan(8 - 0.1);
+      for (const b of o.boxes) expect(crosses({ x: 2.6, z: 7.4 }, p.eye, b)).toBe(false);
+    }
   });
 });

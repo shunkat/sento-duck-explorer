@@ -1,7 +1,7 @@
 // Browser entry: fixed 60 Hz logic, render at display rate.
 import { createInitialState } from "./core/initialState";
 import { checkInvariants } from "./core/invariants";
-import type { CharacterId, GameState } from "./core/types";
+import type { CharacterId, CheckpointId, GameState } from "./core/types";
 import { attachKeyboard, KeyboardState } from "./input/keyboard";
 import { LEVEL } from "./level/layout";
 import { advance } from "./loop";
@@ -10,7 +10,7 @@ import { deriveView } from "./view/deriveView";
 import { Hud } from "./view/hud";
 import { CHARACTER_MODEL_URLS } from "./view/modelEntry";
 import { GameScene } from "./view/scene";
-import { cameraRelativeMove, FacingTracker, ORBIT_DRAG_RATE, ORBIT_KEY_RATE, obstaclesFor } from "./view/shoulder";
+import { CHECKPOINT_VIEW_YAW, cameraRelativeMove, FacingTracker, ORBIT_DRAG_RATE, ORBIT_KEY_RATE, obstaclesFor } from "./view/shoulder";
 
 const app = document.getElementById("app")!;
 const hudRoot = document.getElementById("hud")!;
@@ -72,6 +72,13 @@ const takeFrame = (s: GameState) => {
   return { ...f, move: cameraRelativeMove(f.move, camera.moveYaw) };
 };
 
+/** Checkpoint load or new game: no stale camera yaw or facing (review N-1). */
+function viewAlong(id: CheckpointId): void {
+  camera.lookAlong(CHECKPOINT_VIEW_YAW[id]);
+  facing.lookAlong(CHECKPOINT_VIEW_YAW[id]);
+}
+viewAlong("start");
+
 function frame(nowMs: number): void {
   const frameSeconds = (nowMs - last) / 1000;
   last = nowMs;
@@ -80,16 +87,22 @@ function frame(nowMs: number): void {
 
   if (kb.takeOverview()) camera.toggleOverview();
   camera.orbit(kb.orbit() * ORBIT_KEY_RATE * dt);
+  camera.setMoveHeld(kb.moveHeld());
 
   if (state.outcome.kind === "cleared") {
     // The core ignores input once cleared; R starts a new game from the view layer.
-    if (kb.takeFrame(false).restart) state = createInitialState(LEVEL);
+    if (kb.takeFrame(false).restart) {
+      state = createInitialState(LEVEL);
+      viewAlong("start");
+    }
     accumulator = 0;
   } else {
     const r = advance(state, accumulator, frameSeconds, takeFrame, LEVEL);
     state = r.state;
     accumulator = r.accumulator;
     hud.onEvents(r.events, now);
+    const loaded = r.events.find((e) => e.kind === "restored");
+    if (loaded?.kind === "restored") viewAlong(loaded.id);
   }
   if (import.meta.env.DEV) hud.setDevWarnings(checkInvariants(state));
 

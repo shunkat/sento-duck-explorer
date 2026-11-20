@@ -34,6 +34,13 @@ export class FollowCamera {
   yaw = 0;
   /** Seconds since the last manual orbit input. */
   private sinceOrbit = Infinity;
+  /**
+   * Yaw that WASD maps against, latched when a move key goes down and kept
+   * until all move keys are up. The follow camera turns behind the walk, but
+   * the input direction does not turn with it, so there is no feedback loop
+   * (review N-1: held A/D used to spin the camera and circle the character).
+   */
+  private latched: number | null = null;
 
   /**
    * C cuts straight to or from the overview (no blend). The overview eye is
@@ -50,9 +57,25 @@ export class FollowCamera {
     return this.overview;
   }
 
-  /** Yaw used to map WASD: the view yaw, or 0 (W = up the map) in the fixed overview. */
+  /** Yaw used to map WASD: the latched view yaw, or 0 (W = up the map) in the fixed overview. */
   get moveYaw(): number {
-    return this.overview ? 0 : this.yaw;
+    if (this.overview) return 0;
+    return this.latched ?? this.yaw;
+  }
+
+  /** Call once per frame with whether any move key is held. */
+  setMoveHeld(held: boolean): void {
+    if (!held) this.latched = null;
+    else if (this.latched === null) this.latched = this.yaw;
+  }
+
+  /** After a checkpoint load or a new game: drop stale view state and look along `yaw`. */
+  lookAlong(yaw: number): void {
+    this.yaw = yaw;
+    this.latched = null;
+    this.sinceOrbit = Infinity;
+    this.from = null;
+    this.elapsed = SWITCH_SECONDS;
   }
 
   /** Turn the view; ignored in the overview so the move mapping stays put. */
@@ -77,6 +100,7 @@ export class FollowCamera {
     if (this.lastId !== null && this.lastId !== id) {
       this.startBlend();
       this.yaw = facingYaw;
+      this.latched = null; // latch again to the new character's view
     } else if (!this.overview) {
       this.yaw = followYaw(this.yaw, facingYaw, moving, this.sinceOrbit, dt);
     }

@@ -59,6 +59,11 @@ export class KeyboardState {
     this.pressed.clear();
   }
 
+  /** True while any WASD / arrow key is held. */
+  moveHeld(): boolean {
+    return Object.keys(MOVE_KEYS).some((k) => this.held.has(k));
+  }
+
   /** −1 (J, turn left), 0, or 1 (L, turn right) from held keys; view only. */
   orbit(): number {
     let o = 0;

@@ -1,7 +1,7 @@
 // Over-the-shoulder camera math (pure). See .kiro/specs/shoulder-view.
 // Yaw 0 looks toward −Z: forward = (sin y, −cos y), right = (cos y, sin y).
 import type { Object3D } from "three";
-import type { CharacterId, Vec2 } from "../core/types";
+import type { CharacterId, CheckpointId, Vec2 } from "../core/types";
 import type { Level } from "../level/layout";
 import { wallsFor } from "../sim/movement";
 import type { AABB } from "../sim/geometry";
@@ -180,10 +180,42 @@ export class FacingTracker {
     return this.yaws[id];
   }
 
+  /** After a checkpoint load or a new game: everyone faces `yaw`; the position jump is not read as movement. */
+  lookAlong(yaw: number): void {
+    this.yaws = { duck: yaw, child: yaw, adult: yaw };
+    this.last = {};
+    this.movedNow = { duck: false, child: false, adult: false };
+  }
+
   /** True if the character moved in the last update. */
   moving(id: CharacterId): boolean {
     return this.movedNow[id];
   }
+}
+
+/**
+ * View yaw after a checkpoint load, per checkpoint (view only). Start looks
+ * toward the NarrowHole (−X) so Duck's first view is not filled by the humans
+ * standing in front of it (review D-1); the others look toward the next goal.
+ */
+export const CHECKPOINT_VIEW_YAW: Record<CheckpointId, number> = {
+  start: -Math.PI / 2,
+  paidReturned: Math.PI,
+  hatEquipped: Math.PI / 2,
+  duckInPond: Math.PI / 2,
+};
+
+/**
+ * Opacity for a non-active character this far (m, horizontal) from the
+ * camera eye: a body right next to the lens fades so it does not fill the
+ * view (review D-1).
+ */
+export function nearCameraOpacity(dist: number): number {
+  const near = 0.6;
+  const far = 1.3;
+  if (dist <= near) return 0.15;
+  if (dist >= far) return 1;
+  return 0.15 + ((dist - near) / (far - near)) * 0.85;
 }
 
 /** Camera follow: after manual orbit, wait this long before easing back (s). */

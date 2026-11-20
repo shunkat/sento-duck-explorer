@@ -7,7 +7,7 @@ import { CHARACTER_RADIUS, type Level } from "../level/layout";
 import type { AABB } from "../sim/geometry";
 import type { Pose } from "./camera";
 import { BODY_HEIGHT, type View } from "./deriveView";
-import { CEILING_Y, type FacingTracker, forwardOf, HOLE_LID_Y, modelRotationY, placeAtSocket, WALL_HEIGHT } from "./shoulder";
+import { CEILING_Y, type FacingTracker, forwardOf, HOLE_LID_Y, modelRotationY, nearCameraOpacity, placeAtSocket, WALL_HEIGHT } from "./shoulder";
 import {
   CHARACTER_LABEL_GAP,
   LABEL_CANVAS_H,
@@ -274,6 +274,19 @@ export class GameScene {
     if (id === "duck") this.duckHatSocket = root.getObjectByName("socket_hat") ?? null;
   }
 
+  /** Fade a character's body (primitive or model), not its label (review D-1). */
+  private setBodyOpacity(id: CharacterId, opacity: number): void {
+    this.chars[id].traverse((o) => {
+      if (!(o instanceof THREE.Mesh)) return;
+      for (const m of Array.isArray(o.material) ? o.material : [o.material]) {
+        if (m.opacity === opacity) continue;
+        m.transparent = opacity < 1;
+        m.opacity = opacity;
+        m.depthWrite = opacity >= 1;
+      }
+    });
+  }
+
   private setOverview(on: boolean): void {
     const h = on ? OVERVIEW_WALL_HEIGHT : WALL_HEIGHT;
     for (const w of this.tallWalls) {
@@ -301,6 +314,8 @@ export class GameScene {
       const shift = id === "duck" ? duckShift : { x: 0, z: 0 };
       this.chars[id].position.set(c.pos.x + shift.x, y, c.pos.z + shift.z);
       this.chars[id].rotation.y = modelRotationY(facing.yaw(id));
+      const fade = overview || c.active ? 1 : nearCameraOpacity(Math.hypot(c.pos.x - pose.eye.x, c.pos.z - pose.eye.z));
+      this.setBodyOpacity(id, fade);
       const ring = this.rings[id];
       ring.visible = c.active;
       ring.position.set(c.pos.x, 0.04, c.pos.z);
