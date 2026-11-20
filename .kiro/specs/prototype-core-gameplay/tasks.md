@@ -92,6 +92,7 @@ Created directly by the main Kiro agent on 2026-11-20 after the built-in spec su
 - [ ] 9. Final verification
   - [x] 9.1 Run `npm run build` and `npx vitest --run`; fix failures
   - [ ] 9.2 Start the local dev server and record the local URL; manual checklist: camera switch, shapes and colors, HUD, labels
+    - Historical primitive-build checklist, not a fresh request to repeat the route. Current PR #4 evidence is versioned in `docs/shoulder-view-verification.md` on `crew/browser-route-pilot`. Follow `.kiro/steering/verification-ownership.md`; the existing Codex supervisor owns normal-input play. This entry does not mark unmerged work or untested versions as passed.
     - Done: dev server at http://127.0.0.1:5173/. Partly checked by Codex in Chrome (first half of the route up to paying at reception, F1 and restart, and the label fix; see `progress.md`). Open: the second half of the route, camera transition feel, and F2–F7 screens in the browser. This is not a user-approval checkpoint.
   - [x] 9.3 Record in the spec which Kiro features were used and what remains (final-model pipeline is still required)
     - See `progress.md`
