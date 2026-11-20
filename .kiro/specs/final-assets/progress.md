@@ -70,3 +70,9 @@ The scanner is a heuristic. It does not inspect history, the remote, binary meta
 
 - `GameScene.placeHat` copied only the `socket_hat` world position, so the hat did not turn with Duck. It now uses `copySocketPose` (`src/view/models.ts`), which also copies the socket world quaternion. A detached hat has its quaternion reset to identity.
 - Added regression tests in `tests/models.test.ts` (fixed angles and a fast-check property over yaw). Not verified in a browser.
+
+## PR #3 sync with main
+
+- PR #3 is merged with main (merge be4ee44). The placeHat rotation fix (ece9856, `copySocketPose` with its tests) is kept unchanged.
+- `tests/models.test.ts` no longer expects an empty manifest: it checks measured entries (duck, hat_sauna_duck, child, adult) against their limits, that planned assets stay unmeasured, and that `public/models/duck.glb` and `hat_sauna_duck.glb` parse with heights matching the manifest.
+- Not done: connecting the real GLBs to the game (`useModels` is still not called) and browser verification.

@@ -25,6 +25,7 @@ Production status updated by Codex on 2026-11-20. Codex operates the image → M
   - [x] 2.4 Record the asset license policy: project reference-image rights under MIT; Meshy-generated and Blender-modified models under CC BY 4.0 with attribution and modification notices
     - _Requirements: 7.1, 7.5, 7.6_
   - [ ] 2.5 ModelAdapter (view layer only), tested with a locally made test GLB under `tests/fixtures/` (a fixture, never a final asset)
+    - PR #3 is synced with main; the placeHat rotation fix (ece9856) is covered by `copySocketPose` tests. Connecting the real GLBs and browser verification are not done.
     - `src/view/models.ts`: GLB loading through the `three/addons` GLTFLoader, socket lookup, fallback to primitives on error
     - `GameScene`: use the model when it is loaded; root at `centerY − radius` (Duck) or `centerY − height / 2` (humans); facing from movement; hat, carry (Duck root on `socket_carry` at 0.90 m), and held-item parenting
     - Manifest bounds test (no WebGL); all existing tests unchanged; `npm run build`

@@ -4,7 +4,7 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it, vi } from "vitest";
 import * as THREE from "three";
 import fc from "fast-check";
-import { type GltfSource, ModelLibrary, SOCKET_NAMES, checkBounds, copySocketPose, measureModel } from "../src/view/models";
+import { type GltfSource, type ManifestLimits, ModelLibrary, SOCKET_NAMES, checkBounds, copySocketPose, measureModel } from "../src/view/models";
 
 function fixtureBytes(): ArrayBuffer {
   const b = readFileSync(new URL("./fixtures/test_box_duck.glb", import.meta.url));
@@ -68,9 +68,33 @@ describe("manifest bounds check", () => {
     expect(checkBounds({ height: 0.2, maxWidth: 0.5 }, limits)).toHaveLength(2);
   });
 
-  it("has no measured bounds in the manifest yet (no final asset)", () => {
-    for (const a of Object.values<{ measured: unknown }>(manifest.assets)) expect(a.measured).toBeNull();
+  it("keeps measured manifest data within limits and planned assets unmeasured", () => {
+    const assets = Object.entries<{ status: string; limits: ManifestLimits; measured: { height: number; max_width?: number } | null }>(manifest.assets);
+    const measuredIds = assets.filter(([, a]) => a.measured !== null).map(([id]) => id);
+    expect(measuredIds).toEqual(expect.arrayContaining(["duck", "hat_sauna_duck", "child", "adult"]));
+    for (const [id, a] of assets) {
+      if (a.status === "planned") {
+        expect(a.measured, id).toBeNull();
+      } else if (a.measured) {
+        const m = { height: a.measured.height, maxWidth: a.measured.max_width ?? 0 };
+        expect(checkBounds(m, a.limits), id).toEqual([]);
+      }
+    }
   });
+
+  for (const id of ["duck", "hat_sauna_duck"]) {
+    it(`parses public/models/${id}.glb and matches the manifest height`, async () => {
+      const b = readFileSync(new URL(`../public/models/${id}.glb`, import.meta.url));
+      const lib = new ModelLibrary();
+      await lib.parse(id, b.buffer.slice(b.byteOffset, b.byteOffset + b.byteLength) as ArrayBuffer);
+      const measured = measureModel(lib.get(id)!.root);
+      expect(Math.abs(measured.height - manifest.assets[id].measured.height)).toBeLessThan(1e-3);
+      if (id === "duck") {
+        expect(lib.get(id)!.sockets.socket_hat).toBeDefined();
+        expect(lib.get(id)!.sockets.socket_label).toBeDefined();
+      }
+    });
+  }
 });
 
 describe("copySocketPose", () => {
