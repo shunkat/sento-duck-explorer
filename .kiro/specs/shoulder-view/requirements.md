@@ -33,6 +33,7 @@ Items marked *(Provisional)* are working choices under `.kiro/steering/project-a
 2. THE Game SHALL use a separate CameraProfile per character so that the eye height is lowest for Duck, higher for Child, and highest for Adult.
 3. WHEN the ActiveCharacter changes, THE Game SHALL set CameraYaw to the new character's Facing and blend the camera within 0.5 s (existing Req 1.4).
 4. THE Game SHALL draw each character turned toward its Facing, so that the back is toward the camera while it walks forward.
+5. WHILE the active character moves, THE Game SHALL ease CameraYaw back behind its Facing (about 95 % of the gap in 1 s). Manual orbit input SHALL override this for 1 s after the last orbit input. Standing still SHALL keep CameraYaw, so the player can look around. Walking toward the camera (Facing more than 100° from CameraYaw) SHALL keep CameraYaw, so the view does not spin. *(Added 2026-11-20 after review F-1: the user wants facing and camera linked with the back visible.)*
 
 ### Requirement 2: Look around
 

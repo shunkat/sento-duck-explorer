@@ -25,9 +25,9 @@ All new math is pure and tested without WebGL: `src/view/shoulder.ts`.
 | --- | --- | --- | --- |
 | Yaw convention | Yaw 0 looks toward −Z; forward = (sin y, −cos y), right = (cos y, sin y) | Provisional | Yaw 0 reproduces the old mapping, so tests that walk with WASD still hold at the start |
 | Orbit keys | J left, L right, 2.2 rad/s; mouse drag 0.005 rad/px | Provisional | Q, E, F, V, T, G, R, C are taken. Low cost: constants |
-| Camera follows facing? | No automatic turning. Yaw changes only by orbit input and on character switch (set to the new character's Facing) | Provisional | Auto-turning plus camera-relative input makes paths drift. Switch alignment keeps "facing and camera linked" |
+| Camera follows facing? | Yes while moving: `followYaw` eases yaw toward the heading at rate 3/s. Manual orbit holds it for 1 s. No follow while standing (look around) or when the heading is over 100° off (walking toward the camera). Tab aligns at once | Provisional (changed after review F-1) | Holding A or D makes a wide circle, as in many third-person games. Constants in `shoulder.ts` |
 | Facing source | Direction of movement between frames, view-only | Matches PR #3 / final-assets ("facing from movement direction") | No logic field added |
-| Camera profiles | Duck: dist 1.1, eye 0.42, side 0.22, look 0.22. Child: 2.0 / 1.45 / 0.42 / 1.05. Adult: 2.4 / 1.95 / 0.5 / 1.45 (m) | Provisional | Eye height ordered Duck < Child < Adult; all below the 2.7 m ceiling and Duck below the hole lid |
+| Camera profiles | Duck: dist 1.1, eye 0.42, side 0.22, look 0.22. Child: 2.3 / 1.5 / 0.42 / 0.6. Adult: 2.6 / 2.0 / 0.5 / 0.9 (m) | Provisional (Child and Adult lowered look point after review D-2 so the whole body is in frame) | Eye height ordered Duck < Child < Adult; all below the 2.7 m ceiling and Duck below the hole lid |
 | Obstacle clipping | 2D segment vs. AABB (walls, NPCs, locked door blocker), boxes grown by 0.12 m. Two steps: pivot → shoulder point, then shoulder point → eye | Provisional | Walls are full height, so a 2D test is exact for walls. Two steps keep the camera in line inside the 0.4 m NarrowHole instead of collapsing onto Duck |
 | Wall height | Visual walls 2.6 m, indoor ceilings at 2.7 m; Overview cuts walls to 1.0 m and hides ceilings | Provisional; **conflicts with final-assets design** (see below) | |
 | NarrowHole | Visual lid over the corridor and a lintel above the hole at 0.55 m. Eye clamped to ≤ 0.45 m while it is inside the hole box | Provisional | The hole reads as a hole in the wall; the camera follows Duck inside |
@@ -71,7 +71,8 @@ export function cameraRelativeMove(move: Vec2, yaw: number): Vec2;     // Req 3.
 export function yawFromDirection(d: Vec2): number;                     // Facing as yaw
 export function clipSegment(from: Vec2, to: Vec2, boxes: AABB[], margin): Vec2; // Req 4.1
 export function shoulderPose(id, focus: Vec3, yaw, obstacles: Obstacles): Pose;  // Req 1.1, 4.1, 4.2
-export class FacingTracker { update(view: View): void; yaw(id): number }         // Req 3.4
+export class FacingTracker { update(view: View): void; yaw(id): number; moving(id): boolean } // Req 3.4
+export function followYaw(yaw, heading, moving, sinceOrbit, dt): number;         // Req 1.5
 ```
 
 - `FollowCamera` gains `yaw`, `orbit(delta)`, and `alignTo(yaw)`. On a switch it aligns to the new character's Facing and blends 0.4 s (existing).

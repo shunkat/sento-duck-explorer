@@ -21,6 +21,11 @@ Created 2026-11-20 by the Crew implementer (Kiro Crew worker) directly from the 
   - [x] 4.1 `CHARACTER_MODEL_URLS` (empty, `src/view/modelEntry.ts`), `GameScene.setCharacterModel`, lazy `GLTFLoader` in `main.ts` with fallback and warning — Req 6.1–6.4
   - [x] 4.2 `modelRotationY` tested against the +Z front. The root offset (`centerY − radius` / `centerY − height / 2`) lives in `setCharacterModel` and is not unit-tested (needs WebGL).
   - [ ] 4.3 Load a real GLB in the browser. Blocked until a final model exists (final-assets pipeline; Codex handles images, service and rights). No GLB was loaded in this round.
+- [x] 6. Review fixes (verifier B, `e1cf59c`)
+  - [x] 6.1 F-1: camera eases behind the moving character; orbit hold 1 s; tests in `tests/shoulder.test.ts` — Req 1.5
+  - [x] 6.2 D-2: Child and Adult look point lowered so the body is in frame
+  - [x] 6.3 D-3: key-help panel moved to the bottom right (the over-right-shoulder view puts the character left of center)
+  - [x] 6.4 F-2: checked, no change. `#hud` has `pointer-events: none`, inherited by every panel, so a drag that starts over the HUD reaches the canvas. Not tested with a real drag.
 - [ ] 5. Verification
   - [x] 5.1 `npm test` 93 passed (84 before + 9 new), `npm run build`, publication check on the tree and `dist` PASS
   - [ ] 5.2 Browser: Crew single-key checks done (page renders in the shoulder view with Duck in front; Tab to Child shows Child's back with Adult ahead; C shows the cutaway overview and C returns). Not run: walking, orbit with J / L held, the NarrowHole, sauna, hat, carrying and pond in the shoulder view. These need held keys and are left to Codex via live takeover.
@@ -31,3 +36,6 @@ Created 2026-11-20 by the Crew implementer (Kiro Crew worker) directly from the 
 
 - Pond rocks are drawn as full-height walls (2.6 m) in the shoulder view. Lower them when the pond kit is planned.
 - Some zone labels are partly hidden by the cut walls in the Overview because zone labels are now depth-tested.
+- Overview labels still overlap each other (子ども/アヒル, サウナ室/人混み/ハット, 小さな穴/500円玉), and the small bodies are hard to find (review D-4). Needs a label layout pass; not small.
+- Duck's start view is filled by the Child and Adult bodies (review D-1). Framing only; left as is.
+- In the Overview the yaw is frozen, so W is camera-relative, not "up the map", when yaw ≠ 0 (review F-3).

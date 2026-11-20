@@ -20,8 +20,8 @@ export interface CameraProfile {
 
 export const CAMERA_PROFILE: Record<CharacterId, CameraProfile> = {
   duck: { dist: 1.1, eye: 0.42, side: 0.22, look: 0.22 },
-  child: { dist: 2.0, eye: 1.45, side: 0.42, look: 1.05 },
-  adult: { dist: 2.4, eye: 1.95, side: 0.5, look: 1.45 },
+  child: { dist: 2.3, eye: 1.5, side: 0.42, look: 0.6 },
+  adult: { dist: 2.6, eye: 2.0, side: 0.5, look: 0.9 },
 };
 
 /** Visual heights shared with the scene (m). */
@@ -132,23 +132,63 @@ export function shoulderPose(id: CharacterId, focus: Vec3, yaw: number, obs: Obs
 export class FacingTracker {
   private yaws: Record<CharacterId, number> = { duck: 0, child: 0, adult: 0 };
   private last: Partial<Record<CharacterId, Vec2>> = {};
+  private movedNow: Record<CharacterId, boolean> = { duck: false, child: false, adult: false };
 
   update(view: View): void {
     for (const id of ["child", "adult", "duck"] as const) {
       const c = view.characters[id];
       const prev = this.last[id];
       this.last[id] = { x: c.pos.x, z: c.pos.z };
+      this.movedNow[id] = false;
       if (id === "duck" && c.carried) {
         this.yaws.duck = this.yaws.adult;
         continue;
       }
       if (!prev) continue;
       const d = { x: c.pos.x - prev.x, z: c.pos.z - prev.z };
-      if (Math.hypot(d.x, d.z) > 1e-4 && Math.hypot(d.x, d.z) < 0.5) this.yaws[id] = yawFromDirection(d);
+      const len = Math.hypot(d.x, d.z);
+      if (len > 1e-4 && len < 0.5) {
+        this.yaws[id] = yawFromDirection(d);
+        this.movedNow[id] = true;
+      }
     }
   }
 
   yaw(id: CharacterId): number {
     return this.yaws[id];
   }
+
+  /** True if the character moved in the last update. */
+  moving(id: CharacterId): boolean {
+    return this.movedNow[id];
+  }
+}
+
+/** Camera follow: after manual orbit, wait this long before easing back (s). */
+export const FOLLOW_HOLD_SECONDS = 1.0;
+/** Ease rate toward the heading (1/s); about 95 % of the gap closes in 1 s. */
+export const FOLLOW_RATE = 3.0;
+/** While moving, do not follow a heading more than this far from the view (walking toward the camera). */
+export const FOLLOW_MAX_TURN = (100 * Math.PI) / 180;
+
+/** Signed smallest angle from `a` to `b`, in (−π, π]. */
+export function angleDiff(a: number, b: number): number {
+  let d = (b - a) % (2 * Math.PI);
+  if (d > Math.PI) d -= 2 * Math.PI;
+  if (d <= -Math.PI) d += 2 * Math.PI;
+  return d;
+}
+
+/**
+ * While the character moves, ease the camera yaw back behind its heading
+ * (shoulder-view Req 1.5). Manual orbit wins for FOLLOW_HOLD_SECONDS after the
+ * last orbit input. Standing still keeps the yaw, so the player can look
+ * around a corner. Walking toward the camera (more than FOLLOW_MAX_TURN off)
+ * also keeps it, so S does not spin the view.
+ */
+export function followYaw(yaw: number, heading: number, moving: boolean, sinceOrbit: number, dt: number): number {
+  if (!moving || sinceOrbit < FOLLOW_HOLD_SECONDS) return yaw;
+  const d = angleDiff(yaw, heading);
+  if (Math.abs(d) > FOLLOW_MAX_TURN) return yaw;
+  return yaw + d * (1 - Math.exp(-FOLLOW_RATE * dt));
 }

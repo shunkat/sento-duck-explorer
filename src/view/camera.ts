@@ -2,7 +2,7 @@
 // .kiro/specs/shoulder-view), the auxiliary overview, and the switch blend.
 import type { CharacterId } from "../core/types";
 import type { Vec3 } from "./deriveView";
-import { type Obstacles, shoulderPose } from "./shoulder";
+import { followYaw, type Obstacles, shoulderPose } from "./shoulder";
 
 export const SWITCH_SECONDS = 0.4;
 
@@ -32,6 +32,8 @@ export class FollowCamera {
   private overview = false;
   /** Horizontal view angle; 0 looks toward −Z. Movement input is rotated by it. */
   yaw = 0;
+  /** Seconds since the last manual orbit input. */
+  private sinceOrbit = Infinity;
 
   toggleOverview(): void {
     this.startBlend();
@@ -44,7 +46,9 @@ export class FollowCamera {
 
   /** Turn the view; ignored in the overview so the move mapping stays put. */
   orbit(delta: number): void {
-    if (!this.overview) this.yaw += delta;
+    if (this.overview || delta === 0) return;
+    this.yaw += delta;
+    this.sinceOrbit = 0;
   }
 
   private startBlend(): void {
@@ -54,12 +58,16 @@ export class FollowCamera {
 
   /**
    * `facingYaw` is the active character's facing; on a switch the camera turns
-   * behind the new character (Req 1.3 of shoulder-view).
+   * behind the new character (shoulder-view Req 1.3). While it moves, the yaw
+   * eases back behind it unless the player orbited just now (Req 1.5).
    */
-  update(id: CharacterId, focus: Vec3, dt: number, facingYaw: number, obstacles: Obstacles): Pose {
+  update(id: CharacterId, focus: Vec3, dt: number, facingYaw: number, obstacles: Obstacles, moving = false): Pose {
+    this.sinceOrbit += dt;
     if (this.lastId !== null && this.lastId !== id) {
       this.startBlend();
       this.yaw = facingYaw;
+    } else if (!this.overview) {
+      this.yaw = followYaw(this.yaw, facingYaw, moving, this.sinceOrbit, dt);
     }
     this.lastId = id;
     const goal = this.overview ? OVERVIEW : shoulderPose(id, focus, this.yaw, obstacles);

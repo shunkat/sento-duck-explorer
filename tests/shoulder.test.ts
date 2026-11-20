@@ -8,9 +8,12 @@ import {
   CAMERA_MARGIN,
   CAMERA_PROFILE,
   CEILING_Y,
+  angleDiff,
   cameraRelativeMove,
   clipSegment,
   FacingTracker,
+  FOLLOW_HOLD_SECONDS,
+  followYaw,
   forwardOf,
   HOLE_LID_Y,
   modelRotationY,
@@ -157,5 +160,42 @@ describe("facing and orbit (Req 2, 3.4)", () => {
     cam.toggleOverview();
     cam.orbit(0.5);
     expect(cam.yaw).toBe(0.5);
+  });
+});
+
+describe("camera follows behind the moving character (Req 1.5)", () => {
+  const obs = obstaclesFor(LEVEL, "locked");
+  const focus = { x: 8, y: 0.85, z: 4 };
+
+  it("eases toward the heading while moving; holds when standing, walking toward the camera, or just after orbit", () => {
+    const h = 0.8;
+    const y1 = followYaw(0, h, true, 5, 1 / 60);
+    expect(y1).toBeGreaterThan(0);
+    expect(y1).toBeLessThan(h);
+    expect(followYaw(0, h, false, 5, 1 / 60)).toBe(0);
+    expect(followYaw(0, Math.PI, true, 5, 1 / 60)).toBe(0);
+    expect(followYaw(0, h, true, FOLLOW_HOLD_SECONDS - 0.01, 1 / 60)).toBe(0);
+    // Takes the short way round across ±π.
+    expect(followYaw(3.0, -3.0, true, 5, 0.1)).toBeGreaterThan(3.0);
+    expect(angleDiff(3.0, -3.0)).toBeCloseTo(2 * Math.PI - 6, 9);
+  });
+
+  it("walking ahead brings the camera behind the back within about 1.5 s", () => {
+    const cam = new FollowCamera();
+    const heading = 1.0;
+    for (let i = 0; i < 90; i++) cam.update("adult", focus, 1 / 60, heading, obs, true);
+    expect(Math.abs(angleDiff(cam.yaw, heading))).toBeLessThan(0.02);
+  });
+
+  it("manual orbit overrides, then the camera eases back once the player walks after the hold", () => {
+    const cam = new FollowCamera();
+    cam.update("adult", focus, 1 / 60, 0, obs, false);
+    cam.orbit(1.2);
+    for (let i = 0; i < 30; i++) cam.update("adult", focus, 1 / 60, 0, obs, true); // 0.5 s: still held
+    expect(cam.yaw).toBeCloseTo(1.2, 9);
+    for (let i = 0; i < 60; i++) cam.update("adult", focus, 1 / 60, 0, obs, false); // standing: kept
+    expect(cam.yaw).toBeCloseTo(1.2, 9);
+    for (let i = 0; i < 120; i++) cam.update("adult", focus, 1 / 60, 0, obs, true);
+    expect(Math.abs(cam.yaw)).toBeLessThan(0.05);
   });
 });
