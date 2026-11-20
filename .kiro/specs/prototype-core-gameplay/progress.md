@@ -57,10 +57,10 @@ Findings from that check:
 1. Browser playthrough of the second half of the route, camera transition feel, and F2–F7 screen checks. These are verification tasks, not requests for user approval.
 2. Optional task 7 property-based tests (Properties 1–19).
 3. Final-model spec: reference images → Image to 3D (service not chosen; Meshy is a candidate, no paid plan agreed) → Blender adjustment → glTF export and integration, keeping images, generated models, .blend files, and exports linked. Start with Duck, the hat, and one bath section (production order step 2).
-4. Submission items from KIRO_HANDOFF.md: public repo, OSS license, English description, demo video, asset licenses. No deployment or publishing has been done.
+4. Submission items from KIRO_HANDOFF.md: public repo, English description, demo video, asset licenses. The project MIT license was adopted with the user's permission on 2026-11-20. Deployment and submission remain outstanding; current repository and schedule status is recorded in `docs/periodic-development.md`.
 
 ## Publication review and scheduled development preparation by Codex, 2026-11-20
 
 - Codex removed a personal task link from the handoff, expanded private-file ignore rules, and added an offline publication scanner. An independent Codex agent verified forced-added private paths, staged secrets with a clean working copy, and redacted output in temporary Git repositories. This is a heuristic check, not a remote/history or asset-rights audit.
-- Codex added always-included publication/hackathon steering, an official-rules review, and the hourly Kiro Web task instructions. Kiro Web scheduling is **not registered or running**: the public repository is unidentified and the GitHub connection is not configured. The local folder has no Git repository.
+- Codex added always-included publication/hackathon steering, an official-rules review, and hourly Kiro Web task instructions. The local Git repository was initialized with a public handle and GitHub noreply commit identity. The user authorized publishing `shunkat/sento-duck-explorer` under MIT and connecting only that repository to Kiro. Current publication and schedule state is recorded in `docs/periodic-development.md`.
 - Codex added the installed Three.js license notice and automatic inclusion in the Vite build. The game implementation remains Kiro-authored; these publication and operations changes were made by Codex.

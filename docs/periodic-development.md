@@ -4,9 +4,9 @@
 
 ## 状態
 
-**未登録・未稼働。** Kiro WebのSchedule作成画面を確認したが、GitHub接続が未設定。ユーザーは「これから公開します」と回答し、既存の公開リポジトリはないと確認した。ローカルGitは初期化済みだがremoteは未設定。新規公開と、対象リポジトリへのKiro Agent GitHub App接続が必要。
+**未登録・未稼働。** Kiro WebのSchedule作成画面を確認したが、GitHub接続が未設定。ユーザーは「これから公開します」と回答し、既存の公開リポジトリはないと確認した。ローカルGitは初期化済み。新規公開と、対象リポジトリへのKiro Agent GitHub App接続を準備中。
 
-新規公開案は `shunkat/sento-duck-explorer`、本体ライセンスはMIT。いずれも準備案で、リモート作成・コード公開・ライセンス採用・権限付与は未実施。登録前に本ファイルの状態を実態に合わせて更新する。
+2026-11-20、ユーザーは `shunkat/sento-duck-explorer` のPublic・MITでの新規公開、このリポジトリだけへのKiro Agent接続、毎時開発の有効化を明示承認した。MITライセンスを採用済み。登録後に本ファイルの状態を実態に合わせて更新する。
 
 Kiro Webの定期実行はクラウド環境でリポジトリを取得して作業し、PRを返す。ローカルIDEの画面を監視して再開する機能ではない。新たな権限を無断で付与せず、全リポジトリを選ばない。[Schedule](https://kiro.dev/docs/web/automations/)、[GitHub接続](https://kiro.dev/docs/web/github/)
 

@@ -54,4 +54,4 @@ ChromeのVimium拡張を有効にしていると、`T`・`D` などのキーをV
 
 `.kiro` の開発証跡は内容を確認して公開対象に残します。大会の条件と未完了事項は [規約確認](docs/kiroween-review.md)、定期実行の登録状態と設定案は [定期開発](docs/periodic-development.md) を参照してください。
 
-依存ライブラリの [第三者ライセンス](THIRD_PARTY_NOTICES.md) はビルド時に `dist/` へ自動同梱します。プロジェクト自体のOSSライセンス選定と公開リポジトリの照合は未完了です。
+本体のコードは [MIT License](LICENSE) で提供します。依存ライブラリの [第三者ライセンス](THIRD_PARTY_NOTICES.md) はビルド時に `dist/` へ自動同梱します。今後追加する第三者素材にはそれぞれの利用条件が適用されます。
