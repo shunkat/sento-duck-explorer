@@ -24,7 +24,7 @@ The pipeline is confirmed by the user and must not be skipped. Placeholder primi
   - the production order: prototype → Duck, hat, and one bath section to fix the art style → humans and facilities in the same style.
 - **[User chose to consider]**: Adult accompanies Child, and Child alone passes the crowd gaps (`KIRO_HANDOFF.md`, 2026-11-20). The user said they would consider this. They did not confirm the mechanism.
 - **[Provisional, from existing steering and specs]**: implementation designs that Kiro adopted per `.kiro/steering/project-autonomy.md` and the `prototype-core-gameplay` spec. They are not user decisions and can change:
-  - pair doors (the companion follows within 3 m, Child waits with Adult on the payment trip and on the way to the pond) and Adult as the only carrier;
+  - pair doors (the companion follows within 3 m, Child waits with Adult on the payment trip and on the way to the pond) and the Duck carriers (Child before the hat, to the coin channel; Adult after it, to the pond);
   - visual models kept separate from collision, items, and progress state;
   - hat, towel, key, soap, and coin as separate models, and the hat not merged into Duck. `KIRO_HANDOFF.md` lists these as recommended design proposals (制作を支える設計案), not as user decisions;
   - every number in this spec. The reason for each value is in design.md.

@@ -41,12 +41,12 @@ Production status updated by Codex on 2026-11-20. Codex operates the image → M
   - [x] 4.2 Image to 3D generation; keep the unmodified Meshy 6 Lite raw output and ledger row, CC BY 4.0
   - [x] 4.3 Blender: 0.30 m height, bottom-center origin, +Y up / +Z front, `socket_hat`, `socket_label`, 5,800 triangles, one material with vertex colors; saved `.blend`, reimported GLB and independent review
   - [ ] 4.4 Export `public/models/duck.glb`; record the checksum and measured bounds in the manifest; integrate through the ModelAdapter
-    - Export/measurement complete. Crew connects the real GLB on its branch; ModelAdapter unification and normal-input validation remain separate open checks.
+    - Export/measurement and branch normal-input integration checks complete. PR #3 ModelAdapter unification remains a separate open task.
     - _Requirements: 1.1, 3.2, 3.5, 4.1, 5.1, 6.1–6.3_
 
 - [ ] 5. Hat (stage 2, second)
   - [x] 5.1 Reference → Meshy → Blender → `public/models/hat_sauna_duck.glb`; 0.1801 m base, 1,440 triangles, retained hollow underside; ledger, manifest, independent review and combined Duck/hat render complete
-  - [ ] 5.2 Check the hat on and off the Duck in the game (equip, carry, checkpoint restore)
+  - [x] 5.2 Check the hat on and off the Duck in the game (equip, carry, checkpoint restore); Codex normal-input verification on `a72b765`
     - _Requirements: 4.1, 4.2, 4.5_
 
 - [ ] 6. Bath section kit (stage 2, third)
@@ -57,7 +57,7 @@ Production status updated by Codex on 2026-11-20. Codex operates the image → M
 
 - [ ] 7. Stage-2 verification and style record
   - [ ] 7.1 Measure the stage-2 triangles, draw calls, and download size; name the reference machine in the progress record
-  - [ ] 7.2 Browser playthrough of the full route with F1–F7 screens and restart; record who performed it
+  - [x] 7.2 Browser playthrough for the current four-model set with F1–F7 and four restores; Codex operated normal inputs, overview-assisted; exact versions in `docs/shoulder-view-verification.md`. Recheck affected paths when the environment kit replaces primitives
   - [ ] 7.3 Write the style record in the design (palette, roughness, edge softness, texel density)
     - _Requirements: 2.3, 5.2–5.4, 9.3, 9.5_
 
@@ -74,6 +74,6 @@ Production status updated by Codex on 2026-11-20. Codex operates the image → M
     - _Requirements: 10.1–10.4_
 
 - [ ] 10. Release checks for assets (every commit of asset files is public)
-  - [ ] 10.1 Every asset in `public/models/` has `redistributable = yes`, complete ledger rows, and a license that the recorded policy from 3.3 allows; third-party notices updated
-  - [ ] 10.2 Review the GLB metadata and the ledger by hand before each commit (the scanner does not inspect binaries)
+  - [x] 10.1 Every current asset in `public/models/` has `redistributable = yes`, complete ledger rows, and a license that the recorded policy from 3.3 allows; third-party notices updated
+  - [x] 10.2 Reviewed current four GLBs, Blender sources and ledger before asset commits; independent cross-review complete (scanner alone does not inspect binaries)
     - _Requirements: 6.3, 7.2, 7.5, 7.6, 11.3_
