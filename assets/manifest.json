@@ -11,7 +11,7 @@
           0.32
         ],
         "max_width": 0.36,
-        "triangles": 6000,
+        "triangles": 8000,
         "materials": 1,
         "texture_px": 1024,
         "glb_mb": 1.5
@@ -25,14 +25,14 @@
         "max_width": 0.30243322253227234,
         "width": 0.196388378739357,
         "depth": 0.30243322253227234,
-        "triangles": 5800,
-        "vertices": 2902,
+        "triangles": 7720,
+        "vertices": 3866,
         "materials": 1,
         "textures": 0,
         "nonmanifold_edges": 0,
         "texture_px": 0,
-        "glb_bytes": 141096,
-        "glb_mb": 0.141096,
+        "glb_bytes": 187588,
+        "glb_mb": 0.187588,
         "bounds": {
           "min": [
             -0.0981941893696785,
@@ -45,8 +45,8 @@
             0.15121661126613617
           ]
         },
-        "sha256": "ab9b26501b25c3b1678b068cd286fecb7a83b884cd66577c04a228d50abd089e",
-        "measured_date": "2026-11-20",
+        "sha256": "b2cac004808711a138d030c897934a5cfb5698cab5a103a4957ffc14b1f41cdc",
+        "measured_date": "2026-11-21",
         "tool": "Blender 5.2.4 LTS; reimported exported GLB"
       },
       "root_rule": "rootY = centerY - 0.15 (land 0.00, pond -0.05, carried 0.90)",
@@ -63,7 +63,9 @@
           "z": 0.04379032179713249,
           "meaning": "label anchor above the equipped hat (provisional 0.46 m); empty excluded from mesh bounds"
         }
-      }
+      },
+      "revision": "v02",
+      "notes": "v02: original body retained; localized eye smoothing and matched eye inserts; unchanged bounds and sockets. Reimported renders and asset checks completed; independent review and in-game visual checks pending."
     },
     "hat_sauna_duck": {
       "stage": 2,
@@ -413,6 +415,44 @@
       "default_outfit": "clothed",
       "visibility_policy": "Exactly one outfit mesh visible before first draw; static full-body alternatives with no head_shared node.",
       "animation_status": "Static carry-ready pose only; no rig, walking, pickup or carry animation."
+    },
+    "bath_stool": {
+      "stage": 2,
+      "status": "reference_ready",
+      "parent_asset": "wash_station",
+      "limits": {
+        "height": [
+          0.29,
+          0.31
+        ],
+        "max_width": 0.36,
+        "triangles": 1200,
+        "materials": 1,
+        "texture_px": 0,
+        "glb_mb": 0.1
+      },
+      "sockets": [],
+      "measured": null,
+      "notes": "Original reference ready. Image to 3D and Blender adjustment pending. Runtime URL deliberately absent."
+    },
+    "wash_basin": {
+      "stage": 2,
+      "status": "reference_ready",
+      "parent_asset": "wash_station",
+      "limits": {
+        "height": [
+          0.13,
+          0.15
+        ],
+        "max_width": 0.2,
+        "triangles": 800,
+        "materials": 1,
+        "texture_px": 0,
+        "glb_mb": 0.1
+      },
+      "sockets": [],
+      "measured": null,
+      "notes": "Original reference ready. Image to 3D and Blender adjustment pending. Runtime URL deliberately absent."
     }
   },
   "scene_limits": {

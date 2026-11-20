@@ -5,6 +5,7 @@ import { describe, expect, it, vi } from "vitest";
 import * as THREE from "three";
 import fc from "fast-check";
 import { GameScene } from "../src/view/scene";
+import { EnvironmentModels } from "../src/view/environmentModels";
 import { type GltfSource, type ManifestLimits, ModelLibrary, SOCKET_NAMES, checkBounds, copySocketPose, measureModel, placeHatOnSocket } from "../src/view/models";
 
 function fixtureBytes(): ArrayBuffer {
@@ -25,6 +26,7 @@ function sceneHarness() {
   const hatPrimitive = new THREE.Mesh(new THREE.ConeGeometry(), new THREE.MeshBasicMaterial());
   items.hat.add(hatPrimitive);
   Object.assign(scene, { chars, primitives, items, models: {}, itemModels: {},
+    environmentModels: new EnvironmentModels(new THREE.Group()),
     humanBody: {}, towels: {}, clothing: { child: "unclothed", adult: "unclothed" } });
   return { scene, chars, primitives, items, hatPrimitive };
 }

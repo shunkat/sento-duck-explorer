@@ -8,6 +8,7 @@ import type { AABB } from "../sim/geometry";
 import type { Pose } from "./camera";
 import { BODY_HEIGHT, type Vec3, type View } from "./deriveView";
 import type { ModelLibrary } from "./models";
+import { EnvironmentModels } from "./environmentModels";
 import { applyOutfit, checkHumanContract, type Clothing, TOWEL_DEPTH, TOWEL_THICKNESS, TOWEL_WIDTH, headAnchor, towelPose } from "./humanModel";
 import { CEILING_Y, type FacingTracker, forwardOf, HOLE_LID_Y, bodyOpacity, modelRotationY, placeAtSocket, placeCharacterAtSocket, WALL_HEIGHT } from "./shoulder";
 import {
@@ -130,6 +131,7 @@ export function setBodyOpacity(root: THREE.Object3D, opacity: number): void {
 export class GameScene {
   readonly renderer: THREE.WebGLRenderer;
   private scene = new THREE.Scene();
+  private environmentModels = new EnvironmentModels(this.scene);
   private camera = new THREE.PerspectiveCamera(55, 1, 0.05, 200);
   private chars = {} as Record<CharacterId, THREE.Group>;
   private rings = {} as Record<CharacterId, THREE.Mesh>;
@@ -256,6 +258,7 @@ export class GameScene {
       const fm = boxMesh(f.box, f.height, 0, FIXTURE_COLORS[f.kind]);
       if (f.height > OVERVIEW_WALL_HEIGHT) this.tallWalls.push({ mesh: fm, height: f.height });
       this.scene.add(fm);
+      if (f.kind === "stool") this.environmentModels.register("bath_stool", fm, f.box, 0, f.height);
       // Rimmed water that cannot be entered (cold plunge, outdoor bath, kakeyu basin) shows its water.
       if (f.kind === "plunge" || f.kind === "outdoorBath" || f.kind === "basin") {
         const r = 0.12;
@@ -271,7 +274,9 @@ export class GameScene {
       }
     }
     for (const d of level.decor) {
-      this.scene.add(boxMesh(d.box, d.height, d.y0, DECOR_COLORS[d.kind], d.kind === "mirror" ? 0.85 : 1));
+      const dm = boxMesh(d.box, d.height, d.y0, DECOR_COLORS[d.kind], d.kind === "mirror" ? 0.85 : 1);
+      this.scene.add(dm);
+      if (d.kind === "bucket") this.environmentModels.register("wash_basin", dm, d.box, d.y0, d.height);
       if (d.label) this.fixtureLabel(d.label, d.box, d.y0 + d.height + 0.3);
     }
     // NarrowHole alcove: lid over the corridor and the wall part above the opening.
@@ -380,6 +385,7 @@ export class GameScene {
 
   /** Connect loaded assets through the existing, tested model-placement path. */
   useModels(lib: ModelLibrary): void {
+    this.environmentModels.use(lib);
     for (const id of ["duck", "child", "adult"] as const) {
       const model = lib.get(id);
       if (!model || this.models[id] === model.root) continue;

@@ -6,6 +6,8 @@ Final 3D assets for Sento Duck Explorer. The spec is in `.kiro/specs/final-asset
 
 Blender 5.2.4 LTS is available for adjustment. The required image → Image to 3D → Blender → GLB sequence remains mandatory; installing tools or producing a reference image does not complete it. See `service-selection.md` for the selected service, usage limits, and asset licensing.
 
+2026-11-21 finishing update: [Duck v02](duck/blend/duck__v02.md) corrects the eyes while retaining the source body and sockets. The [washing-station reference](wash_station/README.md) and replacement code are prepared; its Image-to-3D and Blender stages are pending. Real play is deferred at the user's request.
+
 ## Pipeline per asset
 
 1. Reference images (start with a clear three-quarter view; add front / side / back when needed) → `assets/<asset_id>/ref/`

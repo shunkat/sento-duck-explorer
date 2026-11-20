@@ -4,7 +4,7 @@
 
 Source: the project's original reference image in `ref/`, the unmodified Meshy output in `gen/duck__meshy6lite_raw_v01.glb`, and the stage records in [the asset ledger](../ledger.csv). The public project is [shunkat/sento-duck-explorer](https://github.com/shunkat/sento-duck-explorer).
 
-**Modifications by the Sento Duck Explorer project, performed by Codex in Blender 5.2.4 LTS:** decimation of the original generated geometry; smooth normals; yellow/orange/dark vertex colors with one PBR material; uniform scale to 0.30 m; bottom-center origin and export-axis normalization; hat and label sockets; GLB export and render verification. No procedural replacement mesh was substituted for the Image to 3D output. The preserved `gen/` file is unmodified.
+**Modifications by the Sento Duck Explorer project, performed by Codex in Blender 5.2.4 LTS:** decimation of the original generated geometry; smooth normals; yellow/orange/dark vertex colors with one PBR material; uniform scale to 0.30 m; bottom-center origin and export-axis normalization; hat and label sockets; GLB export and render verification. In v02 (2026-11-21), the original eye patches were locally smoothed and recolored, and two matched smooth eye inserts were added. The generated body is retained; the preserved `gen/` file is unmodified. The adjusted mesh and derived previews remain CC BY 4.0. Details: [v02 refinement](blend/duck__v02.md).
 
 The generated GLB, adjusted `.blend`, game GLB, and derived duck preview are distributed under CC BY 4.0. Retain this credit, the license link, and an indication of changes when redistributing them. No endorsement by Meshy is implied.
 

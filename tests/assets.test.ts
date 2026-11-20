@@ -2,7 +2,7 @@
 // here; actual image decoding/rendering is checked separately in the browser.
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
-import { Box3, Group, type Object3D, Quaternion, Vector3 } from "three";
+import { Box3, Group, Mesh, type Object3D, Quaternion, Vector3 } from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { describe, expect, it } from "vitest";
 import { CHARACTER_MODEL_URLS, ITEM_MODEL_URLS } from "../src/view/modelEntry";
@@ -24,7 +24,7 @@ describe("connected models (shoulder-view Req 6)", () => {
 
   it("files match the confirmed SHA-256 and size", () => {
     const want: Record<string, [string, number]> = {
-      "models/duck.glb": ["ab9b26501b25c3b1678b068cd286fecb7a83b884cd66577c04a228d50abd089e", 141096],
+      "models/duck.glb": ["b2cac004808711a138d030c897934a5cfb5698cab5a103a4957ffc14b1f41cdc", 187588],
       "models/hat_sauna_duck.glb": ["027796c5bba9e2f27fe8e9f5d6a5017f19e55521961e15998b8f90ba6bbe9102", 27208],
       "models/child.glb": ["9d15324acce1d81b932628a7139c03a73cf36943be996d8db5b14c712bd9edca", 792720],
       "models/adult.glb": ["3ad862ac190776670c82df610c54a1def6a794914118cb11c1759b554e1cf270", 723784],
@@ -81,6 +81,40 @@ describe("connected models (shoulder-view Req 6)", () => {
     expect(new Box3().setFromObject(duck).min.y).toBeCloseTo(0, 3);
     expect(duck.getObjectByName("socket_hat")).toBeTruthy();
     expect(duck.getObjectByName("socket_label")).toBeTruthy();
+  });
+
+  it("Duck eye revision keeps the body envelope and sockets, with two matching dark eye regions", async () => {
+    const current = await parse(file(CHARACTER_MODEL_URLS.duck!));
+    const previous = await parse(readFileSync(new URL("../assets/duck/blend/duck__v01.glb", import.meta.url)));
+    const a = new Box3().setFromObject(current);
+    const b = new Box3().setFromObject(previous);
+    expect(a.min.distanceTo(b.min)).toBeLessThan(1e-7);
+    expect(a.max.distanceTo(b.max)).toBeLessThan(1e-7);
+    for (const name of ["socket_hat", "socket_label"]) {
+      expect(current.getObjectByName(name)!.position.toArray()).toEqual(previous.getObjectByName(name)!.position.toArray());
+    }
+    const eyes = [new Box3(), new Box3()];
+    const counts = [0, 0];
+    current.updateMatrixWorld(true);
+    current.traverse(o => {
+      if (!(o instanceof Mesh)) return;
+      const positions = o.geometry.getAttribute("position");
+      const colors = o.geometry.getAttribute("color");
+      for (let i = 0; i < positions.count; i++) {
+        if (colors.getX(i) + colors.getY(i) + colors.getZ(i) >= 0.3) continue;
+        const p = new Vector3().fromBufferAttribute(positions, i).applyMatrix4(o.matrixWorld);
+        const side = p.x < 0 ? 0 : 1;
+        eyes[side]!.expandByPoint(p);
+        counts[side]!++;
+      }
+    });
+    expect(counts[0]).toBeGreaterThan(400);
+    expect(counts[0]).toBe(counts[1]);
+    const left = eyes[0]!.getCenter(new Vector3());
+    const right = eyes[1]!.getCenter(new Vector3());
+    expect(left.x + right.x).toBeCloseTo(0, 6);
+    expect(left.y).toBeCloseTo(right.y, 6);
+    expect(eyes[0]!.getSize(new Vector3()).distanceTo(eyes[1]!.getSize(new Vector3()))).toBeLessThan(1e-6);
   });
 
   it("hat on the Duck's socket: base on the socket, turned with the Duck, own scale kept", async () => {

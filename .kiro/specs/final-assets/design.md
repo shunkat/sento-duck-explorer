@@ -138,11 +138,25 @@ Hat GLB origin: center of the inner base, so attaching it to `socket_hat` needs 
 
 ## Budgets
 
+### Washing-station finishing batch (2026-11-21)
+
+At the user's request, normal-input play is deferred while finishing work proceeds. The first environment batch is the five washing stations' stools and basins. One original reference depicts separate ivory stools and yellow open basins; Meshy 6 Lite reconstructs them, and Blender separates and adjusts the actual generated geometry into two exports. Each derived asset retains the parent's reference/generated files and checksums. This is a partial bath-section kit, not completion of all facilities.
+
+Visual replacement uses the existing `LEVEL.fixtures` stool boxes (0.36 × 0.36 m footprint, 0.30 m height) and `LEVEL.decor` bucket boxes (0.20 × 0.18 m footprint, 0.14 m height, bottom at 0.50 m). Colliders, routes, camera obstacles, gameplay state and placement coordinates remain authoritative in LEVEL. Roots are bottom-centered with +Y up, and five instances share each asset's geometry/material. Missing or invalid models keep the primitive. Per-instance transforms fit the existing envelopes; assets must not cover labels or change movement.
+
+Provisional budget: stool ≤ 1,200 triangles, basin ≤ 800 triangles, one material each, no texture, combined exports ≤ 0.2 MB; five pairs ≤ 10,000 drawn triangles and ten draw calls. Automated checks cover actual GLB bounds, finite geometry, placement, failure fallback and repeat loading. Blender reimport renders assess asset shape; in-game appearance remains final-verification pending.
+
+### Shape-quality gate (2026-11-21 user feedback)
+
+The user reported poor Duck eye geometry. A clean reference image or successful mesh export is insufficient. Inspect the reimported export at front, both three-quarter views, side/back and a close-up of important features before registering a model for runtime use. Check silhouette, intended bilateral alignment, smooth contour and shading, floating/intersecting parts, and preservation of holes and hollow interiors. For stools inspect all feet, seat and clearance underneath; for basins inspect the entire rim, inner wall, bottom thickness and underside. Keep a reference/raw/adjusted comparison. Repair a bad reconstruction in Blender or regenerate it; do not mark it done merely because it meets size or triangle limits.
+
+The Duck v02 local correction retains the original generated body, removes irregular eye coloring, smooths only the old eye patches and adds a matched pair of smooth eye inserts. The provisional Duck triangle budget increases from 6,000 to 8,000 to preserve facial contours without decimating the body again; one material and no textures remain the target. Hat/label sockets, metric scale and body extents must match v01. This is a local Blender modification of the existing Image-to-3D asset, not a newly generated model. Asset renders do not constitute normal-input gameplay or user acceptance.
+
 The game is a browser demo that judges open from a URL on unknown machines. Image to 3D output is often much denser than a game needs, so Blender reduction is planned for every asset. All values are provisional starting points, not measurements.
 
 | Asset | Triangles | Materials | Textures | GLB size |
 | --- | --- | --- | --- | --- |
-| `duck` | ≤ 6,000 | 1 | base color 1024², optional normal 1024² | ≤ 1.5 MB |
+| `duck` | ≤ 8,000 (v02 eye refinement) | 1 | base color 1024², optional normal 1024² | ≤ 1.5 MB |
 | `hat_sauna_duck` | ≤ 1,500 | 1 | base color 512² | ≤ 0.3 MB |
 | small items (`coin_500`, `sauna_key`, `soap`, `towel`) | ≤ 500 each | share 1 | shared 512² atlas | ≤ 0.2 MB each |
 | bath section kit (all pieces) | ≤ 25,000 drawn | ≤ 4 | ≤ 4 × 1024² | ≤ 5 MB total |

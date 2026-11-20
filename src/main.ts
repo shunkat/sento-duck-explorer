@@ -8,7 +8,7 @@ import { advance } from "./loop";
 import { FollowCamera } from "./view/camera";
 import { deriveView } from "./view/deriveView";
 import { Hud } from "./view/hud";
-import { CHARACTER_MODEL_URLS, ITEM_MODEL_URLS } from "./view/modelEntry";
+import { CHARACTER_MODEL_URLS, ITEM_MODEL_URLS, ENVIRONMENT_MODEL_URLS } from "./view/modelEntry";
 import { GameScene } from "./view/scene";
 import { CHECKPOINT_VIEW_YAW, cameraRelativeMove, FacingTracker, ORBIT_DRAG_RATE, ORBIT_KEY_RATE, obstaclesFor } from "./view/shoulder";
 
@@ -41,10 +41,11 @@ canvas.addEventListener("pointercancel", endDrag);
 // Final models, when any are listed. A failure keeps the primitive.
 const charEntries = Object.entries(CHARACTER_MODEL_URLS) as [CharacterId, string][];
 const itemEntries = Object.entries(ITEM_MODEL_URLS) as [ItemId, string][];
-if (charEntries.length + itemEntries.length > 0) {
+const modelEntries = [...charEntries, ...itemEntries, ...Object.entries(ENVIRONMENT_MODEL_URLS)];
+if (modelEntries.length > 0) {
   void import("./view/models").then(({ ModelLibrary }) => {
     const models = new ModelLibrary();
-    for (const [id, url] of [...charEntries, ...itemEntries]) {
+    for (const [id, url] of modelEntries) {
       void models.load(id, import.meta.env.BASE_URL + url).then(() => scene.useModels(models));
     }
   }).catch((error) => console.warn("Model loader unavailable; keeping the placeholders.", error));

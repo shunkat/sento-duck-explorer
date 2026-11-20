@@ -7,6 +7,7 @@
 // Listed models are Meshy-generated, Blender-adjusted, CC BY 4.0. Their credit
 // is in THIRD_PARTY_NOTICES.md and public/models/*.LICENSE.txt (Req 6.6).
 import type { CharacterId, ItemId } from "../core/types";
+import type { EnvironmentModelId } from "./environmentModels";
 
 export const CHARACTER_MODEL_URLS: Partial<Record<CharacterId, string>> = {
   duck: "models/duck.glb",
@@ -17,3 +18,6 @@ export const CHARACTER_MODEL_URLS: Partial<Record<CharacterId, string>> = {
 export const ITEM_MODEL_URLS: Partial<Record<ItemId, string>> = {
   hat: "models/hat_sauna_duck.glb",
 };
+
+// Add URLs only after the real pipeline, measurements and rights checks finish.
+export const ENVIRONMENT_MODEL_URLS: Partial<Record<EnvironmentModelId, string>> = {};

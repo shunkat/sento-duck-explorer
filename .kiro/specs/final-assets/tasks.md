@@ -78,3 +78,16 @@ Production status updated by Codex on 2026-11-20. Codex operates the image → M
   - [x] 10.1 Every current asset in `public/models/` has `redistributable = yes`, complete ledger rows, and a license that the recorded policy from 3.3 allows; third-party notices updated
   - [x] 10.2 Reviewed current four GLBs, Blender sources and ledger before asset commits; independent cross-review complete (scanner alone does not inspect binaries)
     - _Requirements: 6.3, 7.2, 7.5, 7.6, 11.3_
+
+## Finishing batch, 2026-11-21 (Codex)
+
+The user deferred normal-input play and requested finishing work, then reported malformed Duck eyes and asked for better model fidelity.
+
+- [x] Original washing-station reference and provenance saved.
+- [x] View-only environment replacement path, primitive fallback and automated placement tests for five stools/basins. Runtime URLs remain empty while the real assets are pending.
+- [ ] Washing-station Image to 3D → Blender → final exports: upload blocked by the browser extension's file-URL permission; user cannot change it yet. No generated or final asset claimed.
+- [x] Duck v02: local eye correction on the original generated body, export/reimport and multi-angle asset renders; bounds and sockets preserved.
+- [ ] Independent review of this finishing batch.
+- [ ] Final in-game visual checks / normal-input play: deferred at the user's request.
+
+The body, beak and wings remain source-derived; the two eye inserts are explicit Blender corrections, not another Image-to-3D generation. See `assets/duck/blend/duck__v02.md` and `assets/wash_station/README.md`.

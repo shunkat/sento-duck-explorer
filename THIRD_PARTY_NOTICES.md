@@ -26,6 +26,12 @@ and +Z front/+Y up, and add hat and label sockets. The original reconstructed
 shape was retained. Keep this attribution, license link, and modification notice
 with redistributed copies. Meshy does not endorse this project.
 
+Revision v02 (2026-11-21): localized smoothing of the original eye patches,
+removal of irregular dark eye colors, and two matched smooth eye inserts.
+The original body remains; the revised export has 7,720 triangles, one material,
+no textures and unchanged overall bounds and sockets. The modified mesh and
+its Blender-rendered previews remain CC BY 4.0.
+
 The input reference was separately AI-generated with OpenAI through Codex;
 the project releases its rights to that reference under MIT, to the extent
 permitted by law. See `assets/duck/ref/README.md` and `assets/ledger.csv` for
