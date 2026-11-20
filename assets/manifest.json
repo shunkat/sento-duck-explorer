@@ -3,7 +3,7 @@
   "assets": {
     "duck": {
       "stage": 2,
-      "status": "planned",
+      "status": "exported",
       "collider_radius": 0.15,
       "limits": {
         "height": [
@@ -20,18 +20,54 @@
         "socket_hat",
         "socket_label"
       ],
-      "measured": null,
+      "measured": {
+        "height": 0.30000001192092896,
+        "max_width": 0.30243322253227234,
+        "width": 0.196388378739357,
+        "depth": 0.30243322253227234,
+        "triangles": 5800,
+        "vertices": 2902,
+        "materials": 1,
+        "textures": 0,
+        "nonmanifold_edges": 0,
+        "texture_px": 0,
+        "glb_bytes": 141096,
+        "glb_mb": 0.141096,
+        "bounds": {
+          "min": [
+            -0.0981941893696785,
+            0.0,
+            -0.15121661126613617
+          ],
+          "max": [
+            0.0981941893696785,
+            0.30000001192092896,
+            0.15121661126613617
+          ]
+        },
+        "sha256": "ab9b26501b25c3b1678b068cd286fecb7a83b884cd66577c04a228d50abd089e",
+        "measured_date": "2026-11-20",
+        "tool": "Blender 5.2.4 LTS; reimported exported GLB"
+      },
       "root_rule": "rootY = centerY - 0.15 (land 0.00, pond -0.05, carried 0.90)",
       "socket_positions": {
         "socket_hat": {
-          "y": 0.28,
-          "meaning": "hat root (center of inner base)"
+          "x": -0.002285670256242156,
+          "y": 0.27000001072883606,
+          "z": 0.04379032179713249,
+          "meaning": "hat inner-base anchor; fitted 0.03 m below head top"
+        },
+        "socket_label": {
+          "x": -0.002285670256242156,
+          "y": 0.46000000834465027,
+          "z": 0.04379032179713249,
+          "meaning": "label anchor above the equipped hat (provisional 0.46 m); empty excluded from mesh bounds"
         }
       }
     },
     "hat_sauna_duck": {
       "stage": 2,
-      "status": "planned",
+      "status": "exported",
       "limits": {
         "base_diameter": [
           0.16,
@@ -47,7 +83,35 @@
         "glb_mb": 0.3
       },
       "origin": "center of inner base",
-      "measured": null
+      "measured": {
+        "base_diameter": 0.18010373413562775,
+        "height": 0.13997289538383484,
+        "width": 0.18010373413562775,
+        "depth": 0.1800789088010788,
+        "triangles": 1440,
+        "vertices": 718,
+        "materials": 1,
+        "textures": 0,
+        "texture_px": 0,
+        "glb_bytes": 27208,
+        "glb_mb": 0.027208,
+        "bounds": {
+          "min": [
+            -0.09005186706781387,
+            0,
+            -0.0900394544005394
+          ],
+          "max": [
+            0.09005186706781387,
+            0.13997289538383484,
+            0.0900394544005394
+          ]
+        },
+        "sha256": "027796c5bba9e2f27fe8e9f5d6a5017f19e55521961e15998b8f90ba6bbe9102",
+        "measured_date": "2026-11-20",
+        "tool": "Blender 5.2.4 LTS; reimported exported GLB",
+        "underside": "Open inner shell visually inspected; central upward rays first hit the inner crown"
+      }
     },
     "bath_section_kit": {
       "stage": 2,

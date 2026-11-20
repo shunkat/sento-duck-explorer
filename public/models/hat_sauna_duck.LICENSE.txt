@@ -1,0 +1,16 @@
+Duck sauna hat
+Generated with Meshy (https://www.meshy.ai/), Meshy 6 Lite, 2026-11-20.
+License: Creative Commons Attribution 4.0 International (CC BY 4.0).
+https://creativecommons.org/licenses/by/4.0/
+
+Modified by the Sento Duck Explorer project, through Codex and Blender 5.2.4 LTS:
+original-mesh polygon reduction, smooth shading, pale aqua material assignment,
+metric scale, inner-base-centered origin, and GLB export.
+The generated crown, brim, loop, and hollow inner shell were retained.
+
+Source and provenance:
+https://github.com/shunkat/sento-duck-explorer/tree/main/assets/hat_sauna_duck
+
+Retain attribution and the license link, and indicate further changes.
+No endorsement by Meshy is implied. This model's license is separate from
+the repository's MIT code license.
