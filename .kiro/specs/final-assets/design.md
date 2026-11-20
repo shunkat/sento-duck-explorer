@@ -109,11 +109,11 @@ The view model gives mesh **centers**, and the adapter places each GLB root at t
 | Case | Center Y in `deriveView` | Root (bottom) Y used by the adapter | Rule |
 | --- | --- | --- | --- |
 | Human | `height / 2` (Child 0.60, Adult 0.85) | 0.00 | `rootY = centerY − height / 2` |
-| Duck on land | 0.15 | 0.00 | `rootY = centerY − radius` |
+| Duck on tub/channel water | 0.15 | 0.00 | `rootY = centerY − radius`; no independent land movement |
 | Duck in the pond | 0.10 | −0.05 (bottom 5 cm below the water surface at Y = 0) | `rootY = centerY − radius` (the same rule; no separate waterline offset) |
 | Duck carried | 1.05 | 0.90 | Root parented to Adult's `socket_carry` at 0.90 m |
 
-One rule (`rootY = centerY − radius`) covers Duck in every case, so the final model sits exactly where the prototype sphere sits: on the floor on land, slightly sunk in the pond, and at a center of 1.05 m when carried.
+One rule (`rootY = centerY − radius`) covers Duck in every case, so the final model sits where the prototype sphere sits: partly submerged in the shallow drawn tub/channel water, slightly sunk in the pond, and at the carry anchor while held. Since the water-only movement correction, Duck does not have an independent land state. The numeric entries above retain the prototype placement convention; the integrated carried model follows Adult's actual `socket_carry`.
 
 ### Sockets
 

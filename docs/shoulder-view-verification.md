@@ -99,3 +99,23 @@ The source remained frozen at `5a7866f821cd8bc42b4f1cb929349c6f2f40e734` through
 The held hat's mesh was not sufficiently visible during this run because of the wall/HUD; its ownership was confirmed in the HUD. That observation does not replace the earlier held-hat visual check on `a72b765`, and it does not complete the separate held-hat/key label checklist. The full F1–F7 and all-four-checkpoint manual suite was not repeated; those earlier results retain their original versions above. This run specifically rechecked F1 and the `paidReturned` towel restore, while the automated suite covered the other rules and checkpoint state.
 
 The towel remains a provisional mesh, independent of outfit variants. Its head position uses body height and model bounds; the held towel hangs from the hand socket. The four existing GLBs and their hashes/licenses were unchanged. Final towel art still requires the image → Image-to-3D → Blender pipeline.
+
+## Water-only Duck movement (`29eba52`, Kiro Crew; normal-input verification by Codex)
+
+This corrects the previous build's land-walking Duck. Outside Adult's arms, Duck moves only on the tub, the new connected water channel and coin hole, or the pond. Shared bath-water geometry drives movement, the drawn channel, placement, human wetness and towel dipping. Floor drops are refused, and the hat checkpoint restores Duck on the tub water.
+
+The source remained fixed at `29eba523f0fc4ca9d804eb948dad5c5d6fa6e486` throughout this run. Codex reloaded the existing local game normally and used native keyboard controls, the overview for route positioning, and shoulder-view orbit for directional and attachment checks. No runtime state inspection, injection or teleportation was used. This was not an exclusively shoulder-view playthrough.
+
+| Check | Observed result |
+| --- | --- |
+| Water boundaries | Sustained movement toward representative positions on all four tub shores stopped at the water edge. A diagonal direction obtained with camera orbit and forward movement did not leave the water. |
+| Visible channel and coin | Duck swam through the drawn channel into the narrow hole, collected the coin, returned to the tub and transferred it to Adult. |
+| Human route through the channel | Both humans became wet crossing the channel, dried with E at the sauna entrance, entered together and retrieved the hat. |
+| Hat checkpoint | Child equipped Duck at the water's edge. A real F1 followed by R restored the hat-wearing Duck on the tub water at the new checkpoint. |
+| Carried input and floor drop | After Adult picked Duck up, switching to Duck and holding W and D separately did not move Duck independently. E on dry floor showed the refusal and left Duck carried. |
+| Transport and goal | Adult carried the hat-wearing Duck with Child through the open-air area, placed it in the pond with E, and Duck reached the goal. The clear overlay was observed with the humans at the pond entrance. |
+| Model observation | The equipped hat and carried Duck/hat were visible in shoulder views. |
+
+**Full normal-input route: CLEAR.** Kiro A and independent verifier B also passed **174 tests**, the production build and publication checks on source and distribution. Independent Codex core and view reviews found no remaining required code defects; stale design descriptions of Duck drying and land recovery were corrected in the documentation follow-up. Existing GLBs and their attribution were unchanged.
+
+The new test suite covers the shared water geometry, shore collision, channel joints, invalid starting positions, accepted/refused water drops, wetness/towel rules and checkpoint continuation. The normal-input run specifically repeated the hat checkpoint restore; it did not repeat all four restores or all F1–F7 cases, a channel-specific towel dip, or a valid bath-water drop/re-pickup. Earlier version-specific evidence remains above. The channel/hole surfaces are provisional geometry for the later environment art pass.

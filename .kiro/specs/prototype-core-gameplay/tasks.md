@@ -110,4 +110,4 @@ Created directly by the main Kiro agent on 2026-11-20 after the built-in spec su
   - [x] 12.3 `hatEquipped` spawn on the tub; every free Duck on water (checked on every Sim tick)
   - [x] 12.4 Guide, HUD and README text
   - [x] 12.5 Tests: `tests/duck-water.test.ts`; the full route and checkpoint tests run with the per-tick water check
-  - [ ] 12.6 Browser normal-input check: Codex
+  - [x] 12.6 Browser normal-input check: Codex, fixed `29eba52`. Movement stopped at four representative tub shores; an orbit-based diagonal probe stayed on water. Visible channel/coin round trip passed, humans re-wet in the channel and dried at the sauna, hat checkpoint restored Duck on water after real F1/R, carried Duck input and floor drop were refused, and the full route cleared. Overview-assisted positioning; exact evidence in `docs/shoulder-view-verification.md`.

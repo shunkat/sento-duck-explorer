@@ -211,7 +211,7 @@ Duck is exempt from F2, F4, and F5 because they target human characters. Duck ca
 
 - A human or Duck becomes `wet` when its center enters a `bathwater` or `splash` zone (kakeyu spot), or any `LEVEL.duckWater` rect (the channel, 2026-11-20). It stays `wet` after leaving (Req 6.3, 6.5).
 - Leaving the sauna sets a human to `wet` (sweat). This is a provisional answer to the open question in KIRO_HANDOFF.md. It means re-entering the sauna or the changing room requires drying again.
-- Drying is the E candidate "Dry self at an exit" (Req 6.4): bath-side spots within 2.0 m of the changing-room and sauna doors. A towel on the head does not dry. Drying Duck is a lower E candidate (Req 6.6).
+- Drying is the E candidate "Dry self at an exit" (Req 6.4): bath-side spots within 2.0 m of the changing-room and sauna doors. A towel on the head does not dry. Duck has no drying action: a free Duck stays on water and remains wet (Req 6.6 update).
 - Dressing is the E candidate at the locker (1.0 m, `changing`). It flips ClothingState and never touches WetState (Req 6.7, 6.8). Drying never touches ClothingState.
 - If both humans are wet, the objective and the HUD name who still needs drying ("子どもも濡れています（Tabで切り替えて出口の前でE）").
 
@@ -251,12 +251,12 @@ function restore(snapshot: GameState): GameState;
 | --- | --- | --- |
 | start | Initial state | Level spawns |
 | paidReturned | Coin `paid` and both humans enter `bath` from `changing` | Humans at bath spawn markers 1.5 m from the door, both `unclothed`; WetState kept as is (dry) |
-| hatEquipped | Hat equipped on Duck | Duck, Child, and Adult moved to bath markers outside the bathwater, soap, and doors; Duck not carried. (Implementation: all three are moved, so the pair is together in the bath after restore.) |
+| hatEquipped | Hat equipped on Duck | Duck at `(6.6,6)` on the tub water, not carried; Child at `(7.6,6.3)` and Adult at `(8.3,6)` on the adjacent bath floor, away from soap and doors. All three are repositioned together. |
 | duckInPond | End of the tick in which Adult placed Duck in the pond, only if `duck.inPond`, `carriedBy === null`, and Adult and Child are both inside `pond_entrance` | Duck at pond spawn with zero velocity, active `duck`; humans at the shore markers |
 
 The place-in-pond action already requires both humans in `pond_entrance`, so the `duckInPond` condition holds whenever placement succeeds. The checkpoint check still verifies it on the final state so a future change to the action cannot save a checkpoint with a human left behind.
 
-Snapshots are deep copies with `outcome` cleared, any open dialog closed, and run input reset. Spawn markers are placed outside soap, bathwater, and door areas, so restoring cannot immediately repeat the same violation. Restart restores the most recent checkpoint (Req 5.4, 6.9, 10.3–10.5).
+Snapshots are deep copies with `outcome` cleared, any open dialog closed, and run input reset. Human recovery markers are on safe floor away from soap and doors; a free Duck remains on valid water. The initial checkpoint retains the initial tub positions. These placements avoid immediately repeating the same violation after restore. Restart restores the most recent checkpoint (Req 5.4, 6.9, 10.3–10.5).
 
 ## Data Models
 
