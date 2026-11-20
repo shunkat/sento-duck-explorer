@@ -3,6 +3,7 @@
 // screen in Duck's low view and distant labels stay legible in the overview.
 import type { ZoneId } from "../core/types";
 import type { AABB } from "../sim/geometry";
+import type { PerspectiveCamera, Vector3 } from "three";
 
 export type LabelKind = "character" | "zone" | "item" | "fixture";
 
@@ -52,13 +53,21 @@ export function labelPixelHeight(kind: LabelKind, distance: number): number {
 }
 
 /**
- * World-space height that renders as `px` pixels at `distance`, for a
+ * World-space height that renders as `px` pixels at camera-forward `depth`, for a
  * perspective camera with vertical field of view `fovDeg` and a viewport of
  * `viewportPx` CSS pixels in height.
  */
-export function worldHeightForPixels(px: number, distance: number, fovDeg: number, viewportPx: number): number {
-  const visible = 2 * distance * Math.tan((fovDeg * Math.PI) / 360);
+export function worldHeightForPixels(px: number, depth: number, fovDeg: number, viewportPx: number): number {
+  const visible = 2 * depth * Math.tan((fovDeg * Math.PI) / 360);
   return (px * visible) / Math.max(1, viewportPx);
+}
+
+/** Use projection depth, not Euclidean distance, so off-axis sprites match declutter rectangles. */
+export function labelWorldHeight(px: number, at: Vector3, camera: PerspectiveCamera, viewportPx: number): number | null {
+  const m = camera.matrixWorldInverse.elements;
+  const depth = -(m[2]! * at.x + m[6]! * at.y + m[10]! * at.z + m[14]!);
+  if (depth <= camera.near || depth >= camera.far) return null;
+  return worldHeightForPixels(px, depth, camera.fov, viewportPx);
 }
 
 /**

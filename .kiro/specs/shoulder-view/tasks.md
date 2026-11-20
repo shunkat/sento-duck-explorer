@@ -67,3 +67,13 @@ A/B stopped editing after repeated network errors, preserving `72bdbe8` and A's 
 - The thin entry point and PR #3 ModelAdapter still need the unification described in `design.md`; PR #3 has not been merged.
 - Full normal-input route and recovery checks remain open in 5.2.
 - Earlier label, input-yaw feedback and camera clipping issues were fixed in review rounds 3/4; confirm their user-visible behavior in the full playthrough.
+
+## Independent review fixes after integrated-model smoke
+
+- Codex independently found that an already opaque material could ignore a later fade because its OPAQUE shader was retained. The transparent/opaque transition now requests shader recompilation; material-version and label-exclusion regressions cover it.
+- Off-axis label scale used Euclidean distance instead of projection depth, causing actual sprites to exceed their declutter bounds. Rendering now uses camera-forward depth and rejects labels behind/outside the camera planes. Projection regressions cover the off-axis case.
+- Updated the stale incoming-Duck and held-hat descriptions to the actual four-asset connection.
+- Earlier normal-input observations (F1/R, human bath display and narrow-hole entry) are partial results; full fixed-version verification remains open.
+- Carried-Duck camera focus now uses the actual positioned model center and elevation; checkpoint resets discard the previous camera pose before the first frame. Equipped fallback hats also follow the actual Duck group if its GLB is missing.
+- Both independent Codex reviewers reran their concrete reproductions after the fixes and reported no remaining required findings. Their checks are code/math checks, separate from live gameplay.
+- Fixed-version validation: 127 tests passed and production build passed; remaining work is the normal-input playthrough and its findings.

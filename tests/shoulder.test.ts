@@ -1,4 +1,4 @@
-import { Group, Object3D, Quaternion, Vector3 } from "three";
+import { Group, Object3D, PerspectiveCamera, Quaternion, Vector3 } from "three";
 import { describe, expect, it } from "vitest";
 import { KeyboardState } from "../src/input/keyboard";
 import { CHARACTER_RADIUS, LEVEL } from "../src/level/layout";
@@ -73,6 +73,32 @@ describe("camera-relative movement (shoulder-view Req 3)", () => {
 
 describe("shoulder pose (Req 1, 4)", () => {
   const obs = obstaclesFor(LEVEL, "locked");
+
+  it("frames the carried Duck and hat at their actual elevated model center", () => {
+    const focus = { x: 20.24, y: 1.05, z: 3.8 };
+    const pose = shoulderPose("duck", focus, 0, obs);
+    expect(pose.eye.y).toBeCloseTo(1.32, 8);
+    const camera = new PerspectiveCamera(55, 1280 / 720, 0.05, 200);
+    camera.position.set(pose.eye.x, pose.eye.y, pose.eye.z);
+    camera.lookAt(pose.target.x, pose.target.y, pose.target.z);
+    camera.updateMatrixWorld();
+    for (const y of [0.90, 1.05, 1.20, 1.31]) {
+      const projected = new Vector3(focus.x, y, focus.z).project(camera);
+      expect(Math.abs(projected.x)).toBeLessThan(1);
+      expect(Math.abs(projected.y)).toBeLessThan(1);
+      expect(projected.z).toBeGreaterThan(-1);
+      expect(projected.z).toBeLessThan(1);
+    }
+  });
+
+  it("checkpoint reset discards the old pose before the first update, even when active character changes", () => {
+    const camera = new FollowCamera();
+    camera.update("adult", { x: 12, y: 0.85, z: 5 }, 1, 0, obs);
+    camera.lookAlong(CHECKPOINT_VIEW_YAW.start);
+    const focus = { x: 4, y: 0.15, z: 5 };
+    expect(camera.update("duck", focus, 1 / 60, CHECKPOINT_VIEW_YAW.start, obs))
+      .toEqual(shoulderPose("duck", focus, CHECKPOINT_VIEW_YAW.start, obs));
+  });
 
   it("eye is behind and to the right, heights ordered, below the ceiling", () => {
     const p = shoulderPose("adult", { x: 8, y: 0.85, z: 4 }, 0, obs);

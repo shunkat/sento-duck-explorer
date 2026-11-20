@@ -92,11 +92,13 @@ Unifying at integration (whoever merges second does this):
 6. Run both test files (`tests/models.test.ts` from PR #3, `tests/shoulder.test.ts`) after the merge.
 7. PR #3's `tests/models.test.ts` asserts that every `assets/manifest.json` entry still has `measured === null`. That test cannot hold once a real asset is measured (the Duck GLB is the first). At integration the Web side replaces it with a bounds check of each measured entry against its limits (`checkBounds`), and keeps `null` allowed only for assets that do not exist yet.
 
-### Incoming Duck model
+### Integrated model assets
 
-Codex is preparing a Duck GLB from Meshy, licensed CC BY 4.0, without texture. It will land at `public/models/duck.glb` in the main worktree. When it reaches this branch, add `duck: "/models/duck.glb"` to `CHARACTER_MODEL_URLS`. Before committing it: credit (creator, source link, license link, "modified: decimated / re-origined in Blender"), a row in `THIRD_PARTY_NOTICES.md` and the asset ledger, and an in-game or README credit as CC BY 4.0 requires (Req 6.6). The hat model comes later through the same pipeline. Neither the primitives nor the test fixture is a final model.
+Duck, Child, Adult and the sauna hat are present and registered with relative `models/*.glb` URLs so the build base path is respected. Their reference images, original Meshy outputs, Blender scenes, final files and modification records were imported from asset main `2f0261d`. They retain Meshy's CC BY 4.0 license and distributed sidecars/notices. Neither environment primitives nor test fixtures are final assets.
 
-Hat placement with the models: on Duck the hat group is put on `socket_hat` (world position and rotation) and the hat model sits at the group origin (its inner base). On the shelf, in Child's hand or with the carried Duck, the group sits where the primitive's center was and the model is lowered by the primitive's half height so it rests at the same bottom. Scale is never changed.
+The equipped hat group follows Duck's `socket_hat` world position and rotation, including while Duck is carried. A human-held hat follows that person's `socket_hand_r`. In both cases the hat model's inner-base origin sits at the group origin. An equipped fallback hat follows the actual Duck group even if Duck's GLB is missing. Shelf items and other unanchored items use the derived item position. In those non-socket cases the model is lowered by the primitive's half-height. Scale is never changed.
+
+Human visibility switches between `outfit_clothed` and `outfit_bath` before first draw and on clothing changes. Each outfit includes the head, so `head_shared` is optional. Fade transitions mark the material for recompilation when crossing the transparent/opaque boundary; otherwise Three's OPAQUE shader can ignore the changed alpha. Labels use Euclidean distance to choose the desired text size, then camera-forward depth to convert that size into world units so off-axis sprites match declutter rectangles.
 
 ## Components
 

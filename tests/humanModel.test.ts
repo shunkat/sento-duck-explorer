@@ -1,10 +1,11 @@
-import { Group, Object3D, Quaternion, Vector3 } from "three";
+import { BoxGeometry, Group, Mesh, MeshStandardMaterial, Object3D, Quaternion, Sprite, SpriteMaterial, Vector3 } from "three";
 import { describe, expect, it } from "vitest";
 import { applyOutfit, checkHumanContract } from "../src/view/humanModel";
 import { placeCharacterAtSocket } from "../src/view/shoulder";
 import { createInitialState } from "../src/core/initialState";
 import { deriveView } from "../src/view/deriveView";
 import { LEVEL } from "../src/level/layout";
+import { setBodyOpacity } from "../src/view/scene";
 
 function human(adult = false): Group {
   const root = new Group();
@@ -18,6 +19,26 @@ function human(adult = false): Group {
 }
 
 describe("pipeline human models", () => {
+  it("rebuilds an already opaque material when fading starts/ends, while labels stay opaque", () => {
+    const material = new MeshStandardMaterial();
+    const label = new Sprite(new SpriteMaterial());
+    const root = new Group();
+    root.add(new Mesh(new BoxGeometry(), material), label);
+    const version = material.version;
+    setBodyOpacity(root, 0.3);
+    expect(material.version).toBe(version + 1);
+    expect(material.transparent).toBe(true);
+    expect(material.opacity).toBe(0.3);
+    expect(material.depthWrite).toBe(false);
+    expect(label.material.opacity).toBe(1);
+    setBodyOpacity(root, 0.5);
+    expect(material.version).toBe(version + 1);
+    setBodyOpacity(root, 1);
+    expect(material.version).toBe(version + 2);
+    expect(material.transparent).toBe(false);
+    expect(material.depthWrite).toBe(true);
+  });
+
   it("accepts complete heads within each outfit and checks carry height in model-local space", () => {
     const root = human(true);
     root.position.set(4, -0.85, 3);
@@ -53,6 +74,14 @@ describe("pipeline human models", () => {
     const q = socket.getWorldQuaternion(new Quaternion());
     expect(Math.abs(duckRoot.getWorldQuaternion(new Quaternion()).dot(q))).toBeCloseTo(1, 8);
     expect(duckCenter.position.y).toBeCloseTo(1.05, 8);
+    // If Duck's GLB is still loading/failed, the equipped hat follows the
+    // actual carried primitive rather than the obsolete forward offset.
+    const fallbackHat = new Group();
+    placeCharacterAtSocket(fallbackHat, duckCenter, 0.21);
+    expect(fallbackHat.position.x).toBeCloseTo(duckCenter.position.x, 8);
+    expect(fallbackHat.position.z).toBeCloseTo(duckCenter.position.z, 8);
+    expect(fallbackHat.position.y).toBeCloseTo(1.26, 8);
+    expect(Math.abs(fallbackHat.quaternion.dot(q))).toBeCloseTo(1, 8);
   });
 
   it("exposes clothing and current item owners to the renderer without changing core state", () => {

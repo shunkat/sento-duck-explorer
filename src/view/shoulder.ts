@@ -6,7 +6,7 @@ import type { Level } from "../level/layout";
 import { wallsFor } from "../sim/movement";
 import type { AABB } from "../sim/geometry";
 import type { Pose } from "./camera";
-import type { Vec3, View } from "./deriveView";
+import { BODY_HEIGHT, type Vec3, type View } from "./deriveView";
 
 export interface CameraProfile {
   /** Distance behind the shoulder point (m). */
@@ -135,8 +135,9 @@ export function shoulderPose(id: CharacterId, focus: Vec3, yaw: number, obs: Obs
   const base = { x: focus.x, z: focus.z };
   const shoulder = clipSegment(base, { x: base.x + r.x * p.side, z: base.z + r.z * p.side }, obs.boxes);
   const back = clipSegment(shoulder, { x: shoulder.x - f.x * p.dist, z: shoulder.z - f.z * p.dist }, obs.boxes);
-  const eye = safeEye(base, { x: back.x, y: p.eye, z: back.z }, obs);
-  const lookY = Math.min(p.look, eye.y);
+  const footHeight = focus.y - BODY_HEIGHT[id] / 2;
+  const eye = safeEye(base, { x: back.x, y: p.eye + footHeight, z: back.z }, obs);
+  const lookY = Math.min(p.look + footHeight, eye.y);
   return {
     eye,
     target: { x: shoulder.x + f.x * LOOK_AHEAD, y: lookY, z: shoulder.z + f.z * LOOK_AHEAD },

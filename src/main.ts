@@ -110,8 +110,9 @@ function frame(nowMs: number): void {
 
   const view = deriveView(state, LEVEL);
   facing.update(view);
-  const pose = camera.update(view.active, view.focus, dt, facing.yaw(view.active), obstaclesFor(LEVEL, state.saunaDoor), facing.moving(view.active));
-  scene.render(view, pose, now, facing, camera.isOverview);
+  const focus = scene.positionCharacters(view, now, facing);
+  const pose = camera.update(view.active, focus, dt, facing.yaw(view.active), obstaclesFor(LEVEL, state.saunaDoor), facing.moving(view.active));
+  scene.render(view, pose, camera.isOverview);
   hud.update(state, LEVEL, now, camera.isOverview);
 }
 

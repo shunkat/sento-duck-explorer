@@ -16,6 +16,7 @@ import {
   LABEL_TEXT_PX,
   type LabelKind,
   labelPixelHeight,
+  labelWorldHeight,
   worldHeightForPixels,
   zoneLabelAnchor,
 } from "../src/view/labels";
@@ -23,6 +24,33 @@ import {
 const KINDS: LabelKind[] = ["character", "zone", "item", "fixture"];
 
 describe("label screen size (Chrome feedback: labels covered the screen in Duck's view)", () => {
+  it("keeps off-axis rendered size equal to the declutter size", () => {
+    const camera = new PerspectiveCamera(55, 1280 / 720, 0.05, 200);
+    camera.updateMatrixWorld();
+    for (const x of [0, 2.3, 2.8, 3]) {
+      const at = new Vector3(x, 0, -4);
+      const wanted = labelPixelHeight("character", at.length());
+      const canvasPx = wanted * LABEL_CANVAS_H / LABEL_TEXT_PX;
+      const h = labelWorldHeight(canvasPx, at, camera, 720)!;
+      const top = at.clone().add(new Vector3(0, h / 2, 0)).project(camera);
+      const bottom = at.clone().add(new Vector3(0, -h / 2, 0)).project(camera);
+      const actualCanvasPx = (top.y - bottom.y) * 720 / 2;
+      expect(actualCanvasPx).toBeCloseTo(canvasPx, 8);
+      expect(actualCanvasPx * LABEL_TEXT_PX / LABEL_CANVAS_H).toBeCloseTo(wanted, 8);
+    }
+  });
+
+  it("excludes labels behind the camera or outside its near/far depth", () => {
+    const camera = new PerspectiveCamera(55, 1, 0.05, 200);
+    camera.position.set(2, 1, 3);
+    camera.lookAt(3, 1, 3);
+    camera.updateMatrixWorld();
+    expect(labelWorldHeight(20, new Vector3(1, 1, 3), camera, 720)).toBeNull();
+    expect(labelWorldHeight(20, new Vector3(2.01, 1, 3), camera, 720)).toBeNull();
+    expect(labelWorldHeight(20, new Vector3(203, 1, 3), camera, 720)).toBeNull();
+    expect(labelWorldHeight(20, new Vector3(6, 1, 3), camera, 720)).not.toBeNull();
+  });
+
   it("stays within 12–22 px at any distance", () => {
     for (const kind of KINDS) {
       for (const d of [0.01, 0.3, 0.8, 1.5, 3, 6, 12, 25, 45, 100]) {

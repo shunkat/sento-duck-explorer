@@ -6,7 +6,7 @@ import type { CharacterId, ItemId } from "../core/types";
 import { CHARACTER_RADIUS, type Level } from "../level/layout";
 import type { AABB } from "../sim/geometry";
 import type { Pose } from "./camera";
-import { BODY_HEIGHT, type View } from "./deriveView";
+import { BODY_HEIGHT, type Vec3, type View } from "./deriveView";
 import { applyOutfit, checkHumanContract, type Clothing } from "./humanModel";
 import { CEILING_Y, type FacingTracker, forwardOf, HOLE_LID_Y, bodyOpacity, modelRotationY, placeAtSocket, placeCharacterAtSocket, WALL_HEIGHT } from "./shoulder";
 import {
@@ -20,7 +20,7 @@ import {
   type ScreenRect,
   declutter,
   labelPixelHeight,
-  worldHeightForPixels,
+  labelWorldHeight,
   zoneLabelAnchor,
 } from "./labels";
 
@@ -86,6 +86,24 @@ function boxMesh(b: AABB, height: number, y0: number, color: number, opacity = 1
   return mesh;
 }
 
+/** Fade model meshes, keeping labels opaque; rebuild the shader at the opaque boundary. */
+export function setBodyOpacity(root: THREE.Object3D, opacity: number): void {
+  root.traverse((o) => {
+    if (!(o instanceof THREE.Mesh)) return;
+    for (const m of Array.isArray(o.material) ? o.material : [o.material]) {
+      const transparent = opacity < 1;
+      if (m.transparent !== transparent) {
+        m.transparent = transparent;
+        // Three's OPAQUE shader define otherwise keeps alpha at 1 even after
+        // the opacity uniform changes on a previously opaque character.
+        m.needsUpdate = true;
+      }
+      m.opacity = opacity;
+      m.depthWrite = !transparent;
+    }
+  });
+}
+
 export class GameScene {
   readonly renderer: THREE.WebGLRenderer;
   private scene = new THREE.Scene();
@@ -139,10 +157,13 @@ export class GameScene {
       if (hidden) continue;
       const textPx = labelPixelHeight(l.kind, dist);
       const hPx = (textPx * LABEL_CANVAS_H) / LABEL_TEXT_PX;
-      const h = worldHeightForPixels(hPx, dist, this.camera.fov, this.viewportHeight);
+      const h = labelWorldHeight(hPx, this.tmp, this.camera, this.viewportHeight);
+      if (h === null) {
+        l.sprite.visible = false;
+        continue;
+      }
       l.sprite.scale.set(h * l.aspect, h, 1);
       const ndc = this.tmp.project(this.camera);
-      if (ndc.z > 1) continue; // behind the camera: drawn nowhere, blocks nothing
       const px = ((ndc.x + 1) / 2) * this.viewportWidth;
       const py = ((1 - ndc.y) / 2) * this.viewportHeight;
       const wPx = hPx * l.aspect;
@@ -341,19 +362,6 @@ export class GameScene {
     this.itemModels[id] = root;
   }
 
-  /** Fade a character's body (primitive or model), not its label (review D-1). */
-  private setBodyOpacity(id: CharacterId, opacity: number): void {
-    this.chars[id].traverse((o) => {
-      if (!(o instanceof THREE.Mesh)) return;
-      for (const m of Array.isArray(o.material) ? o.material : [o.material]) {
-        if (m.opacity === opacity) continue;
-        m.transparent = opacity < 1;
-        m.opacity = opacity;
-        m.depthWrite = opacity >= 1;
-      }
-    });
-  }
-
   private setOverview(on: boolean): void {
     const h = on ? OVERVIEW_WALL_HEIGHT : WALL_HEIGHT;
     for (const w of this.tallWalls) {
@@ -373,8 +381,8 @@ export class GameScene {
     this.camera.updateProjectionMatrix();
   }
 
-  render(view: View, pose: Pose, timeSeconds: number, facing: FacingTracker, overview: boolean): void {
-    this.setOverview(overview);
+  /** Resolve actual model poses before computing the camera, including carried Duck's socket. */
+  positionCharacters(view: View, timeSeconds: number, facing: FacingTracker): Vec3 {
     const carry = forwardOf(facing.yaw("adult"));
     const duckShift = view.characters.duck.carried ? { x: carry.x * CARRY_FORWARD, z: carry.z * CARRY_FORWARD } : { x: 0, z: 0 };
     for (const id of ["duck", "child", "adult"] as const) {
@@ -384,9 +392,6 @@ export class GameScene {
       const shift = id === "duck" ? duckShift : { x: 0, z: 0 };
       this.chars[id].position.set(c.pos.x + shift.x, y, c.pos.z + shift.z);
       this.chars[id].rotation.y = modelRotationY(facing.yaw(id));
-      const act = view.characters[view.active].pos;
-      const fade = overview || c.active ? 1 : bodyOpacity(pose.eye, act, c.pos, c.radius);
-      this.setBodyOpacity(id, fade);
       if (id !== "duck" && this.clothing[id] !== c.clothing) {
         this.clothing[id] = c.clothing;
         const m = this.models[id];
@@ -402,12 +407,31 @@ export class GameScene {
     if (view.characters.duck.carried && carrySocket) {
       placeCharacterAtSocket(this.chars.duck, carrySocket, CHARACTER_RADIUS.duck);
     }
+    const focus = this.chars[view.active].position;
+    return { x: focus.x, y: focus.y, z: focus.z };
+  }
+
+  render(view: View, pose: Pose, overview: boolean): void {
+    this.setOverview(overview);
+    const act = this.chars[view.active].position;
+    for (const id of ["duck", "child", "adult"] as const) {
+      const c = view.characters[id];
+      const fade = overview || c.active ? 1 : bodyOpacity(pose.eye, act, this.chars[id].position, c.radius);
+      setBodyOpacity(this.chars[id], fade);
+    }
     for (const id of ["coin", "key", "hat"] as const) {
       const it = view.items[id];
       this.items[id].visible = it.visible;
-      if (id === "hat" && view.hatAttachedToDuck && this.duckHatSocket) {
-        placeAtSocket(this.items.hat, this.duckHatSocket);
-        this.itemModels.hat?.position.set(0, 0, 0);
+      if (id === "hat" && view.hatAttachedToDuck) {
+        if (this.duckHatSocket) {
+          placeAtSocket(this.items.hat, this.duckHatSocket);
+          this.itemModels.hat?.position.set(0, 0, 0);
+        } else {
+          // Even a fallback Duck may sit on a loaded Adult's real carry
+          // socket. Follow its actual group, not the old forward offset.
+          placeCharacterAtSocket(this.items.hat, this.chars.duck, it.pos.y - view.characters.duck.pos.y);
+          this.itemModels.hat?.position.set(0, -ITEM_PRIMITIVE_HALF_HEIGHT.hat, 0);
+        }
         continue;
       }
       const hand = it.owner.kind === "character" && it.owner.id !== "duck"
@@ -417,8 +441,7 @@ export class GameScene {
         this.itemModels[id]?.position.set(0, 0, 0);
         continue;
       }
-      const shift = id === "hat" && view.hatAttachedToDuck ? duckShift : { x: 0, z: 0 };
-      this.items[id].position.set(it.pos.x + shift.x, it.pos.y, it.pos.z + shift.z);
+      this.items[id].position.set(it.pos.x, it.pos.y, it.pos.z);
       this.items[id].quaternion.identity();
       this.itemModels[id]?.position.set(0, -ITEM_PRIMITIVE_HALF_HEIGHT[id], 0);
     }

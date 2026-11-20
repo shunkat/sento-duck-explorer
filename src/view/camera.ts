@@ -75,6 +75,8 @@ export class FollowCamera {
     this.latched = null;
     this.sinceOrbit = Infinity;
     this.from = null;
+    this.current = null;
+    this.lastId = null;
     this.elapsed = SWITCH_SECONDS;
   }
 
