@@ -9,7 +9,9 @@ Draft for the Kiroween 2026 English description. It is a working draft, not a su
 - In a browser, only the first half of the route has been checked (by Codex, 2026-11-20). The second half has not been checked in a browser. It passes only as an automated, input-driven test.
 - No user study has been run. This document makes no claim about learning effects or accident reduction.
 - No deployed URL and no demo video exist yet. A local dev server address is not a submission URL.
-- In this cloud run, `npm ci` failed with HTTP 403 (the sandbox allows repository access only), so tests and build were **not run**. The 83 passing tests recorded in `.kiro/specs/prototype-core-gameplay/progress.md` come from earlier verification on the Mac side on 2026-11-20. Treat that as a prior record, not a result of this run. Only `python3 scripts/check-publication.py`, diff checks and a comparison of the text with `src/` were done here.
+- **Earlier cloud run (failure record, kept as is):** `npm ci` failed with HTTP 403 (the sandbox allows repository access only), so tests and build were **not run**. The 83 passing tests recorded in `.kiro/specs/prototype-core-gameplay/progress.md` come from earlier verification on the Mac side on 2026-11-20. Treat that as a prior record, not a result of this run. Only `python3 scripts/check-publication.py`, diff checks and a comparison of the text with `src/` were done in that run.
+- **Earlier Mac-side record:** the 83 passing tests above are from 2026-11-20 on the Mac side. They are a separate record from the run below.
+- **This run (2026-11-20 UTC, after `registry.noreply` allowlisting):** `registry.npmjs.org` was added as a custom allowed domain (access level still Repository access only). With Node v22.23.4 and npm 11.4.2, `npm ci` succeeded (100 packages added, 0 vulnerabilities). `npm test`: 9 files, 83 tests passed. `npm run build`: succeeded (Vite chunk-size warning only). `python3 scripts/check-publication.py`: PASS (118 files inspected, 0 findings). `python3 scripts/check-publication.py --root dist`: PASS (3 files, 0 findings). No browser check was run. `node_modules/` and `dist/` are git-ignored.
 - No browser check was done in this run. No browser tool was available among the tools exposed to this run. This says nothing about what Kiro Web offers in general.
 
 ## Summary
@@ -78,7 +80,7 @@ At the time of the prototype Spec, Hooks, MCP servers, Powers, Skills and custom
 
 - The GitHub Power was used for repository work (branch, commits, pull request #1).
 - The orchestrated planner, coder and reviewer agents were used to plan the draft, write it and review it. Their findings led to the corrections in this document.
-- Not verified here: tests, build and browser behavior (see Status).
+- Verified in the latest run: tests, build and publication scans (see Status). Not verified: browser behavior.
 
 ## Role of Codex
 
