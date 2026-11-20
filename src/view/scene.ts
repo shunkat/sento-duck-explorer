@@ -7,6 +7,7 @@ import type { Level } from "../level/layout";
 import type { AABB } from "../sim/geometry";
 import type { Pose } from "./camera";
 import { BODY_HEIGHT, type View } from "./deriveView";
+import { type ModelLibrary } from "./models";
 import { LABEL_HIDE_DISTANCE, type LabelKind, labelPixelHeight, worldHeightForPixels } from "./labels";
 
 const ZONE_COLORS: Record<string, number> = {
@@ -69,6 +70,13 @@ export class GameScene {
   private items = {} as Record<ItemId, THREE.Object3D>;
   private doorBlocker: THREE.Mesh;
   private labels: Label[] = [];
+  /** Primitive meshes of each character and item; hidden when a model replaces them. */
+  private primitives = {} as Record<CharacterId, THREE.Object3D[]>;
+  private itemPrimitives = {} as Record<ItemId, THREE.Object3D>;
+  /** Loaded models in use (all absent unless useModels found them). */
+  private modelRoots: Partial<Record<CharacterId, THREE.Object3D>> = {};
+  private modelLib: ModelLibrary | null = null;
+  private lastPos: Partial<Record<CharacterId, { x: number; z: number }>> = {};
   private viewportHeight = 1;
   private tmp = new THREE.Vector3();
 
@@ -156,11 +164,13 @@ export class GameScene {
           ? new THREE.Mesh(new THREE.SphereGeometry(r, 24, 16), mat)
           : new THREE.Mesh(new THREE.CapsuleGeometry(r, BODY_HEIGHT[id] - 2 * r, 8, 16), mat);
       g.add(body);
+      this.primitives[id] = [body];
       if (id === "duck") {
         const beak = new THREE.Mesh(new THREE.ConeGeometry(0.05, 0.1, 12), new THREE.MeshStandardMaterial({ color: 0xff8800 }));
         beak.rotation.x = -Math.PI / 2;
         beak.position.set(0, 0.03, -0.17);
         g.add(beak);
+        this.primitives[id].push(beak);
       }
       const label = this.label(CHARACTER_NAME[id], "character", "#fff", id);
       label.position.set(0, (id === "duck" ? 0.35 : BODY_HEIGHT[id] / 2 + 0.35), 0);
@@ -184,11 +194,42 @@ export class GameScene {
     for (const [id, mesh] of [["coin", coin], ["key", key], ["hat", hat]] as const) {
       const g = new THREE.Group();
       g.add(mesh);
+      this.itemPrimitives[id] = mesh;
       const l = this.label(ITEM_NAME[id], "item", "#ffe");
       l.position.set(0, 0.25, 0);
       g.add(l);
       this.scene.add(g);
       this.items[id] = g;
+    }
+  }
+
+  /**
+   * Replace primitives with loaded models. Ids with no model keep their primitive,
+   * so with an empty library nothing changes (Req 9.4). Model roots sit at
+   * `centerY - radius` (Duck) or `centerY - height / 2` (humans) relative to the
+   * view position, which is the mesh center.
+   */
+  useModels(lib: ModelLibrary): void {
+    this.modelLib = lib;
+    for (const id of ["duck", "child", "adult"] as const) {
+      const model = lib.get(id);
+      if (!model || this.modelRoots[id]) continue;
+      const g = this.chars[id];
+      for (const p of this.primitives[id]) p.visible = false;
+      model.root.position.y = -(id === "duck" ? 0.15 : BODY_HEIGHT[id] / 2);
+      g.add(model.root);
+      this.modelRoots[id] = model.root;
+      const anchor = model.sockets.socket_label;
+      if (anchor) {
+        g.updateMatrixWorld(true);
+        const label = g.children.find((c): c is THREE.Sprite => c instanceof THREE.Sprite);
+        if (label) label.position.copy(g.worldToLocal(anchor.getWorldPosition(new THREE.Vector3())));
+      }
+    }
+    const hat = lib.get("hat");
+    if (hat && this.itemPrimitives.hat.visible) {
+      this.itemPrimitives.hat.visible = false;
+      this.items.hat.add(hat.root);
     }
   }
 
@@ -199,21 +240,53 @@ export class GameScene {
     this.camera.updateProjectionMatrix();
   }
 
+  /** Turn a model toward its movement direction (view-only state; model front is +Z). */
+  private faceMovement(id: CharacterId, x: number, z: number): void {
+    const root = this.modelRoots[id];
+    const prev = this.lastPos[id];
+    this.lastPos[id] = { x, z };
+    if (!root || !prev) return;
+    const dx = x - prev.x;
+    const dz = z - prev.z;
+    if (dx * dx + dz * dz > 1e-8) root.rotation.y = Math.atan2(dx, dz);
+  }
+
+  /** Carried Duck: its root sits on Adult's socket_carry (0.90 m). Without both models, the view position is kept. */
+  private placeCarriedDuck(view: View): void {
+    const socket = this.modelLib?.get("adult")?.sockets.socket_carry;
+    if (!view.characters.duck.carried || !socket || !this.modelRoots.duck || !this.modelRoots.adult) return;
+    this.chars.adult.updateMatrixWorld(true);
+    const p = socket.getWorldPosition(this.tmp);
+    this.chars.duck.position.set(p.x, p.y + view.characters.duck.radius, p.z);
+  }
+
+  /** Hat on Duck's socket_hat while attached to Duck (the view's own hat position is used otherwise). */
+  private placeHat(view: View): void {
+    const socket = this.modelLib?.get("duck")?.sockets.socket_hat;
+    if (!view.hatAttachedToDuck || !socket || !this.modelRoots.duck) return;
+    this.chars.duck.updateMatrixWorld(true);
+    const p = socket.getWorldPosition(this.tmp);
+    this.items.hat.position.set(p.x, p.y, p.z);
+  }
+
   render(view: View, pose: Pose, timeSeconds: number): void {
     for (const id of ["duck", "child", "adult"] as const) {
       const c = view.characters[id];
       let y = c.pos.y;
       if (id === "duck" && !c.carried) y += Math.sin(timeSeconds * 3) * 0.015; // gentle bobbing
       this.chars[id].position.set(c.pos.x, y, c.pos.z);
+      this.faceMovement(id, c.pos.x, c.pos.z);
       const ring = this.rings[id];
       ring.visible = c.active;
       ring.position.set(c.pos.x, 0.04, c.pos.z);
     }
+    this.placeCarriedDuck(view);
     for (const id of ["coin", "key", "hat"] as const) {
       const it = view.items[id];
       this.items[id].visible = it.visible;
       this.items[id].position.set(it.pos.x, it.pos.y, it.pos.z);
     }
+    this.placeHat(view);
     this.doorBlocker.visible = view.saunaDoorLocked;
     this.camera.position.set(pose.eye.x, pose.eye.y, pose.eye.z);
     this.camera.lookAt(pose.target.x, pose.target.y, pose.target.z);
