@@ -1,5 +1,5 @@
-// The connected final models (Duck, hat) parse and match the final-assets
-// contract. No WebGL: GLTFLoader.parse only.
+// Duck/hat parse without WebGL. Textured human GLBs are inspected structurally
+// here; actual image decoding/rendering is checked separately in the browser.
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { Box3, Group, type Object3D, Quaternion, Vector3 } from "three";
@@ -16,8 +16,8 @@ const parse = (buf: Buffer): Promise<Object3D> =>
 const size = (o: Object3D) => new Box3().setFromObject(o).getSize(new Vector3());
 
 describe("connected models (shoulder-view Req 6)", () => {
-  it("lists exactly the Duck and the hat; Child and Adult stay placeholders", () => {
-    expect(Object.keys(CHARACTER_MODEL_URLS)).toEqual(["duck"]);
+  it("lists all three pipeline character models and the hat", () => {
+    expect(Object.keys(CHARACTER_MODEL_URLS)).toEqual(["duck", "child", "adult"]);
     expect(Object.keys(ITEM_MODEL_URLS)).toEqual(["hat"]);
   });
 
@@ -25,10 +25,49 @@ describe("connected models (shoulder-view Req 6)", () => {
     const want: Record<string, [string, number]> = {
       "models/duck.glb": ["ab9b26501b25c3b1678b068cd286fecb7a83b884cd66577c04a228d50abd089e", 141096],
       "models/hat_sauna_duck.glb": ["027796c5bba9e2f27fe8e9f5d6a5017f19e55521961e15998b8f90ba6bbe9102", 27208],
+      "models/child.glb": ["9d15324acce1d81b932628a7139c03a73cf36943be996d8db5b14c712bd9edca", 792720],
+      "models/adult.glb": ["3ad862ac190776670c82df610c54a1def6a794914118cb11c1759b554e1cf270", 723784],
     };
-    for (const url of [CHARACTER_MODEL_URLS.duck!, ITEM_MODEL_URLS.hat!]) {
+    for (const url of [...Object.values(CHARACTER_MODEL_URLS), ...Object.values(ITEM_MODEL_URLS)]) {
       const b = file(url);
       expect([createHash("sha256").update(b).digest("hex"), b.length]).toEqual(want[url]);
+    }
+  });
+
+  it.each(["child", "adult"] as const)("%s has both outfits, sockets, bounded geometry and embedded textures", (id) => {
+    const b = file(CHARACTER_MODEL_URLS[id]!);
+    const jsonLength = b.readUInt32LE(12);
+    const g = JSON.parse(b.subarray(20, 20 + jsonLength).toString()) as {
+      nodes: { name?: string; translation?: number[] }[];
+      meshes: { primitives: { indices: number }[] }[];
+      accessors: { count: number }[];
+      materials: object[];
+      buffers: { uri?: string }[];
+      images: { uri?: string; bufferView: number; mimeType: string }[];
+      bufferViews: { byteOffset?: number; byteLength: number }[];
+      animations?: object[];
+    };
+    const names = g.nodes.map((n) => n.name);
+    for (const name of [id, "outfit_clothed", "outfit_bath", "socket_hand_r", "socket_label"]) expect(names).toContain(name);
+    expect(g.materials).toHaveLength(2);
+    expect(g.images).toHaveLength(2);
+    expect(g.buffers.every((buffer) => buffer.uri === undefined)).toBe(true);
+    const triangles = g.meshes.flatMap((mesh) => mesh.primitives).reduce((n, p) => n + g.accessors[p.indices]!.count / 3, 0);
+    expect(triangles).toBeLessThanOrEqual(12000);
+    expect(g.animations ?? []).toHaveLength(0);
+    const binaryStart = 20 + jsonLength + 8;
+    for (const img of g.images) {
+      expect(img.uri).toBeUndefined();
+      expect(img.mimeType).toBe("image/png");
+      const imageStart = binaryStart + (g.bufferViews[img.bufferView]!.byteOffset ?? 0);
+      expect(b.readUInt32BE(imageStart + 16)).toBe(1024);
+      expect(b.readUInt32BE(imageStart + 20)).toBe(1024);
+    }
+    if (id === "adult") {
+      const carry = g.nodes.find((n) => n.name === "socket_carry")!.translation!;
+      expect(carry[0]).toBeCloseTo(-0.24, 5);
+      expect(carry[1]).toBeCloseTo(0.90, 5);
+      expect(carry[2]).toBeCloseTo(0.20, 5);
     }
   });
 

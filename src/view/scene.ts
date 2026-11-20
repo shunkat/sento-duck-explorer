@@ -1,5 +1,5 @@
-// Placeholder-model scene. Static level built once; dynamic meshes follow the
-// view model each frame. Shapes are primitives only (Req 9.1, 9.2, 9.5).
+// Static level and fallback primitives, with pipeline-produced character/item
+// models following the view each frame. Gameplay state remains in core.
 import * as THREE from "three";
 import { CHARACTER_NAME, ITEM_NAME, ZONE_NAME } from "../core/text";
 import type { CharacterId, ItemId } from "../core/types";
@@ -7,7 +7,8 @@ import { CHARACTER_RADIUS, type Level } from "../level/layout";
 import type { AABB } from "../sim/geometry";
 import type { Pose } from "./camera";
 import { BODY_HEIGHT, type View } from "./deriveView";
-import { CEILING_Y, type FacingTracker, forwardOf, HOLE_LID_Y, bodyOpacity, modelRotationY, placeAtSocket, WALL_HEIGHT } from "./shoulder";
+import { applyOutfit, checkHumanContract, type Clothing } from "./humanModel";
+import { CEILING_Y, type FacingTracker, forwardOf, HOLE_LID_Y, bodyOpacity, modelRotationY, placeAtSocket, placeCharacterAtSocket, WALL_HEIGHT } from "./shoulder";
 import {
   CHARACTER_LABEL_GAP,
   LABEL_CANVAS_H,
@@ -104,6 +105,8 @@ export class GameScene {
   /** `socket_hat` of a loaded Duck model; the hat follows its position and rotation. */
   private duckHatSocket: THREE.Object3D | null = null;
   private itemModels: Partial<Record<ItemId, THREE.Object3D>> = {};
+  /** Last ClothingState seen per human (the game starts in the bath). */
+  private clothing: Record<"child" | "adult", Clothing> = { child: "unclothed", adult: "unclothed" };
   private viewportHeight = 1;
   private viewportWidth = 1;
   private tmp = new THREE.Vector3();
@@ -302,6 +305,12 @@ export class GameScene {
    * lowered by the center-to-bottom distance.
    */
   setCharacterModel(id: CharacterId, root: THREE.Object3D): void {
+    // Humans: show only the outfit for the current ClothingState before the first render.
+    if (id !== "duck") {
+      const problems = checkHumanContract(id, root);
+      if (problems.length) throw new Error(`${id} model contract: ${problems.join(", ")}`);
+      applyOutfit(root, this.clothing[id]);
+    }
     const old = this.models[id];
     if (old) this.chars[id].remove(old);
     for (const p of this.primitives[id]) p.visible = false;
@@ -378,9 +387,20 @@ export class GameScene {
       const act = view.characters[view.active].pos;
       const fade = overview || c.active ? 1 : bodyOpacity(pose.eye, act, c.pos, c.radius);
       this.setBodyOpacity(id, fade);
+      if (id !== "duck" && this.clothing[id] !== c.clothing) {
+        this.clothing[id] = c.clothing;
+        const m = this.models[id];
+        if (m) applyOutfit(m, c.clothing);
+      }
       const ring = this.rings[id];
       ring.visible = c.active;
       ring.position.set(c.pos.x, 0.04, c.pos.z);
+    }
+    // All character transforms are current before resolving sockets. The Duck
+    // GLB's bottom, not its center group, belongs on Adult's carry socket.
+    const carrySocket = this.models.adult?.getObjectByName("socket_carry");
+    if (view.characters.duck.carried && carrySocket) {
+      placeCharacterAtSocket(this.chars.duck, carrySocket, CHARACTER_RADIUS.duck);
     }
     for (const id of ["coin", "key", "hat"] as const) {
       const it = view.items[id];
@@ -388,6 +408,13 @@ export class GameScene {
       if (id === "hat" && view.hatAttachedToDuck && this.duckHatSocket) {
         placeAtSocket(this.items.hat, this.duckHatSocket);
         this.itemModels.hat?.position.set(0, 0, 0);
+        continue;
+      }
+      const hand = it.owner.kind === "character" && it.owner.id !== "duck"
+        ? this.models[it.owner.id]?.getObjectByName("socket_hand_r") : null;
+      if (hand) {
+        placeAtSocket(this.items[id], hand);
+        this.itemModels[id]?.position.set(0, 0, 0);
         continue;
       }
       const shift = id === "hat" && view.hatAttachedToDuck ? duckShift : { x: 0, z: 0 };

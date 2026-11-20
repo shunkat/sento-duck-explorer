@@ -18,11 +18,13 @@ export interface CharacterView {
   height: number;
   active: boolean;
   carried: boolean;
+  /** Humans only: picks the outfit variant of a human model. Duck is always "unclothed". */
+  clothing: "clothed" | "unclothed";
 }
 
 export interface View {
   characters: Record<CharacterId, CharacterView>;
-  items: Record<ItemId, { pos: Vec3; visible: boolean }>;
+  items: Record<ItemId, { pos: Vec3; visible: boolean; owner: Owner }>;
   hatAttachedToDuck: boolean;
   saunaDoorLocked: boolean;
   active: CharacterId;
@@ -49,7 +51,8 @@ function characterView(s: GameState, id: CharacterId): CharacterView {
       y = r;
     }
   }
-  return { id, pos: { x: c.pos.x, y, z: c.pos.z }, radius: r, height: h, active: s.active === id, carried };
+  const clothing = id === "duck" ? "unclothed" : s[id].clothing;
+  return { id, pos: { x: c.pos.x, y, z: c.pos.z }, radius: r, height: h, active: s.active === id, carried, clothing };
 }
 
 function topOf(v: CharacterView): number {
@@ -76,9 +79,9 @@ export function deriveView(s: GameState, level: Level): View {
   const hat = s.items.hat;
   const hatAttachedToDuck = hat.owner.kind === "character" && hat.owner.id === "duck" && hat.status === "equipped";
   const items = {
-    coin: { pos: itemPos(level, characters, "coin", s.items.coin.owner, false), visible: true },
-    key: { pos: itemPos(level, characters, "key", s.items.key.owner, false), visible: true },
-    hat: { pos: itemPos(level, characters, "hat", hat.owner, hatAttachedToDuck), visible: true },
+    coin: { pos: itemPos(level, characters, "coin", s.items.coin.owner, false), visible: true, owner: s.items.coin.owner },
+    key: { pos: itemPos(level, characters, "key", s.items.key.owner, false), visible: true, owner: s.items.key.owner },
+    hat: { pos: itemPos(level, characters, "hat", hat.owner, hatAttachedToDuck), visible: true, owner: hat.owner },
   };
   const a = characters[s.active];
   return {

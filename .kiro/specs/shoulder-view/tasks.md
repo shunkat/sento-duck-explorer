@@ -1,6 +1,6 @@
 # Implementation Plan: Shoulder View
 
-Created 2026-11-20 by the Crew implementer (Kiro Crew worker) directly from the user's request relayed by the Conductor. Status words: `[ ]` open, `[x]` done and tested. A held-key playthrough has not been run; see 5.2.
+Created 2026-11-20 by the Crew implementer (Kiro Crew worker) directly from the user's request relayed by the Conductor. Status words: `[ ]` open, `[x]` done and tested. A short held-key smoke check was performed by Codex; the full route remains open (5.2).
 
 - [x] 1. Pure camera math in `src/view/shoulder.ts`
   - [x] 1.1 Yaw helpers, `cameraRelativeMove`, `yawFromDirection` — Req 3.1, 3.3
@@ -17,13 +17,13 @@ Created 2026-11-20 by the Crew implementer (Kiro Crew worker) directly from the 
   - [x] 3.1 2.6 m walls, indoor ceilings, NarrowHole lid and lintel; Overview cutaway — Req 4.3
   - [x] 3.2 Characters turned to Facing; front marker on human primitives; beak at +Z; carried Duck 0.3 m in front of Adult — Req 1.4, 4.4
   - [x] 3.3 Zone and fixture labels depth-tested — Req 7.2
-- [ ] 4. Model entry point (4.3 open)
-  - [x] 4.1 `CHARACTER_MODEL_URLS` (empty, `src/view/modelEntry.ts`), `GameScene.setCharacterModel`, lazy `GLTFLoader` in `main.ts` with fallback and warning — Req 6.1–6.4
+- [x] 4. Model entry point (full gameplay validation remains open in 5.2)
+  - [x] 4.1 `CHARACTER_MODEL_URLS` (`src/view/modelEntry.ts`), `GameScene.setCharacterModel`, lazy `GLTFLoader` in `main.ts` with fallback and warning — Req 6.1–6.4
   - [x] 4.2 `modelRotationY` tested against the +Z front. The root offset (`centerY − radius` / `centerY − height / 2`) lives in `setCharacterModel` and is not unit-tested (needs WebGL).
-  - [ ] 4.3 Load a real GLB in the browser. Blocked until a final model exists (final-assets pipeline; Codex handles images, service and rights). No GLB was loaded in this round.
+  - [x] 4.3 Load a real GLB in the browser: Duck rendered and moved during Codex's held-key smoke check. Human texture decoding and route validation remain in 10.4/5.2.
   - [x] 4.4 Hat at `socket_hat` with world position and rotation (`placeAtSocket`, wired in `GameScene.render`); test in `tests/shoulder.test.ts` — Req 6.5
   - [x] 4.5 Concrete model connection plan and PR #3 unification steps in `design.md`; CC BY 4.0 credit need recorded — Req 6.6
-  - [ ] 4.6 When `public/models/duck.glb` arrives: add it to `CHARACTER_MODEL_URLS`, add the CC BY 4.0 credit, check in the browser
+  - [x] 4.6 Duck registered with CC BY 4.0 credit; live shoulder-view rendering and movement checked by Codex
 - [x] 6. Review fixes (verifier B, `e1cf59c`)
   - [x] 6.1 F-1: camera eases behind the moving character; orbit hold 1 s; tests in `tests/shoulder.test.ts` — Req 1.5
   - [x] 6.2 D-2: Child and Adult look point lowered so the body is in frame
@@ -45,13 +45,25 @@ Created 2026-11-20 by the Crew implementer (Kiro Crew worker) directly from the 
   - [x] 9.3 N-5: declutter moves labels instead of hiding them; route rooms ranked up; overview names not cut by walls; tests — Req 7.3
   - [ ] 9.4 Browser with held keys: hat on shelf → Child → Duck → carried; Codex
 - [ ] 5. Verification
-  - [x] 5.1 `npm test` 116 passed (84 before + 32 new), `npm run build`, publication check on the tree and `dist` PASS
-  - [ ] 5.2 Browser: Crew single-key checks done (page renders in the shoulder view with Duck in front; Tab to Child shows Child's back with Adult ahead; C shows the cutaway overview and C returns). Not run: walking, orbit with J / L held, the NarrowHole, sauna, hat, carrying and pond in the shoulder view. These need held keys and are left to Codex via live takeover.
+  - [x] 5.1 Kiro round 4: 116 tests passed. Codex human-connection follow-up: 122 tests passed, `npm run build` passed; publication checks on source/index and `dist` passed. These are not full-route gameplay results.
+  - [ ] 5.2 Browser: Crew single-key checks plus Codex held W/L and Tab smoke on the earlier Duck/hat version. Full route, human textures/outfits, narrow hole, sauna, held/equipped/carried hat, pond, F1–F7 and four restarts require the fixed integrated version.
   - [x] 5.3 Pointed `prototype-core-gameplay/design.md` camera line to this spec
 - Not in this plan: final models (final-assets pipeline), merging PR #3, held-key playthrough.
 
-## Known issues
+## Codex integration assistance after the Crew network interruption
 
-- Some zone labels are partly hidden by the cut walls in the Overview because zone labels are now depth-tested.
-- D-4 and D-1: fixed in round 3 (tasks 8.3, 8.4). In the overview a lower-priority label may now be hidden instead of overlapping.
-- Fixed: pond rocks drawn 1.0 m (they still block the camera); Overview maps W to up the map (F-3, `FollowCamera.moveYaw`, tested); final-assets wall height noted as open there (F-4).
+A/B stopped editing after repeated network errors, preserving `72bdbe8` and A's `humanModel.ts`/clothing-view changes. Codex retained those changes and completed the following small connection work. Kiro remains the author of the camera, input, scene and game implementation; these follow-up changes are attributed to Codex.
+
+- [x] 10.1 Register the actual Child/Adult GLBs with their CC BY 4.0 sidecars; keep `head_shared` optional because each outfit includes its own head
+- [x] 10.2 Select exactly one outfit before first draw and on ClothingState changes; retain primitives if validation/load fails
+- [x] 10.3 Put held items on human hand sockets, and Duck's bottom on Adult's `socket_carry` with its world position and rotation; preserve core ownership and positions
+- [ ] 10.4 Verify actual human texture display, clothing changes and attachments in the browser. Structural GLB checks do not prove texture decoding or visual quality
+- [x] 10.5 Two Codex reviewers independently checked the connection diff and asset-registration tests, with no required findings. This is separate from the interrupted Kiro B verification
+
+## Known limitations
+
+- Human meshes are static. Shared skeleton and walking/carry/wiping animation are not implemented.
+- Environment geometry and small props other than the sauna hat remain primitives.
+- The thin entry point and PR #3 ModelAdapter still need the unification described in `design.md`; PR #3 has not been merged.
+- Full normal-input route and recovery checks remain open in 5.2.
+- Earlier label, input-yaw feedback and camera clipping issues were fixed in review rounds 3/4; confirm their user-visible behavior in the full playthrough.

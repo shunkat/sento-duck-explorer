@@ -68,6 +68,12 @@ export function placeAtSocket(obj: Object3D, socket: Object3D): void {
   socket.getWorldQuaternion(obj.quaternion);
 }
 
+/** Character groups sit at body center, while their GLB root is at the feet. */
+export function placeCharacterAtSocket(obj: Object3D, socket: Object3D, centerToBottom: number): void {
+  placeAtSocket(obj, socket);
+  obj.translateY(centerToBottom);
+}
+
 
 /**
  * Walk from `from` toward `to` and stop before the first box (grown by

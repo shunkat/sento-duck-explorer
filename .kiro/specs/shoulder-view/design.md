@@ -32,14 +32,14 @@ All new math is pure and tested without WebGL: `src/view/shoulder.ts`.
 | Obstacle clipping | 2D segment vs. AABB (walls, NPCs, locked door blocker), boxes grown by 0.12 m. Two steps: pivot → shoulder point, then shoulder point → eye | Provisional | Walls are full height, so a 2D test is exact for walls. Two steps keep the camera in line inside the 0.4 m NarrowHole instead of collapsing onto Duck |
 | Wall height | Visual walls 2.6 m, indoor ceilings at 2.7 m; Overview cuts walls to 1.0 m and hides ceilings | Provisional; **conflicts with final-assets design** (see below) | |
 | NarrowHole | Visual lid over the corridor and a lintel above the hole at 0.55 m. Eye clamped to ≤ 0.45 m while it is inside the hole box | Provisional | The hole reads as a hole in the wall; the camera follows Duck inside |
-| Carried Duck | Drawn 0.3 m in front of Adult along Adult's Facing (hat follows) | Provisional, view-only. Matches PR #3's `socket_carry` (0, 0.90, 0.22), front +Z | Logic keeps `duck.pos = adult.pos` |
+| Carried Duck | Its GLB bottom follows Adult's `socket_carry` world position/rotation; current model-local anchor is (-0.24, 0.90, +0.20) m. The center group is offset by 0.15 m. Primitive fallback stays 0.3 m forward | Actual exported socket, verified with combined-model render and transform test | Logic keeps `duck.pos = adult.pos` |
 | Labels | Zone and fixture labels depth-tested (hidden behind walls). Character and item labels stay on top. Screen-space declutter each frame: controlled character > key items > other characters > fixtures > rooms; a label overlapping a higher one is hidden. The controlled character's label shows in the overview only | Provisional (review D-4) | Pure `declutter` in `labels.ts`, tested |
 | View after checkpoint load / new game | Camera yaw, input latch and facing reset to `CHECKPOINT_VIEW_YAW` (start looks toward the NarrowHole) | Provisional (N-1, D-1) | |
 | Bodies next to the lens or in the way | Non-active characters fade (`bodyOpacity`: near the lens 0.6–1.3 m, or on the eye → controlled-character line, to 0.3) | Provisional (D-1, N-6) | |
 | Orbit while walking | Manual orbit shifts the latched input yaw by the same delta; automatic follow does not | Provisional (N-4) | Keeps N-1 fixed and lets the player steer with J / L / mouse |
 | Label placement | `declutter` moves a lower label up/down by whole heights (±2 steps) before hiding it. Route rooms rank with fixtures. Overview turns off depth test for room/fixture names | Provisional (N-5) | |
-| Connected models | Duck `models/duck.glb` (SHA-256 `ab9b2650…089e`, 141096 B) and hat `models/hat_sauna_duck.glb` (`027796c5…9102`, 27208 B), both Meshy 6 Lite → Blender, CC BY 4.0; credit in `THIRD_PARTY_NOTICES.md` and `public/models/*.LICENSE.txt` from main `09cdfe9`. Child and Adult remain placeholders | Confirmed hashes from the Conductor | Not a complete model set |
-| Model entry point | `CHARACTER_MODEL_URLS` (empty) + `GameScene.setCharacterModel(id, root)`; loaded with three's `GLTFLoader` in `main.ts` | Provisional; narrow seam for PR #3 | See below |
+| Connected models | Duck, Child, Adult and sauna hat from asset main `2f0261d`; all reference → Meshy 6 Lite → Blender → GLB, CC BY 4.0 with notices and sidecars | Exact hashes/measurements in `assets/manifest.json`; structural tests | Environment/remaining props are still primitives; human meshes have no rig |
+| Model entry point | `CHARACTER_MODEL_URLS` + `GameScene.setCharacterModel(id, root)`; loaded with three's `GLTFLoader` in `main.ts` | Provisional; narrow seam for PR #3 | See below |
 
 ## Alignment with PR #3 (ModelAdapter, open, not merged)
 
@@ -55,7 +55,7 @@ Conflicts to resolve when PR #3 is merged:
 
 1. **Facing math**: PR #3 computes facing inside `GameScene` from `lastPos`. This spec computes it in `FacingTracker` (pure, tested) and also uses it for the camera switch. Resolution: `useModels` should read facing from `FacingTracker`.
 2. **Two entry points**: PR #3 has `ModelLibrary` + `useModels`; this spec has `CHARACTER_MODEL_URLS` + `setCharacterModel`. Resolution: keep `ModelLibrary` as the loader and let `useModels` call `setCharacterModel` per loaded character; then remove the direct `GLTFLoader` call from `main.ts`.
-3. **Carried Duck**: PR #3 parents Duck's root to `socket_carry`. This spec offsets the primitive 0.3 m forward. With a model, `socket_carry` wins.
+3. **Carried Duck**: PR #3 parents Duck's root to `socket_carry`. This branch applies the same socket world pose to Duck's center group with the 0.15 m offset. Keep one path, preserve the actual asset socket, and do not apply the fallback offset twice.
 4. **Label anchor**: PR #3 moves the label to `socket_label`. This spec keeps the bottom-anchored label (commit `04cb179`). With a model, use the socket position as the anchor and keep the bottom anchoring.
 5. **`scene.ts` edits overlap** (character construction and `render`). Expect a manual merge.
 
@@ -74,12 +74,12 @@ Our side stays a thin connection point. PR #3 stays with the Web side; this bran
 | Responsibility | PR #3 (`src/view/models.ts`, `useModels`) | This branch |
 | --- | --- | --- |
 | Load and parse GLB, error fallback | `ModelLibrary.load/parse/get` | Lazy `GLTFLoader` in `main.ts`, only while `CHARACTER_MODEL_URLS` is non-empty (temporary) |
-| Socket lookup | `findSockets` (4 names) | `getObjectByName("socket_hat")` for the Duck only |
+| Socket lookup | `findSockets` (4 names) | Model-local hat/hand/carry/label names; human contract checks before replacing primitives |
 | Bounds check vs manifest | `measureModel`, `checkBounds` | none |
 | Place model root, hide primitive | `useModels` + `render` | `GameScene.setCharacterModel(id, root)` |
 | Facing | from `lastPos` in `GameScene` | `FacingTracker` (also drives the camera) |
 | Hat on Duck | `placeHat` (position only — defect, Req 6.5) | `placeAtSocket`: world position and rotation, tested |
-| Carried Duck | root at `socket_carry` | primitive 0.3 m in front of Adult |
+| Carried Duck | root at `socket_carry` | `placeCharacterAtSocket` applies world pose plus body-center offset; fallback stays 0.3 m forward |
 | Model list | none | `CHARACTER_MODEL_URLS` in `src/view/modelEntry.ts` |
 
 Unifying at integration (whoever merges second does this):
@@ -88,7 +88,7 @@ Unifying at integration (whoever merges second does this):
 2. `useModels` becomes a loop over loaded ids that calls `setCharacterModel`. Keep one placement code path.
 3. Facing: remove `lastPos` from `GameScene`; use `FacingTracker`.
 4. Hat: replace `placeHat` with `placeAtSocket` (position and rotation). Keep the Req 6.5 test.
-5. Carry: with an Adult model, parent the Duck root to `socket_carry` and drop the 0.3 m offset.
+5. Carry: retain the current tested root-on-socket placement, or parent Duck's GLB root to the socket while preserving label/fade behavior. Do not apply the 0.3 m primitive fallback offset to a loaded Adult. Held items follow each human's `socket_hand_r`; exactly one outfit is visible before first draw and on clothing changes.
 6. Run both test files (`tests/models.test.ts` from PR #3, `tests/shoulder.test.ts`) after the merge.
 7. PR #3's `tests/models.test.ts` asserts that every `assets/manifest.json` entry still has `measured === null`. That test cannot hold once a real asset is measured (the Duck GLB is the first). At integration the Web side replaces it with a bounds check of each measured entry against its limits (`checkBounds`), and keeps `null` allowed only for assets that do not exist yet.
 

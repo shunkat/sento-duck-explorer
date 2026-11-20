@@ -46,10 +46,9 @@ if (charEntries.length + itemEntries.length > 0) {
   void import("three/addons/loaders/GLTFLoader.js").then(({ GLTFLoader }) => {
     const loader = new GLTFLoader();
     const load = (id: string, url: string, use: (root: THREE.Object3D) => void) =>
-      loader.loadAsync(import.meta.env.BASE_URL + url).then(
-        (gltf) => use(gltf.scene),
-        (e) => console.warn(`Model for ${id} could not be loaded from ${url}; keeping the placeholder.`, e),
-      );
+      loader.loadAsync(import.meta.env.BASE_URL + url)
+        .then((gltf) => use(gltf.scene))
+        .catch((e) => console.warn(`Model for ${id} could not be loaded from ${url}; keeping the placeholder.`, e));
     for (const [id, url] of charEntries) void load(id, url, (root) => scene.setCharacterModel(id, root));
     for (const [id, url] of itemEntries) void load(id, url, (root) => scene.setItemModel(id, root));
   });
