@@ -42,6 +42,7 @@ export const HANDLED_KEYS = new Set([
 export class KeyboardState {
   private held = new Set<string>();
   private pressed = new Set<PressAction>();
+  private shiftFromModifier = false;
 
   keyDown(code: string, repeat = false): void {
     this.held.add(code);
@@ -51,12 +52,24 @@ export class KeyboardState {
 
   keyUp(code: string): void {
     this.held.delete(code);
+    if (!this.moveHeld()) this.shiftFromModifier = false;
+  }
+
+  /**
+   * Some input paths (or focusing the game while Shift is already held) send
+   * a shifted movement event without a separate Shift keydown. Keep that
+   * modifier only while movement is held, so a missing Shift keyup cannot
+   * leave the next ordinary movement running.
+   */
+  syncShiftModifier(shift: boolean): void {
+    this.shiftFromModifier = shift && this.moveHeld();
   }
 
   /** Focus loss: forget held keys (no stuck movement) and pending presses. */
   blur(): void {
     this.held.clear();
     this.pressed.clear();
+    this.shiftFromModifier = false;
   }
 
   /** True while any WASD / arrow key is held. */
@@ -99,7 +112,7 @@ export class KeyboardState {
     const frame: InputFrame = {
       ...EMPTY_INPUT,
       move: len > 0 ? { x: x / len, z: z / len } : { x: 0, z: 0 },
-      run: [...RUN_KEYS].some((k) => this.held.has(k)),
+      run: this.shiftFromModifier || [...RUN_KEYS].some((k) => this.held.has(k)),
       switchCharacter: p.has("switchCharacter"),
       interact: !dialogOpen && p.has("interact"),
       confirm: dialogOpen && p.has("interact"),
@@ -123,8 +136,12 @@ export function attachKeyboard(kb: KeyboardState, target: Window = window): () =
   const down = (e: KeyboardEvent) => {
     if (HANDLED_KEYS.has(e.code)) e.preventDefault();
     kb.keyDown(e.code, e.repeat);
+    kb.syncShiftModifier(e.shiftKey);
   };
-  const up = (e: KeyboardEvent) => kb.keyUp(e.code);
+  const up = (e: KeyboardEvent) => {
+    kb.keyUp(e.code);
+    kb.syncShiftModifier(e.shiftKey);
+  };
   const blur = () => kb.blur();
   const vis = () => {
     if (document.visibilityState !== "visible") kb.blur();
@@ -134,6 +151,7 @@ export function attachKeyboard(kb: KeyboardState, target: Window = window): () =
   target.addEventListener("blur", blur);
   document.addEventListener("visibilitychange", vis);
   return () => {
+    kb.blur();
     target.removeEventListener("keydown", down);
     target.removeEventListener("keyup", up);
     target.removeEventListener("blur", blur);
