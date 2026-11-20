@@ -58,7 +58,9 @@ describe("view and guide along the full route", () => {
   it("shows the action available nearby", () => {
     const sim = new Sim();
     expect(nearbyHints(sim.state, LEVEL)).toEqual(["アヒルは水の上だけ泳げます"]);
-    sim.walk([{ x: 1, z: 5.5 }, { x: LEVEL.nodes.narrow_hole_coin.x + 0.2, z: LEVEL.nodes.narrow_hole_coin.z }]);
+    expect(objective(sim.state)).toContain("Tabで子ども"); // start with Duck selected, hint to switch to Child
+    R.childCarriesDuckToChannel(sim);
+    sim.walk([{ x: LEVEL.nodes.narrow_hole_coin.x + 0.2, z: LEVEL.nodes.narrow_hole_coin.z }]);
     expect(nearbyHints(sim.state, LEVEL)).toContain("E: 500円玉を拾う");
     sim.switchTo("child");
     expect(objective(sim.state)).toContain("Tabでアヒル");
@@ -140,21 +142,34 @@ describe("keyboard-driven start of the route", () => {
     return r;
   };
 
-  it("Duck finds the coin and hands it to Adult with keys only", () => {
+  it("Child carries Duck to the channel, Duck finds the coin and hands it to Adult, keys only", () => {
     const kb = new KeyboardState();
     const sim = new Sim();
     let s = sim.state;
+    // Duck alone stays in the tub: the channel is across dry floor.
     s = keyWalk(kb, s, { x: 1, z: 5.5 });
+    expect(s.duck.zone).toBe("bathwater");
+    s = press(kb, s, "Tab"); // → Child
+    expect(s.active).toBe("child");
+    s = keyWalk(kb, s, { x: s.duck.pos.x + 0.5, z: s.duck.pos.z });
+    s = press(kb, s, "KeyE");
+    expect(s.duck.carriedBy).toBe("child");
+    s = keyWalk(kb, s, LEVEL.channelEntrance);
+    s = press(kb, s, "KeyE");
+    expect(s.duck.carriedBy).toBeNull();
+    expect(s.active).toBe("duck"); // dropping onto the channel hands control to Duck
     s = keyWalk(kb, s, { x: LEVEL.nodes.narrow_hole_coin.x + 0.2, z: LEVEL.nodes.narrow_hole_coin.z });
     s = press(kb, s, "KeyE");
     expect(s.items.coin.owner).toEqual({ kind: "character", id: "duck" });
-    s = keyWalk(kb, s, { x: 1, z: 5.5 });
-    s = keyWalk(kb, s, { x: s.adult.pos.x - 0.6, z: s.adult.pos.z });
+    s = keyWalk(kb, s, { x: 0.95, z: 5.5 });
+    s = press(kb, s, "Tab"); // → Child
+    s = press(kb, s, "Tab"); // → Adult
+    s = keyWalk(kb, s, { x: 3.4, z: 4.8 });
+    s = keyWalk(kb, s, { x: LEVEL.channelEntrance.x, z: 4.9 });
+    s = press(kb, s, "Tab"); // → Duck
     s = press(kb, s, "KeyE");
     expect(s.dialog).toEqual({ item: "coin", from: "duck", to: "adult" });
     s = press(kb, s, "KeyE"); // E confirms while the dialog is open
     expect(s.items.coin.owner).toEqual({ kind: "character", id: "adult" });
-    s = press(kb, s, "Tab");
-    expect(s.active).toBe("child");
   });
 });

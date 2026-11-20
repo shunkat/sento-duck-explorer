@@ -1,7 +1,7 @@
 // Pure state → view model. The renderer only applies this, so what is drawn
 // (e.g. the hat on Duck) is testable without WebGL (Req 10.6).
 import { CHARACTER_NAME, CHECKPOINT_NAME, ITEM_NAME, NODE_NAME, ZONE_NAME } from "../core/text";
-import type { CharacterId, GameState, ItemId, Owner } from "../core/types";
+import type { CharacterId, GameState, HumanId, ItemId, Owner } from "../core/types";
 import { CHARACTER_RADIUS, type Level } from "../level/layout";
 
 export interface Vec3 {
@@ -18,6 +18,8 @@ export interface CharacterView {
   height: number;
   active: boolean;
   carried: boolean;
+  /** Duck only: who holds it. */
+  carrier?: HumanId;
   /** Humans only: picks the outfit variant of a human model. Duck is always "unclothed". */
   clothing: "clothed" | "unclothed";
   /** Humans only: where the towel is. Duck never has one. */
@@ -34,6 +36,9 @@ export interface View {
   focus: Vec3;
 }
 
+/** Carried Duck's center height per carrier: Adult's chest, Child's hands (placeholder bodies). */
+export const CARRY_CENTER_Y: Record<HumanId, number> = { adult: 1.05, child: 0.55 };
+
 export const BODY_HEIGHT: Record<CharacterId, number> = { duck: 0.3, child: 1.2, adult: 1.7 };
 const DESK_TOP = 0.9;
 
@@ -44,9 +49,9 @@ function characterView(s: GameState, id: CharacterId): CharacterView {
   let y = h / 2;
   let carried = false;
   if (id === "duck") {
-    if (s.duck.carriedBy === "adult") {
+    if (s.duck.carriedBy) {
       carried = true;
-      y = 1.05; // in Adult's arms
+      y = CARRY_CENTER_Y[s.duck.carriedBy]; // in the carrier's arms
     } else if (s.duck.inPond) {
       y = 0.1; // floating
     } else {
@@ -55,7 +60,8 @@ function characterView(s: GameState, id: CharacterId): CharacterView {
   }
   const clothing = id === "duck" ? "unclothed" : s[id].clothing;
   const towel = id === "duck" ? undefined : s[id].towel;
-  return { id, pos: { x: c.pos.x, y, z: c.pos.z }, radius: r, height: h, active: s.active === id, carried, clothing, towel };
+  const carrier = id === "duck" ? (s.duck.carriedBy ?? undefined) : undefined;
+  return { id, pos: { x: c.pos.x, y, z: c.pos.z }, radius: r, height: h, active: s.active === id, carried, carrier, clothing, towel };
 }
 
 function topOf(v: CharacterView): number {

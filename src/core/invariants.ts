@@ -25,10 +25,15 @@ export function checkInvariants(s: GameState | CoreState): string[] {
   if (hat.status === "paid") out.push("hat: invalid status paid");
   if ((hat.status === "equipped") !== (tag(hat.owner) === "character:duck")) out.push("hat: equipped ⇔ owner duck");
 
-  if (s.duck.carriedBy !== null) {
-    if (s.duck.carriedBy !== "adult") out.push("duck: carrier must be adult");
+  const carrier = s.duck.carriedBy;
+  if (carrier !== null) {
+    if (carrier !== "adult" && carrier !== "child") out.push("duck: carrier must be a human");
+    else {
+      if (s.duck.pos.x !== s[carrier].pos.x || s.duck.pos.z !== s[carrier].pos.z) out.push("duck: not at carrier anchor");
+      // Child carries before the hat, Adult after it.
+      if ((carrier === "child") !== (hat.status !== "equipped")) out.push("duck: carrier does not match the hat stage");
+    }
     if (s.duck.inPond) out.push("duck: carried while in pond");
-    if (s.duck.pos.x !== s.adult.pos.x || s.duck.pos.z !== s.adult.pos.z) out.push("duck: not at carrier anchor");
   }
   if (s.dialog && !(["coin", "key"] as string[]).includes(s.dialog.item)) out.push("dialog: non-allowlisted item");
 

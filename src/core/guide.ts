@@ -16,9 +16,15 @@ export function objective(s: GameState): string {
   if (s.outcome.kind === "cleared") return "クリア！帽子を被ったアヒルが池の奥に着きました";
 
   if (coin.owner.kind === "node" && coin.owner.id === "narrow_hole_coin") {
-    return `アヒルで湯船から左の水路を泳いで小さな穴に入り、奥の500円玉を拾おう（アヒルは水の上だけ動けます）${switchTo(s, "duck")}`;
+    if (s.duck.carriedBy === "child") return "子どもで湯船の左の「水路の入口」まで歩き、Eでアヒルを水路に下ろそう";
+    if (s.duck.zone === "bathwater") {
+      return `500円玉は左の小さな穴の奥。アヒルだけでは湯船から水路へ行けないので、子どもでアヒルの近くでEを押して抱え、湯船の左の水路の入口へ運ぼう${switchTo(s, "child")}`;
+    }
+    return `アヒルで水路を泳いで小さな穴に入り、奥の500円玉を拾おう（アヒルは水の上だけ動けます）${switchTo(s, "duck")}`;
   }
-  if (holds(s, "coin", "duck")) return `アヒルで大人に500円玉を渡そう：湯船に戻り、大人の近くでE${switchTo(s, "duck")}`;
+  if (holds(s, "coin", "duck")) {
+    return `アヒルで大人に500円玉を渡そう：大人を水路の入口のそばへ連れてきて、近くでE（子どもがアヒルを抱えて運んでもOK）${switchTo(s, "duck")}`;
+  }
 
   if (coin.status !== "paid") {
     const both = (f: (h: HumanId) => boolean) => f("child") && f("adult");
@@ -63,7 +69,7 @@ export function objective(s: GameState): string {
   if (s.duck.carriedBy === "adult") {
     return "子どもと一緒に右の露天風呂を通って池の入口へ。入口でEを押すとアヒルを池に置けます（2人は3m以内で）";
   }
-  return `大人で湯船のそばのアヒルに近づき、Eで抱えよう（アヒルは大人が抱えないと浴室を出られません）${switchTo(s, "adult")}`;
+  return `大人で水辺のアヒルに近づき、Eで抱えよう（帽子を被ったアヒルは大人が池まで運びます）${switchTo(s, "adult")}`;
 }
 
 /** Keys that currently do something for the active character, e.g. "E: 500円玉を拾う". */
@@ -86,8 +92,9 @@ export function nearbyHints(s: GameState, level: Level): string[] {
     }
     if (inBathWater(level, h.pos) && h.towel === "head") out.push("タオルは頭の上（Qでは湯につきません）");
     if (isSauna(h.zone)) out.push("サウナでは大声(V)・押す(F)はマナー違反");
-  } else if (s.duck.carriedBy === "adult") {
-    out.push("大人が抱えている間、アヒルは動けません（Tabで大人に切り替え）");
+  } else if (s.duck.carriedBy) {
+    const who = name(s.duck.carriedBy);
+    out.push(`${who}が抱えている間、アヒルは動けません（Tabで${who}に切り替え）`);
   } else if (!s.duck.inPond) {
     out.push("アヒルは水の上だけ泳げます");
   }

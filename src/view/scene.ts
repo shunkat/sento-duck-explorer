@@ -37,7 +37,7 @@ const ROUTE_ZONES = new Set(["reception", "changing", "bath", "narrow_hole", "sa
 
 /** Zones with a ceiling in the shoulder view (hidden in the overview). */
 const INDOOR = new Set(["reception", "common", "changing", "bath", "sauna_entry", "sauna_crowd"]);
-/** View-only: the carried Duck is drawn this far in front of Adult (final model: socket_carry). */
+/** View-only: the carried Duck is drawn this far in front of its carrier's placeholder (models: sockets). */
 const CARRY_FORWARD = 0.3;
 /** Wall height while the overview shows the map as a cutaway. */
 const OVERVIEW_WALL_HEIGHT = 1.0;
@@ -266,6 +266,9 @@ export class GameScene {
     // Fixtures.
     const locker = boxMesh({ minX: level.locker.x + 0.3, minZ: level.locker.z - 0.6, maxX: level.locker.x + 0.7, maxZ: level.locker.z + 0.6 }, 1.6, 0, 0xff9900);
     this.scene.add(locker);
+    const entrance = this.label("水路の入口（子どもがアヒルを下ろす）", "fixture", "#bdf");
+    entrance.position.set(level.channelEntrance.x, 0.9, level.channelEntrance.z);
+    this.scene.add(entrance);
     const lockerLabel = this.label("ロッカー（E）", "fixture");
     lockerLabel.position.set(level.locker.x + 0.5, 1.9, level.locker.z);
     this.scene.add(lockerLabel);
@@ -433,7 +436,8 @@ export class GameScene {
 
   /** Resolve actual model poses before computing the camera, including carried Duck's socket. */
   positionCharacters(view: View, timeSeconds: number, facing: FacingTracker): Vec3 {
-    const carry = forwardOf(facing.yaw("adult"));
+    const carrierId = view.characters.duck.carrier ?? "adult";
+    const carry = forwardOf(facing.yaw(carrierId));
     const duckShift = view.characters.duck.carried ? { x: carry.x * CARRY_FORWARD, z: carry.z * CARRY_FORWARD } : { x: 0, z: 0 };
     for (const id of ["duck", "child", "adult"] as const) {
       const c = view.characters[id];
@@ -456,11 +460,22 @@ export class GameScene {
       ring.visible = c.active;
       ring.position.set(c.pos.x, 0.04, c.pos.z);
     }
-    // All character transforms are current before resolving sockets. The Duck
-    // GLB's bottom, not its center group, belongs on Adult's carry socket.
-    const carrySocket = this.models.adult?.getObjectByName("socket_carry");
-    if (view.characters.duck.carried && carrySocket) {
-      placeCharacterAtSocket(this.chars.duck, carrySocket, CHARACTER_RADIUS.duck);
+    // All character transforms are current before resolving sockets. Adult:
+    // the Duck GLB's bottom on `socket_carry`. Child has no carry socket, so
+    // Duck's center sits at the real right hand (`socket_hand_r`), turned
+    // like the Child (no socket tilt), never above the head or on Adult.
+    if (view.characters.duck.carried) {
+      if (carrierId === "adult") {
+        const carrySocket = this.models.adult?.getObjectByName("socket_carry");
+        if (carrySocket) placeCharacterAtSocket(this.chars.duck, carrySocket, CHARACTER_RADIUS.duck);
+      } else {
+        const hand = this.models.child?.getObjectByName("socket_hand_r");
+        if (hand) {
+          this.chars.child.updateWorldMatrix(true, true);
+          hand.getWorldPosition(this.chars.duck.position);
+          this.chars.duck.rotation.set(0, modelRotationY(facing.yaw("child")), 0);
+        }
+      }
     }
     const focus = this.chars[view.active].position;
     return { x: focus.x, y: focus.y, z: focus.z };
@@ -494,6 +509,15 @@ export class GameScene {
       if (hand) {
         placeAtSocket(this.items[id], hand);
         this.itemModels[id]?.position.set(0, 0, 0);
+        continue;
+      }
+      if (it.owner.kind === "character" && it.owner.id === "duck") {
+        // Follow the Duck as actually drawn (e.g. in Child's hand), keeping the view offset.
+        const d = view.characters.duck.pos;
+        const g = this.chars.duck.position;
+        this.items[id].position.set(g.x + it.pos.x - d.x, g.y + it.pos.y - d.y, g.z + it.pos.z - d.z);
+        this.items[id].quaternion.identity();
+        this.itemModels[id]?.position.set(0, -ITEM_PRIMITIVE_HALF_HEIGHT[id], 0);
         continue;
       }
       this.items[id].position.set(it.pos.x, it.pos.y, it.pos.z);

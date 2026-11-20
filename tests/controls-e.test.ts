@@ -189,7 +189,8 @@ describe("E at the locker dresses and undresses", () => {
 describe("towel on the head or in the hand", () => {
   it("starts held; on the head Q does not dip it (hint); back in the hand Q is F1", () => {
     const sim = new Sim();
-    sim.switchTo("child"); // in the bathwater
+    sim.switchTo("child");
+    sim.walk([{ x: 4.6, z: 3.4 }]); // in the bathwater, out of reach of Duck
     expect(sim.state.child.towel).toBe("held");
     pressE(sim);
     expect(sim.state.child.towel).toBe("head");

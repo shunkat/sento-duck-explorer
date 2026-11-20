@@ -119,3 +119,13 @@ The source remained fixed at `29eba523f0fc4ca9d804eb948dad5c5d6fa6e486` througho
 **Full normal-input route: CLEAR.** Kiro A and independent verifier B also passed **174 tests**, the production build and publication checks on source and distribution. Independent Codex core and view reviews found no remaining required code defects; stale design descriptions of Duck drying and land recovery were corrected in the documentation follow-up. Existing GLBs and their attribution were unchanged.
 
 The new test suite covers the shared water geometry, shore collision, channel joints, invalid starting positions, accepted/refused water drops, wetness/towel rules and checkpoint continuation. The normal-input run specifically repeated the hat checkpoint restore; it did not repeat all four restores or all F1–F7 cases, a channel-specific towel dip, or a valid bath-water drop/re-pickup. Earlier version-specific evidence remains above. The channel/hole surfaces are provisional geometry for the later environment art pass.
+
+## Child carries Duck to the coin channel (Kiro Crew, fix set in progress)
+
+New version: the coin channel is separated from the tub by dry floor; Child carries Duck to the channel entrance before the hat; Adult carries it to the pond after the hat. The previous section describes the connected-channel build and stays as recorded; its playthrough does not carry over to this version.
+
+| Check | Result | By |
+| --- | --- | --- |
+| Automated tests (Child-required coin, real-input carry → coin → Adult, input ignored by either carrier, refused drops, per-carrier view, paidReturned restore with Child holding Duck, dry gap) | Passed | Crew A |
+| Build, publication check on source and `dist` | Passed | Crew A |
+| Normal-input playthrough | Final check pending (one run after the whole fix set) | — |

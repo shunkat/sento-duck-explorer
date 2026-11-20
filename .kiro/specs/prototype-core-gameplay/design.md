@@ -17,7 +17,7 @@ The workspace contains no code yet, so every technical choice below is a proposa
 | --- | --- | --- | --- |
 | Child accompaniment | Child accompanies Adult at every pair door: bath ↔ changing ↔ reception (payment trip), bath ↔ sauna_entry, and bath ↔ open_air ↔ pond_entrance (trip to the pond). Both must dry and dress where required. | Provisional (steering) | Low: isolated in `pair.ts` and the `PAIR_DOORS` list |
 | Checkpoints | 4 points: `start`; `paidReturned` (coin paid, pair back in the bath); `hatEquipped`; `duckInPond` (saved after Duck is in the pond with Adult and Child both in `pond_entrance`) | Provisional (steering) | Low: checkpoint triggers are data |
-| Who carries Duck | Adult only. Child accompanies via pair doors. Child and Duck have no pick-up-Duck action. | Provisional (steering) | Low |
+| Who carries Duck | Child before the hat is equipped (user request 2026-11-20: Child carries Duck to the coin channel); Adult from the hat to the pond. Duck never carries itself. | Child part: user request; split by hat stage: provisional | Low: `duckCarrierNow` |
 | GameOverScreen | Overlay with violation ID, a short reason, the correct manner, and "R: restart from checkpoint" | Provisional | Low: HUD only |
 | Pond movement | Continuous movement: water current + directional input force, bounded by pond walls. Pond physics runs only while Duck is the active character; otherwise Duck is frozen. | Provisional (steering) | Medium: tuning only |
 | Item transfers | Give action uses an allowlist: Coin duck → adult, Key adult → child. The Hat is never transferred by dialog; only Child's Equip action moves it to Duck. | Provisional (review fix) | Low: `TRANSFER_ALLOWLIST` constant |
@@ -139,7 +139,7 @@ interface TickResult { state: GameState; events: GameEvent[] }
 2. **Dialog stage**: if a transfer dialog is open, handle only `confirm` / `cancel`. Movement and switching are blocked (Req 1.5).
 3. **Switch stage**: on the player's manual `switchCharacter` input, rotate `active` Duck → Child → Adult → Duck. If a switch happens, `tick` returns right after this stage with only `active` (and `tickCount`) changed. No action, movement, or pond physics runs in a manual switch tick (Req 1.2, 1.7, 10.1). Automatic changes of `active` are not switch-stage events: Place Duck in pond sets `active` together with Duck's carry, position, and pond state in the action stage, and restore sets `active` from the snapshot (Req 1.9).
 4. **Action stage**: resolve one discrete action per tick (interact, shout, push, dipTowel). Drying, dressing and the towel toggle are `interact` candidates. Shout and push record a pending violation if inside the sauna.
-5. **Movement stage**: move only the active character, plus Duck when carried by Adult and the pair companion during a pair-door crossing. Resolve collision. Pond physics runs for Duck only when `duck.inPond && active === "duck"`. When Duck is in the pond and not active, its `pos` and `vel` are left untouched (Req 1.8, 8.5).
+5. **Movement stage**: move only the active character, plus Duck when carried (by Child or Adult) and the pair companion during a pair-door crossing. Resolve collision. Pond physics runs for Duck only when `duck.inPond && active === "duck"`. When Duck is in the pond and not active, its `pos` and `vel` are left untouched (Req 1.8, 8.5).
 6. **Zone stage**: compute zone transitions, apply wet rules, pair transitions, and door locks. Record pending violations (F2, F3, F4, F5).
 7. **Outcome stage**: if any violation is pending, set `gameOver` with the first violation by ID order and stop. Otherwise, if the clear condition holds, set `cleared`. Then evaluate checkpoint triggers on the final state of the tick (see Checkpoints).
 
@@ -160,9 +160,9 @@ interface TickResult { state: GameState; events: GameEvent[] }
 | Pay fee (no coin) | Adult | In reception at desk, no Coin | Rejected: "500円玉が必要です" | 4.6 |
 | Unlock sauna door | Child | Holds Key, within 1.0 m of door, door `locked` | door → `unlocked` | 3.6 |
 | Pick up Hat | Child | Hat owner `node:sauna_hat_shelf`, within 0.6 m | Hat owner → child | 3.8 |
-| Pick up Duck | Adult only | `duck.carriedBy === null`, hat equipped, Duck within 1.0 m, Duck not in pond | `duck.carriedBy` → `"adult"` | 3.10 |
+| Pick up Duck | Child before the hat, Adult after (`duckCarrierNow`) | `duck.carriedBy === null`, Duck within 1.0 m, not in the pond | `duck.carriedBy` → the actor | 3.10, 3.16 |
 | Place Duck in pond | Adult carrying Duck | Adult and Child both inside `pond_entrance` | `carriedBy` → null, Duck → pond spawn, `inPond: true`, `vel` zero, active → duck. The outcome stage then saves `duckInPond` (see Checkpoints) | 3.11 |
-| Put Duck down | Adult carrying Duck | Not in `pond_entrance`; a bath-water point within 1.0 m with no wall between (`duckDropPoint`) | `carriedBy` → null, Duck on that water point. No such point: rejected, Duck stays held | 2.6 |
+| Put Duck down | The carrier (Child or Adult) | Not Adult in `pond_entrance`; a bath-water point within 1.0 m of the carrier with no wall between (`duckDropPoint`) | `carriedBy` → null, Duck on that water point. A Child drop outside the tub (coin channel or hole) makes Duck active. No such point: rejected, Duck stays held | 2.6, 3.16 |
 | Towel head ↔ hand | Child or Adult (active) | Always (lowest priority) | `towel`: `held` ↔ `head` | 6.10 |
 
 ```ts
@@ -217,7 +217,7 @@ Duck is exempt from F2, F4, and F5 because they target human characters. Duck ca
 
 ### Duck on water (2026-11-20, user correction)
 
-- `LEVEL.duckWater` (in `src/level/layout.ts`) is the one source for Duck's movement, drop points and rendering: the tub `(2,3)–(7,7)`, a channel `(-0.1,5.3)–(2.2,5.7)` (same 0.4 m width as the hole, overlapping the tub and the hole so the joints are continuous) and the hole `(-3,5.3)–(0,5.7)`. The channel is a provisional layout choice. It is not a zone, but a human whose center is on any of these water rects becomes `wet` like in the tub, so crossing the channel on the way to the sauna means drying again with E at the sauna door (the objective names who is wet). Q with a held towel on any of these water rects (tub, channel, hole) is F1; with the towel on the head it only shows the hint (`inBathWater`).
+- `LEVEL.duckWater` (in `src/level/layout.ts`) is the one source for Duck's movement, drop points and rendering: the tub `(2,3)–(7,7)`, the coin channel `(-0.1,5.3)–(1.2,5.7)` (same 0.4 m width as the hole, joined to the hole) and the hole `(-3,5.3)–(0,5.7)`. *(Updated 2026-11-20 for the Child-carry request: the channel no longer touches the tub. A 0.8 m dry floor gap (x 1.2–2.0) separates them, so Duck cannot swim to the coin alone. The "水路の入口" sign marks `LEVEL.channelEntrance` (1.45, 5.5), where Child stands to put Duck onto the channel. Position and sizes: provisional design.)* Earlier text described a connected channel `(-0.1,5.3)–(2.2,5.7)`. The channel is a provisional layout choice. It is not a zone, but a human whose center is on any of these water rects becomes `wet` like in the tub, so crossing the channel on the way to the sauna means drying again with E at the sauna door (the objective names who is wet). Q with a held towel on any of these water rects (tub, channel, hole) is F1; with the towel on the head it only shows the hint (`inBathWater`).
 - `shoreBoxes` turns the land around the union into blocking boxes (grid cut along every rect edge), so only the union's outer boundary blocks. `stepDuckWater` moves Duck's circle against walls + shore with the usual radius / sub-step collision, so Duck glides along edges and does not cross the shore (the discrete collision can leave sub-millimetre contact at concave corners). A start point off the water, or without clearance, does not move; a result off the water is discarded.
 - Carried Duck ignores its input. Checkpoint `hatEquipped` spawns Duck at `(6.6, 6)` on the tub, the humans beside it on the floor.
 
@@ -395,7 +395,7 @@ Properties are tested by generating random sequences of `InputFrame`s (and rando
 
 ### Property 4: Inactive characters stay still
 
-*For any* reachable state and any input frame, every non-active character's position is unchanged after the tick, except Duck while carried by Adult (moves to Adult's anchor) and the companion human during a successful pair-door crossing. In particular, a Duck in the pond that is not active keeps both `pos` and `vel` unchanged over any number of ticks.
+*For any* reachable state and any input frame, every non-active character's position is unchanged after the tick, except Duck while carried (moves to its carrier's anchor) and the companion human during a successful pair-door crossing. In particular, a Duck in the pond that is not active keeps both `pos` and `vel` unchanged over any number of ticks.
 
 **Validates: Requirements 1.3, 1.8, 8.5**
 

@@ -3,7 +3,7 @@
 import type { Level } from "../level/layout";
 import { CHARACTER_RADIUS } from "../level/layout";
 import { moveCircle } from "../sim/collision";
-import { closestPoint, distance, sub } from "../sim/geometry";
+import { closestPoint, containsPoint, distance, sub } from "../sim/geometry";
 import { wallsFor } from "../sim/movement";
 import { areaOf, zoneAtOr } from "../sim/zones";
 import { MSG } from "./text";
@@ -94,6 +94,7 @@ const CANDIDATES: Candidate[] = [
     label: () => "500円玉を拾う",
     applies: ({ s, level }) =>
       s.active === "duck" &&
+      s.duck.carriedBy === null &&
       s.items.coin.owner.kind === "node" &&
       s.items.coin.owner.id === "narrow_hole_coin" &&
       distance(s.duck.pos, level.nodes.narrow_hole_coin) <= REACH.coin,
@@ -162,33 +163,34 @@ const CANDIDATES: Candidate[] = [
     },
   },
   {
-    // Pick up Duck (Adult only; Duck must not already be carried).
+    // Pick up Duck: Child before the hat (to the coin channel), Adult once the hat is on (to the pond).
     label: () => "アヒルを抱える",
     applies: ({ s }) =>
-      s.active === "adult" &&
+      isHuman(s.active) &&
+      s.active === duckCarrierNow(s) &&
       s.duck.carriedBy === null &&
       !s.duck.inPond &&
-      s.items.hat.status === "equipped" &&
-      near(s, "adult", "duck", REACH.pickUpDuck),
+      near(s, s.active, "duck", REACH.pickUpDuck),
     run: ({ s }) => {
-      s.duck.carriedBy = "adult";
-      s.duck.pos = { ...s.adult.pos };
+      const who = s.active as HumanId;
+      s.duck.carriedBy = who;
+      s.duck.pos = { ...s[who].pos };
       s.duck.vel = { x: 0, z: 0 };
-      s.duck.zone = s.adult.zone;
+      s.duck.zone = s[who].zone;
     },
   },
   {
-    // Place Duck in the pond, or put Duck down elsewhere (Adult carrying Duck).
+    // Place Duck in the pond (Adult), or put Duck onto adjacent bath water (its carrier).
     label: ({ s, level }) =>
-      s.adult.zone === "pond_entrance"
+      s.duck.carriedBy === "adult" && s.adult.zone === "pond_entrance"
         ? "アヒルを池に置く"
         : duckDropPoint(s, level)
           ? "アヒルを水に下ろす"
           : "ここでは下ろせない（湯船か水路のそばで）",
-    applies: ({ s }) => s.active === "adult" && s.duck.carriedBy === "adult",
+    applies: ({ s }) => isHuman(s.active) && s.duck.carriedBy === s.active,
     run: (c) => {
       const { s } = c;
-      if (s.adult.zone === "pond_entrance") {
+      if (s.duck.carriedBy === "adult" && s.adult.zone === "pond_entrance") {
         if (s.child.zone !== "pond_entrance") {
           c.events.push({ kind: "rejected", reason: MSG.needBothAtShore });
           return;
@@ -210,7 +212,11 @@ const CANDIDATES: Candidate[] = [
   },
 ];
 
+/** Who may pick Duck up now: Child before the hat is equipped, Adult after. */
+export const duckCarrierNow = (s: GameState): HumanId => (s.items.hat.status === "equipped" ? "adult" : "child");
+
 function findTransfer(s: GameState): TransferDialog | null {
+  if (s.active === "duck" && s.duck.carriedBy !== null) return null; // a carried Duck does nothing itself
   for (const t of TRANSFER_ALLOWLIST) {
     if (s.active === t.from && holds(s, t.item, t.from) && near(s, t.from, t.to, REACH.give)) return { ...t };
   }
@@ -229,13 +235,16 @@ function placeDuckInPond({ s, level }: Ctx): void {
 }
 
 /**
- * Where Adult can put Duck down outside the pond: the nearest point of the bath
- * water (tub, channel, hole) within reach, reachable from Adult in a straight
- * line without a wall in between. Null when there is none (no floor drops, no
- * drops over walls or shores).
+ * Where the carrier can put Duck down outside the pond: the nearest point of
+ * the bath water (tub, coin channel, hole) within reach, reachable from the
+ * carrier in a straight line without a wall in between. Null when there is
+ * none (no floor drops, no drops over walls or shores).
  */
 export function duckDropPoint(s: GameState, level: Level): Vec2 | null {
-  if (areaOf(s.adult.zone) !== "bath") return null;
+  const who = s.duck.carriedBy;
+  if (!who) return null;
+  const h = s[who];
+  if (areaOf(h.zone) !== "bath") return null;
   const walls = wallsFor(level, s.saunaDoor);
   const r = CHARACTER_RADIUS.duck;
   let best: Vec2 | null = null;
@@ -244,10 +253,10 @@ export function duckDropPoint(s: GameState, level: Level): Vec2 | null {
     // Keep the center a radius inside the water where the rect allows it.
     const ix = Math.min(r, (w.maxX - w.minX) / 2);
     const iz = Math.min(r, (w.maxZ - w.minZ) / 2);
-    const p = closestPoint({ minX: w.minX + ix, maxX: w.maxX - ix, minZ: w.minZ + iz, maxZ: w.maxZ - iz }, s.adult.pos);
-    const d = distance(p, s.adult.pos);
+    const p = closestPoint({ minX: w.minX + ix, maxX: w.maxX - ix, minZ: w.minZ + iz, maxZ: w.maxZ - iz }, h.pos);
+    const d = distance(p, h.pos);
     if (d > REACH.pickUpDuck || d >= bestD) continue;
-    const reached = moveCircle(s.adult.pos, sub(p, s.adult.pos), r, walls);
+    const reached = moveCircle(h.pos, sub(p, h.pos), r, walls);
     if (distance(reached, p) > 1e-3) continue;
     best = p;
     bestD = d;
@@ -262,10 +271,13 @@ function putDuckDown(c: Ctx): void {
     c.events.push({ kind: "rejected", reason: MSG.cannotPutDuckHere });
     return; // Duck stays in Adult's arms
   }
+  const carrier = s.duck.carriedBy;
   s.duck.carriedBy = null;
   s.duck.pos = p;
   s.duck.vel = { x: 0, z: 0 };
   s.duck.zone = zoneAtOr(level, s.duck.pos, s.duck.zone);
+  // Child putting Duck onto the coin channel hands control to Duck (Tab still switches).
+  if (carrier === "child" && !containsPoint(level.duckWater[0]!, p)) s.active = "duck";
 }
 
 /** The `interact` input: run the first applicable candidate. */

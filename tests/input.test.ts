@@ -125,8 +125,10 @@ describe("attached keyboard events", () => {
     // Dialog: E opens the coin handoff, the next E confirms it.
     const d = new Sim();
     R.duckGetsCoin(d);
-    d.walk([{ x: 1, z: 5.5 }]);
-    d.approach(d.pos("adult"), REACH.give);
+    d.walk([{ x: 0.95, z: 5.5 }]);
+    d.switchTo("adult");
+    d.walk([{ x: 3.4, z: 4.8 }, { x: LEVEL.channelEntrance.x, z: 4.9 }]);
+    d.switchTo("duck");
     let g = tap(d.state, "KeyE");
     expect(g.dialog).toEqual({ item: "coin", from: "duck", to: "adult" });
     g = tap(g, "KeyE");

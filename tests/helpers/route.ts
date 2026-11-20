@@ -7,19 +7,37 @@ import type { Sim } from "./sim";
 
 const N = LEVEL.nodes;
 
-/** Steps 1–2: Duck enters the NarrowHole and picks up the coin. */
-export function duckGetsCoin(sim: Sim): void {
+/**
+ * Step 2a (2026-11-20 user request): Duck cannot swim from the tub to the coin
+ * channel, so Child picks Duck up, walks the short dry stretch to the channel
+ * entrance and puts Duck onto the channel. Control passes to Duck.
+ */
+export function childCarriesDuckToChannel(sim: Sim): void {
   expect(sim.active).toBe("duck");
-  // Line up with the channel inside the tub, then swim straight through it into the hole.
-  sim.walk([{ x: 4, z: 5.5 }, { x: N.narrow_hole_coin.x + 0.2, z: N.narrow_hole_coin.z }]);
+  sim.switchTo("child");
+  sim.approach(sim.pos("duck"), REACH.pickUpDuck);
+  sim.press("interact");
+  expect(sim.state.duck.carriedBy).toBe("child");
+  sim.walk([LEVEL.channelEntrance]);
+  sim.press("interact");
+  expect(sim.state.duck.carriedBy).toBeNull();
+  expect(sim.active).toBe("duck");
+}
+
+/** Steps 1–2: Child brings Duck to the channel; Duck swims into the NarrowHole and picks up the coin. */
+export function duckGetsCoin(sim: Sim): void {
+  childCarriesDuckToChannel(sim);
+  sim.walk([{ x: N.narrow_hole_coin.x + 0.2, z: N.narrow_hole_coin.z }]);
   sim.press("interact");
   expect(sim.owner("coin")).toBe("character:duck");
 }
 
-/** Step 3: Duck gives the coin to Adult (dialog + confirm). */
+/** Step 3: Duck swims back to the channel's end; Adult comes to the entrance; Duck gives the coin (dialog + confirm). */
 export function duckGivesCoin(sim: Sim): void {
-  sim.walk([{ x: 3, z: 5.5 }]); // straight back through the channel into the tub
-  sim.approach(sim.pos("adult"), REACH.give);
+  sim.walk([{ x: 0.95, z: 5.5 }]);
+  sim.switchTo("adult");
+  sim.walk([{ x: 3.4, z: 4.8 }, { x: LEVEL.channelEntrance.x, z: 4.9 }]);
+  sim.switchTo("duck");
   sim.press("interact");
   expect(sim.state.dialog).toEqual({ item: "coin", from: "duck", to: "adult" });
   sim.press("confirm");

@@ -76,7 +76,7 @@ export function tick(state: GameState, input: InputFrame, level: Level): TickRes
           d.pos = r.pos;
           d.vel = r.vel;
         } else {
-          // Outside the pond Duck only swims on water; the bath floor needs Adult to carry it.
+          // Outside the pond Duck only swims on water; across the floor a human carries it.
           d.pos = stepDuckWater(d.pos, input.move, walls, level.duckWater);
         }
         d.zone = zoneAtOr(level, d.pos, d.zone);
@@ -93,10 +93,11 @@ export function tick(state: GameState, input: InputFrame, level: Level): TickRes
     }
   }
 
-  // Carried Duck sits exactly at Adult's carry anchor (Req 2.5).
-  if (s.duck.carriedBy === "adult") {
-    s.duck.pos = { ...s.adult.pos };
-    s.duck.zone = s.adult.zone;
+  // Carried Duck sits exactly at its carrier's anchor (Req 2.5).
+  const carrier = s.duck.carriedBy;
+  if (carrier) {
+    s.duck.pos = { ...s[carrier].pos };
+    s.duck.zone = s[carrier].zone;
   }
 
   // 6. Wetness from water zones (Req 6.3, 6.5).

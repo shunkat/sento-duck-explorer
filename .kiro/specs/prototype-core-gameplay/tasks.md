@@ -112,3 +112,10 @@ Created directly by the main Kiro agent on 2026-11-20 after the built-in spec su
   - [x] 12.4 Guide, HUD and README text
   - [x] 12.5 Tests: `tests/duck-water.test.ts`; the full route and checkpoint tests run with the per-tick water check
   - [x] 12.6 Browser normal-input check: Codex, fixed `29eba52`. Movement stopped at four representative tub shores; an orbit-based diagonal probe stayed on water. Visible channel/coin round trip passed, humans re-wet in the channel and dried at the sauna, hat checkpoint restored Duck on water after real F1/R, carried Duck input and floor drop were refused, and the full route cleared. Overview-assisted positioning; exact evidence in `docs/shoulder-view-verification.md`.
+
+- [x] 13. Child carries Duck to the coin channel (2026-11-20 user request; Kiro Crew)
+  - [x] 13.1 `carriedBy: HumanId | null`; Child picks up before the hat, Adult after (`duckCarrierNow`); carrier anchor in tick, invariants, checkpoints (paidReturned keeps a Child-held Duck at the Child) — Req 3.10, 3.16
+  - [x] 13.2 Coin channel separated from the tub by a 0.8 m dry gap; entrance sign; Child drop onto the channel switches to Duck — Req 3.16, 2.8
+  - [x] 13.3 View: Duck at Child's `socket_hand_r` (no Child carry socket), facing like the carrier; Duck-owned items follow the drawn Duck; objective and hints name the carrier
+  - [x] 13.4 Tests: Duck alone cannot reach the coin; real-input Child carry → channel → coin → Adult; input ignored with either carrier; refused drops; per-carrier view; paidReturned restore with Child holding Duck; dry gap blocks Duck both ways
+  - [ ] 13.5 Final single normal-input playthrough of the whole fix set: Codex (see `.kiro/steering/verification-ownership.md`)

@@ -62,8 +62,11 @@ export interface HumanState extends CharacterState {
 }
 
 export interface DuckState extends CharacterState {
-  /** Adult is the only carrier (provisional). Duck never carries itself. */
-  carriedBy: "adult" | null;
+  /**
+   * Who holds Duck: Child before the hat is equipped (to bring it to the coin
+   * channel), Adult from the hat to the pond. Duck never carries itself.
+   */
+  carriedBy: HumanId | null;
   inPond: boolean;
 }
 

@@ -157,7 +157,7 @@ export function safeEye(base: Vec2, eye: Vec3, obs: Obstacles): Vec3 {
   return { x: e2.x, y, z: e2.z };
 }
 
-/** View-only facing from movement between frames. A carried Duck faces like Adult. */
+/** View-only facing from movement between frames. A carried Duck faces like its carrier. */
 export class FacingTracker {
   private yaws: Record<CharacterId, number> = { duck: 0, child: 0, adult: 0 };
   private last: Partial<Record<CharacterId, Vec2>> = {};
@@ -170,7 +170,7 @@ export class FacingTracker {
       this.last[id] = { x: c.pos.x, z: c.pos.z };
       this.movedNow[id] = false;
       if (id === "duck" && c.carried) {
-        this.yaws.duck = this.yaws.adult;
+        this.yaws.duck = this.yaws[c.carrier ?? "adult"];
         continue;
       }
       if (!prev) continue;
