@@ -4,7 +4,7 @@
 
 ## 状態
 
-**未登録・未稼働。** Kiro WebのSchedule作成画面を確認したが、GitHub接続が未設定。ユーザーは「これから公開します」と回答し、既存の公開リポジトリはないと確認した。ローカルGitは初期化済み。新規公開と、対象リポジトリへのKiro Agent GitHub App接続を準備中。
+**定期実行は未登録・未稼働。** [shunkat/sento-duck-explorer](https://github.com/shunkat/sento-duck-explorer) をPublic・MITで新規公開済み。ローカル `origin/main` と公開先の一致を確認した。対象リポジトリへのKiro Agent GitHub App接続とSchedule登録を準備中。
 
 2026-11-20、ユーザーは `shunkat/sento-duck-explorer` のPublic・MITでの新規公開、このリポジトリだけへのKiro Agent接続、毎時開発の有効化を明示承認した。MITライセンスを採用済み。登録後に本ファイルの状態を実態に合わせて更新する。
 
