@@ -29,8 +29,10 @@ Created 2026-11-20 by the Crew implementer (Kiro Crew worker) directly from the 
   - [x] 6.2 D-2: Child and Adult look point lowered so the body is in frame
   - [x] 6.3 D-3: key-help panel moved to the bottom right (the over-right-shoulder view puts the character left of center)
   - [x] 6.4 F-2: checked, no change. `#hud` has `pointer-events: none`, inherited by every panel, so a drag that starts over the HUD reaches the canvas. Not tested with a real drag.
+- [ ] 7. Codex review fix: blended camera poses ignored walls and the ceiling (`camera.ts` lerped toward the final pose)
+  - [ ] 7.1 Fixed in code: switch blend goes through `safeEye` every frame; C cuts instead of blending. Regression tests through `FollowCamera.update` (4 switches across walls/hole/pond, C return; 30–40 frames each) fail on the old code and pass now. Open until verifier B re-checks.
 - [ ] 5. Verification
-  - [x] 5.1 `npm test` 97 passed (84 before + 13 new), `npm run build`, publication check on the tree and `dist` PASS
+  - [x] 5.1 `npm test` 99 passed (84 before + 15 new), `npm run build`, publication check on the tree and `dist` PASS
   - [ ] 5.2 Browser: Crew single-key checks done (page renders in the shoulder view with Duck in front; Tab to Child shows Child's back with Adult ahead; C shows the cutaway overview and C returns). Not run: walking, orbit with J / L held, the NarrowHole, sauna, hat, carrying and pond in the shoulder view. These need held keys and are left to Codex via live takeover.
   - [x] 5.3 Pointed `prototype-core-gameplay/design.md` camera line to this spec
 - Not in this plan: final models (final-assets pipeline), merging PR #3, held-key playthrough.

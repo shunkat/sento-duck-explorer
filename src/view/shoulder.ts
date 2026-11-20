@@ -129,15 +129,25 @@ export function shoulderPose(id: CharacterId, focus: Vec3, yaw: number, obs: Obs
   const base = { x: focus.x, z: focus.z };
   const shoulder = clipSegment(base, { x: base.x + r.x * p.side, z: base.z + r.z * p.side }, obs.boxes);
   const back = clipSegment(shoulder, { x: shoulder.x - f.x * p.dist, z: shoulder.z - f.z * p.dist }, obs.boxes);
-  // Keep a clear line from the character to the eye, so the character stays in view.
-  const eye2 = clipSegment(base, back, obs.boxes);
-  let eyeY = Math.min(p.eye, CEILING_Y - 0.15);
-  if (inBox(obs.hole, eye2) || inBox(obs.hole, base)) eyeY = Math.min(eyeY, HOLE_LID_Y - 0.1);
-  const lookY = Math.min(p.look, eyeY);
+  const eye = safeEye(base, { x: back.x, y: p.eye, z: back.z }, obs);
+  const lookY = Math.min(p.look, eye.y);
   return {
-    eye: { x: eye2.x, y: eyeY, z: eye2.z },
+    eye,
     target: { x: shoulder.x + f.x * LOOK_AHEAD, y: lookY, z: shoulder.z + f.z * LOOK_AHEAD },
   };
+}
+
+/**
+ * Make an eye position safe for the character standing at `base`: a clear
+ * line from the character to the eye (so no wall in between), below the
+ * ceiling, and under the NarrowHole lid when inside it. Used for every pose
+ * the camera returns, including blended ones.
+ */
+export function safeEye(base: Vec2, eye: Vec3, obs: Obstacles): Vec3 {
+  const e2 = clipSegment(base, { x: eye.x, z: eye.z }, obs.boxes);
+  let y = Math.min(eye.y, CEILING_Y - 0.15);
+  if (inBox(obs.hole, e2) || inBox(obs.hole, base)) y = Math.min(y, HOLE_LID_Y - 0.1);
+  return { x: e2.x, y, z: e2.z };
 }
 
 /** View-only facing from movement between frames. A carried Duck faces like Adult. */

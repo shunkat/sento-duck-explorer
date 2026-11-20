@@ -2,7 +2,7 @@
 // .kiro/specs/shoulder-view), the auxiliary overview, and the switch blend.
 import type { CharacterId } from "../core/types";
 import type { Vec3 } from "./deriveView";
-import { followYaw, type Obstacles, shoulderPose } from "./shoulder";
+import { followYaw, type Obstacles, safeEye, shoulderPose } from "./shoulder";
 
 export const SWITCH_SECONDS = 0.4;
 
@@ -35,8 +35,14 @@ export class FollowCamera {
   /** Seconds since the last manual orbit input. */
   private sinceOrbit = Infinity;
 
+  /**
+   * C cuts straight to or from the overview (no blend). The overview eye is
+   * far above the roof, so any in-between pose would show the ceiling or a
+   * wall from outside (shoulder-view Req 4.5).
+   */
   toggleOverview(): void {
-    this.startBlend();
+    this.from = null;
+    this.elapsed = SWITCH_SECONDS;
     this.overview = !this.overview;
   }
 
@@ -70,9 +76,21 @@ export class FollowCamera {
       this.yaw = followYaw(this.yaw, facingYaw, moving, this.sinceOrbit, dt);
     }
     this.lastId = id;
-    const goal = this.overview ? OVERVIEW : shoulderPose(id, focus, this.yaw, obstacles);
+    if (this.overview) {
+      this.from = null;
+      this.current = OVERVIEW;
+      return this.current;
+    }
+    const goal = shoulderPose(id, focus, this.yaw, obstacles);
     this.elapsed += dt;
-    this.current = this.from && this.elapsed < SWITCH_SECONDS ? blendPose(this.from, goal, this.elapsed) : goal;
+    if (!this.from || this.elapsed >= SWITCH_SECONDS) {
+      this.current = goal;
+      return goal;
+    }
+    // Switch blend: every in-between eye is made safe for the new character
+    // (clear line to it, below the ceiling), so no frame looks through a wall.
+    const b = blendPose(this.from, goal, this.elapsed);
+    this.current = { eye: safeEye({ x: focus.x, z: focus.z }, b.eye, obstacles), target: b.target };
     return this.current;
   }
 }

@@ -227,3 +227,41 @@ describe("hat at the Duck model's socket (Req 6.5)", () => {
     expect(hat.quaternion.equals(new Quaternion())).toBe(false);
   });
 });
+
+describe("every pose FollowCamera.update returns is safe (Req 4.1, 4.2, 4.5)", () => {
+  const obs = obstaclesFor(LEVEL, "locked");
+  type Id = "duck" | "child" | "adult";
+  const at = (id: Id, x: number, z: number) => ({ id, focus: { x, y: id === "duck" ? 0.15 : id === "child" ? 0.6 : 0.85, z } });
+  const check = (id: Id, focus: { x: number; z: number }, eye: { x: number; y: number; z: number }) => {
+    expect(eye.y).toBeLessThanOrEqual(CEILING_Y - 0.15 + 1e-9);
+    for (const b of obs.boxes) expect(crosses(focus, eye, b)).toBe(false);
+  };
+
+  it("character switches across walls: sampled frames never look through a wall or the ceiling", () => {
+    const pairs = [
+      [at("duck", 4, 5), at("adult", 3, -2)], // bath → changing room (Codex repro a)
+      [at("adult", 3, -2), at("child", 2.6, 1.6)], // changing room → bath
+      [at("child", 2.6, 9.5), at("duck", -1.5, 5.5)], // sauna → inside the NarrowHole
+      [at("duck", 28, 4), at("adult", 25.2, 3.6)], // pond → shore
+    ] as const;
+    for (const [a, b] of pairs) {
+      const cam = new FollowCamera();
+      for (let i = 0; i < 5; i++) cam.update(a.id, a.focus, 1 / 60, 0, obs);
+      for (let i = 0; i < 40; i++) {
+        const p = cam.update(b.id, b.focus, 1 / 60, 0.7, obs);
+        check(b.id, b.focus, p.eye);
+      }
+    }
+  });
+
+  it("C to the overview and back cuts at once; no frame is above the ceiling", () => {
+    const a = at("adult", 8, 4);
+    const cam = new FollowCamera();
+    for (let i = 0; i < 5; i++) cam.update(a.id, a.focus, 1 / 60, 0, obs);
+    cam.toggleOverview();
+    const o = cam.update(a.id, a.focus, 1 / 60, 0, obs);
+    expect(o.eye.y).toBeGreaterThan(20); // the overview itself
+    cam.toggleOverview(); // Codex repro b: 0.1 s later the eye was at 28.99 m
+    for (let i = 0; i < 30; i++) check(a.id, a.focus, cam.update(a.id, a.focus, 1 / 60, 0, obs).eye);
+  });
+});

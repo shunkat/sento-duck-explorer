@@ -66,6 +66,7 @@ Items marked *(Provisional)* are working choices under `.kiro/steering/project-a
 2. THE Game SHALL keep the eye below the ceiling of indoor zones and below the NarrowHole lid while the camera is inside the NarrowHole.
 3. THE Game SHALL draw walls tall enough to enclose the rooms in the ShoulderCamera, and indoor ceilings. In the Overview it SHALL cut walls down and hide ceilings so the map stays readable.
 4. THE Game SHALL keep these visible in the ShoulderCamera: Duck inside the NarrowHole with the coin, the sauna crowd gaps and the hat shelf, the hat on Duck, Duck carried in front of Adult, and Duck in the pond.
+5. Criteria 1 and 2 SHALL hold for every pose the camera returns, including the blend after a character switch. WHEN C toggles the Overview on or off, THE Game SHALL cut to the new view at once (no blend), because an in-between pose would pass through the roof. *(Added 2026-11-20 after Codex's review: the blend ignored walls and the ceiling.)*
 
 ### Requirement 5: Overview stays auxiliary
 
