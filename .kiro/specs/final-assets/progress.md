@@ -65,3 +65,8 @@ The scanner is a heuristic. It does not inspect history, the remote, binary meta
 3. Stage 2: Duck → hat → bath section kit through the full pipeline, then measurements, a browser playthrough, and the style record.
 4. Stage 3: Child, Adult, items, and facilities in the recorded style.
 5. The Costume Contest presentation, only if the user adopts it.
+
+## Hat socket rotation fix (PR #3)
+
+- `GameScene.placeHat` copied only the `socket_hat` world position, so the hat did not turn with Duck. It now uses `copySocketPose` (`src/view/models.ts`), which also copies the socket world quaternion. A detached hat has its quaternion reset to identity.
+- Added regression tests in `tests/models.test.ts` (fixed angles and a fast-check property over yaw). Not verified in a browser.

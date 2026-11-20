@@ -92,3 +92,13 @@ export function checkBounds(measured: Measured, limits: ManifestLimits, eps = 1e
   }
   return out;
 }
+
+/**
+ * Copy a socket's world pose onto `target` (a direct child of an unrotated parent such as the scene).
+ * The caller must have updated the socket's world matrices. `scratch` avoids allocation.
+ */
+export function copySocketPose(target: THREE.Object3D, socket: THREE.Object3D, scratch: THREE.Vector3): void {
+  socket.getWorldPosition(scratch);
+  target.position.copy(scratch);
+  socket.getWorldQuaternion(target.quaternion);
+}

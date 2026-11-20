@@ -2,7 +2,9 @@
 // tests/fixtures/test_box_duck.glb is a test fixture, not a final asset.
 import { readFileSync } from "node:fs";
 import { describe, expect, it, vi } from "vitest";
-import { type GltfSource, ModelLibrary, SOCKET_NAMES, checkBounds, measureModel } from "../src/view/models";
+import * as THREE from "three";
+import fc from "fast-check";
+import { type GltfSource, ModelLibrary, SOCKET_NAMES, checkBounds, copySocketPose, measureModel } from "../src/view/models";
 
 function fixtureBytes(): ArrayBuffer {
   const b = readFileSync(new URL("./fixtures/test_box_duck.glb", import.meta.url));
@@ -68,5 +70,41 @@ describe("manifest bounds check", () => {
 
   it("has no measured bounds in the manifest yet (no final asset)", () => {
     for (const a of Object.values<{ measured: unknown }>(manifest.assets)) expect(a.measured).toBeNull();
+  });
+});
+
+describe("copySocketPose", () => {
+  async function setup() {
+    const lib = new ModelLibrary();
+    await lib.parse("fixture", fixtureBytes());
+    const root = lib.get("fixture")!.root;
+    const parent = new THREE.Group();
+    parent.add(root);
+    return { parent, socket: lib.get("fixture")!.sockets.socket_hat! };
+  }
+
+  function check(parent: THREE.Group, socket: THREE.Object3D, yaw: number) {
+    parent.rotation.y = yaw;
+    parent.position.set(1, 0.5, -2);
+    parent.updateMatrixWorld(true);
+    const hat = new THREE.Object3D();
+    copySocketPose(hat, socket, new THREE.Vector3());
+    hat.updateMatrixWorld(true);
+    expect(hat.getWorldPosition(new THREE.Vector3()).distanceTo(socket.getWorldPosition(new THREE.Vector3()))).toBeLessThan(1e-6);
+    const hatFwd = new THREE.Vector3(0, 0, 1).applyQuaternion(hat.quaternion);
+    const sockFwd = new THREE.Vector3(0, 0, 1).applyQuaternion(socket.getWorldQuaternion(new THREE.Quaternion()));
+    expect(hatFwd.distanceTo(sockFwd)).toBeLessThan(1e-6);
+    expect(hatFwd.x).toBeCloseTo(Math.sin(yaw), 6);
+    expect(hatFwd.z).toBeCloseTo(Math.cos(yaw), 6);
+  }
+
+  it("follows the parent's yaw for several angles", async () => {
+    const { parent, socket } = await setup();
+    for (const yaw of [0, Math.PI / 2, Math.PI, -2.1, 3]) check(parent, socket, yaw);
+  });
+
+  it("follows the parent's yaw for any angle", async () => {
+    const { parent, socket } = await setup();
+    fc.assert(fc.property(fc.double({ min: -Math.PI, max: Math.PI, noNaN: true }), (yaw) => check(parent, socket, yaw)));
   });
 });
