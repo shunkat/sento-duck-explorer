@@ -4,12 +4,13 @@ Draft for the Kiroween 2026 English description. It is a working draft, not a su
 
 ## Status (read first)
 
-- Placeholder models only. Every character and object is a box, sphere or capsule.
+- Placeholder models only. Every character and object is built from procedural primitive geometry generated in code (boxes, spheres, capsules, cones, cylinders and rings in Three.js), with no imported model files.
 - The final asset pipeline (reference image, Image to 3D, Blender adjustment, integration into the game) has **not** been done.
 - In a browser, only the first half of the route has been checked (by Codex, 2026-11-20). The second half has not been checked in a browser. It passes only as an automated, input-driven test.
 - No user study has been run. This document makes no claim about learning effects or accident reduction.
 - No deployed URL and no demo video exist yet. A local dev server address is not a submission URL.
-- Tests and build were not run when this draft was written (the dependency install was blocked in the authoring environment). The only recorded results are the earlier ones in `.kiro/specs/prototype-core-gameplay/progress.md`: 83 tests passing on 2026-11-20. Treat that as a prior record, not a fresh result.
+- In this cloud run, `npm ci` failed with HTTP 403 (the sandbox allows repository access only), so tests and build were **not run**. The 83 passing tests recorded in `.kiro/specs/prototype-core-gameplay/progress.md` come from earlier verification on the Mac side on 2026-11-20. Treat that as a prior record, not a result of this run. Only `python3 scripts/check-publication.py`, diff checks and a comparison of the text with `src/` were done here.
+- No browser check was done in this run. No browser tool was available among the tools exposed to this run. This says nothing about what Kiro Web offers in general.
 
 ## Summary
 
@@ -49,12 +50,12 @@ Each rule is a bathhouse manner. Breaking one ends the attempt and the game rest
 | F1 | Putting a towel in the bath |
 | F2 | Entering the changing room without drying off |
 | F3 | Running onto a soap bar |
-| F4 | Leaving the changing room unclothed |
+| F4 | Going from the changing room to reception, the common area or outside the building while unclothed. Moving from the changing room to the ordinary bath area is not a violation. |
 | F5 | Entering the sauna without drying off |
-| F6 | Making loud noise in the sauna |
+| F6 | Pressing the V key (the nuisance-shout action) while in the sauna |
 | F7 | Pushing people aside in the sauna |
 
-Shouting for help or to report a problem is not meant to be punished. In the current prototype F6 is triggered by an in-game action, not by microphone input.
+F6 is a deliberate rule-break action: the V key makes the character let out a nuisance shout. The game does not use a microphone, does not recognize speech and does not classify calls for help. Calling for help is not meant to be punished, but no help-calling action exists in the prototype yet, so none is claimed. (The on-screen Japanese text for F6 already says to tell people nearby or staff when someone feels unwell.)
 
 ## Cultural and safety framing
 
@@ -64,14 +65,20 @@ Shouting for help or to report a problem is not meant to be punished. In the cur
 
 ## How Kiro was used
 
-Only features recorded as actually used in `.kiro/specs/prototype-core-gameplay/progress.md` are listed.
+Two runs are described separately.
 
 - **Spec (requirements-first):** `requirements.md` was generated with the built-in requirements workflow and refined per requirement with the requirement-detailer sub-agent. The built-in design sub-agent failed twice, so `design.md` and `tasks.md` were written directly by the main Kiro agent.
 - **Steering:** `.kiro/steering/project-autonomy.md` supplied provisional decisions and the working style.
 - **Spec format validation:** used when `requirements.md` and `design.md` were created. It was unavailable later, so later edits were not machine-validated.
 - **Background process:** the Vite dev server ran as a Kiro-managed background process.
 
-Not used: Hooks, MCP servers, Powers, Skills and custom agents. The handoff document plans hooks, but none have been created.
+At the time of the prototype Spec, Hooks, MCP servers, Powers, Skills and custom agents were not used. The handoff document plans hooks, but none have been created.
+
+### This cloud run (English draft and review fixes)
+
+- The GitHub Power was used for repository work (branch, commits, pull request #1).
+- The orchestrated planner, coder and reviewer agents were used to plan the draft, write it and review it. Their findings led to the corrections in this document.
+- Not verified here: tests, build and browser behavior (see Status).
 
 ## Role of Codex
 

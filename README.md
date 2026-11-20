@@ -60,9 +60,9 @@ ChromeのVimium拡張を有効にしていると、`T`・`D` などのキーをV
 
 ## English overview
 
-**Sento Duck Explorer** is a 3D cooperative puzzle for Kiroween 2026, set in a fictional Japanese public bathhouse. You switch between a duck, a child and an adult, and combine their abilities in a 10-step route: the duck finds a coin in a tiny hole, the adult pays the sauna fee and gets the key, the child slips through the sauna crowd to fetch a sauna hat, and the adult carries the hat-wearing duck to a hidden pond. Breaking a bathhouse manner (rules F1 to F7, such as putting a towel in the bath or entering the sauna wet) ends the attempt, and you resume from the latest checkpoint. The facility, its rules and the 500-yen sauna fee are fictional.
+**Sento Duck Explorer** is a 3D cooperative puzzle for Kiroween 2026, set in a fictional Japanese public bathhouse. You switch between a duck, a child and an adult, and combine their abilities in a 10-step route: the duck finds a coin in a tiny hole, the adult pays the sauna fee and gets the key, the child slips through the sauna crowd to fetch a sauna hat, and the adult carries the hat-wearing duck to a hidden pond. Breaking a bathhouse manner (rules F1 to F7, such as putting a towel in the bath, entering the sauna wet, or going from the changing room to reception or outside unclothed) ends the attempt, and you resume from the latest checkpoint. The facility, its rules and the 500-yen sauna fee are fictional.
 
-**Status:** placeholder models only (boxes, spheres, capsules). The final Image to 3D and Blender pipeline has not been done. Only the first half of the route has been checked in a browser. There is no deployed URL or demo video yet, and no learning effect is claimed. See [docs/submission-en.md](docs/submission-en.md) and [docs/assets-and-licenses.md](docs/assets-and-licenses.md).
+**Status:** placeholder models only (procedural primitive geometry generated in code). The final Image to 3D and Blender pipeline has not been done. Only the first half of the route has been checked in a browser. There is no deployed URL or demo video yet, and no learning effect is claimed. In this cloud run `npm ci` failed with HTTP 403 (repository-access-only sandbox), so tests and build were **not run** and no browser check was done here. The 83 passing tests are an earlier verification on the Mac side (2026-11-20), not a result of this run. See [docs/submission-en.md](docs/submission-en.md) and [docs/assets-and-licenses.md](docs/assets-and-licenses.md).
 
 ### Run
 
@@ -87,7 +87,7 @@ npm run check:publication
 | G | Dress or undress at the changing-room lockers |
 | C | Toggle the overview camera |
 | R | After game over: resume from the last checkpoint. After clearing: restart. |
-| Q / V / F | Deliberate rule breaks (towel in the bath, shouting in the sauna, pushing in the sauna). Each ends the attempt. |
+| Q / V / F | Deliberate rule breaks (towel in the bath, V = nuisance-shout action in the sauna, pushing in the sauna). Each ends the attempt. The game does not listen to a microphone. |
 
 If the Vimium Chrome extension is on, press `I` for insert mode so keys such as `T` reach the game.
 

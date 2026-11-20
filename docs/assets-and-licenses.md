@@ -1,6 +1,6 @@
 # Assets and licenses
 
-Inventory of code, dependencies and assets. Last reviewed against the repository contents when this file was written. Update it whenever dependencies or assets change.
+Inventory of code, dependencies and assets. Last checked against the repository contents on 2026-11-20. Update it whenever dependencies or assets change.
 
 ## Current inventory
 
@@ -15,7 +15,7 @@ Inventory of code, dependencies and assets. Last reviewed against the repository
 
 None are integrated. This was checked by listing the tracked files (`git ls-files`) for image, 3D model, audio, font and Blender extensions (png, jpg, gif, svg, webp, glb, gltf, obj, fbx, blend, mp3, wav, ogg, woff, ttf) and finding none. The source and `index.html` also contain no texture, glTF or audio loader and no asset imports.
 
-All characters and scenery are generated in code from boxes, spheres and capsules. Colors and on-screen text are written in the source and are part of the MIT-licensed code.
+All characters and scenery are generated in code as procedural primitive geometry (Three.js box, sphere, capsule, cone, cylinder and ring geometries). Colors and on-screen text are written in the source and are part of the MIT-licensed code.
 
 ## Checklist before adding final assets
 

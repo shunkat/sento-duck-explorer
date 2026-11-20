@@ -50,7 +50,7 @@ Findings from that check:
 - **Steering**: `.kiro/steering/project-autonomy.md` (always included) supplied the provisional decisions and the reduced-confirmation working style.
 - **Spec format validation**: used for requirements.md and design.md at creation. It was unavailable in later turns, so later edits were not machine-validated.
 - **Background process**: the Vite dev server runs as a Kiro-managed background process.
-- **Not used yet**: Hooks, MCP servers, Powers, Skills, custom agents. KIRO_HANDOFF.md plans hooks for tests on change; none have been created.
+- **Not used yet (as of the prototype Spec; see the English draft entry below for the later cloud run)**: Hooks, MCP servers, Powers, Skills, custom agents. KIRO_HANDOFF.md plans hooks for tests on change; none have been created.
 
 ## Remaining work
 
@@ -69,4 +69,5 @@ Findings from that check:
 
 - The Kiro agent added `docs/submission-en.md` (English submission draft), `docs/assets-and-licenses.md` (asset and license inventory with a pending final-asset rights checklist) and an English section in `README.md`. Documentation only; no source, test or script was changed.
 - No browser verification was done for this work. `npm test` and `npm run build` were **not run** in this environment because `npm ci` failed with a 403 for a vitest dependency (`why-is-node-running`). The 83 passing tests recorded above (2026-11-20) are a prior record only. `python3 scripts/check-publication.py` was run before and after the edits.
+- In this cloud run the GitHub Power and the planner, coder and reviewer agents were used. Review fixes on PR #1 narrowed F4 to leaving the changing room unclothed for reception, common area or outside; described F6 as the V-key nuisance-shout action (no microphone or speech recognition); and replaced "boxes, spheres, capsules" with procedural primitive geometry. Verification here was limited to the publication scanner, diff checks and comparison with `src/`; no tests, build or browser check were run.
 - No final-asset Spec was created.
