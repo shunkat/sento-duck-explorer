@@ -1,5 +1,6 @@
 // Over-the-shoulder camera math (pure). See .kiro/specs/shoulder-view.
 // Yaw 0 looks toward −Z: forward = (sin y, −cos y), right = (cos y, sin y).
+import type { Object3D } from "three";
 import type { CharacterId, Vec2 } from "../core/types";
 import type { Level } from "../level/layout";
 import { wallsFor } from "../sim/movement";
@@ -55,6 +56,17 @@ export function cameraRelativeMove(move: Vec2, yaw: number): Vec2 {
 
 /** three.js rotation.y that turns a model's +Z front toward `yaw`. */
 export const modelRotationY = (yaw: number): number => Math.PI - yaw;
+
+/**
+ * Put `obj` (a child of the scene root) exactly on `socket`: world position
+ * AND rotation, so an attached hat turns with the model's head (shoulder-view
+ * Req 6.5). Scale is left as is.
+ */
+export function placeAtSocket(obj: Object3D, socket: Object3D): void {
+  socket.updateWorldMatrix(true, false);
+  socket.getWorldPosition(obj.position);
+  socket.getWorldQuaternion(obj.quaternion);
+}
 
 
 /**

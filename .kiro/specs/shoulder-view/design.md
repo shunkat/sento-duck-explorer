@@ -61,6 +61,36 @@ Conflicts to resolve when PR #3 is merged:
 
 `prototype-core-gameplay/design.md` describes a fixed-direction follow camera ("W always means up the screen", in `camera.ts`). That line is replaced by a pointer to this spec. The old `followPose` and `CAMERA_OFFSET` are removed; `blendPose` stays for the switch blend.
 
+## Model connection plan (concrete)
+
+Our side stays a thin connection point. PR #3 stays with the Web side; this branch does not merge, cherry-pick or copy it.
+
+| Responsibility | PR #3 (`src/view/models.ts`, `useModels`) | This branch |
+| --- | --- | --- |
+| Load and parse GLB, error fallback | `ModelLibrary.load/parse/get` | Lazy `GLTFLoader` in `main.ts`, only while `CHARACTER_MODEL_URLS` is non-empty (temporary) |
+| Socket lookup | `findSockets` (4 names) | `getObjectByName("socket_hat")` for the Duck only |
+| Bounds check vs manifest | `measureModel`, `checkBounds` | none |
+| Place model root, hide primitive | `useModels` + `render` | `GameScene.setCharacterModel(id, root)` |
+| Facing | from `lastPos` in `GameScene` | `FacingTracker` (also drives the camera) |
+| Hat on Duck | `placeHat` (position only — defect, Req 6.5) | `placeAtSocket`: world position and rotation, tested |
+| Carried Duck | root at `socket_carry` | primitive 0.3 m in front of Adult |
+| Model list | none | `CHARACTER_MODEL_URLS` in `src/view/modelEntry.ts` |
+
+Unifying at integration (whoever merges second does this):
+
+1. Keep `ModelLibrary` as the only loader. `main.ts` calls `lib.load(id, url)` for each `CHARACTER_MODEL_URLS` entry, then `scene.setCharacterModel(id, lib.get(id).root)`. Delete the direct `GLTFLoader` call.
+2. `useModels` becomes a loop over loaded ids that calls `setCharacterModel`. Keep one placement code path.
+3. Facing: remove `lastPos` from `GameScene`; use `FacingTracker`.
+4. Hat: replace `placeHat` with `placeAtSocket` (position and rotation). Keep the Req 6.5 test.
+5. Carry: with an Adult model, parent the Duck root to `socket_carry` and drop the 0.3 m offset.
+6. Run both test files (`tests/models.test.ts` from PR #3, `tests/shoulder.test.ts`) after the merge.
+
+### Incoming Duck model
+
+Codex is preparing a Duck GLB from Meshy, licensed CC BY 4.0, without texture. It will land at `public/models/duck.glb` in the main worktree. When it reaches this branch, add `duck: "/models/duck.glb"` to `CHARACTER_MODEL_URLS`. Before committing it: credit (creator, source link, license link, "modified: decimated / re-origined in Blender"), a row in `THIRD_PARTY_NOTICES.md` and the asset ledger, and an in-game or README credit as CC BY 4.0 requires (Req 6.6). The hat model comes later through the same pipeline. Neither the primitives nor the test fixture is a final model.
+
+Known limit: with a Duck model but no hat model, the primitive hat cone (origin at its center) sits half inside the head at `socket_hat`. The final hat GLB has its origin at the inner base, so this goes away with the hat model.
+
 ## Components
 
 ```ts

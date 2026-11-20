@@ -1,3 +1,4 @@
+import { Group, Object3D, Quaternion, Vector3 } from "three";
 import { describe, expect, it } from "vitest";
 import { KeyboardState } from "../src/input/keyboard";
 import { CHARACTER_RADIUS, LEVEL } from "../src/level/layout";
@@ -18,6 +19,7 @@ import {
   HOLE_LID_Y,
   modelRotationY,
   obstaclesFor,
+  placeAtSocket,
   rightOf,
   shoulderPose,
   yawFromDirection,
@@ -197,5 +199,31 @@ describe("camera follows behind the moving character (Req 1.5)", () => {
     expect(cam.yaw).toBeCloseTo(1.2, 9);
     for (let i = 0; i < 120; i++) cam.update("adult", focus, 1 / 60, 0, obs, true);
     expect(Math.abs(cam.yaw)).toBeLessThan(0.05);
+  });
+});
+
+describe("hat at the Duck model's socket (Req 6.5)", () => {
+  it("copies the socket's world position and rotation, not only the position", () => {
+    const duck = new Group();
+    duck.position.set(4, 0.15, 5);
+    duck.rotation.y = modelRotationY(1.1); // turned like a walking Duck
+    const root = new Group();
+    root.position.y = -0.15;
+    const socket = new Object3D();
+    socket.name = "socket_hat";
+    socket.position.set(0, 0.28, 0.03);
+    socket.rotation.x = 0.3; // head tilted in the model
+    root.add(socket);
+    duck.add(root);
+    const hat = new Group();
+    placeAtSocket(hat, socket);
+    hat.updateMatrixWorld(true);
+    const want = new Vector3();
+    socket.getWorldPosition(want);
+    expect(hat.position.distanceTo(want)).toBeLessThan(1e-9);
+    const q = new Quaternion();
+    socket.getWorldQuaternion(q);
+    expect(Math.abs(hat.quaternion.dot(q))).toBeCloseTo(1, 9);
+    expect(hat.quaternion.equals(new Quaternion())).toBe(false);
   });
 });

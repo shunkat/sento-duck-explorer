@@ -7,7 +7,7 @@ import { CHARACTER_RADIUS, type Level } from "../level/layout";
 import type { AABB } from "../sim/geometry";
 import type { Pose } from "./camera";
 import { BODY_HEIGHT, type View } from "./deriveView";
-import { CEILING_Y, type FacingTracker, forwardOf, HOLE_LID_Y, modelRotationY, WALL_HEIGHT } from "./shoulder";
+import { CEILING_Y, type FacingTracker, forwardOf, HOLE_LID_Y, modelRotationY, placeAtSocket, WALL_HEIGHT } from "./shoulder";
 import {
   CHARACTER_LABEL_GAP,
   LABEL_CANVAS_H,
@@ -90,6 +90,8 @@ export class GameScene {
   /** Primitive meshes per character; hidden when a model replaces them. */
   private primitives = {} as Record<CharacterId, THREE.Object3D[]>;
   private models: Partial<Record<CharacterId, THREE.Object3D>> = {};
+  /** `socket_hat` of a loaded Duck model; the hat follows its position and rotation. */
+  private duckHatSocket: THREE.Object3D | null = null;
   private viewportHeight = 1;
   private tmp = new THREE.Vector3();
 
@@ -263,6 +265,7 @@ export class GameScene {
     root.position.set(0, -centerToBottom, 0);
     this.chars[id].add(root);
     this.models[id] = root;
+    if (id === "duck") this.duckHatSocket = root.getObjectByName("socket_hat") ?? null;
   }
 
   private setOverview(on: boolean): void {
@@ -299,8 +302,13 @@ export class GameScene {
     for (const id of ["coin", "key", "hat"] as const) {
       const it = view.items[id];
       this.items[id].visible = it.visible;
+      if (id === "hat" && view.hatAttachedToDuck && this.duckHatSocket) {
+        placeAtSocket(this.items.hat, this.duckHatSocket);
+        continue;
+      }
       const shift = id === "hat" && view.hatAttachedToDuck ? duckShift : { x: 0, z: 0 };
       this.items[id].position.set(it.pos.x + shift.x, it.pos.y, it.pos.z + shift.z);
+      this.items[id].quaternion.identity();
     }
     this.doorBlocker.visible = view.saunaDoorLocked;
     this.camera.position.set(pose.eye.x, pose.eye.y, pose.eye.z);

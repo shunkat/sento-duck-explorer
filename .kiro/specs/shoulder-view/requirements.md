@@ -84,6 +84,8 @@ Items marked *(Provisional)* are working choices under `.kiro/steering/project-a
 2. WHEN a character GLB loads, THE Game SHALL hide that character's primitive and place the model by the final-assets contract: meters, +Y up, front +Z, origin at bottom center, `rootY = centerY − radius` (Duck) or `centerY − height / 2` (humans), turned to Facing.
 3. IF a GLB fails to load, THEN THE Game SHALL keep the primitive and log a warning.
 4. Placeholder primitives and test fixtures SHALL NOT be described as final models.
+5. WHEN the hat is attached to a Duck model that has `socket_hat`, THE Game SHALL place the hat at the socket's world position AND world rotation, so the hat turns and tilts with the head. Copying only the position is a defect. *(Added 2026-11-20: Codex reproduced the position-only bug in PR #3's `placeHat`.)*
+6. WHEN a model under a Creative Commons Attribution license (for example the Duck GLB from Meshy, CC BY 4.0) enters the build, THE project SHALL record the creator, source, license and changes in `THIRD_PARTY_NOTICES.md` and the asset ledger, and SHALL show the credit where the license requires it, before the model is committed.
 
 ### Requirement 7: Nothing else changes
 

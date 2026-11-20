@@ -21,13 +21,16 @@ Created 2026-11-20 by the Crew implementer (Kiro Crew worker) directly from the 
   - [x] 4.1 `CHARACTER_MODEL_URLS` (empty, `src/view/modelEntry.ts`), `GameScene.setCharacterModel`, lazy `GLTFLoader` in `main.ts` with fallback and warning — Req 6.1–6.4
   - [x] 4.2 `modelRotationY` tested against the +Z front. The root offset (`centerY − radius` / `centerY − height / 2`) lives in `setCharacterModel` and is not unit-tested (needs WebGL).
   - [ ] 4.3 Load a real GLB in the browser. Blocked until a final model exists (final-assets pipeline; Codex handles images, service and rights). No GLB was loaded in this round.
+  - [x] 4.4 Hat at `socket_hat` with world position and rotation (`placeAtSocket`, wired in `GameScene.render`); test in `tests/shoulder.test.ts` — Req 6.5
+  - [x] 4.5 Concrete model connection plan and PR #3 unification steps in `design.md`; CC BY 4.0 credit need recorded — Req 6.6
+  - [ ] 4.6 When `public/models/duck.glb` arrives: add it to `CHARACTER_MODEL_URLS`, add the CC BY 4.0 credit, check in the browser
 - [x] 6. Review fixes (verifier B, `e1cf59c`)
   - [x] 6.1 F-1: camera eases behind the moving character; orbit hold 1 s; tests in `tests/shoulder.test.ts` — Req 1.5
   - [x] 6.2 D-2: Child and Adult look point lowered so the body is in frame
   - [x] 6.3 D-3: key-help panel moved to the bottom right (the over-right-shoulder view puts the character left of center)
   - [x] 6.4 F-2: checked, no change. `#hud` has `pointer-events: none`, inherited by every panel, so a drag that starts over the HUD reaches the canvas. Not tested with a real drag.
 - [ ] 5. Verification
-  - [x] 5.1 `npm test` 93 passed (84 before + 9 new), `npm run build`, publication check on the tree and `dist` PASS
+  - [x] 5.1 `npm test` 97 passed (84 before + 13 new), `npm run build`, publication check on the tree and `dist` PASS
   - [ ] 5.2 Browser: Crew single-key checks done (page renders in the shoulder view with Duck in front; Tab to Child shows Child's back with Adult ahead; C shows the cutaway overview and C returns). Not run: walking, orbit with J / L held, the NarrowHole, sauna, hat, carrying and pond in the shoulder view. These need held keys and are left to Codex via live takeover.
   - [x] 5.3 Pointed `prototype-core-gameplay/design.md` camera line to this spec
 - Not in this plan: final models (final-assets pipeline), merging PR #3, held-key playthrough.
