@@ -9,13 +9,13 @@ This design defines how final assets are produced and how they replace the place
 3. A view-layer `ModelAdapter` that loads GLBs and falls back to primitives.
 4. The Costume Contest presentation proposal, kept separate and unadopted.
 
-**Status:** design only. No reference image, generation, Blender file, or GLB exists. No Image to 3D service is selected, and no account, payment, upload, or generation has been made. The repository is public on GitHub under MIT. Asset rights are unchecked because no assets exist yet. Every number below is **provisional** unless marked confirmed. The values come from the prototype's colliders and level data and from the goal of a browser demo. They have not been measured on real assets. Revisit them after the first asset (Duck) is integrated.
+**Status (2026-11-20):** asset production and branch integration are in progress. Codex generated original reference images with OpenAI and, with the user's explicit authorization, registered for Meshy Free and generated/downloaded Duck, hat, Child, and Adult with Meshy 6 Lite. Duck and hat have completed Blender adjustment, export, reimport, and independent review. Child and Adult clothed/bath variants have also been exported, reimported and measured. The initial human models are static meshes; a shared skeleton and animation remain open. The per-file production status and measured dimensions are recorded in `assets/ledger.csv` and `assets/manifest.json`. Game integration and normal-input playthrough are separate checks tracked by the shoulder-view Spec and `docs/crew-pilot.md`; main still renders primitives. Code is MIT; Meshy-generated and modified 3D assets are CC BY 4.0. Planned limits below remain provisional unless supported by recorded measurements.
 
 ## Pipeline
 
 ```mermaid
 flowchart LR
-  A[Reference images<br/>front / side / back] --> B[Image to 3D<br/>service not selected]
+  A[Original reference image<br/>three-quarter view] --> B[Image to 3D<br/>Meshy Free / 6 Lite]
   B --> C[Generated model<br/>kept as received]
   C --> D[Blender adjustment<br/>scale, origin, sockets,<br/>decimate, materials]
   D --> E[GLB export<br/>public/models]
@@ -31,7 +31,7 @@ flowchart LR
 
 | Stage | What is done | Kept as evidence |
 | --- | --- | --- |
-| Reference image | Front, side, back (optionally 3/4) of one design on a plain background, 1024–2048 px PNG. Same proportions across views. The method (hand drawing, image generation, paint-over of a placeholder render) is **not decided**; the ledger records the actual method. | Images, method, input rights |
+| Reference image | Start with one clear three-quarter PNG of an original design, 1024–2048 px, with transparent background. Add matching front/side/back views when reconstruction needs them. The initial four references use OpenAI image generation; prompts, revisions, rights and exact hashes are recorded per asset. | Images, method, input rights |
 | Image to 3D | Generate from the reference image. Keep the raw output untouched. Several attempts are allowed; the ledger records the chosen one. | Raw output, service, version or date, terms link, settings |
 | Blender adjustment | Import; fix broken geometry; set scale (meters), +Y up / +Z front on export, origin at bottom center; add sockets; split parts (e.g. hat removed from Duck if the generator merged them); decimate to budget; bake or resize textures; name materials. | `.blend` file, Blender version, notes on changes |
 | GLB export | glTF 2.0 binary, embedded textures, no cameras or lights, Y-up. Apply transforms. | GLB, checksum, measured bounds in the manifest |
@@ -55,11 +55,11 @@ A row may not say "not applicable" to skip a stage of a final asset. Only `proto
 | 2 (confirmed order) | `duck` → `hat_sauna_duck` → bath section kit (`bath_wall_2m`, `bath_wall_narrow_hole`, `bath_door_frame`, `bath_tub`, `bath_kakeyu`, `soap`, `coin_500`) | Fix the art style from Duck's viewpoint; check hat on/off and the scale against the bath |
 | 3 | `child`, `adult` (each with `clothed` and `bath` outfits), `towel`, `sauna_key`, reception, changing room, sauna and crowd, open-air bath, pond | Extend the fixed style |
 
-After stage 2, write a **style record** in this design (palette, material roughness, edge softness, texture density). Stage 3 starts only after that. The rounded "toy sento" look is a recommendation in `KIRO_HANDOFF.md`, not a decision.
+The table is the initial production order. The user's later correction prioritizes three actual 3D characters and an over-the-shoulder view, so human production now proceeds before the environment kit is complete. This does not mark the kit or stage-2 playthrough done. The initial provisional style uses rounded matte toy forms: yellow/orange Duck, pale aqua felt hat, coral/navy Child and teal/charcoal Adult. Human colors are baked in Blender into embedded textures up to 1024 px; Duck uses vertex colors and the hat one material. These are implementation choices, not a user-approved final art direction. A complete environment style record and scene-performance measurements remain open.
 
-### Image to 3D service selection (not done)
+### Image to 3D service selection
 
-Meshy is the only candidate named so far. Before any upload, check these terms and record each answer here with a public link and the date checked:
+Selected: **Meshy Free / Meshy 6 Lite / Texture off**, after checking current official terms and download conditions on 2026-11-20. The user explicitly authorized free registration, terms acceptance, original-image upload and generation, including the disclosed training use. All four initial meshes were downloaded within the free allowance. No paid plan, credit purchase or Community publication was used. See `assets/service-selection.md` for links and the record answering these questions:
 
 1. Who owns the outputs, and under what license.
 2. Whether outputs may be published in a public open-source repository and redistributed in a public web build.
@@ -70,11 +70,11 @@ Meshy is the only candidate named so far. Before any upload, check these terms a
 
 If the terms do not allow public redistribution, the asset cannot enter the public build (Requirement 7.2).
 
-### Provisional plan: what proceeds now and what needs approval
+### Authorization and reference method
 
-**Reference image method (provisional).** Make a design brief and a silhouette guide sheet for each asset from the dimensions in this design: front, side, and back outlines at true scale, the socket marks, and a palette swatch. Make them locally with SVG or a Blender script, which needs no external service. Then paint the reference image over that guide, either by hand by the user or Codex, or with an image generator chosen later. Reasons: the guide fixes the proportions that the colliders need (Duck ≤ 0.36 m wide), the views stay consistent with each other, and the guide sheet itself needs no account. If an image generator is used, it is treated like the Image to 3D service: its terms are checked and recorded first.
+**Adopted provisional reference method.** Codex uses original OpenAI-generated three-quarter references with no third-party character or photograph input. Human images were refined once to simplify clothing and separate limbs. Multi-view guide sheets were not made and are not reported as completed. Blender measurements and renders check the resulting silhouette against the dimensions and sockets below. The exact prompts and hashes are in each `assets/<id>/ref/README.md`.
 
-**Image to 3D service (provisional).** Survey Meshy first, then at least one alternative. Read only the public terms, pricing, and documentation pages. Score each service on the six questions above, and record the result with links and the date checked. Recommend one service with reasons. The survey needs no account.
+**Asset rights.** The project releases its rights to original reference images under MIT, to the extent permitted by law. Meshy free-plan outputs and their Blender modifications retain CC BY 4.0 attribution, the license link, and modification descriptions. The approved workflow is sufficient for these initial assets; a new paid service or purchase is outside that authorization.
 
 | Can proceed within existing authorization | Needs approval if not already authorized |
 | --- | --- |
@@ -210,8 +210,8 @@ class ModelLibrary {
 | Concern | Rule (provisional) | Check |
 | --- | --- | --- |
 | NarrowHole from Duck's view | Light rim or darker inside so the opening reads against the wall | Screenshot at the hole approach in the DuckView |
-| Characters in the overview | Distinct silhouettes (round Duck, short Child, tall Adult) plus the existing colors (yellow, blue, green) | Overview screenshot at 1280 × 720 without labels |
-| Duck and hat on water | Saturated yellow Duck, red hat, desaturated blue-green water | Screenshots in the bathwater and the pond |
+| Characters in the overview | Distinct silhouettes (round Duck, short Child, tall Adult); clothing colors are yellow Duck, coral/navy Child and teal/charcoal Adult. Bath variants rely on height/silhouette and labels. | Overview screenshot at 1280 × 720 without labels |
+| Duck and hat on water | Saturated yellow Duck and pale aqua hat against desaturated water; check that the hat's rim remains distinguishable | Screenshots in the bathwater and the pond |
 | Small items | Coin gold, key silver, soap white with a dark outline or shadow | Both cameras |
 | Labels | Keep `src/view/labels.ts` (12–22 px, active label hidden) | Existing `tests/labels.test.ts` |
 
