@@ -1,6 +1,6 @@
 # Implementation Plan: Shoulder View
 
-Created 2026-11-20 by the Crew implementer (Kiro Crew worker) directly from the user's request relayed by the Conductor. Status words: `[ ]` open, `[x]` done and tested. A short held-key smoke check was performed by Codex; the full route remains open (5.2).
+Created 2026-11-20 by the Crew implementer (Kiro Crew worker) directly from the user's request relayed by the Conductor. Status words: `[ ]` open, `[x]` done and tested. Codex completed the version-specific normal-input checks recorded in 5.2 and `docs/shoulder-view-verification.md`.
 
 - [x] 1. Pure camera math in `src/view/shoulder.ts`
   - [x] 1.1 Yaw helpers, `cameraRelativeMove`, `yawFromDirection` — Req 3.1, 3.3
@@ -17,10 +17,10 @@ Created 2026-11-20 by the Crew implementer (Kiro Crew worker) directly from the 
   - [x] 3.1 2.6 m walls, indoor ceilings, NarrowHole lid and lintel; Overview cutaway — Req 4.3
   - [x] 3.2 Characters turned to Facing; front marker on human primitives; beak at +Z; carried Duck 0.3 m in front of Adult — Req 1.4, 4.4
   - [x] 3.3 Zone and fixture labels depth-tested — Req 7.2
-- [x] 4. Model entry point (full gameplay validation remains open in 5.2)
+- [x] 4. Model entry point (normal-input results in 5.2)
   - [x] 4.1 `CHARACTER_MODEL_URLS` (`src/view/modelEntry.ts`), `GameScene.setCharacterModel`, lazy `GLTFLoader` in `main.ts` with fallback and warning — Req 6.1–6.4
   - [x] 4.2 `modelRotationY` tested against the +Z front. The root offset (`centerY − radius` / `centerY − height / 2`) lives in `setCharacterModel` and is not unit-tested (needs WebGL).
-  - [x] 4.3 Load a real GLB in the browser: Duck rendered and moved during Codex's held-key smoke check. Human texture decoding and route validation remain in 10.4/5.2.
+  - [x] 4.3 Load a real GLB in the browser: Duck rendered and moved during Codex's held-key smoke check. Human textures and route validation are recorded in 10.4/5.2.
   - [x] 4.4 Hat at `socket_hat` with world position and rotation (`placeAtSocket`, wired in `GameScene.render`); test in `tests/shoulder.test.ts` — Req 6.5
   - [x] 4.5 Concrete model connection plan and PR #3 unification steps in `design.md`; CC BY 4.0 credit need recorded — Req 6.6
   - [x] 4.6 Duck registered with CC BY 4.0 credit; live shoulder-view rendering and movement checked by Codex
@@ -29,9 +29,9 @@ Created 2026-11-20 by the Crew implementer (Kiro Crew worker) directly from the 
   - [x] 6.2 D-2: Child and Adult look point lowered so the body is in frame
   - [x] 6.3 D-3: key-help panel moved to the bottom right (the over-right-shoulder view puts the character left of center)
   - [x] 6.4 F-2: checked, no change. `#hud` has `pointer-events: none`, inherited by every panel, so a drag that starts over the HUD reaches the canvas. Not tested with a real drag.
-- [ ] 7. Codex review fix: blended camera poses ignored walls and the ceiling (`camera.ts` lerped toward the final pose)
-  - [ ] 7.1 Fixed in code: switch blend goes through `safeEye` every frame; C cuts instead of blending. Regression tests through `FollowCamera.update` (4 switches across walls/hole/pond, C return; 30–40 frames each) fail on the old code and pass now. Open until verifier B re-checks.
-- [ ] 8. Review round 3 (B's N-1 and the Conductor's list)
+- [x] 7. Codex review fix: blended camera poses ignored walls and the ceiling (`camera.ts` lerped toward the final pose)
+  - [x] 7.1 Fixed in code: switch blend goes through `safeEye` every frame; C cuts instead of blending. Regression tests through `FollowCamera.update` (4 switches across walls/hole/pond, C return; 30–40 frames each) fail on the old code and pass now. Independently rechecked by Codex; Kiro B's final verification was interrupted and is not counted as completed.
+- [x] 8. Review round 3 (B's N-1 and the Conductor's list)
   - [x] 8.1 N-1: input yaw latched while move keys are held; tests with held D, held A, W then W+D over 600 frames, latch release — Req 1.6
   - [x] 8.2 Camera yaw, latch and facing reset on checkpoint load and new game (`CHECKPOINT_VIEW_YAW`) — Req 1.7
   - [x] 8.3 D-1: start view toward the NarrowHole; near-lens fade of other characters; tests — Req 7.4
@@ -43,12 +43,12 @@ Created 2026-11-20 by the Crew implementer (Kiro Crew worker) directly from the 
   - [x] 9.1 N-4: orbit steers a walk; test — Req 1.6
   - [x] 9.2 N-6: body between camera and controlled character fades (`bodyOpacity`); test at the Child start — Req 7.4
   - [x] 9.3 N-5: declutter moves labels instead of hiding them; route rooms ranked up; overview names not cut by walls; tests — Req 7.3
-  - [ ] 9.4 Browser with held keys: hat on shelf → Child → Duck → carried; Codex
-- [ ] 5. Verification
+  - [x] 9.4 Browser with held keys: hat on shelf → Child → Duck → carried; Codex, `a72b765`
+- [x] 5. Verification
   - [x] 5.1 Kiro round 4: 116 tests passed. Codex human-connection follow-up: 122 tests passed, `npm run build` passed; publication checks on source/index and `dist` passed. These are not full-route gameplay results.
-  - [ ] 5.2 Browser: Crew single-key checks plus Codex held W/L and Tab smoke on the earlier Duck/hat version. Full route, human textures/outfits, narrow hole, sauna, held/equipped/carried hat, pond, F1–F7 and four restarts require the fixed integrated version.
+  - [x] 5.2 Browser: full route, human textures/outfits, narrow hole, sauna, held/equipped/carried hat, pond, six failure conditions and four restores passed on `a72b765`. F3 and subsequent ordinary walking passed after the input-only change `461ca315`. Overview assisted positioning; see `docs/shoulder-view-verification.md` for exact scope.
   - [x] 5.3 Pointed `prototype-core-gameplay/design.md` camera line to this spec
-- Not in this plan: final models (final-assets pipeline), merging PR #3, held-key playthrough.
+- Asset production is recorded in the final-assets pipeline; merging PR #3 remains outside this branch. Codex performed the held-key playthrough recorded in 5.2.
 
 ## Codex integration assistance after the Crew network interruption
 
@@ -57,7 +57,7 @@ A/B stopped editing after repeated network errors, preserving `72bdbe8` and A's 
 - [x] 10.1 Register the actual Child/Adult GLBs with their CC BY 4.0 sidecars; keep `head_shared` optional because each outfit includes its own head
 - [x] 10.2 Select exactly one outfit before first draw and on ClothingState changes; retain primitives if validation/load fails
 - [x] 10.3 Put held items on human hand sockets, and Duck's bottom on Adult's `socket_carry` with its world position and rotation; preserve core ownership and positions
-- [ ] 10.4 Verify actual human texture display, clothing changes and attachments in the browser. Structural GLB checks do not prove texture decoding or visual quality
+- [x] 10.4 Actual human textures, clothing changes and hand/hat/carry attachments visually checked in the normal-input run (`a72b765`)
 - [x] 10.5 Two Codex reviewers independently checked the connection diff and asset-registration tests, with no required findings. This is separate from the interrupted Kiro B verification
 
 ## Known limitations
@@ -65,7 +65,7 @@ A/B stopped editing after repeated network errors, preserving `72bdbe8` and A's 
 - Human meshes are static. Shared skeleton and walking/carry/wiping animation are not implemented.
 - Environment geometry and small props other than the sauna hat remain primitives.
 - The thin entry point and PR #3 ModelAdapter still need the unification described in `design.md`; PR #3 has not been merged.
-- Full normal-input route and recovery checks remain open in 5.2.
+- Full normal-input results and version boundaries are recorded in `docs/shoulder-view-verification.md`.
 - Earlier label, input-yaw feedback and camera clipping issues were fixed in review rounds 3/4; confirm their user-visible behavior in the full playthrough.
 
 ## Independent review fixes after integrated-model smoke
@@ -73,7 +73,11 @@ A/B stopped editing after repeated network errors, preserving `72bdbe8` and A's 
 - Codex independently found that an already opaque material could ignore a later fade because its OPAQUE shader was retained. The transparent/opaque transition now requests shader recompilation; material-version and label-exclusion regressions cover it.
 - Off-axis label scale used Euclidean distance instead of projection depth, causing actual sprites to exceed their declutter bounds. Rendering now uses camera-forward depth and rejects labels behind/outside the camera planes. Projection regressions cover the off-axis case.
 - Updated the stale incoming-Duck and held-hat descriptions to the actual four-asset connection.
-- Earlier normal-input observations (F1/R, human bath display and narrow-hole entry) are partial results; full fixed-version verification remains open.
+- Earlier `4bbc76d` observations (F1/R, human bath display and narrow-hole shoulder inspection) remain partial-version evidence; later route and recovery results are recorded separately in 5.2.
 - Carried-Duck camera focus now uses the actual positioned model center and elevation; checkpoint resets discard the previous camera pose before the first frame. Equipped fallback hats also follow the actual Duck group if its GLB is missing.
 - Both independent Codex reviewers reran their concrete reproductions after the fixes and reported no remaining required findings. Their checks are code/math checks, separate from live gameplay.
-- Fixed-version validation: 127 tests passed and production build passed; remaining work is the normal-input playthrough and its findings.
+- Before the input follow-up, 127 tests and the build passed. The final automated count is 136; the normal-input evidence and version boundaries are recorded below.
+
+## Final input follow-up
+
+`461ca315` accepts Shift modifiers on movement events as well as independent ShiftLeft/ShiftRight events and clears that fallback on release/focus loss/detach. Actual CUA Shift+D produced F3; R restored start; a subsequent ordinary walk crossed the same soap without F3. Final automated count: **136 passed**, with production build and publication checks passing. The full route and other failure/recovery cases were observed on `a72b765`; the input follow-up is recorded separately.
