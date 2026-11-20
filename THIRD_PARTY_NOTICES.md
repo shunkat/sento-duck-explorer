@@ -50,6 +50,30 @@ Meshy does not endorse this project. Reference-image rights and exact output
 checksums are recorded separately in `assets/hat_sauna_duck/ref/README.md`
 and `assets/ledger.csv`.
 
+## Child and adult characters — Meshy, CC BY 4.0
+
+The source meshes in `assets/child/gen/` and `assets/adult/gen/` were generated
+with **Meshy 6 Lite** on 2026-11-20 from the project's original OpenAI-generated
+character references. Attribution: **Meshy** — [service](https://www.meshy.ai/),
+[applicable terms](https://www.meshy.ai/terms-of-use). The raw meshes, editable
+Blender sources, and modified `public/models/child.glb` and
+`public/models/adult.glb` are distributed under
+[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+
+Codex used Blender 5.2.4 to simplify the generated geometry, adjust proportions
+and poses, create separate clothed and simplified bathing variants, paint and
+bake embedded color textures, set metric scale and bottom-center origins with
++Z front/+Y up, and add hand, label, and adult carry sockets. The bathing
+variants are stylized, featureless toy figures. They are modifications of the
+generated meshes; no skeletal animation is included. See each asset's README
+for exact changes, measurements, and limitations, and `assets/ledger.csv` for
+the source-to-export checksums.
+
+Keep this attribution, license link, and modification notice with redistributed
+copies. Meshy does not endorse this project. The project releases its rights to
+the separate input references under MIT, to the extent permitted by law; that
+does not replace the CC BY 4.0 license on the generated and adjusted models.
+
 ## three.js
 
 - Installed version reviewed: 0.187.0

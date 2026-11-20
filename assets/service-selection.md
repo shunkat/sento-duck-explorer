@@ -6,6 +6,15 @@ The authorized scope includes free registration, acceptance of the service terms
 
 At the start of this pilot, the Meshy UI showed Free with 100 credits, Meshy 6 Lite, CC BY 4.0, and 10 credits for the generation. The original duck reference PNG was uploaded and generated successfully. At 14:32 JST, the untextured GLB download completed (90,266 triangles, 45,135 vertices); the download counter changed from 10 to 9. The UI also showed 125 credits after onboarding rewards, so do not infer the remaining balance by subtracting the generation cost from the initial balance. Blender 5.2.4 LTS was installed and verified. See the ledger for the subsequent adjustment/export stages; a downloaded source mesh alone does not complete game integration.
 
+The initial four downloads completed on 2026-11-20: Duck at about 14:32 JST,
+sauna hat at 14:39, Adult at 14:51 and Child at 14:52–14:53. Each used Meshy
+6 Lite with Texture off and the displayed 10-credit generation cost; no paid
+upgrade or credit purchase was made. The last download counter showed six
+downloads remaining. These are observations from this session, not a promise
+of a later account balance or future plan terms. Blender-added materials and
+textures are modifications of these untextured outputs and are documented
+separately in the asset records.
+
 ## Repeatable workflow
 
 1. Use a project-created image without personal information, private metadata, or third-party characters. Keep the input in `assets/<asset_id>/ref/` and record its provenance and checksum in `ledger.csv`. The pilot input is `duck/ref/duck__ref_threequarter_v01.png` relative to this directory.
