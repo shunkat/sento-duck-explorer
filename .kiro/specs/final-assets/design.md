@@ -134,7 +134,7 @@ Hat GLB origin: center of the inner base, so attaching it to `socket_hat` needs 
   - `clothed`: everyday clothes.
   - `bath`: an abstract toy-figure body, like a wooden kokeshi or a capsule doll. It has a smooth, single-color body with no anatomical detail and **no towel on the body**, so no towel ever touches the bathwater. That would contradict F1, because towels must not go in the bath.
   - In bathwater and splash zones a soft steam layer at water level covers the body from the waist down. The follow cameras keep their current angle above the character, which reads as natural framing rather than censorship.
-  - The towel is the separate `towel` model. While a human is in the bathwater it is drawn folded on the human's head or on the tub edge, never in the water. It sits in the hand only outside the water, for drying (T).
+  - The towel is the separate `towel` model. While a human is in the bathwater it is drawn folded on the human's head or on the tub edge, never in the water. It sits in the hand only outside the water, for drying (T). *(Update 2026-11-20: T was removed; drying is E at the bath-side exits, and the towel can be moved between hand and head with E. The prototype draws a provisional towel box on the head, or held up out of the water while in the bathwater; see shoulder-view Req 7.6.)*
 
 ## Budgets
 
@@ -221,7 +221,7 @@ Source: `docs/kiroween-review.md` proposes a night version of the fictional sent
 
 | Effect (proposal) | Driven by existing data | Supports | Notes |
 | --- | --- | --- | --- |
-| A small steam spirit follows the active character. When the character is wet and walks toward the changing-room or sauna door, the spirit holds up a towel (T). | `wet`, next area, `entryViolation` preview | F2, F5 | The same check as the pair-door rule, run as a preview. No new rule. |
+| A small steam spirit follows the active character. When the character is wet and walks toward the changing-room or sauna door, the spirit holds up a towel (drying key: E since 2026-11-20). | `wet`, next area, `entryViolation` preview | F2, F5 | The same check as the pair-door rule, run as a preview. No new rule. |
 | Lanterns along the route light toward the current objective's door or object. | `objective()` stage | Guidance from the 500-yen coin search onward | Replaces part of the text guide visually. The text stays. |
 | The lantern at a pair door glows when both humans are within 3 m and dims otherwise. | `JOIN_RADIUS`, positions | Parent-and-child accompaniment | Explains the existing door block before it happens. |
 | The spirit shivers and the floor ripples when the player holds Shift near the soap. | `run` input, distance to soap | F3 | Warning only. |

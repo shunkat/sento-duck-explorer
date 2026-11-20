@@ -7,7 +7,7 @@ import { CHARACTER_RADIUS, type Level } from "../level/layout";
 import type { AABB } from "../sim/geometry";
 import type { Pose } from "./camera";
 import { BODY_HEIGHT, type Vec3, type View } from "./deriveView";
-import { applyOutfit, checkHumanContract, type Clothing, TOWEL_DEPTH, TOWEL_THICKNESS, TOWEL_WIDTH, towelPose } from "./humanModel";
+import { applyOutfit, checkHumanContract, type Clothing, TOWEL_DEPTH, TOWEL_THICKNESS, TOWEL_WIDTH, headAnchor, towelPose } from "./humanModel";
 import { CEILING_Y, type FacingTracker, forwardOf, HOLE_LID_Y, bodyOpacity, modelRotationY, placeAtSocket, placeCharacterAtSocket, WALL_HEIGHT } from "./shoulder";
 import {
   CHARACTER_LABEL_GAP,
@@ -384,7 +384,10 @@ export class GameScene {
       });
       const hand = root.getObjectByName("socket_hand_r");
       const handPos = hand ? new THREE.Vector3().setFromMatrixPosition(relativeMatrix(hand, this.chars[id])) : undefined;
-      this.humanBody[id] = { headTop: box.isEmpty() ? BODY_HEIGHT[id] / 2 : box.max.y, hand: handPos ? { x: handPos.x, y: handPos.y, z: handPos.z } : undefined };
+      this.humanBody[id] = {
+        headTop: headAnchor(BODY_HEIGHT[id], box.isEmpty() ? undefined : box.max.y),
+        hand: handPos ? { x: handPos.x, y: handPos.y, z: handPos.z } : undefined,
+      };
     }
   }
 
@@ -434,7 +437,7 @@ export class GameScene {
       this.chars[id].position.set(c.pos.x + shift.x, y, c.pos.z + shift.z);
       this.chars[id].rotation.y = modelRotationY(facing.yaw(id));
       if (id !== "duck" && c.towel) {
-        const t = towelPose(c.towel, { height: c.height, radius: c.radius, ...this.humanBody[id] });
+        const t = towelPose(c.towel, { height: c.height, radius: c.radius, inWater: c.inWater, ...this.humanBody[id] });
         this.towels[id].position.set(t.x, t.y, t.z);
         this.towels[id].rotation.set(t.rotX, 0, 0);
       }

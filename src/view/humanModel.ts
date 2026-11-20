@@ -56,10 +56,34 @@ export interface TowelPose {
  * model's `socket_hand_r`), or beside the right side of the placeholder body
  * (right = −X for a +Z front). Provisional towel; not a final asset.
  */
-export function towelPose(place: TowelPlace, body: { height: number; radius: number; headTop?: number; hand?: { x: number; y: number; z: number } }): TowelPose {
+export function towelPose(
+  place: TowelPlace,
+  body: { height: number; radius: number; headTop?: number; hand?: { x: number; y: number; z: number }; inWater?: boolean },
+): TowelPose {
   if (place === "head") return { x: 0, y: (body.headTop ?? body.height / 2) + TOWEL_THICKNESS / 2, z: 0, rotX: 0 };
   const h = body.hand ?? { x: -(body.radius + 0.05), y: -0.05 * body.height, z: 0.05 };
-  return { x: h.x, y: h.y - TOWEL_DEPTH / 2, z: h.z, rotX: Math.PI / 2 };
+  let y = h.y - TOWEL_DEPTH / 2;
+  // In the bathwater the towel is held up out of the water: its bottom stays at
+  // least WATER_HOLD_FRACTION of the body height above the floor (group origin = body center).
+  if (body.inWater) y = Math.max(y, (WATER_HOLD_FRACTION - 0.5) * body.height + TOWEL_DEPTH / 2);
+  return { x: h.x, y, z: h.z, rotX: Math.PI / 2 };
+}
+
+/** Bottom of a held towel in the bathwater, as a fraction of body height above the floor. */
+export const WATER_HOLD_FRACTION = 0.6;
+/** How far a model's mesh top may differ from BODY_HEIGHT before it is clamped (hair, bounds noise). */
+export const HEAD_TOP_TOLERANCE = 0.08;
+
+/**
+ * Head anchor for the towel in the character group's local space (origin =
+ * body center, so the body top is height / 2). The human GLBs have no head
+ * socket, and `socket_label` is the name-tag height above the head, so it is
+ * not used: the mesh bounds top is taken, clamped to BODY_HEIGHT ± tolerance.
+ */
+export function headAnchor(bodyHeight: number, boundsTopLocal?: number): number {
+  const top = bodyHeight / 2;
+  if (boundsTopLocal === undefined || !Number.isFinite(boundsTopLocal)) return top;
+  return Math.min(top + HEAD_TOP_TOLERANCE, Math.max(top - HEAD_TOP_TOLERANCE, boundsTopLocal));
 }
 
 /** Provisional towel box (m): width × thickness × depth. */

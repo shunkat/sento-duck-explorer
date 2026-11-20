@@ -75,3 +75,13 @@ Change: in the shoulder view a held or worn item shows no label (the status pane
 | Full route on `bef0a59` | NOT RUN. Last full route: `a72b765`; input retest: `461ca315` | — |
 
 Low remaining items: the 受付台 label floats off the map edge in the overview; the scene wiring of the rule (`sizeLabels` with item owners) has no automated test; the hat-top test assumes the 0.08 m resting offset used in `scene.ts`.
+
+## Simpler controls (`5f2c93b` and the towel-anchor follow-up, Kiro Crew)
+
+New version: T and G removed; E dries at the bath-side exits, dresses at the locker, and moves the towel between hand and head (Duck has no towel). Earlier sections describe the T/G build and stay as recorded.
+
+| Check | Result | By |
+| --- | --- | --- |
+| Automated tests incl. an E-only clear route and real key events | Passed (see the commit message for the count) | Crew A |
+| Build, publication check on source and `dist` | Passed | Crew A |
+| Normal-input browser play of the new controls and towel display | NOT RUN | — |

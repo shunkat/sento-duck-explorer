@@ -12,7 +12,7 @@ import { LEVEL } from "../src/level/layout";
 import { advance } from "../src/loop";
 import { deriveView } from "../src/view/deriveView";
 import { KEY_HELP } from "../src/view/hud";
-import { towelPose } from "../src/view/humanModel";
+import { HEAD_TOP_TOLERANCE, headAnchor, TOWEL_DEPTH, towelPose, WATER_HOLD_FRACTION } from "../src/view/humanModel";
 import * as R from "./helpers/route";
 import { Sim } from "./helpers/sim";
 
@@ -314,5 +314,33 @@ describe("sauna objective follows the state (review P2)", () => {
     expect(sim.state.saunaDoor).toBe("unlocked");
     expect(objective(sim.state)).toContain("親子でサウナへ");
     expect(objective(sim.state)).not.toContain("拭");
+  });
+});
+
+describe("towel anchors for the human models (Codex review)", () => {
+  it("head anchor comes from BODY_HEIGHT and bounds, never from socket_label height", () => {
+    for (const [id, h, label] of [["child", 1.2, 1.34], ["adult", 1.7, 1.85]] as const) {
+      const labelLocal = label - h / 2; // socket_label in group space (root lowered by h / 2)
+      const a = headAnchor(h, labelLocal);
+      expect(a).toBeLessThan(labelLocal);
+      expect(a).toBeCloseTo(h / 2 + HEAD_TOP_TOLERANCE, 9);
+      expect(headAnchor(h, h / 2 + 0.02)).toBeCloseTo(h / 2 + 0.02, 9); // real top within tolerance
+      expect(headAnchor(h, undefined)).toBe(h / 2);
+      void id;
+    }
+  });
+
+  it("at the start (in the tub) the held towel is drawn above the water line", () => {
+    const v = deriveView(new Sim().state, LEVEL);
+    for (const id of ["child", "adult"] as const) {
+      const c = v.characters[id];
+      expect(c.inWater).toBe(true);
+      const lowHand = { x: -0.3, y: -0.2, z: 0.1 }; // a hand socket near the hip
+      const p = towelPose("held", { height: c.height, radius: c.radius, hand: lowHand, inWater: c.inWater });
+      const bottomAboveFloor = p.y - TOWEL_DEPTH / 2 + c.height / 2;
+      expect(bottomAboveFloor).toBeGreaterThanOrEqual(WATER_HOLD_FRACTION * c.height - 1e-9);
+      const dry = towelPose("held", { height: c.height, radius: c.radius, hand: lowHand, inWater: false });
+      expect(dry.y).toBeLessThan(p.y); // out of the water it hangs at the hand
+    }
   });
 });
