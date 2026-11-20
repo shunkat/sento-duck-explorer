@@ -9,7 +9,7 @@ Draft for the Kiroween 2026 English description. It is a working draft, not a su
 - Codex recorded complete normal-input routes, using the overview for positioning and shoulder views for model/attachment observations. The latest Child-carry run began on `617ca58`, paused for the carrier-label correction, and continued on fixed `83cc945` to CLEAR, including Child-held payment-checkpoint recovery after F3. This is not an exclusively shoulder-view playthrough. The complete F1–F7 and four-recovery suite was not repeated on that version; earlier observations retain their own commit boundaries. See [verification](shoulder-view-verification.md).
 - The ModelLibrary and property-test merge integration passed 219 tests across 16 files and the production build. It did not repeat normal-input/browser checks. The earlier cloud failure and 83-test success are preserved as separate historical records in the [prototype progress](../.kiro/specs/prototype-core-gameplay/progress.md).
 - No user study, learning effect or accident reduction is claimed.
-- No public deployment URL or demo video is recorded. This is a draft, not a Devpost submission.
+- Development demo: [GitHub Pages](https://shunkat.github.io/sento-duck-explorer/). The [deployment workflow](https://github.com/shunkat/sento-duck-explorer/actions/workflows/pages.yml) records publication status and the built commit. No demo video is recorded. This is a draft, not a Devpost submission.
 
 ## Summary
 
@@ -101,4 +101,4 @@ Controls are listed in the English section of `README.md`.
 - Remaining visual checks identified in the verification record, including held-hat/key alignment; an exclusively shoulder-view route has not been demonstrated.
 - Skeletal animation, finished environment and remaining prop assets; minor held-item overlap polish.
 - Costume Contest presentation remains a proposal, not a user-adopted feature.
-- Public deployment URL, a demo video under 3 minutes in English or with English subtitles, and Devpost submission.
+- A demo video under 3 minutes in English or with English subtitles, and Devpost submission. Freeze the public demo at the submitted version as described in [deployment](deployment.md).

@@ -25,7 +25,7 @@
 - 審査側がアクセスできる動作URL、英語または英訳付き説明、3分未満の公開YouTubeデモ。
 - 必要なテスト認証情報は審査員向け欄に置き、公開ソースへ入れない。
 
-現状はローカルで動く仮モデル。2026-11-20にユーザーの承認で本体のMITライセンスを採用し、[shunkat/sento-duck-explorer](https://github.com/shunkat/sento-duck-explorer) をPublicで公開済み。審査用URL、英語資料、動画、最終アセットの権利確認は未完了。ローカルURLを審査用URLとして提出しない。[公式提出要件](https://kiroween.devpost.com/)、[公式FAQ](https://kiroween.devpost.com/details/faqs)
+2026-11-20にユーザーの承認で本体のMITライセンスを採用し、[shunkat/sento-duck-explorer](https://github.com/shunkat/sento-duck-explorer) をPublicで公開済み。同日、ユーザーは開発中デモのGitHub Pages公開とmain更新時の自動デプロイを承認した。[公開先とデプロイ手順](deployment.md) にURL、検査、復旧と提出版の固定方法を記録し、実際の公開結果はGitHub Actionsで確認する。実モデル4点と英語説明草稿は統合済み。環境・残りの小物・動画・Devpost提出は未完了であり、完成や提出済みとは扱わない。[公式提出要件](https://kiroween.devpost.com/)、[公式FAQ](https://kiroween.devpost.com/details/faqs)
 
 ### 評価とAI利用
 

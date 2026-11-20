@@ -6,6 +6,8 @@ Kiroween 2026向けの3D協力パズルです。実際の3Dモデルで作った
 
 ## 起動
 
+開発中デモの公開先：[Sento Duck Explorer](https://shunkat.github.io/sento-duck-explorer/)。PCのキーボードとマウスで遊べます。公開状況と対象コミットは [GitHub Actions](https://github.com/shunkat/sento-duck-explorer/actions/workflows/pages.yml) で確認できます。
+
 ```sh
 npm install
 npm run dev      # http://127.0.0.1:5173/
@@ -51,6 +53,8 @@ ChromeのVimium拡張を有効にしていると、`D`・`J` などのキーをV
 
 ## 公開前の確認
 
+`main`の更新で、GitHub Actionsが公開情報検査・テスト・Pages用ビルドを実行し、成功した最新mainの`dist/`だけを自動公開します。PRは同じ検査を行います。手動再実行、復旧、提出版の固定については [デプロイ手順](docs/deployment.md) を参照してください。
+
 作業前後とpush/PR作成の直前に `npm run check:publication` を実行します。公開用ビルドには `python3 scripts/check-publication.py --root dist` も実行します。検出時は値を出力せず、ファイル・行・分類のみを表示して失敗します。検査対象と限界はスクリプト冒頭に記載しています。履歴・画像等のメタデータ・素材の権利は別途確認が必要であり、合格だけで漏えいがないとは保証できません。
 
 `.kiro` の開発証跡は内容を確認して公開対象に残します。大会の条件と未完了事項は [規約確認](docs/kiroween-review.md)、定期実行の登録状態と設定案は [定期開発](docs/periodic-development.md) を参照してください。
@@ -62,7 +66,7 @@ ChromeのVimium拡張を有効にしていると、`D`・`J` などのキーをV
 
 **Sento Duck Explorer** is a 3D cooperative puzzle set in a fictional Japanese public bathhouse. Switch between Duck, Child and Adult: Child carries Duck to a separate water channel, Duck retrieves a family coin, Adult pays for sauna access, Child retrieves and equips Duck's hat, and Adult carries Duck to a hidden pond. Guide the hat-wearing Duck along the current to the goal. The facility, rules and 500-yen sauna fee are fictional.
 
-**Status:** the three characters and hat use real models produced through reference image → Meshy Image to 3D → Blender. Human poses are static; the environment and remaining props are provisional. Full normal-input routes and selected failure/recovery checks have been recorded, with overview-assisted positioning and exact version boundaries in [the verification record](docs/shoulder-view-verification.md). No exclusively shoulder-view playthrough, learning effect, public deployment or demo video is claimed. The loader/property-test merge integration passed 219 automated tests and the production build; browser checks were not repeated for these merges.
+**Status:** the three characters and hat use real models produced through reference image → Meshy Image to 3D → Blender. Human poses are static; the environment and remaining props are provisional. Full normal-input routes and selected failure/recovery checks have been recorded, with overview-assisted positioning and exact version boundaries in [the verification record](docs/shoulder-view-verification.md). No exclusively shoulder-view playthrough, learning effect or demo video is claimed. The loader/property-test merge integration passed 219 automated tests and the production build; browser checks were not repeated for these merges. The development demo is deployed to [GitHub Pages](https://shunkat.github.io/sento-duck-explorer/) by the [deployment workflow](https://github.com/shunkat/sento-duck-explorer/actions/workflows/pages.yml), which records each deployment's result.
 
 Use the npm commands above to run, test and build. See the [English submission draft](docs/submission-en.md) and [asset inventory](docs/assets-and-licenses.md).
 

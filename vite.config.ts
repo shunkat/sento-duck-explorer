@@ -6,11 +6,13 @@ export default defineConfig({
     {
       name: "include-third-party-notices",
       generateBundle() {
-        this.emitFile({
-          type: "asset",
-          fileName: "THIRD_PARTY_NOTICES.md",
-          source: readFileSync(new URL("./THIRD_PARTY_NOTICES.md", import.meta.url), "utf8"),
-        });
+        for (const fileName of ["LICENSE", "THIRD_PARTY_NOTICES.md"]) {
+          this.emitFile({
+            type: "asset",
+            fileName,
+            source: readFileSync(new URL(`./${fileName}`, import.meta.url), "utf8"),
+          });
+        }
       },
     },
   ],
