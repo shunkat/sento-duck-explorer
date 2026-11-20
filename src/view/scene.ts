@@ -437,7 +437,7 @@ export class GameScene {
       this.chars[id].position.set(c.pos.x + shift.x, y, c.pos.z + shift.z);
       this.chars[id].rotation.y = modelRotationY(facing.yaw(id));
       if (id !== "duck" && c.towel) {
-        const t = towelPose(c.towel, { height: c.height, radius: c.radius, inWater: c.inWater, ...this.humanBody[id] });
+        const t = towelPose(c.towel, { height: c.height, radius: c.radius, ...this.humanBody[id] });
         this.towels[id].position.set(t.x, t.y, t.z);
         this.towels[id].rotation.set(t.rotX, 0, 0);
       }

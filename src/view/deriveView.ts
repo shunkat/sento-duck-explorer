@@ -22,8 +22,6 @@ export interface CharacterView {
   clothing: "clothed" | "unclothed";
   /** Humans only: where the towel is. Duck never has one. */
   towel?: "held" | "head";
-  /** Standing in the bathwater or the splash (view: hold the towel up). */
-  inWater: boolean;
 }
 
 export interface View {
@@ -57,7 +55,7 @@ function characterView(s: GameState, id: CharacterId): CharacterView {
   }
   const clothing = id === "duck" ? "unclothed" : s[id].clothing;
   const towel = id === "duck" ? undefined : s[id].towel;
-  return { id, pos: { x: c.pos.x, y, z: c.pos.z }, radius: r, height: h, active: s.active === id, carried, clothing, towel, inWater: c.zone === "bathwater" || c.zone === "splash" };
+  return { id, pos: { x: c.pos.x, y, z: c.pos.z }, radius: r, height: h, active: s.active === id, carried, clothing, towel };
 }
 
 function topOf(v: CharacterView): number {

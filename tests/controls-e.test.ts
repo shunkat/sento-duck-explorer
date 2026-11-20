@@ -12,7 +12,7 @@ import { LEVEL } from "../src/level/layout";
 import { advance } from "../src/loop";
 import { deriveView } from "../src/view/deriveView";
 import { KEY_HELP } from "../src/view/hud";
-import { HEAD_TOP_TOLERANCE, headAnchor, TOWEL_DEPTH, towelPose, WATER_HOLD_FRACTION } from "../src/view/humanModel";
+import { HEAD_TOP_TOLERANCE, headAnchor, TOWEL_DEPTH, towelPose } from "../src/view/humanModel";
 import * as R from "./helpers/route";
 import { Sim } from "./helpers/sim";
 
@@ -330,17 +330,19 @@ describe("towel anchors for the human models (Codex review)", () => {
     }
   });
 
-  it("at the start (in the tub) the held towel is drawn above the water line", () => {
+  it("at the start (in the tub) the held towel hangs from the real hand socket and stays above the water surface", () => {
+    // socket_hand_r height above the floor in the shipped GLBs (Codex measurement of 3c1ef71),
+    // and the drawn bathwater top: zone box y0 0.012 + height 0.02.
+    const HAND_Y = { child: 0.38592, adult: 0.872322 };
+    const WATER_SURFACE_Y = 0.032;
     const v = deriveView(new Sim().state, LEVEL);
     for (const id of ["child", "adult"] as const) {
       const c = v.characters[id];
-      expect(c.inWater).toBe(true);
-      const lowHand = { x: -0.3, y: -0.2, z: 0.1 }; // a hand socket near the hip
-      const p = towelPose("held", { height: c.height, radius: c.radius, hand: lowHand, inWater: c.inWater });
-      const bottomAboveFloor = p.y - TOWEL_DEPTH / 2 + c.height / 2;
-      expect(bottomAboveFloor).toBeGreaterThanOrEqual(WATER_HOLD_FRACTION * c.height - 1e-9);
-      const dry = towelPose("held", { height: c.height, radius: c.radius, hand: lowHand, inWater: false });
-      expect(dry.y).toBeLessThan(p.y); // out of the water it hangs at the hand
+      const hand = { x: -0.2, y: HAND_Y[id] - c.height / 2, z: 0.1 }; // group space: origin = body center
+      const p = towelPose("held", { height: c.height, radius: c.radius, hand });
+      expect(p.y + TOWEL_DEPTH / 2).toBeCloseTo(hand.y, 9); // top touches the hand: connected
+      expect([p.x, p.z]).toEqual([hand.x, hand.z]);
+      expect(p.y - TOWEL_DEPTH / 2 + c.height / 2).toBeGreaterThan(WATER_SURFACE_Y); // bottom above the water
     }
   });
 });

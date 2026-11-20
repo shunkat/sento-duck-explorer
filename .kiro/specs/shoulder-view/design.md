@@ -24,7 +24,7 @@ All new math is pure and tested without WebGL: `src/view/shoulder.ts`.
 | Topic | Choice | Status | Why / change cost |
 | --- | --- | --- | --- |
 | Yaw convention | Yaw 0 looks toward −Z; forward = (sin y, −cos y), right = (cos y, sin y) | Provisional | Yaw 0 reproduces the old mapping, so tests that walk with WASD still hold at the start |
-| Orbit keys | J left, L right, 2.2 rad/s; mouse drag 0.005 rad/px | Provisional | Q, E, F, V, T, G, R, C are taken. Low cost: constants |
+| Orbit keys | J left, L right, 2.2 rad/s; mouse drag 0.005 rad/px | Provisional | Q, E, F, V, R, C are taken (T and G were taken until 2026-11-20, when they were removed). Low cost: constants |
 | Camera follows facing? | Yes while moving: `followYaw` eases yaw toward the heading at rate 3/s. Manual orbit holds it for 1 s. No follow while standing (look around) or when the heading is over 100° off (walking toward the camera). Tab aligns at once. WASD maps against a yaw **latched** when a move key goes down and kept until all move keys are up, so following does not feed back into the input | Provisional (F-1; latch added after review N-1) | Holding A or D walks straight sideways while the camera swings behind the walk; no circling. Constants in `shoulder.ts` |
 | Facing source | Direction of movement between frames, view-only | Matches PR #3 / final-assets ("facing from movement direction") | No logic field added |
 | Camera profiles | Duck: dist 1.1, eye 0.42, side 0.22, look 0.22. Child: 2.3 / 1.5 / 0.42 / 0.6. Adult: 2.6 / 2.0 / 0.5 / 0.9 (m) | Provisional (Child and Adult lowered look point after review D-2 so the whole body is in frame) | Eye height ordered Duck < Child < Adult; all below the 2.7 m ceiling and Duck below the hole lid |

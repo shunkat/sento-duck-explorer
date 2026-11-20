@@ -134,7 +134,7 @@ Hat GLB origin: center of the inner base, so attaching it to `socket_hat` needs 
   - `clothed`: everyday clothes.
   - `bath`: an abstract toy-figure body, like a wooden kokeshi or a capsule doll. It has a smooth, single-color body with no anatomical detail and **no towel on the body**, so no towel ever touches the bathwater. That would contradict F1, because towels must not go in the bath.
   - In bathwater and splash zones a soft steam layer at water level covers the body from the waist down. The follow cameras keep their current angle above the character, which reads as natural framing rather than censorship.
-  - The towel is the separate `towel` model. While a human is in the bathwater it is drawn folded on the human's head or on the tub edge, never in the water. It sits in the hand only outside the water, for drying (T). *(Update 2026-11-20: T was removed; drying is E at the bath-side exits, and the towel can be moved between hand and head with E. The prototype draws a provisional towel box on the head, or held up out of the water while in the bathwater; see shoulder-view Req 7.6.)*
+  - The towel is the separate `towel` model. While a human is in the bathwater it is drawn folded on the human's head or on the tub edge, never in the water. It sits in the hand only outside the water, for drying (T). *(Update 2026-11-20: T was removed; drying is E at the bath-side exits, and the towel can be moved between hand and head with E. The prototype draws a provisional towel box on the head, or hanging from the hand socket with its bottom above the drawn water surface; see shoulder-view Req 7.6.)*
 
 ## Budgets
 
