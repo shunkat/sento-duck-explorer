@@ -120,12 +120,31 @@ The source remained fixed at `29eba523f0fc4ca9d804eb948dad5c5d6fa6e486` througho
 
 The new test suite covers the shared water geometry, shore collision, channel joints, invalid starting positions, accepted/refused water drops, wetness/towel rules and checkpoint continuation. The normal-input run specifically repeated the hat checkpoint restore; it did not repeat all four restores or all F1–F7 cases, a channel-specific towel dip, or a valid bath-water drop/re-pickup. Earlier version-specific evidence remains above. The channel/hole surfaces are provisional geometry for the later environment art pass.
 
-## Child carries Duck to the coin channel (Kiro Crew, fix set in progress)
+## Child carries Duck to the coin channel (Kiro Crew; normal-input verification by Codex)
 
 New version: the coin channel is separated from the tub by dry floor; Child carries Duck to the channel entrance before the hat; Adult carries it to the pond after the hat. The previous section describes the connected-channel build and stays as recorded; its playthrough does not carry over to this version.
 
 | Check | Result | By |
 | --- | --- | --- |
-| Automated tests (Child-required coin, real-input carry → coin → Adult, input ignored by either carrier, refused drops, per-carrier view, paidReturned restore with Child holding Duck, dry gap) | Passed | Crew A |
-| Build, publication check on source and `dist` | Passed | Crew A |
-| Normal-input playthrough | Final check pending (one run after the whole fix set) | — |
+| Full automated suite, including Child-required coin, carrier/input/drop rules, per-carrier view and checkpoint continuation | 178 passed on `bc79db7` | Crew A |
+| Independent review and documentation corrections | No required findings after `617ca58`; one targeted water-separation check added, A's full suite/build reused | Crew B |
+| Carrier-name HUD follow-up | 25 targeted tests (`duck-water` and `view`), type check, build and source/distribution publication checks passed on `83cc945` | Crew A |
+| Independent review of the HUD follow-up and its regression assertions | No required findings on `83cc945`; tests/build not duplicated | Crew B |
+| Final normal-input route, including Child-held `paidReturned` restoration | CLEAR after the local HUD fix, within the observations below | Codex |
+
+The final play on 2026-11-20 started at `617ca586d81e8527601143c16be46907092d99b3`. Duck stopped at the tub's west shore instead of crossing the dry gap, and Child picked it up. The real mesh was visible at Child's right hand, but the status panel incorrectly named Adult. Play paused for a targeted fix. Kiro A corrected that hardcoded label and added assertions for both carriers; B reviewed the limited change. The accompanying requirement correction does not change gameplay.
+
+The remaining play used fixed `83cc945aba3c09ffe006b244e6d7fabdab4d0828`. The development update had reset the early game state, so only the necessary opening pickup was repeated to recheck the HUD before continuing the unfinished route. This was the final verification of this fix set, with a local correction and continuation, not an additional repeated full verification suite. Source, assets, dependencies, documentation, HEAD and the server stayed fixed during each play segment.
+
+| Check | Observed result on `83cc945` |
+| --- | --- |
+| Child carrier and water placement | HUD named Child. Duck was visible near the real right hand after movement and direction changes, viewed from different angles. A nearby water drop and re-pickup worked. E away from water refused the drop and kept Duck held. |
+| Carried Duck input | Selecting the carried Duck and using W, D and E did not move it independently or release it. |
+| Required opening cooperation | Child carried Duck to the separated channel; E placed it on water and selected Duck. Duck entered the hole, collected the coin, returned to the shore and handed it to Adult through the confirmation dialog. |
+| Child-held payment checkpoint | Child picked Duck up again and kept it through drying, locker clothing changes, payment and the return to the bath. After a real F3 game-over, R restored `paidReturned` with Child still carrying Duck, shown both in the HUD and at the model's hand. Child could walk to water and release it, then continue. |
+| Sauna and carrier change | Key transfer, accompanied sauna entry, Child's passage through the crowd gaps, hat collection and equipping succeeded. Adult then picked up the hat-wearing Duck; the HUD correctly named Adult, and Duck/hat were visible near Adult's hand in the shoulder view. |
+| Ending | Both humans reached the pond entrance. Adult placed Duck in the pond, and the player-controlled hat-wearing Duck reached the goal. The clear screen was observed and left open. |
+
+Only normal keyboard controls were used; no runtime state inspection, injection or teleportation. The overview assisted positioning and shoulder views were used for attachments and carrier observations; this was not an exclusively shoulder-view playthrough. Only F3 was deliberately triggered in the resumed route. The hat and pond saves were observed, but their restores were not repeated. The F1–F7 suite, all four checkpoint restores, a channel-specific towel dip and every across-wall/out-of-range placement case were not repeated manually. Held-hat/key mesh alignment was not separately inspected. Automated coverage and earlier version-specific observations remain separate.
+
+The held towel can overlap the Duck at Child's hand; carrying another held item can also share that socket. Humans retain static poses, and the channel/environment still use provisional geometry. Drop placement uses the nearest valid water, so the entrance sign matters near the middle of the dry gap. These polish limitations remain open; the tested route and Child-held restore completed. Existing GLBs, hashes, licenses and attribution are unchanged. Raw operator logs and account/browser screenshots are not published.
