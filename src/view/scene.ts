@@ -7,7 +7,7 @@ import { CHARACTER_RADIUS, type Level } from "../level/layout";
 import type { AABB } from "../sim/geometry";
 import type { Pose } from "./camera";
 import { BODY_HEIGHT, type View } from "./deriveView";
-import { CEILING_Y, type FacingTracker, forwardOf, HOLE_LID_Y, modelRotationY, nearCameraOpacity, placeAtSocket, WALL_HEIGHT } from "./shoulder";
+import { CEILING_Y, type FacingTracker, forwardOf, HOLE_LID_Y, bodyOpacity, modelRotationY, placeAtSocket, WALL_HEIGHT } from "./shoulder";
 import {
   CHARACTER_LABEL_GAP,
   LABEL_CANVAS_H,
@@ -29,12 +29,18 @@ const ZONE_COLORS: Record<string, number> = {
   sauna_entry: 0xb45f06, sauna_crowd: 0x8a4a12, open_air: 0x93c47d,
   pond_entrance: 0x6aa84f, pond: 0x2f7f8f, pond_goal: 0xffd24a,
 };
+/** Rooms on the clear route: their names rank with fixtures, above other rooms (review N-5). */
+const ROUTE_ZONES = new Set(["reception", "changing", "bath", "narrow_hole", "sauna_entry", "open_air", "pond_entrance", "pond_goal"]);
+
 /** Zones with a ceiling in the shoulder view (hidden in the overview). */
 const INDOOR = new Set(["reception", "common", "changing", "bath", "sauna_entry", "sauna_crowd"]);
 /** View-only: the carried Duck is drawn this far in front of Adult (final model: socket_carry). */
 const CARRY_FORWARD = 0.3;
 /** Wall height while the overview shows the map as a cutaway. */
 const OVERVIEW_WALL_HEIGHT = 1.0;
+
+/** Half height of each item primitive: its group sits at the primitive's center. */
+const ITEM_PRIMITIVE_HALF_HEIGHT: Record<ItemId, number> = { coin: 0.015, key: 0.02, hat: 0.08 };
 
 const CHAR_COLORS: Record<CharacterId, number> = { duck: 0xffe033, child: 0x3fa0ff, adult: 0x3fc76a };
 
@@ -45,6 +51,8 @@ interface Label {
   aspect: number;
   /** Hidden while this character is active (the ring already marks it). */
   owner?: CharacterId;
+  /** Overrides the kind's priority (route rooms rank with fixtures, review N-5). */
+  priority?: number;
 }
 
 function makeLabelSprite(text: string, color: string): { sprite: THREE.Sprite; aspect: number } {
@@ -95,6 +103,7 @@ export class GameScene {
   private models: Partial<Record<CharacterId, THREE.Object3D>> = {};
   /** `socket_hat` of a loaded Duck model; the hat follows its position and rotation. */
   private duckHatSocket: THREE.Object3D | null = null;
+  private itemModels: Partial<Record<ItemId, THREE.Object3D>> = {};
   private viewportHeight = 1;
   private viewportWidth = 1;
   private tmp = new THREE.Vector3();
@@ -135,11 +144,17 @@ export class GameScene {
       const py = ((1 - ndc.y) / 2) * this.viewportHeight;
       const wPx = hPx * l.aspect;
       const top = py - (1 - LABEL_CENTER_Y[l.kind]) * hPx;
-      const priority = own ? LABEL_PRIORITY.active : LABEL_PRIORITY[l.kind];
+      const priority = own ? LABEL_PRIORITY.active : (l.priority ?? LABEL_PRIORITY[l.kind]);
       cand.push({ l, rect: { x0: px - wPx / 2, y0: top, x1: px + wPx / 2, y1: top + hPx, priority } });
     }
     const keep = declutter(cand.map((c) => c.rect));
-    cand.forEach((c, i) => (c.l.sprite.visible = keep[i]!));
+    cand.forEach((c, i) => {
+      const k = keep[i]!;
+      c.l.sprite.visible = k.show;
+      // Sprite center is in label units (0 = bottom at the anchor): lowering it moves the label up.
+      const hPx = c.rect.y1 - c.rect.y0;
+      c.l.sprite.center.y = LABEL_CENTER_Y[c.l.kind] + k.dy / hPx;
+    });
   }
 
   constructor(container: HTMLElement, level: Level) {
@@ -157,6 +172,7 @@ export class GameScene {
       const sub = z.id === "bathwater" || z.id === "splash" || z.id === "narrow_hole" || z.id === "pond_goal";
       this.scene.add(boxMesh(z.box, 0.02, sub ? 0.012 : 0, ZONE_COLORS[z.id] ?? 0xffffff, sub ? 0.9 : 0.75));
       const label = this.label(ZONE_NAME[z.id], "zone");
+      if (ROUTE_ZONES.has(z.id)) this.labels[this.labels.length - 1]!.priority = LABEL_PRIORITY.fixture;
       const at = zoneLabelAnchor(z.id, z.box);
       label.position.set(at.x, at.y, at.z);
       this.scene.add(label);
@@ -295,6 +311,25 @@ export class GameScene {
     this.chars[id].add(root);
     this.models[id] = root;
     if (id === "duck") this.duckHatSocket = root.getObjectByName("socket_hat") ?? null;
+    // Name label at the model's socket_label, if it has one (final-assets sockets).
+    const sl = root.getObjectByName("socket_label");
+    const label = this.chars[id].children.find((o) => o instanceof THREE.Sprite);
+    if (sl && label) label.position.set(sl.position.x, sl.position.y - centerToBottom, sl.position.z);
+  }
+
+  /**
+   * Show a loaded item model instead of its primitive. Item GLBs have their
+   * origin at the base center (the hat: inner base), so off a socket the
+   * model is lowered to where the primitive's bottom was; on Duck's
+   * `socket_hat` the base sits on the socket itself.
+   */
+  setItemModel(id: ItemId, root: THREE.Object3D): void {
+    const g = this.items[id];
+    const old = this.itemModels[id];
+    if (old) g.remove(old);
+    for (const o of g.children) if (o instanceof THREE.Mesh) o.visible = false;
+    g.add(root);
+    this.itemModels[id] = root;
   }
 
   /** Fade a character's body (primitive or model), not its label (review D-1). */
@@ -317,6 +352,8 @@ export class GameScene {
       w.position.y = h / 2;
     }
     for (const r of this.roofs) r.visible = !on;
+    // Overview: cut walls must not chop room names; shoulder view: names stay behind walls.
+    for (const l of this.labels) if (l.kind === "zone" || l.kind === "fixture") l.sprite.material.depthTest = !on;
   }
 
   resize(w: number, h: number): void {
@@ -338,7 +375,8 @@ export class GameScene {
       const shift = id === "duck" ? duckShift : { x: 0, z: 0 };
       this.chars[id].position.set(c.pos.x + shift.x, y, c.pos.z + shift.z);
       this.chars[id].rotation.y = modelRotationY(facing.yaw(id));
-      const fade = overview || c.active ? 1 : nearCameraOpacity(Math.hypot(c.pos.x - pose.eye.x, c.pos.z - pose.eye.z));
+      const act = view.characters[view.active].pos;
+      const fade = overview || c.active ? 1 : bodyOpacity(pose.eye, act, c.pos, c.radius);
       this.setBodyOpacity(id, fade);
       const ring = this.rings[id];
       ring.visible = c.active;
@@ -349,11 +387,13 @@ export class GameScene {
       this.items[id].visible = it.visible;
       if (id === "hat" && view.hatAttachedToDuck && this.duckHatSocket) {
         placeAtSocket(this.items.hat, this.duckHatSocket);
+        this.itemModels.hat?.position.set(0, 0, 0);
         continue;
       }
       const shift = id === "hat" && view.hatAttachedToDuck ? duckShift : { x: 0, z: 0 };
       this.items[id].position.set(it.pos.x + shift.x, it.pos.y, it.pos.z + shift.z);
       this.items[id].quaternion.identity();
+      this.itemModels[id]?.position.set(0, -ITEM_PRIMITIVE_HALF_HEIGHT[id], 0);
     }
     this.doorBlocker.visible = view.saunaDoorLocked;
     this.camera.position.set(pose.eye.x, pose.eye.y, pose.eye.z);

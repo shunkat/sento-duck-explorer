@@ -218,6 +218,28 @@ export function nearCameraOpacity(dist: number): number {
   return 0.15 + ((dist - near) / (far - near)) * 0.85;
 }
 
+/** Opacity of a body that stands between the camera and the controlled character (review N-6). */
+export const OCCLUDER_OPACITY = 0.3;
+
+/**
+ * Opacity for a non-active character at `other` (radius `r`): faded when it
+ * is next to the lens, or when it stands on the line from the eye to the
+ * controlled character at `active` and would hide it.
+ */
+export function bodyOpacity(eye: Vec2, active: Vec2, other: Vec2, r: number): number {
+  const near = nearCameraOpacity(Math.hypot(other.x - eye.x, other.z - eye.z));
+  const dx = active.x - eye.x;
+  const dz = active.z - eye.z;
+  const len2 = dx * dx + dz * dz;
+  if (len2 < 1e-9) return near;
+  const t = ((other.x - eye.x) * dx + (other.z - eye.z) * dz) / len2;
+  if (t <= 0 || t >= 1) return near;
+  const px = eye.x + dx * t - other.x;
+  const pz = eye.z + dz * t - other.z;
+  const blocks = Math.hypot(px, pz) < r + 0.15;
+  return blocks ? Math.min(near, OCCLUDER_OPACITY) : near;
+}
+
 /** Camera follow: after manual orbit, wait this long before easing back (s). */
 export const FOLLOW_HOLD_SECONDS = 1.0;
 /** Ease rate toward the heading (1/s); about 95 % of the gap closes in 1 s. */

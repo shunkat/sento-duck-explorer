@@ -38,9 +38,14 @@ Created 2026-11-20 by the Crew implementer (Kiro Crew worker) directly from the 
   - [x] 8.4 D-4: label declutter by priority; tests — Req 7.3
   - [x] 8.5 Sauna door view (Child unlocking) checked by test, locked and unlocked
   - [x] 8.6 PR #3 `measured === null` test noted in the integration plan (step 7)
-  - [ ] 8.7 Duck GLB: the file in the main worktree changed while this round ran; its SHA-256 did not match the expected value, so it was not copied. Waiting for the Conductor
+  - [x] 8.7 Duck and hat GLBs connected after merging `origin/main` `09cdfe9` (hashes confirmed by the Conductor); `tests/assets.test.ts` checks hash, size, Duck bounds and sockets, hat on socket with rotation and scale
+- [x] 9. Review round 4 (B's `.local/shoulder-review3.md`)
+  - [x] 9.1 N-4: orbit steers a walk; test — Req 1.6
+  - [x] 9.2 N-6: body between camera and controlled character fades (`bodyOpacity`); test at the Child start — Req 7.4
+  - [x] 9.3 N-5: declutter moves labels instead of hiding them; route rooms ranked up; overview names not cut by walls; tests — Req 7.3
+  - [ ] 9.4 Browser with held keys: hat on shelf → Child → Duck → carried; Codex
 - [ ] 5. Verification
-  - [x] 5.1 `npm test` 109 passed (84 before + 25 new), `npm run build`, publication check on the tree and `dist` PASS
+  - [x] 5.1 `npm test` 116 passed (84 before + 32 new), `npm run build`, publication check on the tree and `dist` PASS
   - [ ] 5.2 Browser: Crew single-key checks done (page renders in the shoulder view with Duck in front; Tab to Child shows Child's back with Adult ahead; C shows the cutaway overview and C returns). Not run: walking, orbit with J / L held, the NarrowHole, sauna, hat, carrying and pond in the shoulder view. These need held keys and are left to Codex via live takeover.
   - [x] 5.3 Pointed `prototype-core-gameplay/design.md` camera line to this spec
 - Not in this plan: final models (final-assets pipeline), merging PR #3, held-key playthrough.

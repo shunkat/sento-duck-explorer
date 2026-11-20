@@ -82,6 +82,9 @@ export class FollowCamera {
   orbit(delta: number): void {
     if (this.overview || delta === 0) return;
     this.yaw += delta;
+    // Manual orbit also steers a walk in progress (review N-4); only the
+    // automatic follow is kept out of the input, which is what stops N-1.
+    if (this.latched !== null) this.latched += delta;
     this.sinceOrbit = 0;
   }
 

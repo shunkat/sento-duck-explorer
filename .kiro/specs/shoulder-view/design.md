@@ -35,7 +35,10 @@ All new math is pure and tested without WebGL: `src/view/shoulder.ts`.
 | Carried Duck | Drawn 0.3 m in front of Adult along Adult's Facing (hat follows) | Provisional, view-only. Matches PR #3's `socket_carry` (0, 0.90, 0.22), front +Z | Logic keeps `duck.pos = adult.pos` |
 | Labels | Zone and fixture labels depth-tested (hidden behind walls). Character and item labels stay on top. Screen-space declutter each frame: controlled character > key items > other characters > fixtures > rooms; a label overlapping a higher one is hidden. The controlled character's label shows in the overview only | Provisional (review D-4) | Pure `declutter` in `labels.ts`, tested |
 | View after checkpoint load / new game | Camera yaw, input latch and facing reset to `CHECKPOINT_VIEW_YAW` (start looks toward the NarrowHole) | Provisional (N-1, D-1) | |
-| Bodies next to the lens | Non-active characters fade (`nearCameraOpacity`, 0.6–1.3 m) | Provisional (D-1) | |
+| Bodies next to the lens or in the way | Non-active characters fade (`bodyOpacity`: near the lens 0.6–1.3 m, or on the eye → controlled-character line, to 0.3) | Provisional (D-1, N-6) | |
+| Orbit while walking | Manual orbit shifts the latched input yaw by the same delta; automatic follow does not | Provisional (N-4) | Keeps N-1 fixed and lets the player steer with J / L / mouse |
+| Label placement | `declutter` moves a lower label up/down by whole heights (±2 steps) before hiding it. Route rooms rank with fixtures. Overview turns off depth test for room/fixture names | Provisional (N-5) | |
+| Connected models | Duck `models/duck.glb` (SHA-256 `ab9b2650…089e`, 141096 B) and hat `models/hat_sauna_duck.glb` (`027796c5…9102`, 27208 B), both Meshy 6 Lite → Blender, CC BY 4.0; credit in `THIRD_PARTY_NOTICES.md` and `public/models/*.LICENSE.txt` from main `09cdfe9`. Child and Adult remain placeholders | Confirmed hashes from the Conductor | Not a complete model set |
 | Model entry point | `CHARACTER_MODEL_URLS` (empty) + `GameScene.setCharacterModel(id, root)`; loaded with three's `GLTFLoader` in `main.ts` | Provisional; narrow seam for PR #3 | See below |
 
 ## Alignment with PR #3 (ModelAdapter, open, not merged)
@@ -93,7 +96,7 @@ Unifying at integration (whoever merges second does this):
 
 Codex is preparing a Duck GLB from Meshy, licensed CC BY 4.0, without texture. It will land at `public/models/duck.glb` in the main worktree. When it reaches this branch, add `duck: "/models/duck.glb"` to `CHARACTER_MODEL_URLS`. Before committing it: credit (creator, source link, license link, "modified: decimated / re-origined in Blender"), a row in `THIRD_PARTY_NOTICES.md` and the asset ledger, and an in-game or README credit as CC BY 4.0 requires (Req 6.6). The hat model comes later through the same pipeline. Neither the primitives nor the test fixture is a final model.
 
-Known limit: with a Duck model but no hat model, the primitive hat cone (origin at its center) sits half inside the head at `socket_hat`. The final hat GLB has its origin at the inner base, so this goes away with the hat model.
+Hat placement with the models: on Duck the hat group is put on `socket_hat` (world position and rotation) and the hat model sits at the group origin (its inner base). On the shelf, in Child's hand or with the carried Duck, the group sits where the primitive's center was and the model is lowered by the primitive's half height so it rests at the same bottom. Scale is never changed.
 
 ## Components
 

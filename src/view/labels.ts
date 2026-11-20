@@ -77,21 +77,25 @@ export interface ScreenRect {
 }
 
 /**
- * Which labels to show so none overlaps another: walk them by priority and
- * hide any that overlaps one already shown (ties keep the input order).
- * Returns one flag per input rect.
+ * Place labels so none overlaps another: walk them by priority; a label that
+ * overlaps one already placed is moved up or down by whole label heights
+ * (up to two steps each way), and hidden only when no spot is free. Ties keep
+ * the input order. Returns, per input rect, whether it is shown and its
+ * vertical shift in px (negative = up) (review D-4, N-5).
  */
-export function declutter(rects: readonly ScreenRect[], gap = 2): boolean[] {
+export function declutter(rects: readonly ScreenRect[], gap = 2): { show: boolean; dy: number }[] {
   const order = rects.map((_, i) => i).sort((a, b) => rects[a]!.priority - rects[b]!.priority || a - b);
-  const shown: ScreenRect[] = [];
-  const out = rects.map(() => false);
+  const placed: ScreenRect[] = [];
+  const out = rects.map(() => ({ show: false, dy: 0 }));
+  const hits = (r: ScreenRect, dy: number) =>
+    placed.some((s) => r.x0 < s.x1 + gap && r.x1 + gap > s.x0 && r.y0 + dy < s.y1 + gap && r.y1 + dy + gap > s.y0);
   for (const i of order) {
     const r = rects[i]!;
-    const hit = shown.some((s) => r.x0 < s.x1 + gap && r.x1 + gap > s.x0 && r.y0 < s.y1 + gap && r.y1 + gap > s.y0);
-    if (!hit) {
-      shown.push(r);
-      out[i] = true;
-    }
+    const step = r.y1 - r.y0 + gap;
+    const dy = [0, -step, step, -2 * step, 2 * step].find((d) => !hits(r, d));
+    if (dy === undefined) continue;
+    placed.push({ ...r, y0: r.y0 + dy, y1: r.y1 + dy });
+    out[i] = { show: true, dy };
   }
   return out;
 }

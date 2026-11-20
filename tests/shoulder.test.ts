@@ -11,6 +11,7 @@ import {
   CEILING_Y,
   CHECKPOINT_VIEW_YAW,
   angleDiff,
+  bodyOpacity,
   cameraRelativeMove,
   clipSegment,
   FacingTracker,
@@ -355,5 +356,30 @@ describe("held A/D with the follow camera is stable (review N-1)", () => {
       expect(p.eye.z).toBeLessThan(8 - 0.1);
       for (const b of o.boxes) expect(crosses({ x: 2.6, z: 7.4 }, p.eye, b)).toBe(false);
     }
+  });
+});
+
+describe("review round 3: N-4 orbit steers a walk, N-6 Adult hiding Child", () => {
+  const obs = obstaclesFor(LEVEL, "locked");
+
+  it("orbit while a move key is held turns the walk with the camera (N-4)", () => {
+    const cam = new FollowCamera();
+    cam.setMoveHeld(true);
+    const before = cameraRelativeMove(W, cam.moveYaw);
+    cam.orbit(0.6);
+    close(cameraRelativeMove(W, cam.moveYaw), forwardOf(0.6));
+    expect(before.x).toBeCloseTo(0, 9);
+    // The automatic follow still does not touch the latch (N-1 stays fixed).
+    for (let i = 0; i < 200; i++) cam.update("adult", { x: 20, y: 0.85, z: 4 }, 1 / 60, 1.5, obs, true);
+    expect(cam.moveYaw).toBeCloseTo(0.6, 9);
+  });
+
+  it("at the start, Adult standing between the camera and Child fades (N-6)", () => {
+    const c = LEVEL.initialPositions.child;
+    const a = LEVEL.initialPositions.adult;
+    const p = shoulderPose("child", { x: c.x, y: 0.6, z: c.z }, CHECKPOINT_VIEW_YAW.start, obs);
+    expect(bodyOpacity(p.eye, c, a, CHARACTER_RADIUS.adult)).toBeLessThanOrEqual(0.3);
+    // A body off to the side and far from the lens stays solid.
+    expect(bodyOpacity({ x: 0, z: 0 }, { x: 0, z: -4 }, { x: 3, z: -2 }, 0.35)).toBe(1);
   });
 });

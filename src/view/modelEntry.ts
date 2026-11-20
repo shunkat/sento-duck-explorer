@@ -1,7 +1,17 @@
-// Entry point for final character models (GLB). See .kiro/specs/final-assets
-// and .kiro/specs/shoulder-view (Req 6). Empty on purpose: a URL is added only
-// after the model has gone through image → Image to 3D → Blender → GLB and its
-// rights checks. Until then the placeholder primitives are drawn.
-import type { CharacterId } from "../core/types";
+// Entry point for final models (GLB). See .kiro/specs/final-assets and
+// .kiro/specs/shoulder-view (Req 6). A URL is listed only after the model went
+// through image → Image to 3D → Blender → GLB and its rights checks. Anything
+// not listed keeps its placeholder primitive. This is NOT a complete model set:
+// Child and Adult are still placeholders.
+//
+// Listed models are Meshy-generated, Blender-adjusted, CC BY 4.0. Their credit
+// is in THIRD_PARTY_NOTICES.md and public/models/*.LICENSE.txt (Req 6.6).
+import type { CharacterId, ItemId } from "../core/types";
 
-export const CHARACTER_MODEL_URLS: Partial<Record<CharacterId, string>> = {};
+export const CHARACTER_MODEL_URLS: Partial<Record<CharacterId, string>> = {
+  duck: "models/duck.glb",
+};
+
+export const ITEM_MODEL_URLS: Partial<Record<ItemId, string>> = {
+  hat: "models/hat_sauna_duck.glb",
+};

@@ -1,14 +1,15 @@
 // Browser entry: fixed 60 Hz logic, render at display rate.
 import { createInitialState } from "./core/initialState";
 import { checkInvariants } from "./core/invariants";
-import type { CharacterId, CheckpointId, GameState } from "./core/types";
+import type * as THREE from "three";
+import type { CharacterId, CheckpointId, GameState, ItemId } from "./core/types";
 import { attachKeyboard, KeyboardState } from "./input/keyboard";
 import { LEVEL } from "./level/layout";
 import { advance } from "./loop";
 import { FollowCamera } from "./view/camera";
 import { deriveView } from "./view/deriveView";
 import { Hud } from "./view/hud";
-import { CHARACTER_MODEL_URLS } from "./view/modelEntry";
+import { CHARACTER_MODEL_URLS, ITEM_MODEL_URLS } from "./view/modelEntry";
 import { GameScene } from "./view/scene";
 import { CHECKPOINT_VIEW_YAW, cameraRelativeMove, FacingTracker, ORBIT_DRAG_RATE, ORBIT_KEY_RATE, obstaclesFor } from "./view/shoulder";
 
@@ -39,16 +40,18 @@ canvas.addEventListener("pointerup", endDrag);
 canvas.addEventListener("pointercancel", endDrag);
 
 // Final models, when any are listed. A failure keeps the primitive.
-const modelEntries = Object.entries(CHARACTER_MODEL_URLS) as [CharacterId, string][];
-if (modelEntries.length > 0) {
+const charEntries = Object.entries(CHARACTER_MODEL_URLS) as [CharacterId, string][];
+const itemEntries = Object.entries(ITEM_MODEL_URLS) as [ItemId, string][];
+if (charEntries.length + itemEntries.length > 0) {
   void import("three/addons/loaders/GLTFLoader.js").then(({ GLTFLoader }) => {
     const loader = new GLTFLoader();
-    for (const [id, url] of modelEntries) {
-      loader.loadAsync(url).then(
-        (gltf) => scene.setCharacterModel(id, gltf.scene),
+    const load = (id: string, url: string, use: (root: THREE.Object3D) => void) =>
+      loader.loadAsync(import.meta.env.BASE_URL + url).then(
+        (gltf) => use(gltf.scene),
         (e) => console.warn(`Model for ${id} could not be loaded from ${url}; keeping the placeholder.`, e),
       );
-    }
+    for (const [id, url] of charEntries) void load(id, url, (root) => scene.setCharacterModel(id, root));
+    for (const [id, url] of itemEntries) void load(id, url, (root) => scene.setItemModel(id, root));
   });
 }
 

@@ -90,13 +90,19 @@ describe("overview labels do not hide the characters (browser pilot: C view hid 
   });
 });
 
-describe("label declutter (review D-4)", () => {
+describe("label declutter (review D-4, N-5)", () => {
   const r = (x: number, y: number, priority: number): ScreenRect => ({ x0: x, y0: y, x1: x + 60, y1: y + 20, priority });
 
-  it("keeps the higher-priority label when two overlap, and both when apart", () => {
-    // zone first in the input, active character second: the character wins.
-    expect(declutter([r(0, 0, LABEL_PRIORITY.zone), r(10, 5, LABEL_PRIORITY.active)])).toEqual([false, true]);
-    expect(declutter([r(0, 0, LABEL_PRIORITY.zone), r(200, 0, LABEL_PRIORITY.fixture)])).toEqual([true, true]);
+  it("the higher-priority label stays in place; the other moves aside instead of vanishing", () => {
+    // zone first in the input, active character second: the character keeps its spot.
+    const [zone, char] = declutter([r(0, 0, LABEL_PRIORITY.zone), r(10, 5, LABEL_PRIORITY.active)]);
+    expect(char).toEqual({ show: true, dy: 0 });
+    expect(zone!.show).toBe(true);
+    expect(zone!.dy).not.toBe(0);
+    expect(declutter([r(0, 0, LABEL_PRIORITY.zone), r(200, 0, LABEL_PRIORITY.fixture)])).toEqual([
+      { show: true, dy: 0 },
+      { show: true, dy: 0 },
+    ]);
   });
 
   it("orders: controlled character > key items > other characters > fixtures > rooms", () => {
@@ -105,16 +111,25 @@ describe("label declutter (review D-4)", () => {
     expect(p.item).toBeLessThan(p.character);
     expect(p.character).toBeLessThan(p.fixture);
     expect(p.fixture).toBeLessThan(p.zone);
-    const flags = declutter([r(0, 0, p.zone), r(5, 0, p.character), r(10, 0, p.item), r(300, 0, p.zone)]);
-    expect(flags).toEqual([false, false, true, true]);
+    const out = declutter([r(0, 0, p.zone), r(5, 0, p.character), r(10, 0, p.item), r(300, 0, p.zone)]);
+    expect(out[2]).toEqual({ show: true, dy: 0 }); // the item keeps its spot
+    expect(out[3]).toEqual({ show: true, dy: 0 }); // far away: untouched
+    expect(out[0]!.show && out[1]!.show).toBe(true); // both moved, still shown (N-5)
   });
 
-  it("no two shown labels overlap for a random set", () => {
+  it("hides a label only when every nearby spot is taken", () => {
+    const stack = [-2, -1, 0, 1, 2].map((k) => r(0, k * 22, LABEL_PRIORITY.item));
+    const out = declutter([...stack, r(0, 0, LABEL_PRIORITY.zone)]);
+    expect(out.slice(0, 5).every((o) => o.show)).toBe(true);
+    expect(out[5]!.show).toBe(false);
+  });
+
+  it("no two shown labels overlap for a random set, after the moves", () => {
     let seed = 7;
     const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
     const rects = Array.from({ length: 60 }, () => r(rnd() * 800, rnd() * 400, Math.floor(rnd() * 5)));
-    const flags = declutter(rects, 0);
-    const shown = rects.filter((_, i) => flags[i]);
+    const out = declutter(rects, 0);
+    const shown = rects.flatMap((q, i) => (out[i]!.show ? [{ ...q, y0: q.y0 + out[i]!.dy, y1: q.y1 + out[i]!.dy }] : []));
     for (let i = 0; i < shown.length; i++)
       for (let j = i + 1; j < shown.length; j++) {
         const a = shown[i]!;
