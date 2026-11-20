@@ -7,20 +7,43 @@ import type { Sim } from "./sim";
 
 const N = LEVEL.nodes;
 
-/** Steps 1–2: Duck enters the NarrowHole and picks up the coin. */
-export function duckGetsCoin(sim: Sim): void {
+/**
+ * Step 2a (2026-11-20 user request): Duck cannot swim from the tub to the coin
+ * channel, so Child picks Duck up, walks the short dry stretch to the channel
+ * entrance and puts Duck onto the channel. Control passes to Duck.
+ */
+export function childCarriesDuckToChannel(sim: Sim): void {
   expect(sim.active).toBe("duck");
-  sim.walk([{ x: 1, z: 5.5 }, { x: N.narrow_hole_coin.x + 0.2, z: N.narrow_hole_coin.z }]);
+  sim.switchTo("child");
+  sim.approach(sim.pos("duck"), REACH.pickUpDuck);
+  sim.press("interact");
+  expect(sim.state.duck.carriedBy).toBe("child");
+  sim.walk([LEVEL.channelEntrance]);
+  sim.press("interact");
+  expect(sim.state.duck.carriedBy).toBeNull();
+  expect(sim.active).toBe("duck");
+}
+
+/** Steps 1–2: Child brings Duck to the channel; Duck swims into the NarrowHole and picks up the coin. */
+export function duckGetsCoin(sim: Sim): void {
+  childCarriesDuckToChannel(sim);
+  sim.walk([{ x: N.narrow_hole_coin.x + 0.2, z: N.narrow_hole_coin.z }]);
   sim.press("interact");
   expect(sim.owner("coin")).toBe("character:duck");
 }
 
-/** Step 3: Duck gives the coin to Adult (dialog + confirm). */
-export function duckGivesCoin(sim: Sim): void {
-  sim.walk([{ x: 1, z: 5.5 }]);
-  sim.approach(sim.pos("adult"), REACH.give);
+/** Step 3: Duck swims back to the channel's end; Adult comes to the entrance; Duck gives the coin (dialog + confirm). */
+export function duckStartsCoinTransfer(sim: Sim): void {
+  sim.walk([{ x: 0.95, z: 5.5 }]);
+  sim.switchTo("adult");
+  sim.walk([{ x: 3.4, z: 4.8 }, { x: LEVEL.channelEntrance.x, z: 4.9 }]);
+  sim.switchTo("duck");
   sim.press("interact");
   expect(sim.state.dialog).toEqual({ item: "coin", from: "duck", to: "adult" });
+}
+
+export function duckGivesCoin(sim: Sim): void {
+  duckStartsCoinTransfer(sim);
   sim.press("confirm");
   expect(sim.state.dialog).toBeNull();
   expect(sim.owner("coin")).toBe("character:adult");
@@ -30,11 +53,11 @@ export function duckGivesCoin(sim: Sim): void {
 export function pairToChanging(sim: Sim): void {
   sim.switchTo("child");
   sim.walk([{ x: 3.6, z: 1.6 }]);
-  sim.press("dry");
+  sim.press("interact");
   expect(sim.state.child.wet).toBe("dry");
   sim.switchTo("adult");
   sim.walk([{ x: 2.6, z: 1.6 }]);
-  sim.press("dry");
+  sim.press("interact");
   expect(sim.state.adult.wet).toBe("dry");
   sim.walk([{ x: 2.6, z: 0.5 }, { x: 2.6, z: -1 }]);
   expect(sim.state.adult.zone).toBe("changing");
@@ -45,10 +68,10 @@ export function pairToChanging(sim: Sim): void {
 export function pairToggleClothes(sim: Sim, childEnd: { x: number; z: number }): void {
   sim.switchTo("adult");
   sim.walk([{ x: 5.4, z: -2 }]);
-  sim.press("toggleClothes");
+  sim.press("interact");
   sim.switchTo("child");
   sim.walk([{ x: 5.5, z: -2.6 }]);
-  sim.press("toggleClothes");
+  sim.press("interact");
   sim.walk([childEnd]);
   expect(sim.state.adult.clothing).toBe(sim.state.child.clothing);
 }
@@ -90,12 +113,28 @@ export function adultGivesKey(sim: Sim): void {
   expect(sim.owner("key")).toBe("character:child");
 }
 
-/** Adult waits by the sauna door; Child unlocks it. Both stay dry (path avoids the bathwater). */
+/** Walk to `end` near the sauna door around the tub's east side, staying dry (no tub, no channel). */
+export function walkDryToSaunaDoor(sim: Sim, end: { x: number; z: number }): void {
+  sim.walk([{ x: 7.6, z: 2.5 }, { x: 7.6, z: 7.5 }, end]);
+}
+
+/** E at the bath-side drying spot when wet (crossing the Duck's channel wets people). */
+export function dryIfWet(sim: Sim): void {
+  const id = sim.active;
+  if (id !== "duck" && sim.state[id].wet === "wet") {
+    sim.press("interact");
+    expect(sim.state[id].wet).toBe("dry");
+  }
+}
+
+/** Adult waits by the sauna door; Child unlocks it. Both cross the channel, so both dry at the door. */
 export function childUnlocksSauna(sim: Sim): void {
   sim.switchTo("adult");
   sim.walk([{ x: 1.2, z: 2.5 }, { x: 1.0, z: 7.2 }]);
+  dryIfWet(sim);
   sim.switchTo("child");
   sim.walk([{ x: 1.2, z: 2.5 }, { x: 2.0, z: 7.5 }]);
+  dryIfWet(sim);
   sim.press("interact");
   expect(sim.state.saunaDoor).toBe("unlocked");
 }

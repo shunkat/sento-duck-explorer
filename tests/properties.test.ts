@@ -9,7 +9,7 @@ import { checkInvariants } from "../src/core/invariants";
 import { toCore } from "../src/core/initialState";
 import { findPairDoor } from "../src/core/pair";
 import { decideOutcome } from "../src/core/rules";
-import { DROP_OFFSET, REACH } from "../src/core/tuning";
+import { REACH } from "../src/core/tuning";
 import { tick } from "../src/core/tick";
 import {
   type CharacterId,
@@ -20,12 +20,11 @@ import {
   type Vec2,
   EMPTY_INPUT,
 } from "../src/core/types";
-import { CHARACTER_RADIUS, LEVEL } from "../src/level/layout";
-import { resolveCircle } from "../src/sim/collision";
+import { LEVEL } from "../src/level/layout";
 import { wallsFor } from "../src/sim/movement";
 import { stepPond } from "../src/sim/pond";
 import { areaOf } from "../src/sim/zones";
-import { add } from "../src/sim/geometry";
+import { containsPoint } from "../src/sim/geometry";
 import * as R from "./helpers/route";
 import { Sim } from "./helpers/sim";
 import { frameArb, PLAYING_STAGES, run, seqArb, stageArb, stages } from "./helpers/props";
@@ -72,7 +71,7 @@ describe("Property tests (fast-check, >= 100 runs each)", () => {
 
   it("Property 1: item uniqueness and invariants hold", () => {
     fc.assert(
-      fc.property(stageArb, seqArb({ allow: ["switchCharacter", "interact", "confirm", "cancel", "dry", "dipTowel", "toggleClothes", "shout", "push", "restart"], maxSegments: 20 }), (name, frames) => {
+      fc.property(stageArb, seqArb({ allow: ["switchCharacter", "interact", "confirm", "cancel", "dipTowel", "shout", "push", "restart"], maxSegments: 20 }), (name, frames) => {
         expect(checkInvariants(stages()[name])).toEqual([]);
         run(stages()[name], frames, (_b, _i, after) => {
           expect(checkInvariants(after)).toEqual([]);
@@ -131,7 +130,7 @@ describe("Property tests (fast-check, >= 100 runs each)", () => {
         run(stages()[name], frames, (b, _i, a) => {
           for (const id of ["duck", "child", "adult"] as const) {
             if (id === b.active) continue;
-            if (id === "duck" && (b.duck.carriedBy === "adult" || a.duck.carriedBy === "adult")) continue;
+            if (id === "duck" && (b.duck.carriedBy !== null || a.duck.carriedBy !== null)) continue;
             const crossed = id !== "duck" && b.active !== "duck" && areaOf(b[b.active].zone) !== areaOf(a[b.active].zone);
             if (crossed) continue; // companion of a pair-door crossing
             expect(a[id].pos, `${id} pos`).toEqual(b[id].pos);
@@ -145,7 +144,7 @@ describe("Property tests (fast-check, >= 100 runs each)", () => {
 
   it("Property 4 (pond): an inactive Duck in the pond keeps pos and vel over many ticks", () => {
     fc.assert(
-      fc.property(fc.constantFrom("inPond", "nearGoal" as const), seqArb({ allow: [] }), seqArb({ allow: ["interact", "dry", "dipTowel", "toggleClothes", "shout", "push"], maxSegments: 20 }), (name, prefix, later) => {
+      fc.property(fc.constantFrom("inPond", "nearGoal" as const), seqArb({ allow: [] }), seqArb({ allow: ["interact", "dipTowel", "shout", "push"], maxSegments: 20 }), (name, prefix, later) => {
         const s = run(stages()[name], prefix);
         fc.pre(s.outcome.kind === "playing" && s.active === "duck");
         const start = tick(s, frameOf({ switchCharacter: true }), LEVEL).state;
@@ -158,16 +157,19 @@ describe("Property tests (fast-check, >= 100 runs each)", () => {
     );
   });
 
-  it("Property 6: carried Duck follows Adult; Child and Duck cannot pick up", () => {
+  it("Property 6: carried Duck follows the allowed human carrier", () => {
     fc.assert(
       fc.property(stageArb, seqArb({ maxSegments: 20 }), (name, frames) => {
         run(stages()[name], frames, (b, _i, a) => {
-          expect([null, "adult"]).toContain(a.duck.carriedBy);
-          if (a.duck.carriedBy === "adult") {
-            expect(a.duck.pos).toEqual(a.adult.pos);
-            expect(a.duck.zone).toBe(a.adult.zone);
+          expect([null, "child", "adult"]).toContain(a.duck.carriedBy);
+          if (a.duck.carriedBy !== null) {
+            expect(a.duck.pos).toEqual(a[a.duck.carriedBy].pos);
+            expect(a.duck.zone).toBe(a[a.duck.carriedBy].zone);
           }
-          if (b.duck.carriedBy === null && b.active !== "adult") expect(a.duck.carriedBy).toBeNull();
+          if (b.duck.carriedBy === null && a.duck.carriedBy !== null) {
+            expect(a.duck.carriedBy).toBe(b.active);
+            expect(a.duck.carriedBy).toBe(b.items.hat.status === "equipped" ? "adult" : "child");
+          }
         });
       }),
       OPTS,
@@ -176,10 +178,12 @@ describe("Property tests (fast-check, >= 100 runs each)", () => {
 
   it("Property 6 (move input): Duck's own movement has no effect while carried", () => {
     fc.assert(
-      fc.property(frameArb({ allow: ["interact", "dry", "dipTowel", "toggleClothes", "shout", "push", "confirm", "cancel"] }), (f) => {
-        const carried = tick(stages().carriedAtShore, frameOf({ switchCharacter: true }), LEVEL).state;
+      fc.property(fc.constantFrom("childCarried", "carriedAtShore" as const), frameArb({ allow: ["interact", "dipTowel", "shout", "push", "confirm", "cancel"] }), (name, f) => {
+        let carried = stages()[name];
+        const carrier = carried.duck.carriedBy;
+        for (let i = 0; i < 3 && carried.active !== "duck"; i++) carried = tick(carried, frameOf({ switchCharacter: true }), LEVEL).state;
         expect(carried.active).toBe("duck");
-        expect(carried.duck.carriedBy).toBe("adult");
+        expect(carried.duck.carriedBy).toBe(carrier);
         const a = tick(carried, f, LEVEL).state;
         const b = tick(carried, { ...f, move: { x: 0, z: 0 }, run: false }, LEVEL).state;
         expect(a).toEqual(b);
@@ -188,7 +192,7 @@ describe("Property tests (fast-check, >= 100 runs each)", () => {
     );
   });
 
-  it("Property 6 (put-down): Duck lands at the drop point and responds to input again", () => {
+  it("Property 6 (put-down): Duck lands on reachable water and responds to inward input", () => {
     const sim = new Sim();
     sim.state = stages().hatEquipped;
     sim.switchTo("adult");
@@ -197,11 +201,13 @@ describe("Property tests (fast-check, >= 100 runs each)", () => {
     expect(sim.state.duck.carriedBy).toBe("adult");
     const carried = sim.state;
     fc.assert(
-      fc.property(fc.constantFrom<Vec2>({ x: 1, z: 0 }, { x: -1, z: 0 }, { x: 0, z: 1 }, { x: 0, z: -1 }), (dir) => {
+      fc.property(fc.double({ min: -Math.PI / 4, max: 0, noNaN: true }), (angle) => {
+        // Drop is at the channel shore: steer inward, since outward movement must stop.
+        const dir = { x: -Math.cos(angle), z: Math.sin(angle) };
         const down = tick(carried, frameOf({ interact: true }), LEVEL).state;
-        const drop = resolveCircle(add(carried.adult.pos, DROP_OFFSET), CHARACTER_RADIUS.duck, wallsFor(LEVEL, carried.saunaDoor));
         expect(down.duck.carriedBy).toBeNull();
-        expect(down.duck.pos).toEqual(drop);
+        expect(LEVEL.duckWater.some((water) => containsPoint(water, down.duck.pos))).toBe(true);
+        expect(Math.hypot(down.duck.pos.x - carried.adult.pos.x, down.duck.pos.z - carried.adult.pos.z)).toBeLessThanOrEqual(REACH.pickUpDuck);
         const asDuck = tick(down, frameOf({ switchCharacter: true }), LEVEL).state;
         expect(asDuck.active).toBe("duck");
         const moved = tick(asDuck, frameOf({ move: dir }), LEVEL).state;
@@ -213,7 +219,7 @@ describe("Property tests (fast-check, >= 100 runs each)", () => {
 
   it("Property 7: cancelled transfers restore ownership", () => {
     fc.assert(
-      fc.property(fc.constantFrom("coinDialog", "keyDialog" as const), seqArb({ allow: ["interact", "dry", "dipTowel", "shout", "push", "switchCharacter", "toggleClothes"], maxSegments: 6 }), frameArb({ allow: ["cancel"] }), (name, noise, cancel) => {
+      fc.property(fc.constantFrom("coinDialog", "keyDialog" as const), seqArb({ allow: ["interact", "dipTowel", "shout", "push", "switchCharacter"], maxSegments: 6 }), frameArb({ allow: ["cancel"] }), (name, noise, cancel) => {
         const s = stages()[name];
         const mid = run(s, noise);
         expect(mid.dialog).toEqual(s.dialog); // only confirm / cancel act on a dialog
@@ -242,7 +248,7 @@ describe("Property tests (fast-check, >= 100 runs each)", () => {
   it("Property 8 (negative): Duck in the goal without the hat, or a human in the goal, never clears", () => {
     const goal = { x: 39.2, z: 4 };
     fc.assert(
-      fc.property(fc.boolean(), seqArb({ allow: ["interact", "dry", "dipTowel", "shout", "push", "toggleClothes"], maxSegments: 20 }), (duckBare, frames) => {
+      fc.property(fc.boolean(), seqArb({ allow: ["interact", "dipTowel", "shout", "push"], maxSegments: 20 }), (duckBare, frames) => {
         const base = stages().hatEquipped;
         const s = duckBare
           ? mutate(base, (c) => {
@@ -274,6 +280,7 @@ describe("Property tests (fast-check, >= 100 runs each)", () => {
       c.duck = { ...c.duck, inPond: true, pos: { x: 39.2, z: 4 }, zone: "pond_goal", carriedBy: null };
       c.child.pos = { x: 4, z: 5 };
       c.child.zone = "bathwater";
+      c.child.towel = "held";
       c.active = "child";
     });
     expect(tick(clearing, EMPTY_INPUT, LEVEL).state.outcome).toEqual({ kind: "cleared" });
@@ -368,7 +375,7 @@ describe("Property tests (fast-check, >= 100 runs each)", () => {
     fc.assert(
       fc.property(
         fc.constantFrom("inSauna", "hatTaken", "unlocked" as const),
-        seqArb({ allow: ["switchCharacter", "interact", "confirm", "cancel", "dry", "dipTowel", "toggleClothes", "shout"], maxSegments: 30 }),
+        seqArb({ allow: ["switchCharacter", "interact", "confirm", "cancel", "dipTowel", "shout"], maxSegments: 30 }),
         (name, frames) => {
           run(stages()[name], frames, (_b, _i, a) => {
             expect(a.outcome).not.toEqual({ kind: "gameOver", reason: "F7" });
@@ -416,22 +423,29 @@ describe("Property tests (fast-check, >= 100 runs each)", () => {
     );
   });
 
-  it("Property 14: wet and clothing states are independent", () => {
-    fc.assert(
-      fc.property(stageArb, seqArb({ allow: ["switchCharacter", "interact", "dry", "toggleClothes", "dipTowel"], maxSegments: 24, maxHold: 20 }), (name, frames) => {
-        run(stages()[name], frames, (b, i, a) => {
-          const still = i.move.x === 0 && i.move.z === 0;
-          if (i.toggleClothes && !i.interact && !i.dry && !i.switchCharacter && still && b.dialog === null) {
-            for (const id of ["duck", "child", "adult"] as const) expect(a[id].wet).toBe(b[id].wet);
-          }
-          if (i.dry && !i.interact && !i.switchCharacter && b.dialog === null) {
-            expect(a.child.clothing).toBe(b.child.clothing);
-            expect(a.adult.clothing).toBe(b.adult.clothing);
-          }
-        });
-      }),
-      OPTS,
-    );
+  it("Property 14: contextual drying and clothing changes preserve the other state", () => {
+    fc.assert(fc.property(humanArb, fc.boolean(), fc.boolean(), (id, clothed, wet) => {
+      const drying = mutate(stages().keyGiven, (c) => {
+        c.active = id;
+        c[id].pos = { x: 2.6, z: 1.6 };
+        c[id].zone = "bath";
+        c[id].wet = "wet";
+        c[id].clothing = clothed ? "clothed" : "unclothed";
+      });
+      const dry = tick(drying, frameOf({ interact: true }), LEVEL).state;
+      expect(dry[id].wet).toBe("dry");
+      expect(dry[id].clothing).toBe(drying[id].clothing);
+      const locker = mutate(stages().changing, (c) => {
+        c.active = id;
+        c[id].pos = { ...LEVEL.locker };
+        c[id].zone = "changing";
+        c[id].wet = wet ? "wet" : "dry";
+        c[id].clothing = clothed ? "clothed" : "unclothed";
+      });
+      const changed = tick(locker, frameOf({ interact: true }), LEVEL).state;
+      expect(changed[id].clothing).toBe(clothed ? "unclothed" : "clothed");
+      expect(changed[id].wet).toBe(locker[id].wet);
+    }), OPTS);
   });
 
   it("Property 16: only allowlisted transfers; hat moves only by Equip", () => {
@@ -472,7 +486,7 @@ describe("Property tests (fast-check, >= 100 runs each)", () => {
       OPTS,
     );
     fc.assert(
-      fc.property(fc.constantFrom("inPond", "nearGoal" as const), seqArb({ allow: [] }), seqArb({ allow: ["interact", "dry", "dipTowel", "shout", "push", "toggleClothes"], maxSegments: 10 }), (name, prefix, later) => {
+      fc.property(fc.constantFrom("inPond", "nearGoal" as const), seqArb({ allow: [] }), seqArb({ allow: ["interact", "dipTowel", "shout", "push"], maxSegments: 10 }), (name, prefix, later) => {
         const s = run(stages()[name], prefix);
         fc.pre(s.outcome.kind === "playing" && s.active === "duck");
         const start = tick(s, frameOf({ switchCharacter: true }), LEVEL).state;

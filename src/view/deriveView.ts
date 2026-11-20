@@ -1,7 +1,7 @@
 // Pure state → view model. The renderer only applies this, so what is drawn
 // (e.g. the hat on Duck) is testable without WebGL (Req 10.6).
 import { CHARACTER_NAME, CHECKPOINT_NAME, ITEM_NAME, NODE_NAME, ZONE_NAME } from "../core/text";
-import type { CharacterId, GameState, ItemId, Owner } from "../core/types";
+import type { CharacterId, GameState, HumanId, ItemId, Owner } from "../core/types";
 import { CHARACTER_RADIUS, type Level } from "../level/layout";
 
 export interface Vec3 {
@@ -18,17 +18,26 @@ export interface CharacterView {
   height: number;
   active: boolean;
   carried: boolean;
+  /** Duck only: who holds it. */
+  carrier?: HumanId;
+  /** Humans only: picks the outfit variant of a human model. Duck is always "unclothed". */
+  clothing: "clothed" | "unclothed";
+  /** Humans only: where the towel is. Duck never has one. */
+  towel?: "held" | "head";
 }
 
 export interface View {
   characters: Record<CharacterId, CharacterView>;
-  items: Record<ItemId, { pos: Vec3; visible: boolean }>;
+  items: Record<ItemId, { pos: Vec3; visible: boolean; owner: Owner }>;
   hatAttachedToDuck: boolean;
   saunaDoorLocked: boolean;
   active: CharacterId;
   /** Point the camera looks at. */
   focus: Vec3;
 }
+
+/** Carried Duck's center height per carrier: Adult's chest, Child's hands (placeholder bodies). */
+export const CARRY_CENTER_Y: Record<HumanId, number> = { adult: 1.05, child: 0.55 };
 
 export const BODY_HEIGHT: Record<CharacterId, number> = { duck: 0.3, child: 1.2, adult: 1.7 };
 const DESK_TOP = 0.9;
@@ -40,16 +49,19 @@ function characterView(s: GameState, id: CharacterId): CharacterView {
   let y = h / 2;
   let carried = false;
   if (id === "duck") {
-    if (s.duck.carriedBy === "adult") {
+    if (s.duck.carriedBy) {
       carried = true;
-      y = 1.05; // in Adult's arms
+      y = CARRY_CENTER_Y[s.duck.carriedBy]; // in the carrier's arms
     } else if (s.duck.inPond) {
       y = 0.1; // floating
     } else {
       y = r;
     }
   }
-  return { id, pos: { x: c.pos.x, y, z: c.pos.z }, radius: r, height: h, active: s.active === id, carried };
+  const clothing = id === "duck" ? "unclothed" : s[id].clothing;
+  const towel = id === "duck" ? undefined : s[id].towel;
+  const carrier = id === "duck" ? (s.duck.carriedBy ?? undefined) : undefined;
+  return { id, pos: { x: c.pos.x, y, z: c.pos.z }, radius: r, height: h, active: s.active === id, carried, carrier, clothing, towel };
 }
 
 function topOf(v: CharacterView): number {
@@ -76,9 +88,9 @@ export function deriveView(s: GameState, level: Level): View {
   const hat = s.items.hat;
   const hatAttachedToDuck = hat.owner.kind === "character" && hat.owner.id === "duck" && hat.status === "equipped";
   const items = {
-    coin: { pos: itemPos(level, characters, "coin", s.items.coin.owner, false), visible: true },
-    key: { pos: itemPos(level, characters, "key", s.items.key.owner, false), visible: true },
-    hat: { pos: itemPos(level, characters, "hat", hat.owner, hatAttachedToDuck), visible: true },
+    coin: { pos: itemPos(level, characters, "coin", s.items.coin.owner, false), visible: true, owner: s.items.coin.owner },
+    key: { pos: itemPos(level, characters, "key", s.items.key.owner, false), visible: true, owner: s.items.key.owner },
+    hat: { pos: itemPos(level, characters, "hat", hat.owner, hatAttachedToDuck), visible: true, owner: hat.owner },
   };
   const a = characters[s.active];
   return {
@@ -100,7 +112,7 @@ export function statusLines(s: GameState): string[] {
   const hat = s.items.hat;
   return [
     `操作中：${CHARACTER_NAME[s.active]}（${ZONE_NAME[s[s.active].zone]}）`,
-    `アヒル：${ZONE_NAME[s.duck.zone]}・${wet(s.duck.wet)}${s.duck.carriedBy ? "・大人が抱えている" : ""}${s.items.hat.status === "equipped" ? "・帽子あり" : ""}`,
+    `アヒル：${ZONE_NAME[s.duck.zone]}・${wet(s.duck.wet)}${s.duck.carriedBy ? `・${CHARACTER_NAME[s.duck.carriedBy]}が抱えている` : ""}${s.items.hat.status === "equipped" ? "・帽子あり" : ""}`,
     `子ども：${ZONE_NAME[s.child.zone]}・${wet(s.child.wet)}・${clothes(s.child.clothing)}`,
     `大人　：${ZONE_NAME[s.adult.zone]}・${wet(s.adult.wet)}・${clothes(s.adult.clothing)}`,
     `${ITEM_NAME.coin}：${s.items.coin.status === "paid" ? "支払い済み" : ownerText(s.items.coin.owner)}`,

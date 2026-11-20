@@ -4,8 +4,20 @@ import { expect } from "vitest";
 import { createInitialState } from "../../src/core/initialState";
 import { checkInvariants } from "../../src/core/invariants";
 import { tick } from "../../src/core/tick";
-import { type CharacterId, EMPTY_INPUT, type GameEvent, type GameState, type InputFrame, type Vec2 } from "../../src/core/types";
-import { LEVEL } from "../../src/level/layout";
+import { type CharacterId, EMPTY_INPUT, type CoreState, type GameEvent, type GameState, type InputFrame, type Vec2 } from "../../src/core/types";
+import { CHARACTER_RADIUS, LEVEL } from "../../src/level/layout";
+import { circleOverlapsBox } from "../../src/sim/geometry";
+import { shoreBoxes } from "../../src/sim/movement";
+
+/** Outside the pond and Adult's arms, Duck's whole body is on the bath water (2026-11-20 user correction). */
+export function duckOnWater(s: GameState | CoreState): string[] {
+  const d = s.duck;
+  if (d.carriedBy !== null || d.inPond) return [];
+  const r = CHARACTER_RADIUS.duck;
+  const onWater = LEVEL.duckWater.some((w) => d.pos.x >= w.minX && d.pos.x <= w.maxX && d.pos.z >= w.minZ && d.pos.z <= w.maxZ);
+  const onShore = shoreBoxes(LEVEL.duckWater).some((b) => circleOverlapsBox(d.pos, r - 1e-3, b));
+  return onWater && !onShore ? [] : [`duck off the water at ${JSON.stringify(d.pos)}`];
+}
 
 export class Sim {
   state: GameState = createInitialState(LEVEL);
@@ -17,7 +29,7 @@ export class Sim {
     this.state = r.state;
     this.lastEvents = r.events;
     this.log.push(...r.events);
-    const bad = checkInvariants(this.state);
+    const bad = [...checkInvariants(this.state), ...duckOnWater(this.state)];
     if (bad.length) throw new Error(`invariants violated at tick ${this.state.tickCount}: ${bad.join("; ")}`);
     return r.events;
   }

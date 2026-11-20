@@ -31,7 +31,7 @@
 
 文化紹介と保護者への気づきはImpactにつながる仮説。未実施の学習効果や事故減少を成果として宣伝しない。技術、Design、Innovation、Presentationにも、動く協力ルート・一貫した絵柄・英語の短いデモで根拠を用意する。[AWS公式解説](https://aws.amazon.com/jp/blogs/news/kiroween-2026/)
 
-確認した規約・FAQでは、Codex補助や生成画像・Image to 3Dを一律禁止する明文は見つからなかった。一方、個別承認が得られたとも断定しない。Kiroが主要な実装を担う記録を残し、Codexの監督・実機確認・監査を分けて記載する。生成サービスは選定後に入力画像の権利と出力の公開・再配布条件を確認する。[公式規約](https://kiroween.devpost.com/rules)
+確認した規約・FAQでは、Codex補助や生成画像・Image to 3Dを一律禁止する明文は見つからなかった。一方、個別承認が得られたとも断定しない。Kiroが主要な実装を担う記録を残し、Codexの素材制作・監督・実機確認・監査を分けて記載する。Meshy Free / Meshy 6 Liteを選定し、ユーザーの明示承認後にオリジナル画像をアップロードして生成した。Meshy生成3D素材はCC BY 4.0で、コードのMITとは分けて出典と改変を表示する。入力画像の権利、再配布条件、サービスの学習利用は [サービス選定記録](../assets/service-selection.md)、実際の工程とファイルは [台帳](../assets/ledger.csv) を参照する。[公式規約](https://kiroween.devpost.com/rules)
 
 ## 公開前の確認
 

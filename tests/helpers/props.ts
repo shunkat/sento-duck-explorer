@@ -11,6 +11,7 @@ import { Sim } from "./sim";
 
 export type StageName =
   | "start"
+  | "childCarried"
   | "coinInHand"
   | "coinDialog"
   | "coinGiven"
@@ -38,13 +39,17 @@ function build(): Record<StageName, GameState> {
   const main = new Sim();
   out.start = main.state;
 
+  const early = fork(main.state);
+  early.switchTo("child");
+  early.approach(early.pos("duck"), REACH.pickUpDuck);
+  early.press("interact");
+  out.childCarried = early.state;
+
   R.duckGetsCoin(main);
   out.coinInHand = main.state;
 
   const d = fork(main.state);
-  d.walk([{ x: 1, z: 5.5 }]);
-  d.approach(d.pos("adult"), REACH.give);
-  d.press("interact");
+  R.duckStartsCoinTransfer(d);
   out.coinDialog = d.state;
 
   R.duckGivesCoin(main);
@@ -94,7 +99,7 @@ export function stages(): Record<StageName, GameState> {
   return (cache ??= build());
 }
 export const STAGE_NAMES: StageName[] = [
-  "start", "coinInHand", "coinDialog", "coinGiven", "changing", "paid", "keyDialog", "keyGiven",
+  "start", "childCarried", "coinInHand", "coinDialog", "coinGiven", "changing", "paid", "keyDialog", "keyGiven",
   "unlocked", "inSauna", "hatTaken", "hatEquipped", "carriedAtShore", "inPond", "nearGoal", "gameOver",
 ];
 export const stageArb = fc.constantFrom(...STAGE_NAMES);
@@ -122,7 +127,7 @@ const moveArb: fc.Arbitrary<Vec2> = fc.oneof(
 );
 
 type KeyName = keyof Omit<InputFrame, "move" | "run">;
-const ALL_KEYS: KeyName[] = ["switchCharacter", "interact", "confirm", "cancel", "dry", "dipTowel", "toggleClothes", "shout", "push", "restart"];
+const ALL_KEYS: KeyName[] = ["switchCharacter", "interact", "confirm", "cancel", "dipTowel", "shout", "push", "restart"];
 
 /** One input frame. Interaction keys are weighted toward the useful ones. */
 export function frameArb(opts: { allow?: readonly KeyName[] } = {}): fc.Arbitrary<InputFrame> {
@@ -141,7 +146,7 @@ export function seqArb(opts: { allow?: readonly KeyName[]; maxSegments?: number;
   return fc
     .array(fc.tuple(frameArb(opts), fc.integer({ min: 1, max: opts.maxHold ?? 30 })), { maxLength: opts.maxSegments ?? 12 })
     .map((segs) =>
-      segs.flatMap(([f, n]) => [f, ...Array.from({ length: n - 1 }, () => ({ ...f, switchCharacter: false, interact: false, confirm: false, cancel: false, dry: false, dipTowel: false, toggleClothes: false, shout: false, push: false, restart: false }))]),
+      segs.flatMap(([f, n]) => [f, ...Array.from({ length: n - 1 }, () => ({ ...f, switchCharacter: false, interact: false, confirm: false, cancel: false, dipTowel: false, shout: false, push: false, restart: false }))]),
     );
 }
 

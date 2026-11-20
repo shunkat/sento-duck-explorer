@@ -56,12 +56,12 @@ Created directly by the main Kiro agent on 2026-11-20 after the built-in spec su
 
 - [x] 7. Property-based tests (fast-check, ≥100 runs each)
   - [x]* 7.1 Random input sequence generator biased toward interaction points; reuse route prefixes to reach later stages
-    - Done in `tests/helpers/props.ts` (reachable stages built from the scripted route, held-direction frame generator) and `tests/properties.test.ts` (one test per property, `numRuns` 100 or more; Properties 2, 4, 6, 8, 17, 19 have extra sub-tests). Property 5 stays in `tests/level.test.ts` and Property 15 in `tests/view.test.ts`. No defect in `src/` was found by these properties. Properties 9, 10, 13 and the negative case of 8 start from states built by editing a reachable state (for example a wet human, or Duck already in the goal), because random play does not reach them reliably.
+    - Done in `tests/helpers/props.ts` (reachable stages built from the scripted route, held-direction frame generator) and `tests/properties.test.ts` (one test per property, `numRuns` 100 or more; Properties 2, 4, 6, 8, 17, 19 have extra sub-tests). Property 5 stays in `tests/level.test.ts` and Property 15 in `tests/view.test.ts`. No defect in `src/` was found by these properties. Properties 9, 10, 13, 14 and the negative case of 8 start from states built by editing a reachable state (for example a wet human, or Duck already in the goal), because random play does not reach them reliably.
   - [x]* 7.2 **Property 1: Item uniqueness and invariants hold** — **Validates: Requirements 5.1, 5.3, 10.3–10.5**
   - [x]* 7.3 **Property 2: Switching rotates and preserves state** — **Validates: Requirements 1.2, 1.6, 1.7, 5.5, 10.1**
   - [x]* 7.4 **Property 3: Switching is blocked during dialogs and game over** — **Validates: Requirements 1.5**
   - [x]* 7.5 **Property 4: Inactive characters stay still** — **Validates: Requirements 1.3, 1.8, 8.5**
-  - [x]* 7.6 **Property 6: Carried Duck follows Adult** — **Validates: Requirements 2.5, 2.6, 3.10**
+  - [x]* 7.6 **Property 6: Carried Duck follows the allowed human carrier** — **Validates: Requirements 2.5, 2.6, 3.10**
   - [x]* 7.7 **Property 7: Cancelled transfers restore ownership** — **Validates: Requirements 5.2**
   - [x]* 7.8 **Property 8: Clear requires the hat-wearing Duck in the goal** — **Validates: Requirements 3.13–3.15, 8.4**
   - [x]* 7.9 **Property 9: Game over takes priority over clear** — **Validates: Requirements 7.9**
@@ -93,7 +93,37 @@ Created directly by the main Kiro agent on 2026-11-20 after the built-in spec su
 - [ ] 9. Final verification
   - [x] 9.1 Run `npm run build` and `npx vitest --run`; fix failures
   - [ ] 9.2 Start the local dev server and record the local URL; manual checklist: camera switch, shapes and colors, HUD, labels
+    - Historical primitive-build checklist, not a fresh request to repeat the route. Current PR #4 evidence is versioned in `docs/shoulder-view-verification.md` on `crew/browser-route-pilot`. Follow `.kiro/steering/verification-ownership.md`; the existing Codex supervisor owns normal-input play. This entry does not mark unmerged work or untested versions as passed.
     - Done: dev server at http://127.0.0.1:5173/. Partly checked by Codex in Chrome (first half of the route up to paying at reception, F1 and restart, and the label fix; see `progress.md`). Open: the second half of the route, camera transition feel, and F2–F7 screens in the browser. This is not a user-approval checkpoint.
-    - Browser verification of the second half of the route and F2–F7 remains unverified: the browser tool could not reach the local server on 2026-11-20. The logic is covered by `tests/route.test.ts` and `tests/properties.test.ts` only.
+    - Historical PR #2 cloud run: its browser tool could not reach the local server on 2026-11-20. That failed attempt is separate from the later versioned normal-input evidence in `docs/shoulder-view-verification.md`.
   - [x] 9.3 Record in the spec which Kiro features were used and what remains (final-model pipeline is still required)
     - See `progress.md`
+
+- [x] 11. Simpler controls (2026-11-20 user request; Kiro Crew)
+  - [x] 11.1 Remove T and G; drying at the bath-side exits and dressing at the locker are E candidates (Req 6.4, 6.8)
+  - [x] 11.2 Towel `held` / `head` for humans (Req 6.10); Q dips only a held towel (Req 7.1); checkpoints keep it
+  - [x] 11.3 One E candidate list for the action and the HUD hint; priority table in design.md
+  - [x] 11.4 Objective and HUD follow the state (who is wet; locked vs unlocked sauna door)
+  - [x] 11.5 Tests: `tests/controls-e.test.ts` (keyboard wiring, spots, priority, locker/F4, towel/F1/F2/F5, Duck, restore, E-only clear route)
+  - [x] 11.6 Browser normal-input check of the new controls: Codex, fixed `5a7866f`. E-only interaction route CLEAR, T/G inactive, exit drying, locker clothing, sauna dry-before-unlock, towel/F1 and `paidReturned` towel restore. Overview-assisted positioning; exact observations in `docs/shoulder-view-verification.md`.
+
+- [x] 12. Duck on water only (2026-11-20 user correction; Kiro Crew)
+  - [x] 12.1 `LEVEL.duckWater` (tub, channel, hole) for movement, drop points and rendering; `shoreBoxes` + `stepDuckWater` (Req 2.8)
+  - [x] 12.2 Put Duck down only on reachable water; refused otherwise (Req 2.6); drying Duck removed (Req 6.6)
+  - [x] 12.3 `hatEquipped` spawn on the tub; every free Duck on water (checked on every Sim tick)
+  - [x] 12.4 Guide, HUD and README text
+  - [x] 12.5 Tests: `tests/duck-water.test.ts`; the full route and checkpoint tests run with the per-tick water check
+  - [x] 12.6 Browser normal-input check: Codex, fixed `29eba52`. Movement stopped at four representative tub shores; an orbit-based diagonal probe stayed on water. Visible channel/coin round trip passed, humans re-wet in the channel and dried at the sauna, hat checkpoint restored Duck on water after real F1/R, carried Duck input and floor drop were refused, and the full route cleared. Overview-assisted positioning; exact evidence in `docs/shoulder-view-verification.md`.
+
+- [x] 13. Child carries Duck to the coin channel (2026-11-20 user request; Kiro Crew)
+  - [x] 13.1 `carriedBy: HumanId | null`; Child picks up before the hat, Adult after (`duckCarrierNow`); carrier anchor in tick, invariants, checkpoints (paidReturned keeps a Child-held Duck at the Child) — Req 3.10, 3.16
+  - [x] 13.2 Coin channel separated from the tub by a 0.8 m dry gap; entrance sign; Child drop onto the channel switches to Duck — Req 3.16, 2.8
+  - [x] 13.3 View: Duck at Child's `socket_hand_r` (no Child carry socket), facing like the carrier; Duck-owned items follow the drawn Duck; objective and hints name the carrier
+  - [x] 13.4 Tests: Duck alone cannot reach the coin; real-input Child carry → channel → coin → Adult; input ignored with either carrier; refused drops; per-carrier view; paidReturned restore with Child holding Duck; dry gap blocks Duck both ways
+  - [x] 13.5 Final normal-input play: Codex, `617ca58` early check → targeted carrier-name HUD fix → `83cc945` continuation CLEAR. Child carry/drop, water-channel coin and Adult handoff, carried-input/floor-drop refusal, real F3/R restoring a Child-held Duck at `paidReturned`, sauna/hat, Adult carry and pond goal passed. Overview-assisted positioning; no state injection. All-F/all-checkpoint manual suites were not repeated. Exact scope is in `docs/shoulder-view-verification.md`.
+
+## PR #2 merge integration (2026-11-20)
+
+Codex adapted the earlier Kiro property tests to the already-reviewed gameplay: current contextual E inputs, Child carrying before the hat and Adult afterward, the separated water channel, water-only drops and held-towel F1. Reachable stage generation reuses the current route helpers and adds a Child-carried stage; the coin-dialog and pond-shore prefixes are shared helpers. Core game code is unchanged. The state-edited cases are explicitly identified above; automatic state checks are not browser evidence. No repeated playthrough was performed.
+
+Integrated validation: 219 tests passed across 16 files; the production build passed. The existing large-bundle warning remains. Source/index and distribution publication checks are recorded with the integration commit.
