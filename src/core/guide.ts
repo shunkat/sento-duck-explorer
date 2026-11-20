@@ -1,11 +1,9 @@
 // Pure guidance for the HUD: the current objective and the keys that do
 // something right now. Derived from state only; no side effects.
 import type { Level } from "../level/layout";
-import { distance } from "../sim/geometry";
 import { areaOf, isSauna } from "../sim/zones";
-import { holds, interactHint } from "./actions";
+import { atDryingSpot, holds, interactHint } from "./actions";
 import { CHARACTER_NAME } from "./text";
-import { REACH } from "./tuning";
 import type { CharacterId, GameState, HumanId } from "./types";
 
 const name = (id: CharacterId) => CHARACTER_NAME[id];
@@ -28,27 +26,34 @@ export function objective(s: GameState): string {
     if (inArea("reception")) return `大人で受付台の前に立ち、Eでサウナ代を払おう${switchTo(s, "adult")}`;
     if (inArea("changing")) {
       if (both((h) => s[h].clothing === "clothed")) return "親子で受付へ行こう（更衣室の上の扉）";
-      return "ロッカー（オレンジの棚）の前でGを押し、子どもも大人も服を着よう";
+      return "ロッカー（オレンジの棚）の前でEを押し、子どもも大人も服を着よう";
     }
-    if (!both((h) => s[h].wet === "dry")) return "湯船から出て、子どもと大人それぞれTで体を拭こう（Tabで切り替え）";
+    if (!both((h) => s[h].wet === "dry")) {
+      const wet = (["child", "adult"] as const).filter((h) => s[h].wet === "wet").map(name).join("と");
+      return `湯船から出て、浴室の出口（更衣室の扉）の前で${wet}がそれぞれEで体を拭こう（Tabで切り替え）`;
+    }
     return "親子で更衣室へ（浴室の上の扉）。2人が3m以内にいれば一緒に移動できます";
   }
 
   if (holds(s, "key", "adult")) {
     if (areaOf(s.adult.zone) !== "bath" || areaOf(s.child.zone) !== "bath") {
-      if (s.adult.clothing === "clothed" || s.child.clothing === "clothed") return "更衣室のロッカーでGを押して2人とも服を脱ごう";
+      if (s.adult.clothing === "clothed" || s.child.clothing === "clothed") return "更衣室のロッカーの前でEを押して2人とも服を脱ごう";
       return "親子で浴室へ戻ろう（更衣室の下の扉）";
     }
     return `大人で子どもに鍵を渡そう：子どもの近くでE${switchTo(s, "adult")}`;
   }
 
+  // Who still has to dry before the sauna (the door's bath side is a drying spot).
+  const wetNames = (["child", "adult"] as const).filter((h) => s[h].wet === "wet").map(name).join("と");
   if (s.saunaDoor === "locked") {
-    return "子どもで浴室の下側にあるサウナの扉（茶色）の前に行きEで開けよう。体を拭いた大人も近くへ";
+    if (wetNames) return `サウナの扉（茶色）の前で${wetNames}がEを押して体を拭こう（Tabで切り替え）。そのあと子どもがEで扉を開けよう`;
+    return "子どもで浴室の下側にあるサウナの扉（茶色）の前に行きEで開けよう。大人も近くへ";
   }
 
   if (hat.owner.kind === "node") {
     if (!isSauna(s.child.zone)) {
-      return "体を拭いてから親子でサウナへ。子どもだけが人混みのすき間を通れます（押さず・静かに）";
+      if (wetNames) return `サウナの扉の前で${wetNames}がEを押して体を拭こう（Tabで切り替え）`;
+      return "親子でサウナへ（扉の前で2人が3m以内）。子どもだけが人混みのすき間を通れます（押さず・静かに）";
     }
     return "子どもで人混みのすき間を縫って、奥の棚の帽子を取ろう（E）";
   }
@@ -71,20 +76,15 @@ export function nearbyHints(s: GameState, level: Level): string[] {
   const id = s.active;
   if (id !== "duck") {
     const h = s[id];
-    const inWater = h.zone === "bathwater" || h.zone === "splash";
-    if (h.wet === "wet" && !inWater) out.push("T: タオルで体を拭く");
-    else if (
-      h.wet === "dry" &&
-      s.duck.wet === "wet" &&
-      !s.duck.inPond &&
-      s.duck.carriedBy === null &&
-      distance(h.pos, s.duck.pos) <= REACH.dryDuck
-    ) {
-      out.push("T: アヒルを拭く");
+    const other: HumanId = id === "child" ? "adult" : "child";
+    // Both need drying: say who still has to come to the exit (Tab, then E there).
+    if (h.zone === "bath" && h.wet === "wet" && !atDryingSpot(s, level, id)) {
+      out.push("体が濡れています：浴室の出口かサウナの扉の前でE");
     }
-    if (h.zone === "changing" && distance(h.pos, level.locker) <= REACH.locker) {
-      out.push(`G: ${h.clothing === "clothed" ? "服を脱ぐ" : "服を着る"}`);
+    if (areaOf(h.zone) === "bath" && s[other].wet === "wet" && s[other].zone !== "bathwater") {
+      out.push(`${name(other)}も濡れています（Tabで切り替えて出口の前でE）`);
     }
+    if (h.zone === "bathwater" && h.towel === "head") out.push("タオルは頭の上（Qでは湯船につきません）");
     if (isSauna(h.zone)) out.push("サウナでは大声(V)・押す(F)はマナー違反");
   }
   return out;

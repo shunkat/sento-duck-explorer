@@ -4,8 +4,8 @@
 import { EMPTY_INPUT, type InputFrame } from "../core/types";
 
 type PressAction =
-  | "switchCharacter" | "interact" | "cancel" | "dry" | "dipTowel"
-  | "toggleClothes" | "shout" | "push" | "restart" | "overview";
+  | "switchCharacter" | "interact" | "cancel" | "dipTowel"
+  | "shout" | "push" | "restart" | "overview";
 
 const MOVE_KEYS: Record<string, { x: number; z: number }> = {
   KeyW: { x: 0, z: -1 }, ArrowUp: { x: 0, z: -1 },
@@ -21,9 +21,7 @@ const PRESS_KEYS: Record<string, PressAction> = {
   KeyE: "interact",
   Enter: "interact",
   Escape: "cancel",
-  KeyT: "dry",
   KeyQ: "dipTowel",
-  KeyG: "toggleClothes",
   KeyV: "shout",
   KeyF: "push",
   KeyR: "restart",
@@ -117,9 +115,7 @@ export class KeyboardState {
       interact: !dialogOpen && p.has("interact"),
       confirm: dialogOpen && p.has("interact"),
       cancel: p.has("cancel"),
-      dry: p.has("dry"),
       dipTowel: p.has("dipTowel"),
-      toggleClothes: p.has("toggleClothes"),
       shout: p.has("shout"),
       push: p.has("push"),
       restart: p.has("restart"),

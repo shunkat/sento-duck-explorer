@@ -20,6 +20,8 @@ export interface CharacterView {
   carried: boolean;
   /** Humans only: picks the outfit variant of a human model. Duck is always "unclothed". */
   clothing: "clothed" | "unclothed";
+  /** Humans only: where the towel is. Duck never has one. */
+  towel?: "held" | "head";
 }
 
 export interface View {
@@ -52,7 +54,8 @@ function characterView(s: GameState, id: CharacterId): CharacterView {
     }
   }
   const clothing = id === "duck" ? "unclothed" : s[id].clothing;
-  return { id, pos: { x: c.pos.x, y, z: c.pos.z }, radius: r, height: h, active: s.active === id, carried, clothing };
+  const towel = id === "duck" ? undefined : s[id].towel;
+  return { id, pos: { x: c.pos.x, y, z: c.pos.z }, radius: r, height: h, active: s.active === id, carried, clothing, towel };
 }
 
 function topOf(v: CharacterView): number {

@@ -3,7 +3,7 @@ import type { Level } from "../level/layout";
 import { stepWalk, wallsFor } from "../sim/movement";
 import { stepPond } from "../sim/pond";
 import { isSauna, isWetSource, zoneAtOr } from "../sim/zones";
-import { type Ctx, dry, interact, resolveDialog, toggleClothes } from "./actions";
+import { type Ctx, interact, resolveDialog } from "./actions";
 import { restoreLatest, saveCheckpointIfReached } from "./checkpoints";
 import { applyHumanMove } from "./pair";
 import { decideOutcome, isCleared, npcWithinPushReach, stepsOnSoap } from "./rules";
@@ -51,10 +51,12 @@ export function tick(state: GameState, input: InputFrame, level: Level): TickRes
   const activeBefore = s.active;
   const human = s.active === "duck" ? null : s.active;
   if (input.interact) interact(c);
-  else if (input.dry) dry(c);
-  else if (input.toggleClothes) toggleClothes(c);
   else if (input.dipTowel) {
-    if (human && s[human].zone === "bathwater") c.pending.push("F1");
+    // F1 only when the towel actually goes into the water: it must be in the hand.
+    if (human && s[human].zone === "bathwater") {
+      if (s[human].towel === "held") c.pending.push("F1");
+      else events.push({ kind: "prompt", text: MSG.towelOnHead });
+    }
   } else if (input.shout) {
     if (human && isSauna(s[human].zone)) c.pending.push("F6");
     else if (human) events.push({ kind: "prompt", text: MSG.shoutOutsideSauna });

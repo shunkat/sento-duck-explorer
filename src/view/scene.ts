@@ -2,12 +2,12 @@
 // models following the view each frame. Gameplay state remains in core.
 import * as THREE from "three";
 import { CHARACTER_NAME, ITEM_NAME, ZONE_NAME } from "../core/text";
-import type { CharacterId, ItemId } from "../core/types";
+import type { CharacterId, HumanId, ItemId } from "../core/types";
 import { CHARACTER_RADIUS, type Level } from "../level/layout";
 import type { AABB } from "../sim/geometry";
 import type { Pose } from "./camera";
 import { BODY_HEIGHT, type Vec3, type View } from "./deriveView";
-import { applyOutfit, checkHumanContract, type Clothing } from "./humanModel";
+import { applyOutfit, checkHumanContract, type Clothing, TOWEL_DEPTH, TOWEL_THICKNESS, TOWEL_WIDTH, towelPose } from "./humanModel";
 import { CEILING_Y, type FacingTracker, forwardOf, HOLE_LID_Y, bodyOpacity, modelRotationY, placeAtSocket, placeCharacterAtSocket, WALL_HEIGHT } from "./shoulder";
 import {
   CHARACTER_LABEL_GAP,
@@ -81,6 +81,12 @@ function makeLabelSprite(text: string, color: string): { sprite: THREE.Sprite; a
   return { sprite, aspect: w / LABEL_CANVAS_H };
 }
 
+/** Transform of `o` in the space of its ancestor `root` (world matrices brought up to date). */
+function relativeMatrix(o: THREE.Object3D, root: THREE.Object3D): THREE.Matrix4 {
+  root.updateWorldMatrix(true, true);
+  return new THREE.Matrix4().copy(root.matrixWorld).invert().multiply(o.matrixWorld);
+}
+
 function boxMesh(b: AABB, height: number, y0: number, color: number, opacity = 1): THREE.Mesh {
   const w = b.maxX - b.minX;
   const d = b.maxZ - b.minZ;
@@ -127,6 +133,10 @@ export class GameScene {
   /** `socket_hat` of a loaded Duck model; the hat follows its position and rotation. */
   private duckHatSocket: THREE.Object3D | null = null;
   private itemModels: Partial<Record<ItemId, THREE.Object3D>> = {};
+  /** Provisional towels of the two humans. */
+  private towels = {} as Record<HumanId, THREE.Mesh>;
+  /** Head top and right hand of a loaded human model, in its group's local space. */
+  private humanBody: Partial<Record<HumanId, { headTop: number; hand?: { x: number; y: number; z: number } }>> = {};
   /** Last ClothingState seen per human (the game starts in the bath). */
   private clothing: Record<"child" | "adult", Clothing> = { child: "unclothed", adult: "unclothed" };
   private viewportHeight = 1;
@@ -250,7 +260,7 @@ export class GameScene {
     // Fixtures.
     const locker = boxMesh({ minX: level.locker.x + 0.3, minZ: level.locker.z - 0.6, maxX: level.locker.x + 0.7, maxZ: level.locker.z + 0.6 }, 1.6, 0, 0xff9900);
     this.scene.add(locker);
-    const lockerLabel = this.label("ロッカー（G）", "fixture");
+    const lockerLabel = this.label("ロッカー（E）", "fixture");
     lockerLabel.position.set(level.locker.x + 0.5, 1.9, level.locker.z);
     this.scene.add(lockerLabel);
     const d = level.nodes.reception_desk;
@@ -294,6 +304,17 @@ export class GameScene {
       }
       g.add(front);
       this.primitives[id].push(front);
+      if (id !== "duck") {
+        // Provisional towel (not a final asset): a child of the character group, so it
+        // follows movement, turning and outfit changes; its place comes from state.
+        const towel = new THREE.Mesh(
+          new THREE.BoxGeometry(TOWEL_WIDTH, TOWEL_THICKNESS, TOWEL_DEPTH),
+          new THREE.MeshStandardMaterial({ color: 0xf4f1e8, roughness: 0.9 }),
+        );
+        towel.name = "towel_provisional";
+        g.add(towel);
+        this.towels[id] = towel;
+      }
       const label = this.label(CHARACTER_NAME[id], "character", "#fff", id);
       label.position.set(0, BODY_HEIGHT[id] / 2 + CHARACTER_LABEL_GAP, 0);
       g.add(label);
@@ -351,6 +372,20 @@ export class GameScene {
     const sl = root.getObjectByName("socket_label");
     const label = this.chars[id].children.find((o) => o instanceof THREE.Sprite);
     if (sl && label) label.position.set(sl.position.x, sl.position.y - centerToBottom, sl.position.z);
+    if (id !== "duck") {
+      // Towel anchors from the model: top of the bounds (head) and socket_hand_r, in group space.
+      root.updateMatrix();
+      const box = new THREE.Box3();
+      root.traverse((o) => {
+        if (o instanceof THREE.Mesh && o !== this.towels[id]) {
+          o.geometry.computeBoundingBox();
+          box.union(o.geometry.boundingBox!.clone().applyMatrix4(relativeMatrix(o, this.chars[id])));
+        }
+      });
+      const hand = root.getObjectByName("socket_hand_r");
+      const handPos = hand ? new THREE.Vector3().setFromMatrixPosition(relativeMatrix(hand, this.chars[id])) : undefined;
+      this.humanBody[id] = { headTop: box.isEmpty() ? BODY_HEIGHT[id] / 2 : box.max.y, hand: handPos ? { x: handPos.x, y: handPos.y, z: handPos.z } : undefined };
+    }
   }
 
   /**
@@ -398,6 +433,11 @@ export class GameScene {
       const shift = id === "duck" ? duckShift : { x: 0, z: 0 };
       this.chars[id].position.set(c.pos.x + shift.x, y, c.pos.z + shift.z);
       this.chars[id].rotation.y = modelRotationY(facing.yaw(id));
+      if (id !== "duck" && c.towel) {
+        const t = towelPose(c.towel, { height: c.height, radius: c.radius, ...this.humanBody[id] });
+        this.towels[id].position.set(t.x, t.y, t.z);
+        this.towels[id].rotation.set(t.rotX, 0, 0);
+      }
       if (id !== "duck" && this.clothing[id] !== c.clothing) {
         this.clothing[id] = c.clothing;
         const m = this.models[id];

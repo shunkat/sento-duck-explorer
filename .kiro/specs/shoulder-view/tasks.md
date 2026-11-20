@@ -49,6 +49,10 @@ Created 2026-11-20 by the Crew implementer (Kiro Crew worker) directly from the 
   - [x] 11.2 Item labels bottom-anchored at `ITEM_LABEL_Y` 0.25 m, above the hat model top — Req 7.5
   - [x] 11.3 Tests in `tests/assets.test.ts` (fail on the previous labels/scene code)
   - [ ] 11.4 Browser check of held/equipped hat and key without labels: Codex
+- [x] 12. Towel display (simpler controls, Kiro Crew)
+  - [x] 12.1 Provisional towel mesh per human as a child of the character group; `towelPose` from head top (model bounds) or `socket_hand_r` — Req 7.6
+  - [x] 12.2 Locker sign says E; key help and README updated
+  - [ ] 12.3 Browser check of the towel on head / hand with the models: Codex
 - [x] 5. Verification
   - [x] 5.1 Kiro round 4: 116 tests passed. Codex human-connection follow-up: 122 tests passed, `npm run build` passed; publication checks on source/index and `dist` passed. These are not full-route gameplay results.
   - [x] 5.2 Browser: full route, human textures/outfits, narrow hole, sauna, held/equipped/carried hat, pond, six failure conditions and four restores passed on `a72b765`. F3 and subsequent ordinary walking passed after the input-only change `461ca315`. Overview assisted positioning; see `docs/shoulder-view-verification.md` for exact scope.

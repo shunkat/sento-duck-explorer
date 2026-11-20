@@ -1,9 +1,11 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { createInitialState } from "../src/core/initialState";
-import { DT } from "../src/core/tuning";
+import { DT, REACH } from "../src/core/tuning";
+import type { GameState } from "../src/core/types";
 import { attachKeyboard, KeyboardState } from "../src/input/keyboard";
 import { LEVEL } from "../src/level/layout";
 import { advance, MAX_TICKS_PER_FRAME } from "../src/loop";
+import * as R from "./helpers/route";
 import { Sim } from "./helpers/sim";
 
 describe("KeyboardState", () => {
@@ -93,6 +95,44 @@ describe("attached keyboard events", () => {
     };
     return { kb, target, doc, key, stop };
   }
+
+  it("real key events → frame → tick: T/G inert, E dries, held E fires once, next E after release, E confirms a dialog", () => {
+    const { kb, key } = attached();
+    const run = (s: GameState) => advance(s, 0, DT, (st) => kb.takeFrame(st.dialog !== null), LEVEL).state;
+    const tap = (s: GameState, code: string) => {
+      key("keydown", code);
+      const next = run(s);
+      key("keyup", code);
+      return next;
+    };
+    const sim = new Sim();
+    sim.switchTo("child");
+    sim.walk([{ x: 2.6, z: 1.0 }]); // wet, at the changing-room exit
+    let s = sim.state;
+    const before = structuredClone(s.child);
+    s = tap(s, "KeyT");
+    s = tap(s, "KeyG");
+    expect(s.child).toEqual(before);
+    key("keydown", "KeyE");
+    s = run(s);
+    expect(s.child).toMatchObject({ wet: "dry", towel: "head", pos: before.pos });
+    s = run(s); // still held: no second action
+    expect(s.child.towel).toBe("head");
+    key("keyup", "KeyE");
+    s = tap(s, "KeyE"); // next E after release: the towel toggle
+    expect(s.child.towel).toBe("held");
+
+    // Dialog: E opens the coin handoff, the next E confirms it.
+    const d = new Sim();
+    R.duckGetsCoin(d);
+    d.walk([{ x: 1, z: 5.5 }]);
+    d.approach(d.pos("adult"), REACH.give);
+    let g = tap(d.state, "KeyE");
+    expect(g.dialog).toEqual({ item: "coin", from: "duck", to: "adult" });
+    g = tap(g, "KeyE");
+    expect(g.dialog).toBeNull();
+    expect(g.items.coin.owner).toEqual({ kind: "character", id: "adult" });
+  });
 
   it("uses a move event's Shift modifier without a separate Shift keydown, then clears it on release", () => {
     const { kb, key } = attached();

@@ -31,10 +31,26 @@ export const holds = (s: GameState, item: ItemId, who: CharacterId): boolean => 
 const posOf = (s: GameState, id: CharacterId) => s[id].pos;
 const near = (s: GameState, a: CharacterId, b: CharacterId, d: number) => distance(posOf(s, a), posOf(s, b)) <= d;
 
-const SAUNA_DOOR_CENTER = (level: Level) => {
-  const d = level.doors.find((x) => x.id === "bath_sauna")!;
+const doorCenter = (level: Level, id: string) => {
+  const d = level.doors.find((x) => x.id === id)!;
   return { x: (d.box.minX + d.box.maxX) / 2, z: (d.box.minZ + d.box.maxZ) / 2 };
 };
+const SAUNA_DOOR_CENTER = (level: Level) => doorCenter(level, "bath_sauna");
+
+/** Doors whose bath side is a drying spot (the exits that need a dry body: F2, F5). */
+export const DRYING_DOORS = ["bath_changing", "bath_sauna"] as const;
+
+const isHuman = (id: CharacterId): id is HumanId => id !== "duck";
+
+/**
+ * A wet human may dry itself here: on the bath floor (not in the tub, not
+ * already through the door) within REACH.dryAtExit of a drying door.
+ */
+export function atDryingSpot(s: GameState, level: Level, id: HumanId): boolean {
+  const h = s[id];
+  if (h.zone !== "bath") return false;
+  return DRYING_DOORS.some((d) => distance(h.pos, doorCenter(level, d)) <= REACH.dryAtExit);
+}
 
 type Ctx = { s: GameState; level: Level; events: GameEvent[]; pending: ViolationId[] };
 
@@ -46,7 +62,32 @@ interface Candidate {
   run: (c: Ctx) => void;
 }
 
+/**
+ * The E action, in priority order. The HUD hint and the action both read this
+ * one list, so the hint always names what E will do (prototype-core-gameplay
+ * design: E priority table).
+ */
 const CANDIDATES: Candidate[] = [
+  {
+    // 1. Dry self at the bath-side exit (wet controlled human only). The towel ends on the head.
+    label: () => "タオルで体を拭く",
+    applies: ({ s, level }) => isHuman(s.active) && s[s.active].wet === "wet" && atDryingSpot(s, level, s.active),
+    run: ({ s }) => {
+      const h = s[s.active as HumanId];
+      h.wet = "dry";
+      h.towel = "head";
+    },
+  },
+  {
+    // 2. Dress / undress at the locker. Never touches WetState (Req 6.7, 6.8).
+    label: ({ s }) => (s[s.active as HumanId].clothing === "clothed" ? "服を脱ぐ" : "服を着る"),
+    applies: ({ s, level }) =>
+      isHuman(s.active) && s[s.active].zone === "changing" && distance(s[s.active].pos, level.locker) <= REACH.locker,
+    run: ({ s }) => {
+      const h = s[s.active as HumanId];
+      h.clothing = h.clothing === "clothed" ? "unclothed" : "clothed";
+    },
+  },
   {
     // Pick up Coin (Duck)
     label: () => "500円玉を拾う",
@@ -152,6 +193,31 @@ const CANDIDATES: Candidate[] = [
       }
     },
   },
+  {
+    // 4. Dry a wet Duck nearby (a dry human out of the water). Duck needs no drying to progress.
+    label: () => "アヒルを拭く",
+    applies: ({ s }) =>
+      isHuman(s.active) &&
+      s[s.active].wet === "dry" &&
+      s[s.active].zone !== "bathwater" &&
+      s[s.active].zone !== "splash" &&
+      s.duck.wet === "wet" &&
+      !s.duck.inPond &&
+      s.duck.carriedBy === null &&
+      near(s, s.active, "duck", REACH.dryDuck),
+    run: ({ s }) => {
+      s.duck.wet = "dry";
+    },
+  },
+  {
+    // 5. Lowest: move the own towel between hand and head. Humans only; Duck has no towel.
+    label: ({ s }) => (s[s.active as HumanId].towel === "head" ? "タオルを手に持つ" : "タオルを頭にのせる"),
+    applies: ({ s }) => isHuman(s.active),
+    run: ({ s }) => {
+      const h = s[s.active as HumanId];
+      h.towel = h.towel === "head" ? "held" : "head";
+    },
+  },
 ];
 
 function findTransfer(s: GameState): TransferDialog | null {
@@ -203,37 +269,6 @@ export function resolveDialog(c: Ctx, confirm: boolean): void {
   if (!holds(s, d.item, d.from)) return;
   s.items[d.item].owner = { kind: "character", id: d.to };
   c.events.push({ kind: "itemMoved", item: d.item, to: s.items[d.item].owner });
-}
-
-const isHuman = (id: CharacterId): id is HumanId => id !== "duck";
-
-/** Dry self with the towel; if already dry, dry a nearby Duck (Req 6.4, 6.6). */
-export function dry({ s, events }: Ctx): void {
-  const id = s.active;
-  if (!isHuman(id)) return;
-  const h = s[id];
-  if (h.zone === "bathwater" || h.zone === "splash") {
-    events.push({ kind: "rejected", reason: MSG.cannotDryInWater });
-    return;
-  }
-  if (h.wet === "wet") {
-    h.wet = "dry";
-    return;
-  }
-  if (s.duck.wet === "wet" && !s.duck.inPond && s.duck.carriedBy === null && near(s, id, "duck", REACH.dryDuck)) {
-    s.duck.wet = "dry";
-    return;
-  }
-  events.push({ kind: "rejected", reason: MSG.alreadyDry });
-}
-
-/** Dress / undress at the locker. Never touches WetState (Req 6.7, 6.8). */
-export function toggleClothes({ s, level }: Ctx): void {
-  const id = s.active;
-  if (!isHuman(id)) return;
-  const h = s[id];
-  if (h.zone !== "changing" || distance(h.pos, level.locker) > REACH.locker) return;
-  h.clothing = h.clothing === "clothed" ? "unclothed" : "clothed";
 }
 
 export type { Ctx };

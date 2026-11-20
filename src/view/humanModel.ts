@@ -38,3 +38,31 @@ export function checkHumanContract(id: HumanId, root: Object3D): string[] {
   } else if (carry) out.push("socket_carry is Adult only");
   return out;
 }
+
+export type TowelPlace = "held" | "head";
+
+/** Where a human's towel sits, in the character group's local space (group origin = body center, front +Z). */
+export interface TowelPose {
+  x: number;
+  y: number;
+  z: number;
+  /** Rotation about local X: 0 = folded flat on the head, π/2 = hanging from the hand. */
+  rotX: number;
+}
+
+/**
+ * Towel pose from the body: on the head it lies flat on `headTop` (model
+ * bounds, or the placeholder body top); in the hand it hangs at `hand` (the
+ * model's `socket_hand_r`), or beside the right side of the placeholder body
+ * (right = −X for a +Z front). Provisional towel; not a final asset.
+ */
+export function towelPose(place: TowelPlace, body: { height: number; radius: number; headTop?: number; hand?: { x: number; y: number; z: number } }): TowelPose {
+  if (place === "head") return { x: 0, y: (body.headTop ?? body.height / 2) + TOWEL_THICKNESS / 2, z: 0, rotX: 0 };
+  const h = body.hand ?? { x: -(body.radius + 0.05), y: -0.05 * body.height, z: 0.05 };
+  return { x: h.x, y: h.y - TOWEL_DEPTH / 2, z: h.z, rotX: Math.PI / 2 };
+}
+
+/** Provisional towel box (m): width × thickness × depth. */
+export const TOWEL_WIDTH = 0.26;
+export const TOWEL_THICKNESS = 0.04;
+export const TOWEL_DEPTH = 0.18;

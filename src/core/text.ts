@@ -28,12 +28,11 @@ export const MSG = {
   nothingHere: "ここではできることがありません",
   needCoin: "500円玉が必要です",
   moveTogether: (other: CharacterId) => `${CHARACTER_NAME[other]}と一緒に移動しましょう`,
-  companionDry: (other: CharacterId) => `${CHARACTER_NAME[other]}の体を拭きましょう`,
+  companionDry: (other: CharacterId) => `${CHARACTER_NAME[other]}も出口の前でEを押して体を拭きましょう（Tabで切り替え）`,
   companionDress: (other: CharacterId) => `${CHARACTER_NAME[other]}に服を着せましょう`,
   needBothAtShore: "子どもと一緒に池の入口まで来ましょう",
-  cannotDryInWater: "湯船の中では体を拭けません",
-  alreadyDry: "もう乾いています",
   shoutOutsideSauna: "大声は周りの迷惑になります",
+  towelOnHead: "タオルは頭の上にあります（Eで手に持てます）",
 } as const;
 
 export const ZONE_NAME: Record<import("./types").ZoneId, string> = {

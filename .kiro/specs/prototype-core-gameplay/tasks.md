@@ -95,3 +95,11 @@ Created directly by the main Kiro agent on 2026-11-20 after the built-in spec su
     - Done: dev server at http://127.0.0.1:5173/. Partly checked by Codex in Chrome (first half of the route up to paying at reception, F1 and restart, and the label fix; see `progress.md`). Open: the second half of the route, camera transition feel, and F2–F7 screens in the browser. This is not a user-approval checkpoint.
   - [x] 9.3 Record in the spec which Kiro features were used and what remains (final-model pipeline is still required)
     - See `progress.md`
+
+- [x] 11. Simpler controls (2026-11-20 user request; Kiro Crew)
+  - [x] 11.1 Remove T and G; drying at the bath-side exits and dressing at the locker are E candidates (Req 6.4, 6.8)
+  - [x] 11.2 Towel `held` / `head` for humans (Req 6.10); Q dips only a held towel (Req 7.1); checkpoints keep it
+  - [x] 11.3 One E candidate list for the action and the HUD hint; priority table in design.md
+  - [x] 11.4 Objective and HUD follow the state (who is wet; locked vs unlocked sauna door)
+  - [x] 11.5 Tests: `tests/controls-e.test.ts` (keyboard wiring, spots, priority, locker/F4, towel/F1/F2/F5, Duck, restore, E-only clear route)
+  - [ ] 11.6 Browser normal-input check of the new controls: Codex

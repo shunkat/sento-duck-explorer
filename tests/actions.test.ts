@@ -97,20 +97,20 @@ describe("carrying Duck (Req 2.5, 2.6, 3.10)", () => {
   });
 });
 
-describe("drying (Req 6.4, 6.6, 6.7)", () => {
-  it("cannot dry inside the bathwater; can dry outside; then dries a nearby Duck", () => {
+describe("drying with E (Req 6.4, 6.6, 6.7)", () => {
+  it("not in the bathwater; at the exit E dries; then E dries a nearby Duck", () => {
     const sim = new Sim();
     sim.switchTo("child");
-    sim.press("dry");
+    sim.press("interact"); // in the bathwater: towel toggle, not drying
     expect(sim.state.child.wet).toBe("wet");
     sim.switchTo("duck");
     sim.walk([{ x: 3.4, z: 2.0 }]);
     sim.switchTo("child");
     sim.walk([{ x: 3.6, z: 1.6 }]);
-    sim.press("dry");
+    sim.press("interact");
     expect(sim.state.child.wet).toBe("dry");
     expect(sim.state.child.clothing).toBe("unclothed");
-    sim.press("dry");
+    sim.press("interact");
     expect(sim.state.duck.wet).toBe("dry");
   });
 });

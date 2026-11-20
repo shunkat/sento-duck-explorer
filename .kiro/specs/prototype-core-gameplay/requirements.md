@@ -165,10 +165,13 @@ Scope note: this spec ends when the full route is playable with placeholder shap
 2. THE Game SHALL maintain a ClothingState (`clothed` or `unclothed`) for Child and Adult. Duck has no ClothingState.
 3. WHEN a human character enters bathwater or a splash zone, THE Game SHALL set that character's WetState to `wet`, and the character SHALL stay `wet` after leaving until dried. WHEN a human character leaves the SaunaRoom, THE Game SHALL set that character's WetState to `wet` (sweat). *(Provisional)*
 4. WHEN a human character performs a drying action with a towel while that character's position is outside all bath areas, THE Game SHALL set that character's WetState to `dry`.
+   - *Update 2026-11-20 (user request: fewer keys).* The drying action is E, not T. It applies only to the controlled human, only when wet, on the bath floor (not in the bathwater or splash, not in the sauna) within 2.0 m of the changing-room door or the sauna door, so it can be pressed before crossing. Elsewhere E does something else. *(Distance and spots: provisional design.)*
 5. WHEN Duck enters bathwater, a splash zone, or the SecretPond, THE Game SHALL set Duck's WetState to `wet`.
 6. WHEN Duck is the target of a drying action, THE Game SHALL set Duck's WetState to `dry`.
 7. THE Game SHALL track WetState and ClothingState separately and NOT infer one from the other.
 8. WHEN a human character performs a designated undress action, THE Game SHALL set that character's ClothingState to `unclothed`. WHEN a human character performs a designated dress action, THE Game SHALL set that character's ClothingState to `clothed`.
+   - *Update 2026-11-20 (user request).* Dress / undress is E within 1.0 m of the locker in the changing room, not G. It never changes WetState.
+10. *(Added 2026-11-20, user request: "タオルは一度獲得したら頭の上に乗せられるように…アヒルだけは頭に乗せられない".)* Each human has its towel from the start, either `held` (in the hand) or `head`. WHEN no higher-priority E action applies, E SHALL move the towel between hand and head. Duck SHALL NOT have or wear a towel. A towel on the head SHALL NOT dry the body. Drying with E SHALL leave the towel on the head (from the hand it is stowed on the head). The towel place SHALL be saved and restored with checkpoints. It is separate from the Duck's sauna hat. *(Initial state `held` and the stow rule: provisional design.)*
 9. WHEN a GameOverCondition is triggered and CheckpointRestart is used, THE Game SHALL restore WetState and ClothingState for all characters to their values at the checkpoint.
 
 ---
@@ -180,6 +183,7 @@ Scope note: this spec ends when the full route is playable with placeholder shap
 #### Acceptance Criteria
 
 1. WHEN a towel item contacts the bathwater surface of a bath area, THE Game SHALL trigger GameOverCondition F1.
+   - *Update 2026-11-20.* Only a towel in the hand can be dipped (Q in the bathwater). With the towel on the head, Q SHALL NOT trigger F1 and the HUD SHALL say the towel is on the head. Walking through water while holding the towel SHALL NOT trigger F1.
 2. WHEN a human character whose WetState is `wet` enters a changing room, THE Game SHALL trigger GameOverCondition F2.
 3. WHEN the ActiveCharacter performs a run action and the run trajectory passes through a soap item's position, THE Game SHALL trigger GameOverCondition F3.
 4. WHEN a human character whose ClothingState is `unclothed` crosses the threshold from the changing room into the reception area, common area, or exterior, THE Game SHALL trigger GameOverCondition F4.

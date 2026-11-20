@@ -30,11 +30,11 @@ export function duckGivesCoin(sim: Sim): void {
 export function pairToChanging(sim: Sim): void {
   sim.switchTo("child");
   sim.walk([{ x: 3.6, z: 1.6 }]);
-  sim.press("dry");
+  sim.press("interact");
   expect(sim.state.child.wet).toBe("dry");
   sim.switchTo("adult");
   sim.walk([{ x: 2.6, z: 1.6 }]);
-  sim.press("dry");
+  sim.press("interact");
   expect(sim.state.adult.wet).toBe("dry");
   sim.walk([{ x: 2.6, z: 0.5 }, { x: 2.6, z: -1 }]);
   expect(sim.state.adult.zone).toBe("changing");
@@ -45,10 +45,10 @@ export function pairToChanging(sim: Sim): void {
 export function pairToggleClothes(sim: Sim, childEnd: { x: number; z: number }): void {
   sim.switchTo("adult");
   sim.walk([{ x: 5.4, z: -2 }]);
-  sim.press("toggleClothes");
+  sim.press("interact");
   sim.switchTo("child");
   sim.walk([{ x: 5.5, z: -2.6 }]);
-  sim.press("toggleClothes");
+  sim.press("interact");
   sim.walk([childEnd]);
   expect(sim.state.adult.clothing).toBe(sim.state.child.clothing);
 }

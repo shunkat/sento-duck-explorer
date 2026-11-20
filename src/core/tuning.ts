@@ -16,6 +16,8 @@ export const REACH = {
   pickUpDuck: 1.0,
   dryDuck: 1.0,
   locker: 1.0,
+  /** E dries a wet human on the bath side within this distance of the changing-room or sauna door. */
+  dryAtExit: 2.0,
   /** F7: push counts only with an NPC body this close. */
   push: 0.8,
 } as const;

@@ -45,7 +45,7 @@ describe("F2: entering the changing room wet (Req 4.1, 4.2, 7.2)", () => {
     sim.walk([{ x: 3.2, z: 1.2 }]); // still wet
     sim.switchTo("child");
     sim.walk([{ x: 2.6, z: 1.0 }]);
-    sim.press("dry");
+    sim.press("interact");
     hold(sim, { x: 0, z: -1 }, 40);
     sim.expectPlaying();
     expect(sim.state.child.zone).toBe("bath");
@@ -56,7 +56,7 @@ describe("F2: entering the changing room wet (Req 4.1, 4.2, 7.2)", () => {
     const sim = new Sim();
     sim.switchTo("child");
     sim.walk([{ x: 2.6, z: 1.0 }]);
-    sim.press("dry");
+    sim.press("interact");
     hold(sim, { x: 0, z: -1 }, 40);
     sim.expectPlaying();
     expect(sim.state.child.zone).toBe("bath");
@@ -94,7 +94,7 @@ describe("F4: leaving the changing room unclothed (Req 4.4, 7.4)", () => {
     const sim = new Sim();
     R.pairToChanging(sim);
     sim.walk([{ x: 5.4, z: -2 }]);
-    sim.press("toggleClothes");
+    sim.press("interact");
     expect(sim.state.adult.clothing).toBe("clothed");
     sim.switchTo("child");
     sim.walk([{ x: 3.2, z: -3.0 }]);
@@ -141,11 +141,12 @@ describe("F5: entering the sauna wet, and restore from paidReturned (Req 7.5, 10
     const sim = readyForSauna();
     sim.walk([{ x: 1.2, z: 2.5 }, { x: 1.0, z: 7.2 }]); // Adult waits, dry
     sim.switchTo("child");
-    sim.walk([{ x: 4, z: 4 }]); // into the bathwater
+    sim.walk([{ x: 1.2, z: 2.5 }, { x: 2.0, z: 7.5 }]);
+    sim.press("interact"); // dry Child: E unlocks (drying applies only when wet)
+    expect(sim.state.saunaDoor).toBe("unlocked");
+    sim.walk([{ x: 4, z: 6.5 }]); // back into the bathwater
     expect(sim.state.child.wet).toBe("wet");
-    sim.walk([{ x: 2.0, z: 7.5 }]);
-    sim.press("interact");
-    sim.walk([{ x: 2.6, z: 7.6 }, { x: 2.6, z: 9.0 }], { allowEnd: true });
+    sim.walk([{ x: 2.6, z: 7.6 }, { x: 2.6, z: 9.0 }], { allowEnd: true }); // walking in wet, no E
     expect(sim.state.outcome).toEqual({ kind: "gameOver", reason: "F5" });
 
     sim.press("restart");
