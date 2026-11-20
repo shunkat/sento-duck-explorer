@@ -7,7 +7,7 @@ import type { Level } from "../level/layout";
 import type { AABB } from "../sim/geometry";
 import type { Pose } from "./camera";
 import { BODY_HEIGHT, type View } from "./deriveView";
-import { type ModelLibrary, copySocketPose } from "./models";
+import { type ModelLibrary, placeHatOnSocket } from "./models";
 import { LABEL_HIDE_DISTANCE, type LabelKind, labelPixelHeight, worldHeightForPixels } from "./labels";
 
 const ZONE_COLORS: Record<string, number> = {
@@ -262,13 +262,9 @@ export class GameScene {
 
   /** Hat on Duck's socket_hat while attached to Duck (the view's own hat position is used otherwise). */
   private placeHat(view: View): void {
-    const socket = this.modelLib?.get("duck")?.sockets.socket_hat;
-    if (!view.hatAttachedToDuck || !socket || !this.modelRoots.duck) {
-      this.items.hat.quaternion.identity();
-      return;
-    }
-    this.chars.duck.updateMatrixWorld(true);
-    copySocketPose(this.items.hat, socket, this.tmp);
+    const socket = this.modelRoots.duck ? this.modelLib?.get("duck")?.sockets.socket_hat : undefined;
+    if (view.hatAttachedToDuck && socket) this.chars.duck.updateMatrixWorld(true);
+    placeHatOnSocket(this.items.hat, view.hatAttachedToDuck, socket, this.tmp);
   }
 
   render(view: View, pose: Pose, timeSeconds: number): void {

@@ -102,3 +102,21 @@ export function copySocketPose(target: THREE.Object3D, socket: THREE.Object3D, s
   target.position.copy(scratch);
   socket.getWorldQuaternion(target.quaternion);
 }
+
+/**
+ * Place the hat on Duck's hat socket while attached, otherwise reset its rotation
+ * (the caller's own position for the hat is kept). Returns true when it was attached to the socket.
+ */
+export function placeHatOnSocket(
+  hat: THREE.Object3D,
+  attached: boolean,
+  socket: THREE.Object3D | null | undefined,
+  scratch: THREE.Vector3,
+): boolean {
+  if (!attached || !socket) {
+    hat.quaternion.identity();
+    return false;
+  }
+  copySocketPose(hat, socket, scratch);
+  return true;
+}
