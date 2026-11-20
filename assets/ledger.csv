@@ -1,0 +1,14 @@
+asset_id,stage,file,status,creator,method,tool_or_service,tool_version,source_type,terms_url,input_rights,output_license,redistributable,commercial_use,attribution,parent_asset,sha256,created_date,notes
+prototype_primitives,prototype,src/view/scene.ts,done,Kiro (code),Three.js primitive geometry generated in code; no image or model files,three,0.187.0,self-made code,LICENSE; THIRD_PARTY_NOTICES.md (three.js MIT),not applicable,MIT (repository LICENSE),yes,yes,three.js notice,,,2026-11-20,Placeholder only; not a final asset; code-generated so no image or model rights apply
+duck,reference,assets/duck/ref/duck__ref_front.png,planned,,method not decided,,,,,,,unknown,unknown,,,,,front/side/back planned
+duck,generated,,planned,,Image to 3D,service not selected,,,,,,unknown,unknown,,,,,keep raw output as received
+duck,blend,assets/duck/blend/duck__v01.blend,planned,,Blender adjustment,Blender,,,,,,unknown,unknown,,,,,
+duck,final,public/models/duck.glb,planned,,GLB export,Blender glTF exporter,,,,,,unknown,unknown,,,,,
+hat_sauna_duck,reference,assets/hat_sauna_duck/ref/hat_sauna_duck__ref_front.png,planned,,method not decided,,,,,,,unknown,unknown,,,,,
+hat_sauna_duck,generated,,planned,,Image to 3D,service not selected,,,,,,unknown,unknown,,,,,
+hat_sauna_duck,blend,assets/hat_sauna_duck/blend/hat_sauna_duck__v01.blend,planned,,Blender adjustment,Blender,,,,,,unknown,unknown,,,,,
+hat_sauna_duck,final,public/models/hat_sauna_duck.glb,planned,,GLB export,Blender glTF exporter,,,,,,unknown,unknown,,,,,
+bath_section_kit,reference,assets/bath_section_kit/ref/bath_section_kit__ref_front.png,planned,,method not decided,,,,,,,unknown,unknown,,,,,pieces: bath_wall_2m; bath_wall_narrow_hole; bath_door_frame; bath_tub; bath_kakeyu; soap; coin_500; derived pieces need inherited rows pointing to these files by sha256
+bath_section_kit,generated,,planned,,Image to 3D,service not selected,,,,,,unknown,unknown,,,,,derived pieces get their own rows with parent_asset; derived pieces need inherited rows pointing to these files by sha256
+bath_section_kit,blend,assets/bath_section_kit/blend/bath_section_kit__v01.blend,planned,,Blender adjustment,Blender,,,,,,unknown,unknown,,,,,
+bath_section_kit,final,public/models/bath_section_kit.glb,planned,,GLB export,Blender glTF exporter,,,,,,unknown,unknown,,,,,

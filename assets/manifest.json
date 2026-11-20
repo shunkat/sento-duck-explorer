@@ -1,0 +1,151 @@
+{
+  "note": "Planned limits are provisional (see .kiro/specs/final-assets/design.md). 'measured' stays null until a GLB is exported and measured in Blender. Units: meters, +Y up, front +Z, origin at bottom center.",
+  "assets": {
+    "duck": {
+      "stage": 2,
+      "status": "planned",
+      "collider_radius": 0.15,
+      "limits": {
+        "height": [
+          0.28,
+          0.32
+        ],
+        "max_width": 0.36,
+        "triangles": 6000,
+        "materials": 1,
+        "texture_px": 1024,
+        "glb_mb": 1.5
+      },
+      "sockets": [
+        "socket_hat",
+        "socket_label"
+      ],
+      "measured": null,
+      "root_rule": "rootY = centerY - 0.15 (land 0.00, pond -0.05, carried 0.90)",
+      "socket_positions": {
+        "socket_hat": {
+          "y": 0.28,
+          "meaning": "hat root (center of inner base)"
+        }
+      }
+    },
+    "hat_sauna_duck": {
+      "stage": 2,
+      "status": "planned",
+      "limits": {
+        "base_diameter": [
+          0.16,
+          0.22
+        ],
+        "height": [
+          0.12,
+          0.18
+        ],
+        "triangles": 1500,
+        "materials": 1,
+        "texture_px": 512,
+        "glb_mb": 0.3
+      },
+      "origin": "center of inner base",
+      "measured": null
+    },
+    "bath_section_kit": {
+      "stage": 2,
+      "status": "planned",
+      "limits": {
+        "triangles_drawn": 25000,
+        "materials": 4,
+        "textures": 4,
+        "texture_px": 1024,
+        "glb_mb_total": 5,
+        "narrow_hole_clear": [
+          0.4,
+          0.45
+        ],
+        "door_clear": [
+          1.2,
+          1.25
+        ],
+        "wall_visual_height": [
+          1.0,
+          1.2
+        ]
+      },
+      "measured": null
+    },
+    "child": {
+      "stage": 3,
+      "status": "planned",
+      "collider_radius": 0.25,
+      "limits": {
+        "height": [
+          1.15,
+          1.25
+        ],
+        "shoulder_width": [
+          0.44,
+          0.56
+        ],
+        "triangles": 12000,
+        "materials": 2,
+        "texture_px": 1024,
+        "glb_mb": 3
+      },
+      "sockets": [
+        "socket_hand_r",
+        "socket_label"
+      ],
+      "outfits": [
+        "clothed",
+        "bath"
+      ],
+      "measured": null
+    },
+    "adult": {
+      "stage": 3,
+      "status": "planned",
+      "collider_radius": 0.35,
+      "limits": {
+        "height": [
+          1.65,
+          1.75
+        ],
+        "shoulder_width": [
+          0.64,
+          0.8
+        ],
+        "triangles": 12000,
+        "materials": 2,
+        "texture_px": 1024,
+        "glb_mb": 3
+      },
+      "sockets": [
+        "socket_hand_r",
+        "socket_carry",
+        "socket_label"
+      ],
+      "outfits": [
+        "clothed",
+        "bath"
+      ],
+      "measured": null,
+      "socket_positions": {
+        "socket_carry": {
+          "y": 0.9,
+          "meaning": "carried Duck root (bottom origin); Duck center = 0.90 + 0.15 = 1.05 m as in the prototype"
+        }
+      }
+    }
+  },
+  "scene_limits": {
+    "stage2_triangles_drawn": 60000,
+    "draw_calls": 120,
+    "stage2_download_mb": 12,
+    "full_download_mb": 30,
+    "target_fps": 60,
+    "resolution": [
+      1280,
+      720
+    ]
+  }
+}

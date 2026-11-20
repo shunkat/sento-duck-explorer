@@ -6,9 +6,11 @@
 
 **登録済み・ACTIVE。** [shunkat/sento-duck-explorer](https://github.com/shunkat/sento-duck-explorer) をPublic・MITで新規公開し、ローカル `origin/main` と公開先の一致を確認した。ユーザーがGitHubのブラウザー認証とKiro App接続を行い、CodexがGitHub設定の「Only select repositories」「Selected 1 repository」と対象名の一致を確認した。Scheduleを登録・有効化し、一覧のACTIVE表示と対象リポジトリを確認した。初回を手動実行し、公開mainの取得と[PR #1](https://github.com/shunkat/sento-duck-explorer/pull/1)の作成を確認した。
 
-初回は英語文書のみの変更。クラウドの `npm ci` は `registry.npmjs.org` からの依存取得時に403となり、テスト・ビルドは未実施。設定画面ではNetwork accessが `Repository access only`、Custom allowed domainsが空だった。公式npm配布先だけの追加はユーザーに確認中で、設定変更は未保存。取得制限をミラー等で回避しない。以前のMac上の83件成功・ビルド成功をクラウドでの成功として扱わない。
+初回は英語文書のみの変更。最初の `npm ci` は依存取得時に403となった。設定画面ではNetwork accessが `Repository access only`、Custom allowed domainsが空だった。ユーザーの明示承認後、アクセスレベルを維持したまま `registry.npmjs.org` 1件だけを追加・保存し、再度Editを開いて永続化を確認した。
 
-ブラウザー確認は初回に未実施。Kiro Web公式はChrome/Playwright等の提供を説明しているため、Kiro Web全体にブラウザー機能がないとは断定しない。接続と依存取得が整った実行で利用可能ツールを確認する。
+同じクラウド環境で通常の `npm ci` が成功し、Node v22.23.4 / npm 11.4.2で83件のテストと本番ビルドが成功。機密情報検査はソース・index 118検査、配布物3検査でいずれも検出0だった。ミラーや制限回避は使っていない。最初の失敗、過去のMacでの成功、許可追加後のクラウドでの成功を別の実績として記録する。
+
+ブラウザー確認は初回に未実施。Kiro WebのツールカタログにはPlaywright Powerがあり、Kiro Web公式もChrome/Playwright等の提供を説明している。単に未ロードであることを利用不能と扱わず、次回は提供された公式手順でPowerをロードしてローカル開発サーバーの検証を進める。実際にロードできない場合だけ、具体的なエラーを記録する。
 
 2026-11-20、ユーザーは `shunkat/sento-duck-explorer` のPublic・MITでの新規公開、このリポジトリだけへのKiro Agent接続、毎時開発の有効化を明示承認した。MITライセンスを採用済み。
 
@@ -60,5 +62,5 @@ cron(0 0-21 4 12 ? 2026)
 2. 確認済み：83件のテスト、ビルド、ソース・Git index・配布物の機密情報検査。コミットは公開用ハンドルとGitHub noreplyを使用。
 3. 確認済み：Kiro Agentのアクセス対象は当該リポジトリ1件のみ。
 4. 確認済み：期限付き3個のCRON、対象リポジトリ、一覧のACTIVE。毎時00分の設定で、次回日時の専用表示は未確認。
-5. 確認済み：初回が公開mainをcloneし、文書作成・機密検査を経てPR #1を作成。独立レビューで文書の表現修正を依頼中。クラウドのテスト・ビルド・ブラウザー検証は未完了。
+5. 確認済み：初回が公開mainをcloneし、文書作成・機密検査を経てPR #1を作成。独立レビューの指摘を修正後、クラウドで83件のテスト・ビルド・ソースと配布物の機密検査が成功。最終head `da8adda` をCodexが独立再レビューし、追加の必須指摘なし、全5コミットの公開用メタデータとmainとの競合なしを確認した。PRは未マージ。ブラウザー検証は次回作業として残る。
 6. 確認済み：GitHubのSecret scanning・Push protectionは有効。確認時のopen secret alertsは0件。ただし検出範囲外の情報がない保証ではない。
