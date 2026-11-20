@@ -87,7 +87,7 @@ npm run check:publication
 | G | Dress or undress at the changing-room lockers |
 | C | Toggle the overview camera |
 | R | After game over: resume from the last checkpoint. After clearing: restart. |
-| Q / V / F | Deliberate rule breaks (towel in the bath, V = nuisance-shout action in the sauna, pushing in the sauna). Each ends the attempt. The game does not listen to a microphone. |
+| Q / V / F | Deliberate rule-break actions. Each ends the attempt only under its condition: Q when the child or adult dips the towel while in the bath water, V when the child or adult is in the sauna (a nuisance-shout action), F when an NPC is within pushing reach in the sauna. Otherwise the attempt continues (V outside the sauna only shows a prompt). The duck cannot trigger these. The game does not listen to a microphone. |
 
 If the Vimium Chrome extension is on, press `I` for insert mode so keys such as `T` reach the game.
 

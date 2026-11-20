@@ -55,7 +55,7 @@ Each rule is a bathhouse manner. Breaking one ends the attempt and the game rest
 | F6 | Pressing the V key (the nuisance-shout action) while in the sauna |
 | F7 | Pushing people aside in the sauna |
 
-F6 is a deliberate rule-break action: the V key makes the character let out a nuisance shout. The game does not use a microphone, does not recognize speech and does not classify calls for help. Calling for help is not meant to be punished, but no help-calling action exists in the prototype yet, so none is claimed. (The on-screen Japanese text for F6 already says to tell people nearby or staff when someone feels unwell.)
+F6 is a deliberate rule-break action: the V key makes the child or adult let out a nuisance shout. The game does not use a microphone, does not recognize speech and does not classify calls for help. Calling for help is not meant to be punished, but no help-calling action exists in the prototype yet, so none is claimed. (The on-screen Japanese text for F6 already says to tell people nearby or staff when someone feels unwell.)
 
 ## Cultural and safety framing
 
