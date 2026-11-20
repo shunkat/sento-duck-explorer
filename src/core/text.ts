@@ -32,6 +32,7 @@ export const MSG = {
   companionDress: (other: CharacterId) => `${CHARACTER_NAME[other]}に服を着せましょう`,
   needBothAtShore: "子どもと一緒に池の入口まで来ましょう",
   shoutOutsideSauna: "大声は周りの迷惑になります",
+  cannotPutDuckHere: "ここではアヒルを下ろせません。湯船か水路のそばでEを押そう",
   towelOnHead: "タオルは頭の上にあります（Eで手に持てます）",
 } as const;
 

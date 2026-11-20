@@ -83,7 +83,9 @@ Scope note: this spec ends when the full route is playable with placeholder shap
 3. THE Game SHALL assign Child a PassWidth less than the defined PassWidth of every CrowdGap in the SaunaRoom, allowing Child's collision volume to clear each gap without contact.
 4. THE Game SHALL assign Adult a PassWidth greater than the defined PassWidth of every CrowdGap in the SaunaRoom, causing Adult's collision volume to block at each gap.
 5. WHILE Duck's CarriedBy is `adult`, THE Game SHALL place Duck exactly at Adult's carry anchor each tick and ignore Duck's own movement input.
-6. WHEN Duck's CarriedBy is cleared outside the PondEntrance, THE Game SHALL place Duck at Adult's drop point and restore Duck's independent movement input.
+6. WHEN Duck's CarriedBy is cleared outside the PondEntrance, THE Game SHALL place Duck at Adult's drop point on the water and restore Duck's own movement input, which moves Duck only on water.
+   - *Update 2026-11-20 (user: 「アヒルは人に持ってもらわないと浴室を出れないし、水の上じゃないと移動できません」).* The drop point SHALL be on bath water (tub, channel or hole) within 1.0 m of Adult with no wall in between. Otherwise E SHALL be refused and Duck SHALL stay held. Duck SHALL never be left on the floor.
+8. *(Added 2026-11-20, same user correction.)* Outside the pond, Duck SHALL move on its own only on water surfaces: the tub, a channel from the tub to the NarrowHole, and the water inside the hole. Duck's whole body (radius) SHALL stay on the union of these surfaces, along the whole path, gliding along edges. The splash (wet floor) and the wet flag are not water. Duck SHALL leave the bath only while carried by Adult. The start and every checkpoint SHALL place a free Duck on valid water. *(Channel position and size: provisional design.)*
 7. WHEN Child reaches the SaunaRoom exit trigger, THE Game SHALL record the traversal as successful regardless of which CrowdGap path Child used.
 
 ---
@@ -168,6 +170,7 @@ Scope note: this spec ends when the full route is playable with placeholder shap
    - *Update 2026-11-20 (user request: fewer keys).* The drying action is E, not T. It applies only to the controlled human, only when wet, on the bath floor (not in the bathwater or splash, not in the sauna) within 2.0 m of the changing-room door or the sauna door, so it can be pressed before crossing. Elsewhere E does something else. *(Distance and spots: provisional design.)*
 5. WHEN Duck enters bathwater, a splash zone, or the SecretPond, THE Game SHALL set Duck's WetState to `wet`.
 6. WHEN Duck is the target of a drying action, THE Game SHALL set Duck's WetState to `dry`.
+   - *Update 2026-11-20.* Removed: Duck now stays on water (always `wet`) unless carried, so the "dry Duck" E action was dropped.
 7. THE Game SHALL track WetState and ClothingState separately and NOT infer one from the other.
 8. WHEN a human character performs a designated undress action, THE Game SHALL set that character's ClothingState to `unclothed`. WHEN a human character performs a designated dress action, THE Game SHALL set that character's ClothingState to `clothed`.
    - *Update 2026-11-20 (user request).* Dress / undress is E within 1.0 m of the locker in the changing room, not G. It never changes WetState.
@@ -183,7 +186,7 @@ Scope note: this spec ends when the full route is playable with placeholder shap
 #### Acceptance Criteria
 
 1. WHEN a towel item contacts the bathwater surface of a bath area, THE Game SHALL trigger GameOverCondition F1.
-   - *Update 2026-11-20.* Only a towel in the hand can be dipped (Q in the bathwater). With the towel on the head, Q SHALL NOT trigger F1 and the HUD SHALL say the towel is on the head. Walking through water while holding the towel SHALL NOT trigger F1.
+   - *Update 2026-11-20.* Only a towel in the hand can be dipped (Q on the bath water: the tub, the Duck's channel or the hole). With the towel on the head, Q SHALL NOT trigger F1 and the HUD SHALL say the towel is on the head. Walking through water while holding the towel SHALL NOT trigger F1.
 2. WHEN a human character whose WetState is `wet` enters a changing room, THE Game SHALL trigger GameOverCondition F2.
 3. WHEN the ActiveCharacter performs a run action and the run trajectory passes through a soap item's position, THE Game SHALL trigger GameOverCondition F3.
 4. WHEN a human character whose ClothingState is `unclothed` crosses the threshold from the changing room into the reception area, common area, or exterior, THE Game SHALL trigger GameOverCondition F4.

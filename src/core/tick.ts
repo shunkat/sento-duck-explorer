@@ -1,8 +1,8 @@
 // The only way game state changes. Pure: never mutates its input state.
 import type { Level } from "../level/layout";
-import { stepWalk, wallsFor } from "../sim/movement";
+import { stepDuckWater, stepWalk, wallsFor } from "../sim/movement";
 import { stepPond } from "../sim/pond";
-import { isSauna, isWetSource, zoneAtOr } from "../sim/zones";
+import { inBathWater, isSauna, isWetSource, zoneAtOr } from "../sim/zones";
 import { type Ctx, interact, resolveDialog } from "./actions";
 import { restoreLatest, saveCheckpointIfReached } from "./checkpoints";
 import { applyHumanMove } from "./pair";
@@ -53,7 +53,7 @@ export function tick(state: GameState, input: InputFrame, level: Level): TickRes
   if (input.interact) interact(c);
   else if (input.dipTowel) {
     // F1 only when the towel actually goes into the water: it must be in the hand.
-    if (human && s[human].zone === "bathwater") {
+    if (human && inBathWater(level, s[human].pos)) {
       if (s[human].towel === "held") c.pending.push("F1");
       else events.push({ kind: "prompt", text: MSG.towelOnHead });
     }
@@ -76,7 +76,8 @@ export function tick(state: GameState, input: InputFrame, level: Level): TickRes
           d.pos = r.pos;
           d.vel = r.vel;
         } else {
-          d.pos = stepWalk("duck", d.pos, input.move, false, walls);
+          // Outside the pond Duck only swims on water; the bath floor needs Adult to carry it.
+          d.pos = stepDuckWater(d.pos, input.move, walls, level.duckWater);
         }
         d.zone = zoneAtOr(level, d.pos, d.zone);
       }
@@ -100,7 +101,7 @@ export function tick(state: GameState, input: InputFrame, level: Level): TickRes
 
   // 6. Wetness from water zones (Req 6.3, 6.5).
   for (const ch of [s.duck, s.child, s.adult]) {
-    if (isWetSource(ch.zone)) ch.wet = "wet";
+    if (isWetSource(ch.zone) || inBathWater(level, ch.pos)) ch.wet = "wet";
   }
 
   // 7. Outcome: game over wins over clear (Req 7.9); then checkpoints.

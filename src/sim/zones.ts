@@ -41,4 +41,7 @@ export function areaOf(z: ZoneId): AreaId {
 }
 
 export const isSauna = (z: ZoneId): boolean => SAUNA.has(z);
+
+/** On the bath water (tub, channel or hole: `LEVEL.duckWater`). Wets anyone; a held towel dipped here is F1. */
+export const inBathWater = (level: Level, p: Vec2): boolean => level.duckWater.some((w) => containsPoint(w, p));
 export const isWetSource = (z: ZoneId): boolean => WET_SOURCES.has(z);

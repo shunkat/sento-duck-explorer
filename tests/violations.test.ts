@@ -139,9 +139,9 @@ function readyForSauna(): Sim {
 describe("F5: entering the sauna wet, and restore from paidReturned (Req 7.5, 10.4)", () => {
   it("a wet child entering the sauna ends the game; restart restores paidReturned", () => {
     const sim = readyForSauna();
-    sim.walk([{ x: 1.2, z: 2.5 }, { x: 1.0, z: 7.2 }]); // Adult waits, dry
+    R.walkDryToSaunaDoor(sim, { x: 1.0, z: 7.2 }); // Adult waits, dry
     sim.switchTo("child");
-    sim.walk([{ x: 1.2, z: 2.5 }, { x: 2.0, z: 7.5 }]);
+    R.walkDryToSaunaDoor(sim, { x: 2.0, z: 7.5 });
     sim.press("interact"); // dry Child: E unlocks (drying applies only when wet)
     expect(sim.state.saunaDoor).toBe("unlocked");
     sim.walk([{ x: 4, z: 6.5 }]); // back into the bathwater
@@ -168,7 +168,7 @@ describe("F5: entering the sauna wet, and restore from paidReturned (Req 7.5, 10
     sim.walk([{ x: 4, z: 4 }, { x: 1.0, z: 7.2 }]); // Adult gets wet on the way
     expect(sim.state.adult.wet).toBe("wet");
     sim.switchTo("child");
-    sim.walk([{ x: 1.2, z: 2.5 }, { x: 2.0, z: 7.5 }]);
+    R.walkDryToSaunaDoor(sim, { x: 2.0, z: 7.5 });
     sim.press("interact");
     sim.walk([{ x: 2.6, z: 7.6 }]);
     hold(sim, { x: 0, z: 1 }, 40);

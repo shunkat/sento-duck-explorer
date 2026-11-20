@@ -70,6 +70,13 @@ export interface Level {
   soaps: readonly { pos: Vec2; radius: number }[];
   initialPositions: Record<CharacterId, Vec2>;
   pondSpawn: Vec2;
+  /**
+   * Water surfaces where Duck can swim on its own outside the pond: the tub,
+   * a short channel from the tub to the NarrowHole, and the water in the hole.
+   * Duck's center must stay inside their union. Splash (wet floor) is not
+   * swimmable. One source for movement, drop points and rendering.
+   */
+  duckWater: readonly AABB[];
   /** Safe spawn positions used when restoring checkpoints. */
   checkpointSpawns: {
     paidReturned: { child: Vec2; adult: Vec2 };
@@ -113,6 +120,8 @@ const COMMON_DOOR: [number, number] = [-6.6, -6.6 + DOOR_WIDTH]; // on x=6 and x
 const NH_Z0 = 5.3;
 const NH_Z1 = NH_Z0 + NARROW_HOLE_WIDTH;
 const NH_END_X = -3;
+
+const BATHWATER_BOX = box(2, 3, 7, 7);
 
 // Sauna crowd rows: each row is a column of NPC bodies with one clear gap.
 const SAUNA_IN_Z0 = 8 + H;
@@ -171,7 +180,7 @@ const walls: AABB[] = [
 export const LEVEL: Level = {
   zones: [
     { id: "narrow_hole", box: box(NH_END_X, NH_Z0, 0, NH_Z1) },
-    { id: "bathwater", box: box(2, 3, 7, 7) },
+    { id: "bathwater", box: BATHWATER_BOX },
     { id: "splash", box: box(9, 1, 10.2, 2.2) },
     { id: "bath", box: box(0, 0, 16, 8) },
     { id: "changing", box: box(0, -4, 12, 0) },
@@ -213,9 +222,16 @@ export const LEVEL: Level = {
     adult: { x: 5.4, z: 4.2 },
   },
   pondSpawn: { x: 28, z: 4 },
+  duckWater: [
+    BATHWATER_BOX,
+    // Channel (provisional layout): same width as the hole, overlapping the tub and the hole so the joints are continuous.
+    box(-0.1, NH_Z0, 2.2, NH_Z1),
+    box(NH_END_X, NH_Z0, 0, NH_Z1),
+  ],
   checkpointSpawns: {
     paidReturned: { adult: { x: 2.6, z: 1.6 }, child: { x: 3.6, z: 1.6 } },
-    hatEquipped: { duck: { x: 8, z: 6 }, child: { x: 8.6, z: 6 }, adult: { x: 9.3, z: 6 } },
+    // Duck on the tub water near the right edge; the humans on the floor beside it.
+    hatEquipped: { duck: { x: 6.6, z: 6 }, child: { x: 7.6, z: 6.3 }, adult: { x: 8.3, z: 6 } },
     duckInPondShore: { adult: { x: 25.2, z: 3.6 }, child: { x: 25.2, z: 4.6 } },
   },
 };

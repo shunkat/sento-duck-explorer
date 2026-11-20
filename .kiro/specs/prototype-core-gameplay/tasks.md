@@ -103,3 +103,11 @@ Created directly by the main Kiro agent on 2026-11-20 after the built-in spec su
   - [x] 11.4 Objective and HUD follow the state (who is wet; locked vs unlocked sauna door)
   - [x] 11.5 Tests: `tests/controls-e.test.ts` (keyboard wiring, spots, priority, locker/F4, towel/F1/F2/F5, Duck, restore, E-only clear route)
   - [x] 11.6 Browser normal-input check of the new controls: Codex, fixed `5a7866f`. E-only interaction route CLEAR, T/G inactive, exit drying, locker clothing, sauna dry-before-unlock, towel/F1 and `paidReturned` towel restore. Overview-assisted positioning; exact observations in `docs/shoulder-view-verification.md`.
+
+- [x] 12. Duck on water only (2026-11-20 user correction; Kiro Crew)
+  - [x] 12.1 `LEVEL.duckWater` (tub, channel, hole) for movement, drop points and rendering; `shoreBoxes` + `stepDuckWater` (Req 2.8)
+  - [x] 12.2 Put Duck down only on reachable water; refused otherwise (Req 2.6); drying Duck removed (Req 6.6)
+  - [x] 12.3 `hatEquipped` spawn on the tub; every free Duck on water (checked on every Sim tick)
+  - [x] 12.4 Guide, HUD and README text
+  - [x] 12.5 Tests: `tests/duck-water.test.ts`; the full route and checkpoint tests run with the per-tick water check
+  - [ ] 12.6 Browser normal-input check: Codex

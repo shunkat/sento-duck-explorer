@@ -26,8 +26,6 @@ export const REACH = {
 export const JOIN_RADIUS = 3.0;
 /** Companion is placed this far past the door center, into the new area. */
 export const COMPANION_OFFSET = 0.9;
-/** Where Adult puts Duck down, relative to Adult. */
-export const DROP_OFFSET = { x: 0.5, z: 0 } as const;
 
 /** Pond: current pushes toward the goal (+x); input steers. */
 export const POND = {

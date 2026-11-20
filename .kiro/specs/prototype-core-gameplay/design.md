@@ -147,7 +147,7 @@ interface TickResult { state: GameState; events: GameEvent[] }
 
 `interact` (E) picks the first applicable action for the active character in this priority order. The HUD "E: …" hint reads the same list (`interactHint`), so the hint always names what E does. Rejected actions return the same state plus a `rejected` event with a reason string shown in the HUD. E never moves the character.
 
-**E priority (2026-11-20, provisional design from the user's request to remove T and G):** 1 dry self at the exit → 2 locker → 3 the route actions below → 4 dry a nearby Duck → 5 towel head ↔ hand. Drying applies only to a wet human, so a dry Child at the sauna door gets "unlock"; a wet one dries first and unlocks on the next E. The towel toggle is last, so it never takes the coin or key handoff, the shelf hat, equipping the hat, carrying or placing Duck.
+**E priority (2026-11-20, provisional design from the user's request to remove T and G):** 1 dry self at the exit → 2 locker → 3 the route actions below → 4 towel head ↔ hand. (Drying Duck was removed when Duck became water-only.) Drying applies only to a wet human, so a dry Child at the sauna door gets "unlock"; a wet one dries first and unlocks on the next E. The towel toggle is last, so it never takes the coin or key handoff, the shelf hat, equipping the hat, carrying or placing Duck.
 
 | Action | Actor | Preconditions | Effect | Req |
 | --- | --- | --- | --- | --- |
@@ -162,8 +162,7 @@ interface TickResult { state: GameState; events: GameEvent[] }
 | Pick up Hat | Child | Hat owner `node:sauna_hat_shelf`, within 0.6 m | Hat owner → child | 3.8 |
 | Pick up Duck | Adult only | `duck.carriedBy === null`, hat equipped, Duck within 1.0 m, Duck not in pond | `duck.carriedBy` → `"adult"` | 3.10 |
 | Place Duck in pond | Adult carrying Duck | Adult and Child both inside `pond_entrance` | `carriedBy` → null, Duck → pond spawn, `inPond: true`, `vel` zero, active → duck. The outcome stage then saves `duckInPond` (see Checkpoints) | 3.11 |
-| Put Duck down | Adult carrying Duck | Not in `pond_entrance` | `carriedBy` → null, Duck at Adult's drop point | 2.6 |
-| Dry Duck | Child or Adult (active) | Self `dry`, not in water; Duck `wet`, not in pond, not carried, within 1.0 m | Duck `dry` | 6.6 |
+| Put Duck down | Adult carrying Duck | Not in `pond_entrance`; a bath-water point within 1.0 m with no wall between (`duckDropPoint`) | `carriedBy` → null, Duck on that water point. No such point: rejected, Duck stays held | 2.6 |
 | Towel head ↔ hand | Child or Adult (active) | Always (lowest priority) | `towel`: `held` ↔ `head` | 6.10 |
 
 ```ts
@@ -198,7 +197,7 @@ This keeps Child from being left alone in the bath during the payment trip and o
 
 | ID | Trigger in the prototype | Not triggered by | Req |
 | --- | --- | --- | --- |
-| F1 | `dipTowel` while the active human stands in a bathwater zone with the towel in the hand (`towel: "held"`) | Walking through water with the towel in hand; Q with the towel on the head (HUD: "タオルは頭の上にあります") | 7.1 |
+| F1 | `dipTowel` while the active human stands on the bath water (`LEVEL.duckWater`: tub, channel, hole) with the towel in the hand (`towel: "held"`) | Walking through water with the towel in hand; Q with the towel on the head (HUD: "タオルは頭の上にあります") | 7.1 |
 | F2 | A human with `wet` enters `changing` (active human only, see pair rules) | Dry human entering | 4.2, 7.2 |
 | F3 | Active character moves with `run: true` and its circle overlaps a soap circle | Walking over soap | 7.3 |
 | F4 | A human with `unclothed` moves from `changing` into `reception`, `common`, or `exterior` | `changing → bath` | 7.4 |
@@ -210,11 +209,17 @@ Duck is exempt from F2, F4, and F5 because they target human characters. Duck ca
 
 ### Wet and clothing rules
 
-- A human or Duck becomes `wet` when its center enters a `bathwater` or `splash` zone (kakeyu spot). It stays `wet` after leaving (Req 6.3, 6.5).
+- A human or Duck becomes `wet` when its center enters a `bathwater` or `splash` zone (kakeyu spot), or any `LEVEL.duckWater` rect (the channel, 2026-11-20). It stays `wet` after leaving (Req 6.3, 6.5).
 - Leaving the sauna sets a human to `wet` (sweat). This is a provisional answer to the open question in KIRO_HANDOFF.md. It means re-entering the sauna or the changing room requires drying again.
 - Drying is the E candidate "Dry self at an exit" (Req 6.4): bath-side spots within 2.0 m of the changing-room and sauna doors. A towel on the head does not dry. Drying Duck is a lower E candidate (Req 6.6).
 - Dressing is the E candidate at the locker (1.0 m, `changing`). It flips ClothingState and never touches WetState (Req 6.7, 6.8). Drying never touches ClothingState.
 - If both humans are wet, the objective and the HUD name who still needs drying ("子どもも濡れています（Tabで切り替えて出口の前でE）").
+
+### Duck on water (2026-11-20, user correction)
+
+- `LEVEL.duckWater` (in `src/level/layout.ts`) is the one source for Duck's movement, drop points and rendering: the tub `(2,3)–(7,7)`, a channel `(-0.1,5.3)–(2.2,5.7)` (same 0.4 m width as the hole, overlapping the tub and the hole so the joints are continuous) and the hole `(-3,5.3)–(0,5.7)`. The channel is a provisional layout choice. It is not a zone, but a human whose center is on any of these water rects becomes `wet` like in the tub, so crossing the channel on the way to the sauna means drying again with E at the sauna door (the objective names who is wet). Q with a held towel on any of these water rects (tub, channel, hole) is F1; with the towel on the head it only shows the hint (`inBathWater`).
+- `shoreBoxes` turns the land around the union into blocking boxes (grid cut along every rect edge), so only the union's outer boundary blocks. `stepDuckWater` moves Duck's circle against walls + shore with the usual radius / sub-step collision, so Duck glides along edges and does not cross the shore (the discrete collision can leave sub-millimetre contact at concave corners). A start point off the water, or without clearance, does not move; a result off the water is discarded.
+- Carried Duck ignores its input. Checkpoint `hatEquipped` spawns Duck at `(6.6, 6)` on the tub, the humans beside it on the floor.
 
 ### Pond
 

@@ -57,7 +57,7 @@ describe("view and guide along the full route", () => {
 
   it("shows the action available nearby", () => {
     const sim = new Sim();
-    expect(nearbyHints(sim.state, LEVEL)).toEqual([]);
+    expect(nearbyHints(sim.state, LEVEL)).toEqual(["アヒルは水の上だけ泳げます"]);
     sim.walk([{ x: 1, z: 5.5 }, { x: LEVEL.nodes.narrow_hole_coin.x + 0.2, z: LEVEL.nodes.narrow_hole_coin.z }]);
     expect(nearbyHints(sim.state, LEVEL)).toContain("E: 500円玉を拾う");
     sim.switchTo("child");

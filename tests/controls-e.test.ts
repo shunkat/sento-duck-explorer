@@ -111,7 +111,7 @@ describe("E at the bath exits dries the controlled wet human", () => {
   it("before the sauna door: a dry Child with the key unlocks; a wet one dries first, then unlocks", () => {
     const dry = readyForSauna();
     dry.switchTo("child");
-    dry.walk([{ x: 1.2, z: 2.5 }, { x: 2.0, z: 7.5 }]);
+    R.walkDryToSaunaDoor(dry, { x: 2.0, z: 7.5 });
     expect(dry.state.child.wet).toBe("dry");
     expect(pressE(dry)).toBe("サウナ室の扉を鍵で開ける");
     expect(dry.state.saunaDoor).toBe("unlocked");
@@ -193,7 +193,7 @@ describe("towel on the head or in the hand", () => {
     expect(sim.state.child.towel).toBe("held");
     pressE(sim);
     expect(sim.state.child.towel).toBe("head");
-    expect(nearbyHints(sim.state, LEVEL)).toContain("タオルは頭の上（Qでは湯船につきません）");
+    expect(nearbyHints(sim.state, LEVEL)).toContain("タオルは頭の上（Qでは湯につきません）");
     sim.press("dipTowel");
     sim.expectPlaying();
     expect(sim.lastEvents).toContainEqual({ kind: "prompt", text: MSG.towelOnHead });
@@ -309,7 +309,7 @@ describe("sauna objective follows the state (review P2)", () => {
     expect(objective(sim.state)).not.toContain("拭");
 
     sim.switchTo("child");
-    sim.walk([{ x: 1.2, z: 2.5 }, { x: 2.0, z: 7.5 }]);
+    R.walkDryToSaunaDoor(sim, { x: 2.0, z: 7.5 });
     pressE(sim);
     expect(sim.state.saunaDoor).toBe("unlocked");
     expect(objective(sim.state)).toContain("親子でサウナへ");

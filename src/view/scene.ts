@@ -217,6 +217,12 @@ export class GameScene {
       this.scene.add(label);
     }
     const hole = level.narrowHole.box;
+    // Water surfaces from the same data Duck swims on (the tub is drawn by its zone).
+    const tubBox = level.zones.find((z) => z.id === "bathwater")!.box;
+    for (const w of level.duckWater) {
+      if (w.minX === tubBox.minX && w.maxX === tubBox.maxX && w.minZ === tubBox.minZ && w.maxZ === tubBox.maxZ) continue;
+      this.scene.add(boxMesh(w, 0.02, 0.014, ZONE_COLORS.bathwater!, 0.9));
+    }
     for (const w of level.walls) {
       // The NarrowHole corridor sides stop at its lid; every other wall is full height.
       if (w.maxX <= hole.maxX + 1e-6 && w.minX >= hole.minX - 0.3) {

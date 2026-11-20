@@ -10,14 +10,15 @@ const N = LEVEL.nodes;
 /** Steps 1–2: Duck enters the NarrowHole and picks up the coin. */
 export function duckGetsCoin(sim: Sim): void {
   expect(sim.active).toBe("duck");
-  sim.walk([{ x: 1, z: 5.5 }, { x: N.narrow_hole_coin.x + 0.2, z: N.narrow_hole_coin.z }]);
+  // Line up with the channel inside the tub, then swim straight through it into the hole.
+  sim.walk([{ x: 4, z: 5.5 }, { x: N.narrow_hole_coin.x + 0.2, z: N.narrow_hole_coin.z }]);
   sim.press("interact");
   expect(sim.owner("coin")).toBe("character:duck");
 }
 
 /** Step 3: Duck gives the coin to Adult (dialog + confirm). */
 export function duckGivesCoin(sim: Sim): void {
-  sim.walk([{ x: 1, z: 5.5 }]);
+  sim.walk([{ x: 3, z: 5.5 }]); // straight back through the channel into the tub
   sim.approach(sim.pos("adult"), REACH.give);
   sim.press("interact");
   expect(sim.state.dialog).toEqual({ item: "coin", from: "duck", to: "adult" });
@@ -90,12 +91,28 @@ export function adultGivesKey(sim: Sim): void {
   expect(sim.owner("key")).toBe("character:child");
 }
 
-/** Adult waits by the sauna door; Child unlocks it. Both stay dry (path avoids the bathwater). */
+/** Walk to `end` near the sauna door around the tub's east side, staying dry (no tub, no channel). */
+export function walkDryToSaunaDoor(sim: Sim, end: { x: number; z: number }): void {
+  sim.walk([{ x: 7.6, z: 2.5 }, { x: 7.6, z: 7.5 }, end]);
+}
+
+/** E at the bath-side drying spot when wet (crossing the Duck's channel wets people). */
+export function dryIfWet(sim: Sim): void {
+  const id = sim.active;
+  if (id !== "duck" && sim.state[id].wet === "wet") {
+    sim.press("interact");
+    expect(sim.state[id].wet).toBe("dry");
+  }
+}
+
+/** Adult waits by the sauna door; Child unlocks it. Both cross the channel, so both dry at the door. */
 export function childUnlocksSauna(sim: Sim): void {
   sim.switchTo("adult");
   sim.walk([{ x: 1.2, z: 2.5 }, { x: 1.0, z: 7.2 }]);
+  dryIfWet(sim);
   sim.switchTo("child");
   sim.walk([{ x: 1.2, z: 2.5 }, { x: 2.0, z: 7.5 }]);
+  dryIfWet(sim);
   sim.press("interact");
   expect(sim.state.saunaDoor).toBe("unlocked");
 }

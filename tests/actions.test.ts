@@ -75,13 +75,20 @@ describe("carrying Duck (Req 2.5, 2.6, 3.10)", () => {
     sim.walk([{ x: 9, z: 6.5 }]);
     expect(sim.pos("duck")).toEqual(sim.pos("adult"));
 
+    // On the floor, 2 m from the water: E is refused and Duck stays held.
+    sim.press("interact");
+    expect(sim.state.duck.carriedBy).toBe("adult");
+    expect(sim.lastEvents).toContainEqual({ kind: "rejected", reason: MSG.cannotPutDuckHere });
+
+    // Next to the tub: Duck goes onto the water, not the floor.
+    sim.walk([{ x: 7.6, z: 6.5 }]);
     sim.press("interact");
     expect(sim.state.duck.carriedBy).toBeNull();
-    expect(sim.pos("duck")).not.toEqual(sim.pos("adult"));
+    expect(sim.state.duck.zone).toBe("bathwater");
     sim.switchTo("duck");
     const before = sim.pos("duck");
-    sim.step({ move: { x: 1, z: 0 } });
-    expect(sim.pos("duck").x).toBeGreaterThan(before.x);
+    sim.step({ move: { x: -1, z: 0 } });
+    expect(sim.pos("duck").x).toBeLessThan(before.x);
   });
 
   it("Adult carrying Duck cannot leave the bath without Child", () => {
@@ -98,20 +105,21 @@ describe("carrying Duck (Req 2.5, 2.6, 3.10)", () => {
 });
 
 describe("drying with E (Req 6.4, 6.6, 6.7)", () => {
-  it("not in the bathwater; at the exit E dries; then E dries a nearby Duck", () => {
+  it("not in the bathwater; at the exit E dries; Duck on the water is not dried (it stays wet)", () => {
     const sim = new Sim();
     sim.switchTo("child");
     sim.press("interact"); // in the bathwater: towel toggle, not drying
     expect(sim.state.child.wet).toBe("wet");
     sim.switchTo("duck");
-    sim.walk([{ x: 3.4, z: 2.0 }]);
+    sim.walk([{ x: 2.3, z: 3.2 }]); // Duck stays on the water, at the tub's corner
     sim.switchTo("child");
     sim.walk([{ x: 3.6, z: 1.6 }]);
     sim.press("interact");
     expect(sim.state.child.wet).toBe("dry");
     expect(sim.state.child.clothing).toBe("unclothed");
-    sim.press("interact");
-    expect(sim.state.duck.wet).toBe("dry");
+    sim.walk([{ x: 2.3, z: 2.5 }]); // on the floor beside the tub
+    expect(sim.press("interact")).not.toContainEqual(expect.objectContaining({ kind: "itemMoved" }));
+    expect(sim.state.duck.wet).toBe("wet"); // Duck lives on the water; drying it was removed
   });
 });
 

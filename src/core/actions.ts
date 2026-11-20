@@ -2,12 +2,12 @@
 // and appends events. Rejected actions leave the draft unchanged.
 import type { Level } from "../level/layout";
 import { CHARACTER_RADIUS } from "../level/layout";
-import { resolveCircle } from "../sim/collision";
-import { add, distance } from "../sim/geometry";
+import { moveCircle } from "../sim/collision";
+import { closestPoint, distance, sub } from "../sim/geometry";
 import { wallsFor } from "../sim/movement";
-import { zoneAtOr } from "../sim/zones";
+import { areaOf, zoneAtOr } from "../sim/zones";
 import { MSG } from "./text";
-import { DROP_OFFSET, REACH } from "./tuning";
+import { REACH } from "./tuning";
 import type {
   CharacterId,
   GameEvent,
@@ -15,6 +15,7 @@ import type {
   HumanId,
   ItemId,
   TransferDialog,
+  Vec2,
   ViolationId,
 } from "./types";
 
@@ -178,7 +179,12 @@ const CANDIDATES: Candidate[] = [
   },
   {
     // Place Duck in the pond, or put Duck down elsewhere (Adult carrying Duck).
-    label: ({ s }) => (s.adult.zone === "pond_entrance" ? "アヒルを池に置く" : "アヒルを下ろす"),
+    label: ({ s, level }) =>
+      s.adult.zone === "pond_entrance"
+        ? "アヒルを池に置く"
+        : duckDropPoint(s, level)
+          ? "アヒルを水に下ろす"
+          : "ここでは下ろせない（湯船か水路のそばで）",
     applies: ({ s }) => s.active === "adult" && s.duck.carriedBy === "adult",
     run: (c) => {
       const { s } = c;
@@ -194,23 +200,7 @@ const CANDIDATES: Candidate[] = [
     },
   },
   {
-    // 4. Dry a wet Duck nearby (a dry human out of the water). Duck needs no drying to progress.
-    label: () => "アヒルを拭く",
-    applies: ({ s }) =>
-      isHuman(s.active) &&
-      s[s.active].wet === "dry" &&
-      s[s.active].zone !== "bathwater" &&
-      s[s.active].zone !== "splash" &&
-      s.duck.wet === "wet" &&
-      !s.duck.inPond &&
-      s.duck.carriedBy === null &&
-      near(s, s.active, "duck", REACH.dryDuck),
-    run: ({ s }) => {
-      s.duck.wet = "dry";
-    },
-  },
-  {
-    // 5. Lowest: move the own towel between hand and head. Humans only; Duck has no towel.
+    // 4. Lowest: move the own towel between hand and head. Humans only; Duck has no towel.
     label: ({ s }) => (s[s.active as HumanId].towel === "head" ? "タオルを手に持つ" : "タオルを頭にのせる"),
     applies: ({ s }) => isHuman(s.active),
     run: ({ s }) => {
@@ -238,10 +228,43 @@ function placeDuckInPond({ s, level }: Ctx): void {
   s.active = "duck";
 }
 
-function putDuckDown({ s, level }: Ctx): void {
+/**
+ * Where Adult can put Duck down outside the pond: the nearest point of the bath
+ * water (tub, channel, hole) within reach, reachable from Adult in a straight
+ * line without a wall in between. Null when there is none (no floor drops, no
+ * drops over walls or shores).
+ */
+export function duckDropPoint(s: GameState, level: Level): Vec2 | null {
+  if (areaOf(s.adult.zone) !== "bath") return null;
   const walls = wallsFor(level, s.saunaDoor);
+  const r = CHARACTER_RADIUS.duck;
+  let best: Vec2 | null = null;
+  let bestD = Infinity;
+  for (const w of level.duckWater) {
+    // Keep the center a radius inside the water where the rect allows it.
+    const ix = Math.min(r, (w.maxX - w.minX) / 2);
+    const iz = Math.min(r, (w.maxZ - w.minZ) / 2);
+    const p = closestPoint({ minX: w.minX + ix, maxX: w.maxX - ix, minZ: w.minZ + iz, maxZ: w.maxZ - iz }, s.adult.pos);
+    const d = distance(p, s.adult.pos);
+    if (d > REACH.pickUpDuck || d >= bestD) continue;
+    const reached = moveCircle(s.adult.pos, sub(p, s.adult.pos), r, walls);
+    if (distance(reached, p) > 1e-3) continue;
+    best = p;
+    bestD = d;
+  }
+  return best;
+}
+
+function putDuckDown(c: Ctx): void {
+  const { s, level } = c;
+  const p = duckDropPoint(s, level);
+  if (!p) {
+    c.events.push({ kind: "rejected", reason: MSG.cannotPutDuckHere });
+    return; // Duck stays in Adult's arms
+  }
   s.duck.carriedBy = null;
-  s.duck.pos = resolveCircle(add(s.adult.pos, DROP_OFFSET), CHARACTER_RADIUS.duck, walls);
+  s.duck.pos = p;
+  s.duck.vel = { x: 0, z: 0 };
   s.duck.zone = zoneAtOr(level, s.duck.pos, s.duck.zone);
 }
 

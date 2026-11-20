@@ -1,7 +1,7 @@
 // Pure guidance for the HUD: the current objective and the keys that do
 // something right now. Derived from state only; no side effects.
 import type { Level } from "../level/layout";
-import { areaOf, isSauna } from "../sim/zones";
+import { areaOf, inBathWater, isSauna } from "../sim/zones";
 import { atDryingSpot, holds, interactHint } from "./actions";
 import { CHARACTER_NAME } from "./text";
 import type { CharacterId, GameState, HumanId } from "./types";
@@ -16,9 +16,9 @@ export function objective(s: GameState): string {
   if (s.outcome.kind === "cleared") return "クリア！帽子を被ったアヒルが池の奥に着きました";
 
   if (coin.owner.kind === "node" && coin.owner.id === "narrow_hole_coin") {
-    return `アヒルで浴室の左の壁にある小さな穴（紫の床）に入り、奥の500円玉を拾おう${switchTo(s, "duck")}`;
+    return `アヒルで湯船から左の水路を泳いで小さな穴に入り、奥の500円玉を拾おう（アヒルは水の上だけ動けます）${switchTo(s, "duck")}`;
   }
-  if (holds(s, "coin", "duck")) return `アヒルで大人に500円玉を渡そう：大人の近くでE${switchTo(s, "duck")}`;
+  if (holds(s, "coin", "duck")) return `アヒルで大人に500円玉を渡そう：湯船に戻り、大人の近くでE${switchTo(s, "duck")}`;
 
   if (coin.status !== "paid") {
     const both = (f: (h: HumanId) => boolean) => f("child") && f("adult");
@@ -63,7 +63,7 @@ export function objective(s: GameState): string {
   if (s.duck.carriedBy === "adult") {
     return "子どもと一緒に右の露天風呂を通って池の入口へ。入口でEを押すとアヒルを池に置けます（2人は3m以内で）";
   }
-  return `大人でアヒルの近くに行き、Eで抱えよう${switchTo(s, "adult")}`;
+  return `大人で湯船のそばのアヒルに近づき、Eで抱えよう（アヒルは大人が抱えないと浴室を出られません）${switchTo(s, "adult")}`;
 }
 
 /** Keys that currently do something for the active character, e.g. "E: 500円玉を拾う". */
@@ -84,8 +84,12 @@ export function nearbyHints(s: GameState, level: Level): string[] {
     if (areaOf(h.zone) === "bath" && s[other].wet === "wet" && s[other].zone !== "bathwater") {
       out.push(`${name(other)}も濡れています（Tabで切り替えて出口の前でE）`);
     }
-    if (h.zone === "bathwater" && h.towel === "head") out.push("タオルは頭の上（Qでは湯船につきません）");
+    if (inBathWater(level, h.pos) && h.towel === "head") out.push("タオルは頭の上（Qでは湯につきません）");
     if (isSauna(h.zone)) out.push("サウナでは大声(V)・押す(F)はマナー違反");
+  } else if (s.duck.carriedBy === "adult") {
+    out.push("大人が抱えている間、アヒルは動けません（Tabで大人に切り替え）");
+  } else if (!s.duck.inPond) {
+    out.push("アヒルは水の上だけ泳げます");
   }
   return out;
 }
