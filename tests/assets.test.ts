@@ -244,6 +244,19 @@ describe("connected models (shoulder-view Req 6)", () => {
     expect(eyes[0]!.getSize(new Vector3()).distanceTo(eyes[1]!.getSize(new Vector3()))).toBeLessThan(1e-6);
   });
 
+  it("Duck has a continuous rubber body underside instead of a gap between feet", async () => {
+    const duck = await parse(file(CHARACTER_MODEL_URLS.duck!));
+    duck.updateMatrixWorld(true);
+    // The former two feet left this central strip open up to the belly.
+    // Check the visible shape contract, not a particular retopology or count.
+    for (const x of [-0.02, 0, 0.02]) {
+      const hits = new Raycaster(new Vector3(x, -0.1, 0), new Vector3(0, 1, 0)).intersectObject(duck, true);
+      expect(hits.length).toBeGreaterThan(0);
+      expect(hits[0]!.point.y).toBeGreaterThanOrEqual(-1e-6);
+      expect(hits[0]!.point.y).toBeLessThan(0.01);
+    }
+  });
+
   it("hat on the Duck's socket: base on the socket, turned with the Duck, own scale kept", async () => {
     const duckRoot = await parse(file(CHARACTER_MODEL_URLS.duck!));
     const hatRoot = await parse(file(ITEM_MODEL_URLS.hat!));

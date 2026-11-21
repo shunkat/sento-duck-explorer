@@ -22,30 +22,30 @@
       ],
       "measured": {
         "height": 0.2985098659992218,
-        "width": 0.19638723134994507,
+        "width": 0.1918867826461792,
         "depth": 0.3024212270975113,
-        "triangles": 7296,
-        "vertices": 5162,
+        "triangles": 7214,
+        "vertices": 4762,
         "materials": 2,
         "textures": 1,
-        "glb_bytes": 350388,
+        "glb_bytes": 337204,
         "bounds": {
           "min": [
-            -0.09819937497377396,
-            0.0,
+            -0.09589888155460358,
+            0,
             -0.15129108726978302
           ],
           "max": [
-            0.09818785637617111,
+            0.09598790109157562,
             0.2985098659992218,
             0.15113013982772827
           ]
         },
-        "sha256": "75ca48aec7a8f19d2563dbd4a3f64940b3b299bf6f6d83d09e6283663d557ef2",
+        "sha256": "43d385d81d6f2e1f520972db33426ddaf64b33250ca89b9f50d33a14fa17b779",
         "texture_px": 1024,
-        "glb_mb": 0.350388,
+        "glb_mb": 0.337204,
         "measured_date": "2026-11-21",
-        "tool": "Blender 5.2.4 LTS; reimported exported GLB",
+        "tool": "Three.js GLTFLoader actual geometry; image decoding skipped",
         "max_width": 0.3024212270975113
       },
       "root_rule": "rootY = centerY - 0.15 (land 0.00, pond -0.05, carried 0.90)",
@@ -63,8 +63,8 @@
           "meaning": "label anchor above the equipped hat (provisional 0.46 m); empty excluded from mesh bounds"
         }
       },
-      "revision": "v03",
-      "notes": "v03: Measured source-head regularization; local torso fairing with protected wings; glossy paired eyes; source-painted UV bake; detail master and runtime mesh. Fixed-condition asset comparison and separate material critique; Crew B code review and deferred game-lighting/play checks remain pending."
+      "revision": "v04",
+      "notes": "v04: User-requested footless rubber duck. Removed legs/feet and faired the lower belly into a continuous rounded yellow underside. Head, eyes, beak, upper wing detail, texture and exact sockets retained. Actual GLB multi-view review and shape checks; normal-input play remains deferred."
     },
     "hat_sauna_duck": {
       "stage": 2,

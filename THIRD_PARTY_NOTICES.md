@@ -38,6 +38,13 @@ glossy eyes. The runtime export has 7,296 triangles and two materials.
 Original raw data and socket transforms are preserved. The new Blender scene,
 textures and comparison renders also remain CC BY 4.0.
 
+Revision v04 (2026-11-21): user-requested footless rubber duck. Legs and feet
+are removed; the lower belly is faired into a rounded yellow underside with
+a small flat contact area. Head, eyes, beak, upper wing detail, texture and
+exact sockets are retained. The export has 7,214 triangles, two materials and
+one embedded texture. Original raw data and earlier revisions are preserved;
+the new Blender scene, GLB and derived previews remain CC BY 4.0.
+
 The input reference was separately AI-generated with OpenAI through Codex;
 the project releases its rights to that reference under MIT, to the extent
 permitted by law. See `assets/duck/ref/README.md` and `assets/ledger.csv` for

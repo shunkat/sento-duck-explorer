@@ -49,3 +49,11 @@ The washing-station silhouette, wall cutaway and restored full walls remained in
 The release process checks the successful Pages workflow, public version.json and every published distribution file against the workflow artifact. The exact deployed revision and run are available from [version.json](https://shunkat.github.io/sento-duck-explorer/version.json) and [Pages workflow runs](https://github.com/shunkat/sento-duck-explorer/actions/workflows/pages.yml).
 
 The [official rules](https://kiroween.devpost.com/rules) and [schedule](https://kiroween.devpost.com/details/dates) were rechecked on this date; the recorded submission deadline remains December 4, 2026, 14:00 PST. Existing earlier deployment cutoff checks remain enabled. No paid service or submission action was taken.
+
+## Footless Duck follow-up
+
+The user's subsequent request replaces only Duck v03 with the footless v04 derived from the same source. The other five runtime GLBs and game implementation remain unchanged from released `02bb877`. The [v04 edit and audit](../assets/duck/blend/duck__v04.md) records the archived v03, rejected pedestal-shaped candidates, continuous rounded lower body, exact preserved upper positions/UVs, identical texture/eyes/sockets and separate review with no required findings.
+
+The selected GLB is `43d385d81d6f2e1f520972db33426ddaf64b33250ca89b9f50d33a14fa17b779`, 337,204 bytes and 7,214 triangles. The six-model total is now 1,976,072 bytes. Thirty targeted tests across three files passed; they include the new underside regression, attachment/metric contracts and all outfit/fade scene-budget configurations. The regression was first observed failing on v03. The production build with the Pages base passed; the existing large-chunk warning remains. The standard Pages CI runs the complete suite before deployment.
+
+The real GameScene diagnostic was inspected with v04 on water wearing the hat, and from the side while carried by Adult. No new shape/attachment defect or captured warning/error log was found. These were static state-injected views on an isolated server. The deferred normal-input route remains unperformed. Forty-one SHA-bearing completed ledger entries match, and the v04 binary/PNG metadata audit is recorded alongside the source. No paid generation, service subscription or network setting was changed for this correction.

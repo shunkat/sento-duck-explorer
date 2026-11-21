@@ -78,6 +78,7 @@ The pipeline is confirmed by the user and must not be skipped. Placeholder primi
 
 1. THE Project SHALL keep the logic colliders unchanged when models are replaced: Duck 0.15 m, Child 0.25 m, Adult 0.35 m radius, NarrowHole 0.40 m, CrowdGap 0.60 m, door 1.20 m.
 2. THE Duck FinalGLB SHALL have a height of 0.28–0.32 m and a maximum horizontal width (wings and tail included) of at most 0.36 m, so that it visibly fits the 0.40 m NarrowHole.
+   - User-confirmed appearance, 2026-11-21: Duck is a footless rubber duck. Its underside is a continuous rounded body with no legs, feet or orange toes. Preserve the current corrected eye treatment, beak, wings and hat fit while making this Blender correction to the existing source-derived asset.
 3. THE Child FinalGLB SHALL have a height of 1.15–1.25 m and a shoulder width of 0.44–0.56 m, so that it visibly fits a 0.60 m CrowdGap and visibly does not fit the 0.40 m NarrowHole.
 4. THE Adult FinalGLB SHALL have a height of 1.65–1.75 m and a shoulder width of 0.64–0.80 m, so that it visibly does not fit a 0.60 m CrowdGap.
 5. THE Project SHALL export every FinalGLB in meters, +Y up, front facing +Z (glTF convention), with the origin at the bottom center of the footprint.

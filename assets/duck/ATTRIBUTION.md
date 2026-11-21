@@ -8,6 +8,8 @@ Source: the project's original reference image in `ref/`, the unmodified Meshy o
 
 In [v03](blend/duck__v03.md), source-measured head regularization and localized torso fairing correct reconstruction artifacts while preserving wing identity. The runtime mesh uses a baked body palette and separate glossy paired eyes. Detailed source and runtime meshes are retained; the original download and socket coordinates stay unchanged. The new Blender scene, textures, GLB and comparison renders remain CC BY 4.0.
 
+In [v04](blend/duck__v04.md), the user's footless rubber-duck request is implemented by removing the generated legs and feet, fairing the lower belly and closing it with a continuous rounded yellow underside and a small flat contact area. The current head, eyes, beak, upper wing detail, texture and exact attachment sockets are retained. The original reference, raw generation and v03 export remain archived. This is a further Blender modification of the same Meshy-derived asset, under CC BY 4.0; see the [five-view comparison](quality/v04/index.html).
+
 The generated GLB, adjusted `.blend`, game GLB, and derived duck preview are distributed under CC BY 4.0. Retain this credit, the license link, and an indication of changes when redistributing them. No endorsement by Meshy is implied.
 
 The **reference PNG is separate**: it was AI-generated with OpenAI's image-generation tool and is released under the project's rights stated in [its README](ref/README.md). The repository's MIT code license does not replace the Meshy-derived asset license.
