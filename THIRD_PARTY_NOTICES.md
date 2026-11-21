@@ -80,6 +80,32 @@ copies. Meshy does not endorse this project. The project releases its rights to
 the separate input references under MIT, to the extent permitted by law; that
 does not replace the CC BY 4.0 license on the generated and adjusted models.
 
+## Bath stool and wash basin — Meshy, CC BY 4.0
+
+The separate source meshes in `assets/bath_stool/gen/` and
+`assets/wash_basin/gen/` were generated with **Meshy 6 Lite** on 2026-11-21,
+from the project's original single-object references, with textures off.
+Attribution: **Meshy** — [service](https://www.meshy.ai/),
+[applicable terms](https://www.meshy.ai/terms-of-use).
+The generated meshes, adjusted Blender sources, derived render previews and
+`public/models/bath_stool.glb` / `public/models/wash_basin.glb` are distributed
+under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+
+Codex used Blender 5.2.4 to regularize the stool's generated legs and seat,
+remove unwanted seat rings, retain its drain and underside clearance, smooth
+and retopologize the source surface, and add one ivory material. The basin
+was retopologized along measured cross-sections of its generated mesh to
+remove surface waviness while retaining its rim, hollow interior and solid
+floor, with one yellow material. Both exports use metric dimensions,
+bottom-centered origins, +Y up, and no textures. Original generated meshes
+are retained; see each asset's README and `assets/ledger.csv` for the exact
+modifications and source-to-export checksums.
+
+Keep this attribution, license link and modification notice with redistributed
+copies. Meshy does not endorse this project. The separate reference images
+have their own OpenAI-generation provenance and project MIT rights records;
+those rights do not replace the CC BY 4.0 license on the generated models.
+
 ## three.js
 
 - Installed version reviewed: 0.187.0

@@ -137,7 +137,8 @@
           1.2
         ]
       },
-      "measured": null
+      "measured": null,
+      "notes": "Partial kit: five stool/basin pairs now total 24,600 drawn triangles. Remaining facilities are not complete; revisit the provisional kit allocation before adding their final models."
     },
     "child": {
       "stage": 3,
@@ -418,41 +419,108 @@
     },
     "bath_stool": {
       "stage": 2,
-      "status": "reference_ready",
-      "parent_asset": "wash_station",
+      "status": "exported",
       "limits": {
         "height": [
           0.29,
           0.31
         ],
         "max_width": 0.36,
-        "triangles": 1200,
+        "triangles": 3000,
         "materials": 1,
         "texture_px": 0,
         "glb_mb": 0.1
       },
       "sockets": [],
-      "measured": null,
-      "notes": "Original reference ready. Image to 3D and Blender adjustment pending. Runtime URL deliberately absent."
+      "measured": {
+        "height": 0.30000001192092896,
+        "max_width": 0.36000001430511475,
+        "width": 0.36000001430511475,
+        "depth": 0.36000001430511475,
+        "triangles": 3000,
+        "vertices": 1500,
+        "materials": 1,
+        "textures": 0,
+        "nonmanifold_edges": 0,
+        "texture_px": 0,
+        "glb_bytes": 55568,
+        "glb_mb": 0.055568,
+        "bounds": {
+          "min": [
+            -0.18000000715255737,
+            0.0,
+            -0.18000000715255737
+          ],
+          "max": [
+            0.18000000715255737,
+            0.30000001192092896,
+            0.18000000715255737
+          ]
+        },
+        "sha256": "235fd70ad4cefaadbf311f804afb0ab57e13a31a0404222a0fa5ef1a00a24910",
+        "measured_date": "2026-11-21",
+        "tool": "Blender 5.2.4 LTS; reimported exported GLB",
+        "center_drain_clear": true,
+        "separate_legs_below_14cm": 4,
+        "foot_contact_heights_m": [
+          7.253927469719201e-05,
+          0.0,
+          8.651022653793916e-05,
+          9.378851245855913e-05
+        ]
+      },
+      "notes": "Independent Meshy 6 Lite generation, freely downloaded and corrected in Blender as chosen by the user. Runtime connected in the local finishing branch. Multi-angle asset checks complete; independent review and deferred in-game visual checks remain pending.",
+      "revision": "v01"
     },
     "wash_basin": {
       "stage": 2,
-      "status": "reference_ready",
-      "parent_asset": "wash_station",
+      "status": "exported",
       "limits": {
         "height": [
           0.13,
           0.15
         ],
         "max_width": 0.2,
-        "triangles": 800,
+        "triangles": 2000,
         "materials": 1,
         "texture_px": 0,
         "glb_mb": 0.1
       },
       "sockets": [],
-      "measured": null,
-      "notes": "Original reference ready. Image to 3D and Blender adjustment pending. Runtime URL deliberately absent."
+      "measured": {
+        "height": 0.14000000059604645,
+        "max_width": 0.20000000298023224,
+        "width": 0.20000000298023224,
+        "depth": 0.18000000715255737,
+        "triangles": 1920,
+        "vertices": 962,
+        "materials": 1,
+        "textures": 0,
+        "nonmanifold_edges": 0,
+        "texture_px": 0,
+        "glb_bytes": 36176,
+        "glb_mb": 0.036176,
+        "bounds": {
+          "min": [
+            -0.10000000149011612,
+            0.0,
+            -0.09000000357627869
+          ],
+          "max": [
+            0.10000000149011612,
+            0.14000000059604645,
+            0.09000000357627869
+          ]
+        },
+        "sha256": "354e136b96fc55c6a58bbdf7b92a2da3682893eaaabc9718d9bd54f269a8075c",
+        "measured_date": "2026-11-21",
+        "tool": "Blender 5.2.4 LTS; reimported exported GLB",
+        "center_interior_floor_height_m": 0.008783161640167236,
+        "cavity_depth_m": 0.1312168389558792,
+        "source_surface_distance_p95_m": 0.0006518339505419135
+      },
+      "notes": "Independent Meshy 6 Lite generation, freely downloaded and corrected in Blender as chosen by the user. Runtime connected in the local finishing branch. Multi-angle asset checks complete; independent review and deferred in-game visual checks remain pending.",
+      "revision": "v01"
     }
   },
   "scene_limits": {

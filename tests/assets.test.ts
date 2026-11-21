@@ -2,10 +2,10 @@
 // here; actual image decoding/rendering is checked separately in the browser.
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
-import { Box3, Group, Mesh, type Object3D, Quaternion, Vector3 } from "three";
+import { Box3, Group, Mesh, type Object3D, Quaternion, Raycaster, Vector3 } from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { describe, expect, it } from "vitest";
-import { CHARACTER_MODEL_URLS, ITEM_MODEL_URLS } from "../src/view/modelEntry";
+import { CHARACTER_MODEL_URLS, ENVIRONMENT_MODEL_URLS, ITEM_MODEL_URLS } from "../src/view/modelEntry";
 import { ITEM_LABEL_Y, itemLabelShown, LABEL_CENTER_Y } from "../src/view/labels";
 import { modelRotationY, placeAtSocket } from "../src/view/shoulder";
 
@@ -15,6 +15,79 @@ const parse = (buf: Buffer): Promise<Object3D> =>
     new GLTFLoader().parse(buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength) as ArrayBuffer, "", (g) => ok(g.scene), fail),
   );
 const size = (o: Object3D) => new Box3().setFromObject(o).getSize(new Vector3());
+
+describe("production washing-station assets", () => {
+  it.each([
+    ["bath_stool", [0.36, 0.30, 0.36]],
+    ["wash_basin", [0.20, 0.14, 0.18]],
+  ] as const)("%s has a self-contained, bounded export matching its production record", async (id, dimensions) => {
+    const url = ENVIRONMENT_MODEL_URLS[id];
+    expect(url).toBeTruthy();
+    const bytes = file(url!);
+    const asset = JSON.parse(readFileSync(new URL("../assets/manifest.json", import.meta.url), "utf8")).assets[id];
+    expect(asset.status).toBe("exported");
+    expect(createHash("sha256").update(bytes).digest("hex")).toBe(asset.measured.sha256);
+    expect(bytes.length).toBe(asset.measured.glb_bytes);
+    expect(bytes.length / 1_000_000).toBeLessThanOrEqual(asset.limits.glb_mb);
+    const jsonLength = bytes.readUInt32LE(12);
+    const gltf = JSON.parse(bytes.subarray(20, 20 + jsonLength).toString());
+    expect(gltf.buffers.every((buffer: { uri?: string }) => buffer.uri === undefined)).toBe(true);
+    expect(gltf.images ?? []).toHaveLength(0);
+    expect(gltf.textures ?? []).toHaveLength(0);
+    expect(gltf.materials).toHaveLength(1);
+
+    const root = await parse(bytes);
+    const bounds = new Box3().setFromObject(root, true);
+    const measured = bounds.getSize(new Vector3()).toArray();
+    measured.forEach((value, axis) => expect(value).toBeCloseTo(dimensions[axis]!, 5));
+    expect(bounds.min.y).toBeCloseTo(0, 6);
+    expect(bounds.getCenter(new Vector3()).x).toBeCloseTo(0, 6);
+    expect(bounds.getCenter(new Vector3()).z).toBeCloseTo(0, 6);
+    let triangles = 0;
+    root.traverse((object) => {
+      if (!(object instanceof Mesh)) return;
+      const positions = object.geometry.getAttribute("position");
+      const normals = object.geometry.getAttribute("normal");
+      expect(Array.from(positions.array).every(Number.isFinite)).toBe(true);
+      expect(Array.from(normals.array).every(Number.isFinite)).toBe(true);
+      triangles += (object.geometry.index?.count ?? positions.count) / 3;
+    });
+    expect(triangles).toBeGreaterThan(0);
+    expect(triangles).toBeLessThanOrEqual(asset.limits.triangles);
+    expect(triangles).toBe(asset.measured.triangles);
+  });
+
+  it("the basin has an open interior above a solid floor and inward-facing walls", async () => {
+    const basin = await parse(file(ENVIRONMENT_MODEL_URLS.wash_basin!));
+    basin.updateMatrixWorld(true);
+    const hits = (origin: Vector3, direction: Vector3) => new Raycaster(origin, direction).intersectObject(basin, true);
+    // A filled/closed reconstruction would hit near the 0.14 m rim here.
+    const interior = hits(new Vector3(0, 0.2, 0), new Vector3(0, -1, 0));
+    expect(interior.length).toBeGreaterThan(0);
+    expect(interior[0]!.point.y).toBeGreaterThan(0.001);
+    expect(interior[0]!.point.y).toBeLessThan(0.04);
+    const underside = hits(new Vector3(0, -0.1, 0), new Vector3(0, 1, 0));
+    expect(underside.length).toBeGreaterThan(0);
+    expect(underside[0]!.point.y).toBeLessThan(interior[0]!.point.y - 0.001);
+    for (const direction of [new Vector3(1, 0, 0), new Vector3(-1, 0, 0), new Vector3(0, 0, 1), new Vector3(0, 0, -1)]) {
+      const wall = hits(new Vector3(0, 0.07, 0), direction);
+      expect(wall.length).toBeGreaterThan(0);
+      expect(wall[0]!.distance).toBeGreaterThan(0.05);
+      expect(wall[0]!.distance).toBeLessThan(0.1);
+    }
+  });
+
+  it("the stool keeps its central drain and clearance beneath the seat", async () => {
+    const stool = await parse(file(ENVIRONMENT_MODEL_URLS.bath_stool!));
+    stool.updateMatrixWorld(true);
+    const drain = new Raycaster(new Vector3(0, 0.4, 0), new Vector3(0, -1, 0));
+    expect(drain.intersectObject(stool, true)).toHaveLength(0);
+    for (const direction of [new Vector3(1, 0, 0), new Vector3(-1, 0, 0), new Vector3(0, 0, 1), new Vector3(0, 0, -1)]) {
+      const clearance = new Raycaster(new Vector3(0, 0.10, 0), direction);
+      expect(clearance.intersectObject(stool, true)).toHaveLength(0);
+    }
+  });
+});
 
 describe("connected models (shoulder-view Req 6)", () => {
   it("lists all three pipeline character models and the hat", () => {

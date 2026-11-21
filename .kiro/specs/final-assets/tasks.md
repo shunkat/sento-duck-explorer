@@ -84,8 +84,8 @@ Production status updated by Codex on 2026-11-20. Codex operates the image → M
 The user deferred normal-input play and requested finishing work, then reported malformed Duck eyes and asked for better model fidelity.
 
 - [x] Original washing-station reference and provenance saved.
-- [x] View-only environment replacement path, primitive fallback and automated placement tests for five stools/basins. Runtime URLs remain empty while the real assets are pending.
-- [ ] Washing-station Image to 3D → Blender → final exports: upload blocked by the browser extension's file-URL permission; user cannot change it yet. No generated or final asset claimed.
+- [x] View-only environment replacement path, primitive fallback and automated placement tests for five stools/basins. Runtime URLs now register the two completed exports in the local finishing branch.
+- [x] Washing-station Image to 3D → Blender → final exports: separate single-object Meshy 6 Lite / CC BY 4.0 / texture-off models were downloaded and corrected in Blender, as chosen by the user. Reimported multi-angle checks and provenance records are complete. The stool is 3,000 triangles / 55,568 bytes; the hollow basin is 1,920 triangles / 36,176 bytes. Existing five-pair slots now load these GLBs without changing LEVEL collision. No paid subscription or higher-model generation was purchased. See `assets/wash_station/README.md`.
 - [x] Duck v02: local eye correction on the original generated body, export/reimport and multi-angle asset renders; bounds and sockets preserved.
 - [ ] Independent review of this finishing batch.
 - [ ] Final in-game visual checks / normal-input play: deferred at the user's request.
