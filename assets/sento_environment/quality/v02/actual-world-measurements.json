@@ -1,0 +1,646 @@
+{
+  "layout_sha256": "8bee95aa4ad7e753f521c4327e7586d3df4717e6c1aa9072790a0c40ecc52ab5",
+  "export_sha256": "39cfd9954b2de71807ecf3e860063f0569a9bd2611f322b361c10232f963950e",
+  "export_bytes": 5931660,
+  "reference_measurements_sha256": "8a035472257158d6caa81c2267d1b0bb144f2d6953e9ed56253888795c306054",
+  "architecture_triangles": 7996,
+  "npc_triangles": 12157,
+  "export_triangles": 20153,
+  "mesh_count": 33,
+  "materials": [
+    "bath_floor",
+    "brushed_metal",
+    "cedar",
+    "ceramic_cream",
+    "ceramic_teal",
+    "dark_cedar",
+    "fuji_mural",
+    "garden_stone",
+    "mirror_glass",
+    "navy_cloth",
+    "npc_bath_standing_single_atlas",
+    "npc_seated_single_atlas",
+    "npc_staff_single_atlas",
+    "rose_cloth",
+    "sage_foliage",
+    "straw",
+    "warm_plaster"
+  ],
+  "bounds_gltf_m": [
+    [
+      -3.200000047683716,
+      -0.28999999165534973,
+      -9.100000381469727
+    ],
+    [
+      36.099998474121094,
+      2.75,
+      12.100000381469727
+    ]
+  ],
+  "finite_vertices": true,
+  "degenerate_faces": 16,
+  "raw_degenerate_triangles": 16,
+  "raw_degenerate_npc_triangles": 0,
+  "raw_degenerate_architecture_triangles": 16,
+  "raw_degenerate_triangles_by_mesh": {
+    "Mesh bench.005": 16
+  },
+  "degenerate_measurement": "Triangle area below 1e-14 square metres from the exact GLB positions in float64 arithmetic.",
+  "npc_slots": [
+    {
+      "slot": "npc_slot_staff",
+      "near": "npc_high_staff",
+      "model_kind": "npc_staff",
+      "position_gltf_m": [
+        4.900000095367432,
+        0,
+        -8.625
+      ],
+      "yaw_degrees": 0,
+      "uniform_scale": 1,
+      "source_sha256": "e479a4a9012e7de52216087cd18a706376e274f15589e576e473449110eac926",
+      "placement_id": "fixtures_02",
+      "bounds_gltf_m": [
+        [
+          4.670670330524445,
+          0.0,
+          -8.762946769595146
+        ],
+        [
+          5.129329860210419,
+          1.5999999046325684,
+          -8.487053230404854
+        ]
+      ],
+      "triangles": 1593
+    },
+    {
+      "slot": "npc_slot_0",
+      "near": "npc_high_0",
+      "model_kind": "npc_seated",
+      "position_gltf_m": [
+        14.300000190734863,
+        0,
+        0.8500000238418579
+      ],
+      "yaw_degrees": 90,
+      "uniform_scale": 0.8999999761581421,
+      "source_sha256": "9580c0fdded4e8dd0a9c2559eeae16af2d2c8f75aa7011d3f009567ac781be57",
+      "placement_id": "npcs_00",
+      "bounds_gltf_m": [
+        [
+          14.322786476022715,
+          0.0,
+          0.6304056410154025
+        ],
+        [
+          14.853213968117291,
+          1.171185998885207,
+          1.0695942939367136
+        ]
+      ],
+      "triangles": 1794
+    },
+    {
+      "slot": "npc_slot_1",
+      "near": "npc_high_1",
+      "model_kind": "npc_seated",
+      "position_gltf_m": [
+        14.300000190734863,
+        0,
+        3.049999952316284
+      ],
+      "yaw_degrees": 90,
+      "uniform_scale": 0.8999999761581421,
+      "source_sha256": "9580c0fdded4e8dd0a9c2559eeae16af2d2c8f75aa7011d3f009567ac781be57",
+      "placement_id": "npcs_01",
+      "bounds_gltf_m": [
+        [
+          14.322786476022715,
+          0.0,
+          2.830405569489829
+        ],
+        [
+          14.853213968117291,
+          1.171185998885207,
+          3.26959422241114
+        ]
+      ],
+      "triangles": 1794
+    },
+    {
+      "slot": "npc_slot_2",
+      "near": "npc_high_2",
+      "model_kind": "npc_bath_standing",
+      "position_gltf_m": [
+        15.699999809265137,
+        0,
+        0.30000001192092896
+      ],
+      "yaw_degrees": 0,
+      "uniform_scale": 1,
+      "source_sha256": "0446e67bb93dbb2e0307b77732a490f96d654477d6dbf2bbae39fb753dc162cb",
+      "placement_id": "npcs_02",
+      "bounds_gltf_m": [
+        [
+          15.474412277340889,
+          0.0,
+          0.1646060347557068
+        ],
+        [
+          15.925587341189384,
+          1.600000023841858,
+          0.4353939890861511
+        ]
+      ],
+      "triangles": 1594
+    },
+    {
+      "slot": "npc_slot_3",
+      "near": "npc_high_3",
+      "model_kind": "npc_seated",
+      "position_gltf_m": [
+        15.699999809265137,
+        0,
+        2.5
+      ],
+      "yaw_degrees": 90,
+      "uniform_scale": 0.8999999761581421,
+      "source_sha256": "9580c0fdded4e8dd0a9c2559eeae16af2d2c8f75aa7011d3f009567ac781be57",
+      "placement_id": "npcs_03",
+      "bounds_gltf_m": [
+        [
+          15.722786094552989,
+          0.0,
+          2.2804056171735447
+        ],
+        [
+          16.253213586647565,
+          1.171185998885207,
+          2.7195942700948557
+        ]
+      ],
+      "triangles": 1794
+    },
+    {
+      "slot": "npc_slot_4",
+      "near": "npc_high_4",
+      "model_kind": "npc_seated",
+      "position_gltf_m": [
+        17.100000381469727,
+        0,
+        1.350000023841858
+      ],
+      "yaw_degrees": 90,
+      "uniform_scale": 0.8999999761581421,
+      "source_sha256": "9580c0fdded4e8dd0a9c2559eeae16af2d2c8f75aa7011d3f009567ac781be57",
+      "placement_id": "npcs_04",
+      "bounds_gltf_m": [
+        [
+          17.12278666675758,
+          0.0,
+          1.1304056410154026
+        ],
+        [
+          17.653214158852155,
+          1.171185998885207,
+          1.5695942939367136
+        ]
+      ],
+      "triangles": 1794
+    },
+    {
+      "slot": "npc_slot_5",
+      "near": "npc_high_5",
+      "model_kind": "npc_seated",
+      "position_gltf_m": [
+        17.100000381469727,
+        0,
+        3.549999952316284
+      ],
+      "yaw_degrees": 90,
+      "uniform_scale": 0.8999999761581421,
+      "source_sha256": "9580c0fdded4e8dd0a9c2559eeae16af2d2c8f75aa7011d3f009567ac781be57",
+      "placement_id": "npcs_05",
+      "bounds_gltf_m": [
+        [
+          17.12278666675758,
+          0.0,
+          3.330405569489829
+        ],
+        [
+          17.653214158852155,
+          1.171185998885207,
+          3.76959422241114
+        ]
+      ],
+      "triangles": 1794
+    }
+  ],
+  "seating_board_clearances": [
+    {
+      "slot": "npc_slot_0",
+      "seat_board_interiors_gltf_m": [
+        [
+          [
+            14.00801,
+            0.34001,
+            0.10001
+          ],
+          [
+            14.191989999999999,
+            0.40499,
+            1.59999
+          ]
+        ],
+        [
+          [
+            14.20801,
+            0.34001,
+            0.10001
+          ],
+          [
+            14.39199,
+            0.40499,
+            1.59999
+          ]
+        ],
+        [
+          [
+            14.40801,
+            0.34001,
+            0.10001
+          ],
+          [
+            14.59199,
+            0.40499,
+            1.59999
+          ]
+        ]
+      ],
+      "intersecting_npc_triangles": 0
+    },
+    {
+      "slot": "npc_slot_1",
+      "seat_board_interiors_gltf_m": [
+        [
+          [
+            14.00801,
+            0.34001,
+            2.2000100000000002
+          ],
+          [
+            14.191989999999999,
+            0.40499,
+            3.89999
+          ]
+        ],
+        [
+          [
+            14.20801,
+            0.34001,
+            2.2000100000000002
+          ],
+          [
+            14.39199,
+            0.40499,
+            3.89999
+          ]
+        ],
+        [
+          [
+            14.40801,
+            0.34001,
+            2.2000100000000002
+          ],
+          [
+            14.59199,
+            0.40499,
+            3.89999
+          ]
+        ]
+      ],
+      "intersecting_npc_triangles": 0
+    },
+    {
+      "slot": "npc_slot_3",
+      "seat_board_interiors_gltf_m": [
+        [
+          [
+            15.40801,
+            0.34001,
+            1.1000100000000002
+          ],
+          [
+            15.59199,
+            0.40499,
+            3.89999
+          ]
+        ],
+        [
+          [
+            15.60801,
+            0.34001,
+            1.1000100000000002
+          ],
+          [
+            15.79199,
+            0.40499,
+            3.89999
+          ]
+        ],
+        [
+          [
+            15.808010000000001,
+            0.34001,
+            1.1000100000000002
+          ],
+          [
+            15.99199,
+            0.40499,
+            3.89999
+          ]
+        ]
+      ],
+      "intersecting_npc_triangles": 0
+    },
+    {
+      "slot": "npc_slot_4",
+      "seat_board_interiors_gltf_m": [
+        [
+          [
+            16.80801,
+            0.34001,
+            0.10001
+          ],
+          [
+            16.99199,
+            0.40499,
+            2.59999
+          ]
+        ],
+        [
+          [
+            17.00801,
+            0.34001,
+            0.10001
+          ],
+          [
+            17.19199,
+            0.40499,
+            2.59999
+          ]
+        ],
+        [
+          [
+            17.208009999999998,
+            0.34001,
+            0.10001
+          ],
+          [
+            17.39199,
+            0.40499,
+            2.59999
+          ]
+        ]
+      ],
+      "intersecting_npc_triangles": 0
+    },
+    {
+      "slot": "npc_slot_5",
+      "seat_board_interiors_gltf_m": [
+        [
+          [
+            16.80801,
+            0.34001,
+            3.2000100000000002
+          ],
+          [
+            16.99199,
+            0.40499,
+            3.89999
+          ]
+        ],
+        [
+          [
+            17.00801,
+            0.34001,
+            3.2000100000000002
+          ],
+          [
+            17.19199,
+            0.40499,
+            3.89999
+          ]
+        ],
+        [
+          [
+            17.208009999999998,
+            0.34001,
+            3.2000100000000002
+          ],
+          [
+            17.39199,
+            0.40499,
+            3.89999
+          ]
+        ]
+      ],
+      "intersecting_npc_triangles": 0
+    }
+  ],
+  "all_seating_boards_clear": true,
+  "seating_measurement": "Actual NPC triangles clipped against the interiors of the three LEVEL-authored seat boards; top-surface contact is allowed.",
+  "clearances": [
+    {
+      "id": "narrow_hole",
+      "bounds_gltf_m": [
+        [
+          -2.99999,
+          0.05,
+          8.30001
+        ],
+        [
+          -1e-05,
+          0.45,
+          8.699990000000001
+        ]
+      ],
+      "intersecting_triangles": 0,
+      "intersecting_mesh_names": []
+    },
+    {
+      "id": "crowd_gap_0",
+      "bounds_gltf_m": [
+        [
+          14.00001,
+          0.05,
+          1.6000100000000002
+        ],
+        [
+          14.59999,
+          1.75,
+          2.19999
+        ]
+      ],
+      "intersecting_triangles": 0,
+      "intersecting_mesh_names": []
+    },
+    {
+      "id": "crowd_gap_1",
+      "bounds_gltf_m": [
+        [
+          15.40001,
+          0.05,
+          0.50001
+        ],
+        [
+          15.99999,
+          1.75,
+          1.09999
+        ]
+      ],
+      "intersecting_triangles": 0,
+      "intersecting_mesh_names": []
+    },
+    {
+      "id": "crowd_gap_2",
+      "bounds_gltf_m": [
+        [
+          16.80001,
+          0.05,
+          2.60001
+        ],
+        [
+          17.39999,
+          1.75,
+          3.19999
+        ]
+      ],
+      "intersecting_triangles": 0,
+      "intersecting_mesh_names": []
+    },
+    {
+      "id": "changing_reception",
+      "bounds_gltf_m": [
+        [
+          6.20001,
+          0.05,
+          -5.09999
+        ],
+        [
+          7.399990000000001,
+          1.4,
+          -4.90001
+        ]
+      ],
+      "intersecting_triangles": 0,
+      "intersecting_mesh_names": []
+    },
+    {
+      "id": "bath_changing",
+      "bounds_gltf_m": [
+        [
+          0.80001,
+          0.05,
+          -0.09999000000000001
+        ],
+        [
+          1.99999,
+          1.4,
+          0.09999000000000001
+        ]
+      ],
+      "intersecting_triangles": 0,
+      "intersecting_mesh_names": []
+    },
+    {
+      "id": "bath_sauna",
+      "bounds_gltf_m": [
+        [
+          11.90001,
+          0.05,
+          1.20001
+        ],
+        [
+          12.09999,
+          1.4,
+          2.39999
+        ]
+      ],
+      "intersecting_triangles": 0,
+      "intersecting_mesh_names": []
+    },
+    {
+      "id": "bath_open_air",
+      "bounds_gltf_m": [
+        [
+          11.90001,
+          0.05,
+          6.600009999999999
+        ],
+        [
+          12.09999,
+          1.4,
+          7.79999
+        ]
+      ],
+      "intersecting_triangles": 0,
+      "intersecting_mesh_names": []
+    },
+    {
+      "id": "open_air_pond_entrance",
+      "bounds_gltf_m": [
+        [
+          19.900009999999998,
+          0.05,
+          7.40001
+        ],
+        [
+          20.099990000000002,
+          1.4,
+          8.59999
+        ]
+      ],
+      "intersecting_triangles": 0,
+      "intersecting_mesh_names": []
+    },
+    {
+      "id": "reception_common",
+      "bounds_gltf_m": [
+        [
+          3.90001,
+          0.05,
+          -7.59999
+        ],
+        [
+          4.09999,
+          1.4,
+          -6.400009999999999
+        ]
+      ],
+      "intersecting_triangles": 0,
+      "intersecting_mesh_names": []
+    },
+    {
+      "id": "reception_exterior",
+      "bounds_gltf_m": [
+        [
+          7.90001,
+          0.05,
+          -7.59999
+        ],
+        [
+          8.09999,
+          1.4,
+          -6.400009999999999
+        ]
+      ],
+      "intersecting_triangles": 0,
+      "intersecting_mesh_names": []
+    }
+  ],
+  "all_clearances_open": true,
+  "scope": "Actual GLB triangle measurements; original opening AABBs reused, original intersection counts discarded; no gameplay verification."
+}

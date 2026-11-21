@@ -1,14 +1,16 @@
 npc_bath_standing — Sento Duck Explorer
 
-Derived by the project in Blender 5.2.4 LTS from Adult v02,
-originally generated with Meshy 6 Lite from an original project reference.
-Source: https://www.meshy.ai/
-Terms: https://www.meshy.ai/terms-of-use/
-License: Creative Commons Attribution 4.0 International (CC BY 4.0)
-https://creativecommons.org/licenses/by/4.0/
+Source: Quaternius, Universal Base Characters - Free Standard
+https://quaternius.com/packs/universalbasecharacters
+Original source license: CC0 1.0 Universal
+https://creativecommons.org/publicdomain/zero/1.0/
+Original author license and unmodified selected files are retained in
+assets/public_sources/quaternius_universal_base/.
 
-Modifications: source-derived background pose, protected facial UVs and body
-contours, detail-surface normal transfer and reduced geometry/512px texture.
-See assets/sento_npcs/README.md and assets/ledger.csv.
-Keep this attribution, license link and modification notice with copies.
-Meshy does not endorse this project.
+Project modifications: distinct sento adult proportions/hairstyles and static
+pose, smooth non-anatomical toy body, authored clothing/color masks, protected
+face/hand reduction and an embedded color atlas. Distant variants reduce the
+same independent source while preserving its texture and coordinate frame.
+Project-held rights in these modifications are MIT (repository LICENSE).
+This model does not use the playable father/Adult geometry.
+See assets/sento_visitors/README.md and assets/ledger.csv for exact provenance.

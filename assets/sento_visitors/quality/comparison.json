@@ -1,0 +1,22 @@
+{
+  "scope": "Same camera, meter scale and lighting. Father read only for comparison; no father geometry enters visitor assets.",
+  "sources": {
+    "Father": {
+      "file": "adult.glb",
+      "sha256": "0ec65252a0554fcefcf36b55d3871788367440e215d40fb8040fbbf691bcb867"
+    },
+    "Reception": {
+      "file": "npc_staff.glb",
+      "sha256": "e479a4a9012e7de52216087cd18a706376e274f15589e576e473449110eac926"
+    },
+    "Older visitor": {
+      "file": "npc_bath_standing.glb",
+      "sha256": "0446e67bb93dbb2e0307b77732a490f96d654477d6dbf2bbae39fb753dc162cb"
+    },
+    "Seated visitor": {
+      "file": "npc_seated.glb",
+      "sha256": "9580c0fdded4e8dd0a9c2559eeae16af2d2c8f75aa7011d3f009567ac781be57"
+    }
+  },
+  "image_sha256": "afabc659d4858e404faae04d71d5b452497f85e4e9d4ce542096db63f04f31e6"
+}

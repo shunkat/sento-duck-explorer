@@ -1,0 +1,62 @@
+{
+  "source_geometry_preserved": {
+    "SOURCE_UNMODIFIED_1_Eyebrows": {
+      "vertices": 646,
+      "faces": 984,
+      "positions": "b36bdc74fa6661942a01dc6bbb6614787ae4f3928f032e1cc274da3f1f3028f7",
+      "indices": "e1c427eec12ceb7487e03e2ecd5106aa9c054eb39d3bbb886a12365d753989a5"
+    },
+    "SOURCE_UNMODIFIED_2_Eyes": {
+      "vertices": 556,
+      "faces": 768,
+      "positions": "171024431aeac029215b572fbb621eb8921cf797dc59b855bf549aedc0c73576",
+      "indices": "f6d9d060209330f4f5e4907262552b140bfa499ef13b23b7bdba95fe5479f0e4"
+    },
+    "SOURCE_UNMODIFIED_3_SuperHero_Male": {
+      "vertices": 7281,
+      "faces": 12566,
+      "positions": "7d60cdab52685a428adaf238f52decb74cd441938c52b3b3f84fe5bc5a51f027",
+      "indices": "9cba992fc8e1a7cb6478adfaee658a528cdd95d18d1502d9a23f21ad1a9a7ef2"
+    },
+    "SOURCE_UNMODIFIED_5_Hair_SimpleParted": {
+      "vertices": 757,
+      "faces": 1301,
+      "positions": "1e7303ad54240bccdbf69d4fcf7490c6b9ea1c8ba2b6c5cdd09af4a9399c4a06",
+      "indices": "8efb73fc787dd69a1269bdc40f6c853fcaa6094ba0a032b8a4e3920ade64fdcc"
+    }
+  },
+  "parts_after_reduction": [
+    [
+      "SOURCE_UNMODIFIED_1_Eyebrows.001",
+      24
+    ],
+    [
+      "SOURCE_UNMODIFIED_2_Eyes.001",
+      96
+    ],
+    [
+      "SOURCE_UNMODIFIED_3_SuperHero_Male.001",
+      1380
+    ],
+    [
+      "SOURCE_UNMODIFIED_5_Hair_SimpleParted.001",
+      96
+    ]
+  ],
+  "triangles": 1594,
+  "bounds_blender_zup_m": [
+    [
+      -0.22558753192424774,
+      -0.13539397716522217,
+      0.0
+    ],
+    [
+      0.22558753192424774,
+      0.13539397716522217,
+      1.600000023841858
+    ]
+  ],
+  "sha256": "0446e67bb93dbb2e0307b77732a490f96d654477d6dbf2bbae39fb753dc162cb",
+  "bytes": 83996,
+  "blend_sha256": "9f6cd6d7d63d73df7a074ed534e2b7b01753260d851204cc705ac9384289fae2"
+}

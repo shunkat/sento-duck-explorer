@@ -1,51 +1,67 @@
-# Refreshed sento environment
+# Sento environment v02
 
-The world-space environment uses free public geometry and materials, with
-project-authored rooms and equipment fitted to the existing LEVEL. The user
-approved this production route on 2026-11-21. No paid service was used.
+The world keeps the existing Kenney geometry, Poly Haven materials, project
+rooms/equipment and mural. Seven adult NPC placements now use three independent
+Quaternius-based visitors instead of the playable father. See
+[visitor sources and review](../sento_visitors/README.md).
 
-- Kenney Furniture Kit bench: four placed variants.
-- Kenney Nature Kit: six rock_smallH, four rock_smallI and two plant_bushDetailed instances.
-- Poly Haven Hinoki Planks by Charlotte Baglioni: diffuse, normal and roughness maps.
-- Original project mural, tile materials and directly authored fixtures.
-- Seven Meshy/Adult-derived NPCs; their source and CC BY attribution remain intact.
+The replacement contains **7,996 architecture triangles + 12,157 NPC triangles
+= 20,153 triangles**, with 17 materials, 11 images and 5,931,660 bytes. It retains
+all 64 node names, hierarchy and transforms. The 26 non-NPC meshes, 14 non-NPC
+materials and eight non-NPC image payloads are unchanged. Exact accessor and
+payload hashes are in [replacement proof](quality/v02/replacement-proof.json).
 
-Original public files, license texts and download provenance are in
-[public_sources](../public_sources/README.md). Per-instance modifications and
-source hashes are in [measurements](quality/measurements.json).
-The assembled export is a CC BY 4.0 composite; independent CC0 and MIT inputs
-retain their original licenses. See [the distribution notice](../../public/models/sento_environment.LICENSE.txt).
+The seated visitors use the existing bench placement frame, with their local
+geometry moved forward to put the lower legs beyond the actual board edge.
+The floor remains Y=0. The source's low underside was adjusted at six vertices;
+all triangles are checked against the seat-board interiors, including triangles
+whose vertices lie outside the board but whose interiors cross it. This caught
+a defect that sampled support rays had missed. The eleven original openings
+and all five occupied benches have zero intersecting NPC triangles in the
+accepted near export; far-seat checks are recorded with the visitor LODs.
 
-The editable [Blender scene](blend/sento_environment__v01.blend) packs all images.
-The authoritative builder is [build-sento-environment.py](../../scripts/build-sento-environment.py).
-The export has 7,996 architectural triangles plus 12,200 near-NPC triangles,
-17 materials, 11 images and 6,328,656 bytes. It retains an identity root in game
-world coordinates. Four named groups implement the overview, ceilings and door.
+[Current measurements](quality/measurements.json) distinguish raw triangle area
+from the old bmesh calculation. There are 16 unchanged zero-area architecture
+triangles in the old bench geometry, and zero degenerate NPC triangles. The old
+bmesh method reported zero because of numerical rounding; the replacement does
+not claim that those original architecture triangles were repaired.
 
-111 original placements and five additional assemblies are recorded. Triangle
-clipping found no intrusion into the 11 checked hole/crowd-gap/door interiors.
-The original six character/hat/washing GLBs are unchanged.
+## Sources and reconstruction
 
-Seven actual-GLB render views received independent visual review with no
-required shape defects. The pool rocks remain simple stylized forms at close
-range; they do not reproduce the art reference's fine stone detail or dense
-planting. The renders add the separate runtime water and washing models for
-context, and are not screenshots of game lighting or evidence of normal play.
-See [self review](quality/self-review.json) and [metadata audit](quality/metadata-audit.json).
+The original construction and measurements are preserved as
+[v01 documentation](README-v01.md), [v01 GLB](blend/sento_environment__v01.glb),
+[v01 editable source](blend/sento_environment__v01.blend), and `quality/v01/`.
+The new [v02 editable scene](blend/sento_environment__v02.blend) is a verified
+reimport of the exact composed GLB, with all images packed. Original detailed
+construction and independent visitor masters remain available separately.
 
-## Fixed export views
+Rebuild the visitor candidates first, then run:
 
-![overview](quality/overview.png)
+```sh
+node scripts/export-environment-layout.mjs .local/distinct-sento-npcs/layout.json
+python3 scripts/replace-background-npcs.py
+python3 scripts/measure-replaced-world.py
+Blender --background --python-exit-code 1 --python scripts/save-replaced-world-blend.py
+Blender --background --python-exit-code 1 --python scripts/render-replaced-world.py
+```
 
-![washing_low](quality/washing_low.png)
+These tools produce private candidates and reports. They do not replace public
+assets or deploy. Their default source is the versioned v01 GLB and v01 opening
+record. For a future changed layout, supply the matching world/reference inputs
+and recheck the complete placement contract; do not apply the old layout hash
+without verifying the changed map.
 
-![bath_low](quality/bath_low.png)
+The composite remains CC BY 4.0. Independent public CC0 and project MIT inputs
+retain their licenses. See [distribution notice](../../public/models/sento_environment.LICENSE.txt)
+and `assets/ledger.csv` for authors, actual inputs, modifications and hashes.
+No paid assets were used.
 
-![reception_low](quality/reception_low.png)
+## Actual export inspection
 
-![sauna_low](quality/sauna_low.png)
+These are Blender reimport renders of the composed GLB with inspection lights.
+They establish asset placement, not game-lighting or normal-input play results.
+The combined final game remains subject to the shared final verification handoff.
 
-![garden_low](quality/garden_low.png)
+![Reception](quality/v02/npc_reception_v02.png)
 
-![pond_low](quality/pond_low.png)
-
+![Seated visitors](quality/v02/npc_seated_contact_v02.png)

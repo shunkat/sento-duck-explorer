@@ -147,20 +147,32 @@ preserving the source dimensions, openings and materials; the original high
 models are unchanged. See `assets/wash_station/quality/lod/README.md` for
 the method, inspection conditions and exact source/output checksums.
 
-## Background NPCs — Meshy, CC BY 4.0
+## Background adults — Quaternius CC0 source, project MIT modifications
 
-The static background NPC exports `npc_staff`, `npc_seated` and
-`npc_bath_standing` are also CC BY 4.0 modifications of the Meshy-derived Adult
-model. Their new seated/compact standing poses, protected facial UVs and reduced
-background geometry do not change the source license. Retain the Meshy credit,
-license link and modification notice in `assets/sento_npcs/ATTRIBUTION.md` and
-the individual `public/models/npc_*.LICENSE.txt` files with redistributed copies.
+The current `npc_staff`, `npc_bath_standing`, `npc_seated` and their three
+`_lod_far` exports use the male body, hair and eyebrow geometry from
+[Quaternius Universal Base Characters Free Standard](https://quaternius.com/packs/universalbasecharacters),
+licensed [CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/).
+The selected original glTF/BIN/textures and author license remain unchanged in
+`assets/public_sources/quaternius_universal_base/`. Its source record identifies
+the free edition and the actual redistribution ZIP/checksum; the paid Source
+edition was not used.
 
-The three `npc_*_lod_far` models and their editable Blender scenes/render
-previews are further CC BY 4.0 modifications of those accepted NPC sources.
-They preserve the authored coordinate frame and source texture UVs, with
-600 triangles each for distant rendering. See
-`assets/sento_npcs/quality/distance-lod/README.md` for actual checks and limits.
+Project changes include mature character proportions, distinct hairstyles and
+colors, static reception/standing/seated poses, simplified non-anatomical bath
+surfaces, clothing masks, protected face/hand reduction, and embedded texture
+atlases. Project-held rights in these modifications are MIT; original sources
+remain CC0. Detailed editable files and inspection records are in
+`assets/sento_visitors/`. These NPCs do not reuse the playable father's geometry.
+The separate `assets/sento_visitors/quality/father-and-distinct-visitors.png`
+also depicts the Meshy-derived father and is a CC BY 4.0 comparison composite;
+retain the Meshy credit and change notice in `assets/sento_visitors/ATTRIBUTION.md`.
+
+The former Meshy/Adult-derived NPCs remain historical CC BY 4.0 assets in
+`assets/sento_npcs/`, with the prior six exports and distribution notices in
+`assets/sento_npcs/archive/pre-independent-v03/`. Their Meshy attribution,
+license and modification notice still apply to those archived files and the
+v01 environment export; they do not describe the new Quaternius NPCs.
 
 ## Free public environment sources — CC0
 
@@ -196,8 +208,9 @@ and `assets/sento_environment/ref/`; original PNGs and provenance are retained.
 The art-direction image is a reference, not a screenshot or a map.
 
 The assembled `sento_environment.glb` is distributed as a CC BY 4.0 composite.
-Its source-derived NPCs retain the Meshy credit and modification notice above;
+Its current background NPCs use the independent Quaternius sources above;
 independent CC0 and project MIT components retain their original licenses.
+The previous Meshy-NPC composite and its notice remain preserved as v01.
 See `public/models/sento_environment.LICENSE.txt` and the per-placement source
 record in `assets/sento_environment/quality/measurements.json`.
 

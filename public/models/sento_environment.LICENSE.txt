@@ -1,4 +1,4 @@
-Sento environment v01 — composite asset, CC BY 4.0
+Sento environment v02 — composite asset, CC BY 4.0
 https://creativecommons.org/licenses/by/4.0/
 
 Assembled and modified by this project in Blender. Preserve this credit,
@@ -16,12 +16,16 @@ https://polyhaven.com/a/hinoki_planks
 https://polyhaven.com/license
 Diffuse, normal and roughness maps used for the wood material.
 
-Meshy — CC BY 4.0:
-https://www.meshy.ai/
-https://www.meshy.ai/terms-of-use
-The background NPCs are posed and reduced modifications of the project's
-Meshy 6 Lite Adult model, with the source texture and authored frame retained.
-Meshy does not endorse this project. See assets/sento_npcs/ATTRIBUTION.md.
+Quaternius Universal Base Characters - Free Standard — CC0 1.0:
+https://quaternius.com/packs/universalbasecharacters
+https://creativecommons.org/publicdomain/zero/1.0/
+The seven background NPC placements use three independently sourced and posed
+adult models. Project modifications are MIT. The father/Adult geometry is not
+used for these NPCs. See assets/sento_visitors/README.md.
+
+v02 replaces only the NPC payloads in the v01 composite, retaining architecture,
+non-NPC materials/images and all placement transforms. The prior v01 export and
+its Meshy attribution remain preserved beside the original editable source.
 
 Rooms, fixtures and tile materials were authored for this project. Project-held
 rights are MIT. The mural was generated from an original prompt through OpenAI;

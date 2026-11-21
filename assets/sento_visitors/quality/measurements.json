@@ -1,0 +1,376 @@
+{
+  "date": "2026-11-21",
+  "blender": "5.2.4 LTS",
+  "models": {
+    "npc_staff": {
+      "sha256": "e479a4a9012e7de52216087cd18a706376e274f15589e576e473449110eac926",
+      "bytes": 84176,
+      "triangles": 1593,
+      "vertices": 851,
+      "materials": 1,
+      "textures": 1,
+      "texture_px": [
+        512,
+        512
+      ],
+      "bounds_gltf_m": {
+        "min": [
+          -0.22932976484298706,
+          0,
+          -0.13794676959514618
+        ],
+        "max": [
+          0.22932976484298706,
+          1.5999999046325684,
+          0.13794676959514618
+        ]
+      },
+      "dimensions_gltf_m": [
+        0.4586595296859741,
+        1.5999999046325684,
+        0.27589353919029236
+      ],
+      "identity_transforms": true,
+      "static": true,
+      "attributes": [
+        "POSITION",
+        "NORMAL",
+        "TEXCOORD_0"
+      ],
+      "finite_geometry": true,
+      "topology": {
+        "nonmanifold_edges_after_position_weld": 51,
+        "degenerate_faces": 0
+      },
+      "source_author": "Quaternius",
+      "source_license": "CC0-1.0",
+      "license": "MIT (project modifications); CC0-1.0 source",
+      "editable_project": "assets/sento_visitors/blend/npc_staff__v01.blend",
+      "blend_sha256": "5496201cbec6d0c71bd343698ff832f2fea51a77cf4136c351b135a21748de02",
+      "quality_render_files": [
+        "npc_staff_front.png",
+        "npc_staff_threequarter.png",
+        "npc_staff_side.png",
+        "npc_staff_back.png",
+        "npc_staff_face.png",
+        "npc_staff_face_threequarter.png"
+      ]
+    },
+    "npc_bath_standing": {
+      "sha256": "0446e67bb93dbb2e0307b77732a490f96d654477d6dbf2bbae39fb753dc162cb",
+      "bytes": 83996,
+      "triangles": 1594,
+      "vertices": 847,
+      "materials": 1,
+      "textures": 1,
+      "texture_px": [
+        512,
+        512
+      ],
+      "bounds_gltf_m": {
+        "min": [
+          -0.22558753192424774,
+          0,
+          -0.13539397716522217
+        ],
+        "max": [
+          0.22558753192424774,
+          1.600000023841858,
+          0.13539397716522217
+        ]
+      },
+      "dimensions_gltf_m": [
+        0.4511750638484955,
+        1.600000023841858,
+        0.27078795433044434
+      ],
+      "identity_transforms": true,
+      "static": true,
+      "attributes": [
+        "POSITION",
+        "NORMAL",
+        "TEXCOORD_0"
+      ],
+      "finite_geometry": true,
+      "topology": {
+        "nonmanifold_edges_after_position_weld": 42,
+        "degenerate_faces": 0
+      },
+      "source_author": "Quaternius",
+      "source_license": "CC0-1.0",
+      "license": "MIT (project modifications); CC0-1.0 source",
+      "editable_project": "assets/sento_visitors/blend/npc_bath_standing__v01.blend",
+      "blend_sha256": "9f6cd6d7d63d73df7a074ed534e2b7b01753260d851204cc705ac9384289fae2",
+      "quality_render_files": [
+        "npc_bath_standing_front.png",
+        "npc_bath_standing_threequarter.png",
+        "npc_bath_standing_side.png",
+        "npc_bath_standing_back.png",
+        "npc_bath_standing_face.png",
+        "npc_bath_standing_face_threequarter.png"
+      ]
+    },
+    "npc_seated": {
+      "sha256": "9580c0fdded4e8dd0a9c2559eeae16af2d2c8f75aa7011d3f009567ac781be57",
+      "bytes": 89504,
+      "triangles": 1794,
+      "vertices": 972,
+      "materials": 1,
+      "textures": 1,
+      "texture_px": [
+        512,
+        512
+      ],
+      "bounds_gltf_m": {
+        "min": [
+          -0.24399366974830627,
+          0,
+          0.025318093597888947
+        ],
+        "max": [
+          0.24399366974830627,
+          1.301317811012268,
+          0.6146818995475769
+        ]
+      },
+      "dimensions_gltf_m": [
+        0.48798733949661255,
+        1.301317811012268,
+        0.589363805949688
+      ],
+      "identity_transforms": true,
+      "static": true,
+      "attributes": [
+        "POSITION",
+        "NORMAL",
+        "TEXCOORD_0"
+      ],
+      "finite_geometry": true,
+      "topology": {
+        "nonmanifold_edges_after_position_weld": 92,
+        "degenerate_faces": 0
+      },
+      "source_author": "Quaternius",
+      "source_license": "CC0-1.0",
+      "license": "MIT (project modifications); CC0-1.0 source",
+      "editable_project": "assets/sento_visitors/blend/npc_seated__v01.blend",
+      "blend_sha256": "3be0a0946207c7b53a2dfb4eb7ed38a80ac52c459984f10bc665a6cea4318049",
+      "quality_render_files": [
+        "npc_seated_front.png",
+        "npc_seated_threequarter.png",
+        "npc_seated_side.png",
+        "npc_seated_back.png",
+        "npc_seated_face.png",
+        "npc_seated_face_threequarter.png",
+        "npc_seated_seat-contact.png"
+      ],
+      "seat_contact": {
+        "anchor_gltf_m": [
+          0,
+          0.45,
+          0.14
+        ],
+        "placement_frame_offset_gltf_m": [
+          0,
+          0,
+          0.32
+        ],
+        "origin_contract": "Existing bench placement frame; floor Y=0; slot TRS unchanged",
+        "lowest_ray_support_y_m": 0.4513040781021118,
+        "contact_rays": [
+          {
+            "gltf_xz_m": [
+              -0.1,
+              0.24
+            ],
+            "support_y_m": 0.4527742564678192
+          },
+          {
+            "gltf_xz_m": [
+              -0.1,
+              0.2
+            ],
+            "support_y_m": 0.4595738649368286
+          },
+          {
+            "gltf_xz_m": [
+              -0.1,
+              0.16
+            ],
+            "support_y_m": 0.47623881697654724
+          },
+          {
+            "gltf_xz_m": [
+              -0.1,
+              0.12
+            ],
+            "support_y_m": 0.4934680163860321
+          },
+          {
+            "gltf_xz_m": [
+              -0.07,
+              0.24
+            ],
+            "support_y_m": 0.45230525732040405
+          },
+          {
+            "gltf_xz_m": [
+              -0.07,
+              0.2
+            ],
+            "support_y_m": 0.4513040781021118
+          },
+          {
+            "gltf_xz_m": [
+              -0.07,
+              0.16
+            ],
+            "support_y_m": 0.4562462270259857
+          },
+          {
+            "gltf_xz_m": [
+              -0.07,
+              0.12
+            ],
+            "support_y_m": 0.4730569124221802
+          },
+          {
+            "gltf_xz_m": [
+              0.07,
+              0.24
+            ],
+            "support_y_m": 0.4522451162338257
+          },
+          {
+            "gltf_xz_m": [
+              0.07,
+              0.2
+            ],
+            "support_y_m": 0.4513237476348877
+          },
+          {
+            "gltf_xz_m": [
+              0.07,
+              0.16
+            ],
+            "support_y_m": 0.45624613761901855
+          },
+          {
+            "gltf_xz_m": [
+              0.07,
+              0.12
+            ],
+            "support_y_m": 0.4730568528175354
+          },
+          {
+            "gltf_xz_m": [
+              0.1,
+              0.24
+            ],
+            "support_y_m": 0.45279210805892944
+          },
+          {
+            "gltf_xz_m": [
+              0.1,
+              0.2
+            ],
+            "support_y_m": 0.4595737159252167
+          },
+          {
+            "gltf_xz_m": [
+              0.1,
+              0.16
+            ],
+            "support_y_m": 0.4762387275695801
+          },
+          {
+            "gltf_xz_m": [
+              0.1,
+              0.12
+            ],
+            "support_y_m": 0.49346742033958435
+          }
+        ],
+        "feet_y_m": 0,
+        "scaled_scene_seat_y_m": 0.405,
+        "scene_scale": 0.9,
+        "scene_yaw_degrees": 90,
+        "actual_support_vertex_y_m": 0.4500199854373932,
+        "support_plate_vertex_audit": {
+          "scope": "Vertices inside the QA plate footprint and the seat-height band; this is separate from the sixteen sampled rays. Not a full triangle/bench collision proof.",
+          "plate_footprint_blender_xy_m": [
+            [
+              -0.31,
+              -0.3333333333333333
+            ],
+            [
+              0.31,
+              0.3333333333333333
+            ]
+          ],
+          "vertical_inspection_band_m": [
+            0.2,
+            0.6
+          ],
+          "examined_export_vertices": 32,
+          "vertices_more_than_5mm_below_top": 0,
+          "lowest_vertex_y_gltf_m": 0.4500199854373932,
+          "maximum_local_overlap_m": 0,
+          "maximum_overlap_at_world_scale_m": 0.0,
+          "acceptance": "Final placed-scene visual review; do not interpret the ray minimum as zero penetration everywhere."
+        },
+        "actual_bench_front_edge": {
+          "edge_z_local_m": 0.3333333333333333,
+          "slab_bottom_y_local_m": 0.37777777777777777,
+          "slab_top_y_local_m": 0.45,
+          "lower_leg_cross_sections": [
+            {
+              "height_y_gltf_m": 0.37777777777777777,
+              "lower_leg_rear_z_gltf_m": 0.3811037838459015,
+              "front_edge_clearance_m": 0.047770450512568174
+            },
+            {
+              "height_y_gltf_m": 0.4,
+              "lower_leg_rear_z_gltf_m": 0.3812330365180969,
+              "front_edge_clearance_m": 0.04789970318476361
+            },
+            {
+              "height_y_gltf_m": 0.42,
+              "lower_leg_rear_z_gltf_m": 0.3824697732925415,
+              "front_edge_clearance_m": 0.04913643995920819
+            },
+            {
+              "height_y_gltf_m": 0.43,
+              "lower_leg_rear_z_gltf_m": 0.38573145866394043,
+              "front_edge_clearance_m": 0.052398125330607115
+            },
+            {
+              "height_y_gltf_m": 0.435,
+              "lower_leg_rear_z_gltf_m": 0.3902384042739868,
+              "front_edge_clearance_m": 0.0569050709406535
+            }
+          ],
+          "minimum_clearance_m": 0.047770450512568174,
+          "scope": "Cross sections of the exact near GLB at the actual seat-board thickness; full placed-world triangle and visual checks are separate."
+        },
+        "full_triangle_board_interior_audit": {
+          "penetrating_triangles": 0,
+          "board_box_blender_zup_m": [
+            [
+              -0.4,
+              -0.3333333333333333,
+              0.3777877777777778
+            ],
+            [
+              0.4,
+              0.3333333333333333,
+              0.44999
+            ]
+          ],
+          "scope": "Six-plane clipping of every reimported near triangle against the continuous conservative board interior; actual three-board world validation remains separate."
+        }
+      }
+    }
+  },
+  "scope": "Exact near GLBs, original source bytes, reopened editable projects and offline renders. No full playthrough or production publication."
+}

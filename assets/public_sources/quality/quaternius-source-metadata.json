@@ -1,0 +1,25 @@
+{
+  "scope": "Selected original Quaternius free Standard files; runtime derivatives audited separately. Original source bytes preserved.",
+  "verified_file_count": 20,
+  "known_png_ancillary_metadata": [
+    {
+      "file": "quaternius_universal_base/standard/Base Characters/Godot - UE/T_Superhero_Male_Roughness.png",
+      "sha256": "c70dabf48574cda55644d556beae1ee7cf1bdcf68a50d259d20f2f2358f27991",
+      "chunk": "eXIf",
+      "bytes": 54,
+      "ifd_tags": [
+        {
+          "tag": 282,
+          "type": 5,
+          "count": 1
+        },
+        {
+          "tag": 283,
+          "type": 5,
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "scope_limit": "Inspected source URI and tested private path patterns; not a general binary security guarantee."
+}

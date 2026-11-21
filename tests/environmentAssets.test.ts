@@ -52,6 +52,40 @@ describe("complete environment export", () => {
     expect(report.clearances).toHaveLength(11);
     for (const opening of report.clearances) expect(opening.intersecting_triangles, opening.id).toBe(0);
     expect(report.npc_slots).toHaveLength(7);
-    expect(report.degenerate_faces).toBe(0);
+    expect(report.seating_board_clearances).toHaveLength(5);
+    for (const seat of report.seating_board_clearances) {
+      expect(seat.intersecting_npc_triangles, seat.slot).toBe(0);
+    }
+    expect(report.all_seating_boards_clear).toBe(true);
+    expect(report.raw_degenerate_npc_triangles).toBe(0);
+    // The old bmesh area calculation missed 16 zero-area bench triangles.
+    // NPC replacement preserves architecture bytes and does not add any.
+    expect(report.raw_degenerate_architecture_triangles).toBe(16);
+    expect(report.degenerate_faces).toBe(report.raw_degenerate_architecture_triangles);
+  });
+
+  it("uses the independent adults in all seven embedded NPC slots", () => {
+    const bytes = read("public/models/sento_environment.glb");
+    const world = JSON.parse(bytes.subarray(20, 20 + bytes.readUInt32LE(12)).toString());
+    const slots = world.nodes.filter((node: { name?: string }) => node.name?.startsWith("npc_slot_"));
+    expect(slots).toHaveLength(7);
+    const roles = new Set<string>();
+    for (const slot of slots) {
+      const role = slot.extras.npc_role;
+      roles.add(role);
+      expect(slot.extras.source_author, slot.name).toBe("Quaternius");
+      expect(slot.extras.source_sha256, slot.name).toBe(sha(read(`public/models/${role}.glb`)));
+      expect(slot.extras.source_glb, slot.name).toBe(`public/models/${role}.glb`);
+      const visit = (index: number): void => {
+        const node = world.nodes[index];
+        if (node.mesh !== undefined) {
+          expect(node.extras.source_author, node.name).toBe("Quaternius");
+          expect(node.extras.source_sha256, node.name).toBe(slot.extras.source_sha256);
+        }
+        for (const child of node.children ?? []) visit(child);
+      };
+      for (const child of slot.children ?? []) visit(child);
+    }
+    expect([...roles].sort()).toEqual(["npc_bath_standing", "npc_seated", "npc_staff"]);
   });
 });

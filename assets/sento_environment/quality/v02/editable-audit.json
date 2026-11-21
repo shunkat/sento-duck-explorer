@@ -1,0 +1,2590 @@
+{
+  "binary_metadata_audit": {
+    "decompressed_bytes": 8591105,
+    "redacted_match_counts": {
+      "personal_absolute_paths": 0,
+      "private_candidate_paths": 0,
+      "file_uris": 0
+    }
+  },
+  "source_glb_sha256": "39cfd9954b2de71807ecf3e860063f0569a9bd2611f322b361c10232f963950e",
+  "blend_sha256": "4f635fd15c629889f19b0df34a4c716bf02d5b0cdd5a9230316b18bad98fddd6",
+  "original_v01_unchanged": true,
+  "original_v01_sha256": "d1573388b260cf12224b23f688bd01b58bf2e86f2d0f953abe2443e33c2409b4",
+  "reopened_meshes_and_hierarchy_identical": true,
+  "packed_images_reopened_identical": true,
+  "objects": {
+    "sento_environment": {
+      "type": "EMPTY",
+      "parent": null,
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "layout_sha256": "8bee95aa4ad7e753f521c4327e7586d3df4717e6c1aa9072790a0c40ecc52ab5",
+        "asset_id": "sento_environment",
+        "production_method": "Direct Blender environment; unchanged architecture; independently sourced public NPC geometry; see model provenance and asset records"
+      }
+    },
+    "environment_ceiling": {
+      "type": "EMPTY",
+      "parent": "sento_environment",
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {}
+    },
+    "environment_ceiling__ceramic_cream": {
+      "type": "MESH",
+      "parent": "environment_ceiling",
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "placement_id": "additional_narrow_hole_lid_lintel"
+      },
+      "vertices": 48,
+      "triangles": 24,
+      "polygon_degenerate_faces": 0,
+      "legacy_bmesh_degenerate_faces": 0,
+      "positions_sha256": "18c646d2ec4c1a0796b568763c612c9cae9cad6a75be98c59108d1362f05aaef",
+      "materials": [
+        "ceramic_cream"
+      ]
+    },
+    "environment_ceiling__warm_plaster": {
+      "type": "MESH",
+      "parent": "environment_ceiling",
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "placement_id": "additional_ceilings"
+      },
+      "vertices": 168,
+      "triangles": 84,
+      "polygon_degenerate_faces": 0,
+      "legacy_bmesh_degenerate_faces": 0,
+      "positions_sha256": "98ce978693d25017952a489e7de1f47f93151a5e8be4f9131017e8a309b1176f",
+      "materials": [
+        "warm_plaster"
+      ]
+    },
+    "environment_static": {
+      "type": "EMPTY",
+      "parent": "sento_environment",
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {}
+    },
+    "environment_static__bath_floor": {
+      "type": "MESH",
+      "parent": "environment_static",
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "placement_id": "zones_03"
+      },
+      "vertices": 144,
+      "triangles": 72,
+      "polygon_degenerate_faces": 0,
+      "legacy_bmesh_degenerate_faces": 0,
+      "positions_sha256": "39377be4c939185f2103a010a1c71431f2a1e4e3f6e02ff8cc68db0f152a67f6",
+      "materials": [
+        "bath_floor"
+      ]
+    },
+    "environment_static__brushed_metal": {
+      "type": "MESH",
+      "parent": "environment_static",
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "placement_id": "fixtures_07"
+      },
+      "vertices": 992,
+      "triangles": 596,
+      "polygon_degenerate_faces": 0,
+      "legacy_bmesh_degenerate_faces": 0,
+      "positions_sha256": "c0307de9e83c347aac5ef19ba9609fcfe29d8e78792b96bfb643216f8e9f4154",
+      "materials": [
+        "brushed_metal"
+      ]
+    },
+    "environment_static__cedar": {
+      "type": "MESH",
+      "parent": "environment_static",
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "placement_id": "fixtures_16"
+      },
+      "vertices": 2909,
+      "triangles": 1736,
+      "polygon_degenerate_faces": 16,
+      "legacy_bmesh_degenerate_faces": 0,
+      "positions_sha256": "d9cdd1ffe0da0475c365f909038a71592e4505557b31e665b7dbe0312bb6cea9",
+      "materials": [
+        "cedar"
+      ]
+    },
+    "environment_static__ceramic_cream": {
+      "type": "MESH",
+      "parent": "environment_static",
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "placement_id": "fixtures_09"
+      },
+      "vertices": 792,
+      "triangles": 636,
+      "polygon_degenerate_faces": 0,
+      "legacy_bmesh_degenerate_faces": 0,
+      "positions_sha256": "e989571a7ee2c1ef074a7424eb61402349ed758fb442c502ed023eefba9a3b39",
+      "materials": [
+        "ceramic_cream"
+      ]
+    },
+    "environment_static__ceramic_teal": {
+      "type": "MESH",
+      "parent": "environment_static",
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "placement_id": "fixtures_09"
+      },
+      "vertices": 912,
+      "triangles": 536,
+      "polygon_degenerate_faces": 0,
+      "legacy_bmesh_degenerate_faces": 0,
+      "positions_sha256": "7176cb1d58636d1690e0290d60161068e23ffbb82fe099df40762ccea2f13639",
+      "materials": [
+        "ceramic_teal"
+      ]
+    },
+    "environment_static__dark_cedar": {
+      "type": "MESH",
+      "parent": "environment_static",
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "placement_id": "npcs_00"
+      },
+      "vertices": 1168,
+      "triangles": 660,
+      "polygon_degenerate_faces": 0,
+      "legacy_bmesh_degenerate_faces": 0,
+      "positions_sha256": "2b6058a0a4e2957af87b2e71db903ba8745ca4b83961ec795d1679dba9aa3004",
+      "materials": [
+        "dark_cedar"
+      ]
+    },
+    "environment_static__garden_stone": {
+      "type": "MESH",
+      "parent": "environment_static",
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "placement_id": "zones_07"
+      },
+      "vertices": 1553,
+      "triangles": 1056,
+      "polygon_degenerate_faces": 0,
+      "legacy_bmesh_degenerate_faces": 0,
+      "positions_sha256": "50111aed2d7d94efe2f533e7df177f6087ce176f05d5e57f53f08db2c2b63cac",
+      "materials": [
+        "garden_stone"
+      ]
+    },
+    "environment_static__mirror_glass": {
+      "type": "MESH",
+      "parent": "environment_static",
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "placement_id": "decor_11"
+      },
+      "vertices": 24,
+      "triangles": 12,
+      "polygon_degenerate_faces": 0,
+      "legacy_bmesh_degenerate_faces": 0,
+      "positions_sha256": "ecf5af3122424bb52d0db2634e966c7478f3ebe8ce6108593ffacdfd068ccbc2",
+      "materials": [
+        "mirror_glass"
+      ]
+    },
+    "environment_static__sage_foliage": {
+      "type": "MESH",
+      "parent": "environment_static",
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "placement_id": "fixtures_30"
+      },
+      "vertices": 598,
+      "triangles": 296,
+      "polygon_degenerate_faces": 0,
+      "legacy_bmesh_degenerate_faces": 0,
+      "positions_sha256": "4add9fe03e7d4c54fb8d5d696a156e466053ce1bc1e0079b49ceee45edf725e6",
+      "materials": [
+        "sage_foliage"
+      ]
+    },
+    "environment_static__straw": {
+      "type": "MESH",
+      "parent": "environment_static",
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "placement_id": "decor_04"
+      },
+      "vertices": 76,
+      "triangles": 56,
+      "polygon_degenerate_faces": 0,
+      "legacy_bmesh_degenerate_faces": 0,
+      "positions_sha256": "eb4b928a5ecbf9eb74766216e49e17c4a3b172c9817cd8910b2ed3dccbc97586",
+      "materials": [
+        "straw"
+      ]
+    },
+    "environment_static__warm_plaster": {
+      "type": "MESH",
+      "parent": "environment_static",
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "placement_id": "fixtures_07"
+      },
+      "vertices": 432,
+      "triangles": 236,
+      "polygon_degenerate_faces": 0,
+      "legacy_bmesh_degenerate_faces": 0,
+      "positions_sha256": "daa99c63b62a1f3eb3f5b354c754821dfdb41488472f332553654111350ef52c",
+      "materials": [
+        "warm_plaster"
+      ]
+    },
+    "npc_slot_0": {
+      "type": "EMPTY",
+      "parent": "environment_static",
+      "matrix": [
+        -1.2092296231003274e-07,
+        -0.9000000953674316,
+        0.0,
+        14.300000190734863,
+        0.9000000953674316,
+        -1.2092296231003274e-07,
+        0.0,
+        -0.8500000238418579,
+        0.0,
+        0.0,
+        0.8999999761581421,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "seat_fit_vertical_leg_extension_m": 0.055796128511428844,
+        "placement_frame_offset_gltf": [
+          0.0,
+          0.0,
+          0.32
+        ],
+        "origin_contract": "Existing bench placement frame; floor Y=0; slot TRS unchanged",
+        "seat_surface_triangle_clip_repair": {
+          "faces_before": 20,
+          "vertices_lifted": 6,
+          "maximum_lift_m": 0.010917320508956885,
+          "support_y_m": 0.45002
+        },
+        "source_author": "Quaternius",
+        "source_pack": "Universal Base Characters - Free Standard",
+        "source_license": "CC0-1.0",
+        "license": "MIT (project modifications); CC0-1.0 source",
+        "source_url": "https://quaternius.com/packs/universalbasecharacters",
+        "source_file": "Superhero_Male_FullBody.gltf",
+        "seat_anchor_gltf": [
+          0.0,
+          0.45,
+          0.14
+        ],
+        "modifications": "Independent mature sento adult; relaxed shoulders and muscles, enlarged head, source hairstyle, static pose, featureless toy surface, protected reduction and single color atlas",
+        "npc_role": "npc_seated",
+        "source_glb": "public/models/npc_seated.glb",
+        "source_sha256": "9580c0fdded4e8dd0a9c2559eeae16af2d2c8f75aa7011d3f009567ac781be57"
+      }
+    },
+    "npc_high_0": {
+      "type": "EMPTY",
+      "parent": "npc_slot_0",
+      "matrix": [
+        -1.2092296231003274e-07,
+        -0.9000000953674316,
+        0.0,
+        14.300000190734863,
+        0.9000000953674316,
+        -1.2092296231003274e-07,
+        0.0,
+        -0.8500000238418579,
+        0.0,
+        0.0,
+        0.8999999761581421,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {}
+    },
+    "npc_seated": {
+      "type": "EMPTY",
+      "parent": "npc_high_0",
+      "matrix": [
+        -1.2092296231003274e-07,
+        -0.9000000953674316,
+        0.0,
+        14.300000190734863,
+        0.9000000953674316,
+        -1.2092296231003274e-07,
+        0.0,
+        -0.8500000238418579,
+        0.0,
+        0.0,
+        0.8999999761581421,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "seat_fit_vertical_leg_extension_m": 0.055796128511428844,
+        "placement_frame_offset_gltf": [
+          0.0,
+          0.0,
+          0.32
+        ],
+        "origin_contract": "Existing bench placement frame; floor Y=0; slot TRS unchanged",
+        "seat_surface_triangle_clip_repair": {
+          "faces_before": 20,
+          "vertices_lifted": 6,
+          "maximum_lift_m": 0.010917320508956885,
+          "support_y_m": 0.45002
+        },
+        "source_author": "Quaternius",
+        "source_pack": "Universal Base Characters - Free Standard",
+        "source_license": "CC0-1.0",
+        "license": "MIT (project modifications); CC0-1.0 source",
+        "source_url": "https://quaternius.com/packs/universalbasecharacters",
+        "source_file": "Superhero_Male_FullBody.gltf",
+        "seat_anchor_gltf": [
+          0.0,
+          0.45,
+          0.14
+        ],
+        "modifications": "Independent mature sento adult; relaxed shoulders and muscles, enlarged head, source hairstyle, static pose, featureless toy surface, protected reduction and single color atlas",
+        "npc_role": "npc_seated",
+        "source_glb": "public/models/npc_seated.glb",
+        "source_sha256": "9580c0fdded4e8dd0a9c2559eeae16af2d2c8f75aa7011d3f009567ac781be57"
+      }
+    },
+    "npc_seated_body": {
+      "type": "MESH",
+      "parent": "npc_seated",
+      "matrix": [
+        -1.2092296231003274e-07,
+        -0.9000000953674316,
+        0.0,
+        14.300000190734863,
+        0.9000000953674316,
+        -1.2092296231003274e-07,
+        0.0,
+        -0.8500000238418579,
+        0.0,
+        0.0,
+        0.8999999761581421,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "seat_fit_vertical_leg_extension_m": 0.055796128511428844,
+        "placement_frame_offset_gltf": [
+          0.0,
+          0.0,
+          0.32
+        ],
+        "origin_contract": "Existing bench placement frame; floor Y=0; slot TRS unchanged",
+        "seat_surface_triangle_clip_repair": {
+          "faces_before": 20,
+          "vertices_lifted": 6,
+          "maximum_lift_m": 0.010917320508956885,
+          "support_y_m": 0.45002
+        },
+        "source_author": "Quaternius",
+        "source_pack": "Universal Base Characters - Free Standard",
+        "source_license": "CC0-1.0",
+        "license": "MIT (project modifications); CC0-1.0 source",
+        "source_url": "https://quaternius.com/packs/universalbasecharacters",
+        "source_file": "Superhero_Male_FullBody.gltf",
+        "seat_anchor_gltf": [
+          0.0,
+          0.45,
+          0.14
+        ],
+        "modifications": "Independent mature sento adult; relaxed shoulders and muscles, enlarged head, source hairstyle, static pose, featureless toy surface, protected reduction and single color atlas",
+        "npc_role": "npc_seated",
+        "source_glb": "public/models/npc_seated.glb",
+        "source_sha256": "9580c0fdded4e8dd0a9c2559eeae16af2d2c8f75aa7011d3f009567ac781be57",
+        "placement_id": "npcs_00"
+      },
+      "vertices": 972,
+      "triangles": 1794,
+      "polygon_degenerate_faces": 0,
+      "legacy_bmesh_degenerate_faces": 0,
+      "positions_sha256": "c3d07f93c3aeb946fa4177637ca33f04d6d32f8dc8223a57682f8f8634e9d482",
+      "materials": [
+        "npc_seated_single_atlas"
+      ]
+    },
+    "seat_anchor": {
+      "type": "EMPTY",
+      "parent": "npc_seated",
+      "matrix": [
+        -1.2092296231003274e-07,
+        -0.9000000953674316,
+        0.0,
+        14.13800048828125,
+        0.9000000953674316,
+        -1.2092296231003274e-07,
+        0.0,
+        -0.8500000238418579,
+        0.0,
+        0.0,
+        0.8999999761581421,
+        0.4049999713897705,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "role": "seat surface center",
+        "seat_height_m": 0.45
+      }
+    },
+    "npc_slot_1": {
+      "type": "EMPTY",
+      "parent": "environment_static",
+      "matrix": [
+        -1.2092296231003274e-07,
+        -0.9000000953674316,
+        0.0,
+        14.300000190734863,
+        0.9000000953674316,
+        -1.2092296231003274e-07,
+        0.0,
+        -3.049999952316284,
+        0.0,
+        0.0,
+        0.8999999761581421,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "seat_fit_vertical_leg_extension_m": 0.055796128511428844,
+        "placement_frame_offset_gltf": [
+          0.0,
+          0.0,
+          0.32
+        ],
+        "origin_contract": "Existing bench placement frame; floor Y=0; slot TRS unchanged",
+        "seat_surface_triangle_clip_repair": {
+          "faces_before": 20,
+          "vertices_lifted": 6,
+          "maximum_lift_m": 0.010917320508956885,
+          "support_y_m": 0.45002
+        },
+        "source_author": "Quaternius",
+        "source_pack": "Universal Base Characters - Free Standard",
+        "source_license": "CC0-1.0",
+        "license": "MIT (project modifications); CC0-1.0 source",
+        "source_url": "https://quaternius.com/packs/universalbasecharacters",
+        "source_file": "Superhero_Male_FullBody.gltf",
+        "seat_anchor_gltf": [
+          0.0,
+          0.45,
+          0.14
+        ],
+        "modifications": "Independent mature sento adult; relaxed shoulders and muscles, enlarged head, source hairstyle, static pose, featureless toy surface, protected reduction and single color atlas",
+        "npc_role": "npc_seated",
+        "source_glb": "public/models/npc_seated.glb",
+        "source_sha256": "9580c0fdded4e8dd0a9c2559eeae16af2d2c8f75aa7011d3f009567ac781be57"
+      }
+    },
+    "npc_high_1": {
+      "type": "EMPTY",
+      "parent": "npc_slot_1",
+      "matrix": [
+        -1.2092296231003274e-07,
+        -0.9000000953674316,
+        0.0,
+        14.300000190734863,
+        0.9000000953674316,
+        -1.2092296231003274e-07,
+        0.0,
+        -3.049999952316284,
+        0.0,
+        0.0,
+        0.8999999761581421,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {}
+    },
+    "npc_seated.001": {
+      "type": "EMPTY",
+      "parent": "npc_high_1",
+      "matrix": [
+        -1.2092296231003274e-07,
+        -0.9000000953674316,
+        0.0,
+        14.300000190734863,
+        0.9000000953674316,
+        -1.2092296231003274e-07,
+        0.0,
+        -3.049999952316284,
+        0.0,
+        0.0,
+        0.8999999761581421,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "seat_fit_vertical_leg_extension_m": 0.055796128511428844,
+        "placement_frame_offset_gltf": [
+          0.0,
+          0.0,
+          0.32
+        ],
+        "origin_contract": "Existing bench placement frame; floor Y=0; slot TRS unchanged",
+        "seat_surface_triangle_clip_repair": {
+          "faces_before": 20,
+          "vertices_lifted": 6,
+          "maximum_lift_m": 0.010917320508956885,
+          "support_y_m": 0.45002
+        },
+        "source_author": "Quaternius",
+        "source_pack": "Universal Base Characters - Free Standard",
+        "source_license": "CC0-1.0",
+        "license": "MIT (project modifications); CC0-1.0 source",
+        "source_url": "https://quaternius.com/packs/universalbasecharacters",
+        "source_file": "Superhero_Male_FullBody.gltf",
+        "seat_anchor_gltf": [
+          0.0,
+          0.45,
+          0.14
+        ],
+        "modifications": "Independent mature sento adult; relaxed shoulders and muscles, enlarged head, source hairstyle, static pose, featureless toy surface, protected reduction and single color atlas",
+        "npc_role": "npc_seated",
+        "source_glb": "public/models/npc_seated.glb",
+        "source_sha256": "9580c0fdded4e8dd0a9c2559eeae16af2d2c8f75aa7011d3f009567ac781be57"
+      }
+    },
+    "npc_seated_body.001": {
+      "type": "MESH",
+      "parent": "npc_seated.001",
+      "matrix": [
+        -1.2092296231003274e-07,
+        -0.9000000953674316,
+        0.0,
+        14.300000190734863,
+        0.9000000953674316,
+        -1.2092296231003274e-07,
+        0.0,
+        -3.049999952316284,
+        0.0,
+        0.0,
+        0.8999999761581421,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "seat_fit_vertical_leg_extension_m": 0.055796128511428844,
+        "placement_frame_offset_gltf": [
+          0.0,
+          0.0,
+          0.32
+        ],
+        "origin_contract": "Existing bench placement frame; floor Y=0; slot TRS unchanged",
+        "seat_surface_triangle_clip_repair": {
+          "faces_before": 20,
+          "vertices_lifted": 6,
+          "maximum_lift_m": 0.010917320508956885,
+          "support_y_m": 0.45002
+        },
+        "source_author": "Quaternius",
+        "source_pack": "Universal Base Characters - Free Standard",
+        "source_license": "CC0-1.0",
+        "license": "MIT (project modifications); CC0-1.0 source",
+        "source_url": "https://quaternius.com/packs/universalbasecharacters",
+        "source_file": "Superhero_Male_FullBody.gltf",
+        "seat_anchor_gltf": [
+          0.0,
+          0.45,
+          0.14
+        ],
+        "modifications": "Independent mature sento adult; relaxed shoulders and muscles, enlarged head, source hairstyle, static pose, featureless toy surface, protected reduction and single color atlas",
+        "npc_role": "npc_seated",
+        "source_glb": "public/models/npc_seated.glb",
+        "source_sha256": "9580c0fdded4e8dd0a9c2559eeae16af2d2c8f75aa7011d3f009567ac781be57",
+        "placement_id": "npcs_01"
+      },
+      "vertices": 972,
+      "triangles": 1794,
+      "polygon_degenerate_faces": 0,
+      "legacy_bmesh_degenerate_faces": 0,
+      "positions_sha256": "c3d07f93c3aeb946fa4177637ca33f04d6d32f8dc8223a57682f8f8634e9d482",
+      "materials": [
+        "npc_seated_single_atlas"
+      ]
+    },
+    "seat_anchor.001": {
+      "type": "EMPTY",
+      "parent": "npc_seated.001",
+      "matrix": [
+        -1.2092296231003274e-07,
+        -0.9000000953674316,
+        0.0,
+        14.13800048828125,
+        0.9000000953674316,
+        -1.2092296231003274e-07,
+        0.0,
+        -3.049999952316284,
+        0.0,
+        0.0,
+        0.8999999761581421,
+        0.4049999713897705,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "seat_fit_vertical_leg_extension_m": 0.055796128511428844,
+        "placement_frame_offset_gltf": [
+          0.0,
+          0.0,
+          0.32
+        ],
+        "origin_contract": "Existing bench placement frame; floor Y=0; slot TRS unchanged",
+        "seat_surface_triangle_clip_repair": {
+          "faces_before": 20,
+          "vertices_lifted": 6,
+          "maximum_lift_m": 0.010917320508956885,
+          "support_y_m": 0.45002
+        },
+        "source_author": "Quaternius",
+        "source_pack": "Universal Base Characters - Free Standard",
+        "source_license": "CC0-1.0",
+        "license": "MIT (project modifications); CC0-1.0 source",
+        "source_url": "https://quaternius.com/packs/universalbasecharacters",
+        "source_file": "Superhero_Male_FullBody.gltf",
+        "seat_anchor_gltf": [
+          0.0,
+          0.45,
+          0.14
+        ],
+        "modifications": "Independent mature sento adult; relaxed shoulders and muscles, enlarged head, source hairstyle, static pose, featureless toy surface, protected reduction and single color atlas",
+        "npc_role": "npc_seated",
+        "source_glb": "public/models/npc_seated.glb",
+        "source_sha256": "9580c0fdded4e8dd0a9c2559eeae16af2d2c8f75aa7011d3f009567ac781be57"
+      }
+    },
+    "npc_slot_2": {
+      "type": "EMPTY",
+      "parent": "environment_static",
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        15.699999809265137,
+        0.0,
+        1.0,
+        0.0,
+        -0.30000001192092896,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "source_author": "Quaternius",
+        "source_pack": "Universal Base Characters - Free Standard",
+        "source_license": "CC0-1.0",
+        "license": "MIT (project modifications); CC0-1.0 source",
+        "source_url": "https://quaternius.com/packs/universalbasecharacters",
+        "source_file": "Superhero_Male_FullBody.gltf",
+        "modifications": "Independent mature sento adult; relaxed shoulders and muscles, enlarged head, source hairstyle, static pose, featureless toy surface, protected reduction and single color atlas",
+        "npc_role": "npc_bath_standing",
+        "source_glb": "public/models/npc_bath_standing.glb",
+        "source_sha256": "0446e67bb93dbb2e0307b77732a490f96d654477d6dbf2bbae39fb753dc162cb"
+      }
+    },
+    "npc_high_2": {
+      "type": "EMPTY",
+      "parent": "npc_slot_2",
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        15.699999809265137,
+        0.0,
+        1.0,
+        0.0,
+        -0.30000001192092896,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {}
+    },
+    "npc_bath_standing": {
+      "type": "EMPTY",
+      "parent": "npc_high_2",
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        15.699999809265137,
+        0.0,
+        1.0,
+        0.0,
+        -0.30000001192092896,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "source_author": "Quaternius",
+        "source_pack": "Universal Base Characters - Free Standard",
+        "source_license": "CC0-1.0",
+        "license": "MIT (project modifications); CC0-1.0 source",
+        "source_url": "https://quaternius.com/packs/universalbasecharacters",
+        "source_file": "Superhero_Male_FullBody.gltf",
+        "modifications": "Independent mature sento adult; relaxed shoulders and muscles, enlarged head, source hairstyle, static pose, featureless toy surface, protected reduction and single color atlas",
+        "npc_role": "npc_bath_standing",
+        "source_glb": "public/models/npc_bath_standing.glb",
+        "source_sha256": "0446e67bb93dbb2e0307b77732a490f96d654477d6dbf2bbae39fb753dc162cb"
+      }
+    },
+    "npc_bath_standing_body": {
+      "type": "MESH",
+      "parent": "npc_bath_standing",
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        15.699999809265137,
+        0.0,
+        1.0,
+        0.0,
+        -0.30000001192092896,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "source_author": "Quaternius",
+        "source_pack": "Universal Base Characters - Free Standard",
+        "source_license": "CC0-1.0",
+        "license": "MIT (project modifications); CC0-1.0 source",
+        "source_url": "https://quaternius.com/packs/universalbasecharacters",
+        "source_file": "Superhero_Male_FullBody.gltf",
+        "modifications": "Independent mature sento adult; relaxed shoulders and muscles, enlarged head, source hairstyle, static pose, featureless toy surface, protected reduction and single color atlas",
+        "npc_role": "npc_bath_standing",
+        "source_glb": "public/models/npc_bath_standing.glb",
+        "source_sha256": "0446e67bb93dbb2e0307b77732a490f96d654477d6dbf2bbae39fb753dc162cb",
+        "placement_id": "npcs_02"
+      },
+      "vertices": 847,
+      "triangles": 1594,
+      "polygon_degenerate_faces": 0,
+      "legacy_bmesh_degenerate_faces": 0,
+      "positions_sha256": "fe02d4c16f71ef83c049dacb8710fccd02b25b71347b8a4a9a360b1050df5377",
+      "materials": [
+        "npc_bath_standing_single_atlas"
+      ]
+    },
+    "npc_slot_3": {
+      "type": "EMPTY",
+      "parent": "environment_static",
+      "matrix": [
+        -1.2092296231003274e-07,
+        -0.9000000953674316,
+        0.0,
+        15.699999809265137,
+        0.9000000953674316,
+        -1.2092296231003274e-07,
+        0.0,
+        -2.5,
+        0.0,
+        0.0,
+        0.8999999761581421,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "seat_fit_vertical_leg_extension_m": 0.055796128511428844,
+        "placement_frame_offset_gltf": [
+          0.0,
+          0.0,
+          0.32
+        ],
+        "origin_contract": "Existing bench placement frame; floor Y=0; slot TRS unchanged",
+        "seat_surface_triangle_clip_repair": {
+          "faces_before": 20,
+          "vertices_lifted": 6,
+          "maximum_lift_m": 0.010917320508956885,
+          "support_y_m": 0.45002
+        },
+        "source_author": "Quaternius",
+        "source_pack": "Universal Base Characters - Free Standard",
+        "source_license": "CC0-1.0",
+        "license": "MIT (project modifications); CC0-1.0 source",
+        "source_url": "https://quaternius.com/packs/universalbasecharacters",
+        "source_file": "Superhero_Male_FullBody.gltf",
+        "seat_anchor_gltf": [
+          0.0,
+          0.45,
+          0.14
+        ],
+        "modifications": "Independent mature sento adult; relaxed shoulders and muscles, enlarged head, source hairstyle, static pose, featureless toy surface, protected reduction and single color atlas",
+        "npc_role": "npc_seated",
+        "source_glb": "public/models/npc_seated.glb",
+        "source_sha256": "9580c0fdded4e8dd0a9c2559eeae16af2d2c8f75aa7011d3f009567ac781be57"
+      }
+    },
+    "npc_high_3": {
+      "type": "EMPTY",
+      "parent": "npc_slot_3",
+      "matrix": [
+        -1.2092296231003274e-07,
+        -0.9000000953674316,
+        0.0,
+        15.699999809265137,
+        0.9000000953674316,
+        -1.2092296231003274e-07,
+        0.0,
+        -2.5,
+        0.0,
+        0.0,
+        0.8999999761581421,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {}
+    },
+    "npc_seated.002": {
+      "type": "EMPTY",
+      "parent": "npc_high_3",
+      "matrix": [
+        -1.2092296231003274e-07,
+        -0.9000000953674316,
+        0.0,
+        15.699999809265137,
+        0.9000000953674316,
+        -1.2092296231003274e-07,
+        0.0,
+        -2.5,
+        0.0,
+        0.0,
+        0.8999999761581421,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "seat_fit_vertical_leg_extension_m": 0.055796128511428844,
+        "placement_frame_offset_gltf": [
+          0.0,
+          0.0,
+          0.32
+        ],
+        "origin_contract": "Existing bench placement frame; floor Y=0; slot TRS unchanged",
+        "seat_surface_triangle_clip_repair": {
+          "faces_before": 20,
+          "vertices_lifted": 6,
+          "maximum_lift_m": 0.010917320508956885,
+          "support_y_m": 0.45002
+        },
+        "source_author": "Quaternius",
+        "source_pack": "Universal Base Characters - Free Standard",
+        "source_license": "CC0-1.0",
+        "license": "MIT (project modifications); CC0-1.0 source",
+        "source_url": "https://quaternius.com/packs/universalbasecharacters",
+        "source_file": "Superhero_Male_FullBody.gltf",
+        "seat_anchor_gltf": [
+          0.0,
+          0.45,
+          0.14
+        ],
+        "modifications": "Independent mature sento adult; relaxed shoulders and muscles, enlarged head, source hairstyle, static pose, featureless toy surface, protected reduction and single color atlas",
+        "npc_role": "npc_seated",
+        "source_glb": "public/models/npc_seated.glb",
+        "source_sha256": "9580c0fdded4e8dd0a9c2559eeae16af2d2c8f75aa7011d3f009567ac781be57"
+      }
+    },
+    "npc_seated_body.002": {
+      "type": "MESH",
+      "parent": "npc_seated.002",
+      "matrix": [
+        -1.2092296231003274e-07,
+        -0.9000000953674316,
+        0.0,
+        15.699999809265137,
+        0.9000000953674316,
+        -1.2092296231003274e-07,
+        0.0,
+        -2.5,
+        0.0,
+        0.0,
+        0.8999999761581421,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "seat_fit_vertical_leg_extension_m": 0.055796128511428844,
+        "placement_frame_offset_gltf": [
+          0.0,
+          0.0,
+          0.32
+        ],
+        "origin_contract": "Existing bench placement frame; floor Y=0; slot TRS unchanged",
+        "seat_surface_triangle_clip_repair": {
+          "faces_before": 20,
+          "vertices_lifted": 6,
+          "maximum_lift_m": 0.010917320508956885,
+          "support_y_m": 0.45002
+        },
+        "source_author": "Quaternius",
+        "source_pack": "Universal Base Characters - Free Standard",
+        "source_license": "CC0-1.0",
+        "license": "MIT (project modifications); CC0-1.0 source",
+        "source_url": "https://quaternius.com/packs/universalbasecharacters",
+        "source_file": "Superhero_Male_FullBody.gltf",
+        "seat_anchor_gltf": [
+          0.0,
+          0.45,
+          0.14
+        ],
+        "modifications": "Independent mature sento adult; relaxed shoulders and muscles, enlarged head, source hairstyle, static pose, featureless toy surface, protected reduction and single color atlas",
+        "npc_role": "npc_seated",
+        "source_glb": "public/models/npc_seated.glb",
+        "source_sha256": "9580c0fdded4e8dd0a9c2559eeae16af2d2c8f75aa7011d3f009567ac781be57",
+        "placement_id": "npcs_03"
+      },
+      "vertices": 972,
+      "triangles": 1794,
+      "polygon_degenerate_faces": 0,
+      "legacy_bmesh_degenerate_faces": 0,
+      "positions_sha256": "c3d07f93c3aeb946fa4177637ca33f04d6d32f8dc8223a57682f8f8634e9d482",
+      "materials": [
+        "npc_seated_single_atlas"
+      ]
+    },
+    "seat_anchor.002": {
+      "type": "EMPTY",
+      "parent": "npc_seated.002",
+      "matrix": [
+        -1.2092296231003274e-07,
+        -0.9000000953674316,
+        0.0,
+        15.53800106048584,
+        0.9000000953674316,
+        -1.2092296231003274e-07,
+        0.0,
+        -2.5,
+        0.0,
+        0.0,
+        0.8999999761581421,
+        0.4049999713897705,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "seat_fit_vertical_leg_extension_m": 0.055796128511428844,
+        "placement_frame_offset_gltf": [
+          0.0,
+          0.0,
+          0.32
+        ],
+        "origin_contract": "Existing bench placement frame; floor Y=0; slot TRS unchanged",
+        "seat_surface_triangle_clip_repair": {
+          "faces_before": 20,
+          "vertices_lifted": 6,
+          "maximum_lift_m": 0.010917320508956885,
+          "support_y_m": 0.45002
+        },
+        "source_author": "Quaternius",
+        "source_pack": "Universal Base Characters - Free Standard",
+        "source_license": "CC0-1.0",
+        "license": "MIT (project modifications); CC0-1.0 source",
+        "source_url": "https://quaternius.com/packs/universalbasecharacters",
+        "source_file": "Superhero_Male_FullBody.gltf",
+        "seat_anchor_gltf": [
+          0.0,
+          0.45,
+          0.14
+        ],
+        "modifications": "Independent mature sento adult; relaxed shoulders and muscles, enlarged head, source hairstyle, static pose, featureless toy surface, protected reduction and single color atlas",
+        "npc_role": "npc_seated",
+        "source_glb": "public/models/npc_seated.glb",
+        "source_sha256": "9580c0fdded4e8dd0a9c2559eeae16af2d2c8f75aa7011d3f009567ac781be57"
+      }
+    },
+    "npc_slot_4": {
+      "type": "EMPTY",
+      "parent": "environment_static",
+      "matrix": [
+        -1.2092296231003274e-07,
+        -0.9000000953674316,
+        0.0,
+        17.100000381469727,
+        0.9000000953674316,
+        -1.2092296231003274e-07,
+        0.0,
+        -1.350000023841858,
+        0.0,
+        0.0,
+        0.8999999761581421,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "seat_fit_vertical_leg_extension_m": 0.055796128511428844,
+        "placement_frame_offset_gltf": [
+          0.0,
+          0.0,
+          0.32
+        ],
+        "origin_contract": "Existing bench placement frame; floor Y=0; slot TRS unchanged",
+        "seat_surface_triangle_clip_repair": {
+          "faces_before": 20,
+          "vertices_lifted": 6,
+          "maximum_lift_m": 0.010917320508956885,
+          "support_y_m": 0.45002
+        },
+        "source_author": "Quaternius",
+        "source_pack": "Universal Base Characters - Free Standard",
+        "source_license": "CC0-1.0",
+        "license": "MIT (project modifications); CC0-1.0 source",
+        "source_url": "https://quaternius.com/packs/universalbasecharacters",
+        "source_file": "Superhero_Male_FullBody.gltf",
+        "seat_anchor_gltf": [
+          0.0,
+          0.45,
+          0.14
+        ],
+        "modifications": "Independent mature sento adult; relaxed shoulders and muscles, enlarged head, source hairstyle, static pose, featureless toy surface, protected reduction and single color atlas",
+        "npc_role": "npc_seated",
+        "source_glb": "public/models/npc_seated.glb",
+        "source_sha256": "9580c0fdded4e8dd0a9c2559eeae16af2d2c8f75aa7011d3f009567ac781be57"
+      }
+    },
+    "npc_high_4": {
+      "type": "EMPTY",
+      "parent": "npc_slot_4",
+      "matrix": [
+        -1.2092296231003274e-07,
+        -0.9000000953674316,
+        0.0,
+        17.100000381469727,
+        0.9000000953674316,
+        -1.2092296231003274e-07,
+        0.0,
+        -1.350000023841858,
+        0.0,
+        0.0,
+        0.8999999761581421,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {}
+    },
+    "npc_seated.003": {
+      "type": "EMPTY",
+      "parent": "npc_high_4",
+      "matrix": [
+        -1.2092296231003274e-07,
+        -0.9000000953674316,
+        0.0,
+        17.100000381469727,
+        0.9000000953674316,
+        -1.2092296231003274e-07,
+        0.0,
+        -1.350000023841858,
+        0.0,
+        0.0,
+        0.8999999761581421,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "seat_fit_vertical_leg_extension_m": 0.055796128511428844,
+        "placement_frame_offset_gltf": [
+          0.0,
+          0.0,
+          0.32
+        ],
+        "origin_contract": "Existing bench placement frame; floor Y=0; slot TRS unchanged",
+        "seat_surface_triangle_clip_repair": {
+          "faces_before": 20,
+          "vertices_lifted": 6,
+          "maximum_lift_m": 0.010917320508956885,
+          "support_y_m": 0.45002
+        },
+        "source_author": "Quaternius",
+        "source_pack": "Universal Base Characters - Free Standard",
+        "source_license": "CC0-1.0",
+        "license": "MIT (project modifications); CC0-1.0 source",
+        "source_url": "https://quaternius.com/packs/universalbasecharacters",
+        "source_file": "Superhero_Male_FullBody.gltf",
+        "seat_anchor_gltf": [
+          0.0,
+          0.45,
+          0.14
+        ],
+        "modifications": "Independent mature sento adult; relaxed shoulders and muscles, enlarged head, source hairstyle, static pose, featureless toy surface, protected reduction and single color atlas",
+        "npc_role": "npc_seated",
+        "source_glb": "public/models/npc_seated.glb",
+        "source_sha256": "9580c0fdded4e8dd0a9c2559eeae16af2d2c8f75aa7011d3f009567ac781be57"
+      }
+    },
+    "npc_seated_body.003": {
+      "type": "MESH",
+      "parent": "npc_seated.003",
+      "matrix": [
+        -1.2092296231003274e-07,
+        -0.9000000953674316,
+        0.0,
+        17.100000381469727,
+        0.9000000953674316,
+        -1.2092296231003274e-07,
+        0.0,
+        -1.350000023841858,
+        0.0,
+        0.0,
+        0.8999999761581421,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "seat_fit_vertical_leg_extension_m": 0.055796128511428844,
+        "placement_frame_offset_gltf": [
+          0.0,
+          0.0,
+          0.32
+        ],
+        "origin_contract": "Existing bench placement frame; floor Y=0; slot TRS unchanged",
+        "seat_surface_triangle_clip_repair": {
+          "faces_before": 20,
+          "vertices_lifted": 6,
+          "maximum_lift_m": 0.010917320508956885,
+          "support_y_m": 0.45002
+        },
+        "source_author": "Quaternius",
+        "source_pack": "Universal Base Characters - Free Standard",
+        "source_license": "CC0-1.0",
+        "license": "MIT (project modifications); CC0-1.0 source",
+        "source_url": "https://quaternius.com/packs/universalbasecharacters",
+        "source_file": "Superhero_Male_FullBody.gltf",
+        "seat_anchor_gltf": [
+          0.0,
+          0.45,
+          0.14
+        ],
+        "modifications": "Independent mature sento adult; relaxed shoulders and muscles, enlarged head, source hairstyle, static pose, featureless toy surface, protected reduction and single color atlas",
+        "npc_role": "npc_seated",
+        "source_glb": "public/models/npc_seated.glb",
+        "source_sha256": "9580c0fdded4e8dd0a9c2559eeae16af2d2c8f75aa7011d3f009567ac781be57",
+        "placement_id": "npcs_04"
+      },
+      "vertices": 972,
+      "triangles": 1794,
+      "polygon_degenerate_faces": 0,
+      "legacy_bmesh_degenerate_faces": 0,
+      "positions_sha256": "c3d07f93c3aeb946fa4177637ca33f04d6d32f8dc8223a57682f8f8634e9d482",
+      "materials": [
+        "npc_seated_single_atlas"
+      ]
+    },
+    "seat_anchor.003": {
+      "type": "EMPTY",
+      "parent": "npc_seated.003",
+      "matrix": [
+        -1.2092296231003274e-07,
+        -0.9000000953674316,
+        0.0,
+        16.937997817993164,
+        0.9000000953674316,
+        -1.2092296231003274e-07,
+        0.0,
+        -1.350000023841858,
+        0.0,
+        0.0,
+        0.8999999761581421,
+        0.4049999713897705,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "seat_fit_vertical_leg_extension_m": 0.055796128511428844,
+        "placement_frame_offset_gltf": [
+          0.0,
+          0.0,
+          0.32
+        ],
+        "origin_contract": "Existing bench placement frame; floor Y=0; slot TRS unchanged",
+        "seat_surface_triangle_clip_repair": {
+          "faces_before": 20,
+          "vertices_lifted": 6,
+          "maximum_lift_m": 0.010917320508956885,
+          "support_y_m": 0.45002
+        },
+        "source_author": "Quaternius",
+        "source_pack": "Universal Base Characters - Free Standard",
+        "source_license": "CC0-1.0",
+        "license": "MIT (project modifications); CC0-1.0 source",
+        "source_url": "https://quaternius.com/packs/universalbasecharacters",
+        "source_file": "Superhero_Male_FullBody.gltf",
+        "seat_anchor_gltf": [
+          0.0,
+          0.45,
+          0.14
+        ],
+        "modifications": "Independent mature sento adult; relaxed shoulders and muscles, enlarged head, source hairstyle, static pose, featureless toy surface, protected reduction and single color atlas",
+        "npc_role": "npc_seated",
+        "source_glb": "public/models/npc_seated.glb",
+        "source_sha256": "9580c0fdded4e8dd0a9c2559eeae16af2d2c8f75aa7011d3f009567ac781be57"
+      }
+    },
+    "npc_slot_5": {
+      "type": "EMPTY",
+      "parent": "environment_static",
+      "matrix": [
+        -1.2092296231003274e-07,
+        -0.9000000953674316,
+        0.0,
+        17.100000381469727,
+        0.9000000953674316,
+        -1.2092296231003274e-07,
+        0.0,
+        -3.549999952316284,
+        0.0,
+        0.0,
+        0.8999999761581421,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "seat_fit_vertical_leg_extension_m": 0.055796128511428844,
+        "placement_frame_offset_gltf": [
+          0.0,
+          0.0,
+          0.32
+        ],
+        "origin_contract": "Existing bench placement frame; floor Y=0; slot TRS unchanged",
+        "seat_surface_triangle_clip_repair": {
+          "faces_before": 20,
+          "vertices_lifted": 6,
+          "maximum_lift_m": 0.010917320508956885,
+          "support_y_m": 0.45002
+        },
+        "source_author": "Quaternius",
+        "source_pack": "Universal Base Characters - Free Standard",
+        "source_license": "CC0-1.0",
+        "license": "MIT (project modifications); CC0-1.0 source",
+        "source_url": "https://quaternius.com/packs/universalbasecharacters",
+        "source_file": "Superhero_Male_FullBody.gltf",
+        "seat_anchor_gltf": [
+          0.0,
+          0.45,
+          0.14
+        ],
+        "modifications": "Independent mature sento adult; relaxed shoulders and muscles, enlarged head, source hairstyle, static pose, featureless toy surface, protected reduction and single color atlas",
+        "npc_role": "npc_seated",
+        "source_glb": "public/models/npc_seated.glb",
+        "source_sha256": "9580c0fdded4e8dd0a9c2559eeae16af2d2c8f75aa7011d3f009567ac781be57"
+      }
+    },
+    "npc_high_5": {
+      "type": "EMPTY",
+      "parent": "npc_slot_5",
+      "matrix": [
+        -1.2092296231003274e-07,
+        -0.9000000953674316,
+        0.0,
+        17.100000381469727,
+        0.9000000953674316,
+        -1.2092296231003274e-07,
+        0.0,
+        -3.549999952316284,
+        0.0,
+        0.0,
+        0.8999999761581421,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {}
+    },
+    "npc_seated.004": {
+      "type": "EMPTY",
+      "parent": "npc_high_5",
+      "matrix": [
+        -1.2092296231003274e-07,
+        -0.9000000953674316,
+        0.0,
+        17.100000381469727,
+        0.9000000953674316,
+        -1.2092296231003274e-07,
+        0.0,
+        -3.549999952316284,
+        0.0,
+        0.0,
+        0.8999999761581421,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "seat_fit_vertical_leg_extension_m": 0.055796128511428844,
+        "placement_frame_offset_gltf": [
+          0.0,
+          0.0,
+          0.32
+        ],
+        "origin_contract": "Existing bench placement frame; floor Y=0; slot TRS unchanged",
+        "seat_surface_triangle_clip_repair": {
+          "faces_before": 20,
+          "vertices_lifted": 6,
+          "maximum_lift_m": 0.010917320508956885,
+          "support_y_m": 0.45002
+        },
+        "source_author": "Quaternius",
+        "source_pack": "Universal Base Characters - Free Standard",
+        "source_license": "CC0-1.0",
+        "license": "MIT (project modifications); CC0-1.0 source",
+        "source_url": "https://quaternius.com/packs/universalbasecharacters",
+        "source_file": "Superhero_Male_FullBody.gltf",
+        "seat_anchor_gltf": [
+          0.0,
+          0.45,
+          0.14
+        ],
+        "modifications": "Independent mature sento adult; relaxed shoulders and muscles, enlarged head, source hairstyle, static pose, featureless toy surface, protected reduction and single color atlas",
+        "npc_role": "npc_seated",
+        "source_glb": "public/models/npc_seated.glb",
+        "source_sha256": "9580c0fdded4e8dd0a9c2559eeae16af2d2c8f75aa7011d3f009567ac781be57"
+      }
+    },
+    "npc_seated_body.004": {
+      "type": "MESH",
+      "parent": "npc_seated.004",
+      "matrix": [
+        -1.2092296231003274e-07,
+        -0.9000000953674316,
+        0.0,
+        17.100000381469727,
+        0.9000000953674316,
+        -1.2092296231003274e-07,
+        0.0,
+        -3.549999952316284,
+        0.0,
+        0.0,
+        0.8999999761581421,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "seat_fit_vertical_leg_extension_m": 0.055796128511428844,
+        "placement_frame_offset_gltf": [
+          0.0,
+          0.0,
+          0.32
+        ],
+        "origin_contract": "Existing bench placement frame; floor Y=0; slot TRS unchanged",
+        "seat_surface_triangle_clip_repair": {
+          "faces_before": 20,
+          "vertices_lifted": 6,
+          "maximum_lift_m": 0.010917320508956885,
+          "support_y_m": 0.45002
+        },
+        "source_author": "Quaternius",
+        "source_pack": "Universal Base Characters - Free Standard",
+        "source_license": "CC0-1.0",
+        "license": "MIT (project modifications); CC0-1.0 source",
+        "source_url": "https://quaternius.com/packs/universalbasecharacters",
+        "source_file": "Superhero_Male_FullBody.gltf",
+        "seat_anchor_gltf": [
+          0.0,
+          0.45,
+          0.14
+        ],
+        "modifications": "Independent mature sento adult; relaxed shoulders and muscles, enlarged head, source hairstyle, static pose, featureless toy surface, protected reduction and single color atlas",
+        "npc_role": "npc_seated",
+        "source_glb": "public/models/npc_seated.glb",
+        "source_sha256": "9580c0fdded4e8dd0a9c2559eeae16af2d2c8f75aa7011d3f009567ac781be57",
+        "placement_id": "npcs_05"
+      },
+      "vertices": 972,
+      "triangles": 1794,
+      "polygon_degenerate_faces": 0,
+      "legacy_bmesh_degenerate_faces": 0,
+      "positions_sha256": "c3d07f93c3aeb946fa4177637ca33f04d6d32f8dc8223a57682f8f8634e9d482",
+      "materials": [
+        "npc_seated_single_atlas"
+      ]
+    },
+    "seat_anchor.004": {
+      "type": "EMPTY",
+      "parent": "npc_seated.004",
+      "matrix": [
+        -1.2092296231003274e-07,
+        -0.9000000953674316,
+        0.0,
+        16.937997817993164,
+        0.9000000953674316,
+        -1.2092296231003274e-07,
+        0.0,
+        -3.549999952316284,
+        0.0,
+        0.0,
+        0.8999999761581421,
+        0.4049999713897705,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "seat_fit_vertical_leg_extension_m": 0.055796128511428844,
+        "placement_frame_offset_gltf": [
+          0.0,
+          0.0,
+          0.32
+        ],
+        "origin_contract": "Existing bench placement frame; floor Y=0; slot TRS unchanged",
+        "seat_surface_triangle_clip_repair": {
+          "faces_before": 20,
+          "vertices_lifted": 6,
+          "maximum_lift_m": 0.010917320508956885,
+          "support_y_m": 0.45002
+        },
+        "source_author": "Quaternius",
+        "source_pack": "Universal Base Characters - Free Standard",
+        "source_license": "CC0-1.0",
+        "license": "MIT (project modifications); CC0-1.0 source",
+        "source_url": "https://quaternius.com/packs/universalbasecharacters",
+        "source_file": "Superhero_Male_FullBody.gltf",
+        "seat_anchor_gltf": [
+          0.0,
+          0.45,
+          0.14
+        ],
+        "modifications": "Independent mature sento adult; relaxed shoulders and muscles, enlarged head, source hairstyle, static pose, featureless toy surface, protected reduction and single color atlas",
+        "npc_role": "npc_seated",
+        "source_glb": "public/models/npc_seated.glb",
+        "source_sha256": "9580c0fdded4e8dd0a9c2559eeae16af2d2c8f75aa7011d3f009567ac781be57"
+      }
+    },
+    "npc_slot_staff": {
+      "type": "EMPTY",
+      "parent": "environment_static",
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        4.900000095367432,
+        0.0,
+        1.0,
+        0.0,
+        8.625,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "source_author": "Quaternius",
+        "source_pack": "Universal Base Characters - Free Standard",
+        "source_license": "CC0-1.0",
+        "license": "MIT (project modifications); CC0-1.0 source",
+        "source_url": "https://quaternius.com/packs/universalbasecharacters",
+        "source_file": "Superhero_Male_FullBody.gltf",
+        "modifications": "Independent mature sento adult; relaxed shoulders and muscles, enlarged head, source hairstyle, static pose, featureless toy surface, protected reduction and single color atlas",
+        "npc_role": "npc_staff",
+        "source_glb": "public/models/npc_staff.glb",
+        "source_sha256": "e479a4a9012e7de52216087cd18a706376e274f15589e576e473449110eac926"
+      }
+    },
+    "npc_high_staff": {
+      "type": "EMPTY",
+      "parent": "npc_slot_staff",
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        4.900000095367432,
+        0.0,
+        1.0,
+        0.0,
+        8.625,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {}
+    },
+    "npc_staff": {
+      "type": "EMPTY",
+      "parent": "npc_high_staff",
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        4.900000095367432,
+        0.0,
+        1.0,
+        0.0,
+        8.625,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "source_author": "Quaternius",
+        "source_pack": "Universal Base Characters - Free Standard",
+        "source_license": "CC0-1.0",
+        "license": "MIT (project modifications); CC0-1.0 source",
+        "source_url": "https://quaternius.com/packs/universalbasecharacters",
+        "source_file": "Superhero_Male_FullBody.gltf",
+        "modifications": "Independent mature sento adult; relaxed shoulders and muscles, enlarged head, source hairstyle, static pose, featureless toy surface, protected reduction and single color atlas",
+        "npc_role": "npc_staff",
+        "source_glb": "public/models/npc_staff.glb",
+        "source_sha256": "e479a4a9012e7de52216087cd18a706376e274f15589e576e473449110eac926"
+      }
+    },
+    "npc_staff_body": {
+      "type": "MESH",
+      "parent": "npc_staff",
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        4.900000095367432,
+        0.0,
+        1.0,
+        0.0,
+        8.625,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "source_author": "Quaternius",
+        "source_pack": "Universal Base Characters - Free Standard",
+        "source_license": "CC0-1.0",
+        "license": "MIT (project modifications); CC0-1.0 source",
+        "source_url": "https://quaternius.com/packs/universalbasecharacters",
+        "source_file": "Superhero_Male_FullBody.gltf",
+        "modifications": "Independent mature sento adult; relaxed shoulders and muscles, enlarged head, source hairstyle, static pose, featureless toy surface, protected reduction and single color atlas",
+        "npc_role": "npc_staff",
+        "source_glb": "public/models/npc_staff.glb",
+        "source_sha256": "e479a4a9012e7de52216087cd18a706376e274f15589e576e473449110eac926",
+        "placement_id": "fixtures_02"
+      },
+      "vertices": 851,
+      "triangles": 1593,
+      "polygon_degenerate_faces": 0,
+      "legacy_bmesh_degenerate_faces": 0,
+      "positions_sha256": "df055bb2cf6b3516785d24f149f3d671fc56fbd9847827b2e5539ce2744d5cb0",
+      "materials": [
+        "npc_staff_single_atlas"
+      ]
+    },
+    "environment_upper": {
+      "type": "EMPTY",
+      "parent": "sento_environment",
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {}
+    },
+    "environment_upper__brushed_metal": {
+      "type": "MESH",
+      "parent": "environment_upper",
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "placement_id": "fixtures_07"
+      },
+      "vertices": 600,
+      "triangles": 348,
+      "polygon_degenerate_faces": 0,
+      "legacy_bmesh_degenerate_faces": 0,
+      "positions_sha256": "1f1cf93da0541f7446ca97c77942a15ce97424b7d0b9387249bdf3eb7afda468",
+      "materials": [
+        "brushed_metal"
+      ]
+    },
+    "environment_upper__cedar": {
+      "type": "MESH",
+      "parent": "environment_upper",
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "placement_id": "decor_02"
+      },
+      "vertices": 1328,
+      "triangles": 748,
+      "polygon_degenerate_faces": 0,
+      "legacy_bmesh_degenerate_faces": 0,
+      "positions_sha256": "8265ae182c3f7604e38f5daad369539cb871b6e697ebc4e40a7052b9b3e61929",
+      "materials": [
+        "cedar"
+      ]
+    },
+    "environment_upper__ceramic_cream": {
+      "type": "MESH",
+      "parent": "environment_upper",
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "placement_id": "fixtures_07"
+      },
+      "vertices": 224,
+      "triangles": 112,
+      "polygon_degenerate_faces": 0,
+      "legacy_bmesh_degenerate_faces": 0,
+      "positions_sha256": "63a49019b279d66796ce9cb0c56dd1128240cd9821368b524324036c50757780",
+      "materials": [
+        "ceramic_cream"
+      ]
+    },
+    "environment_upper__dark_cedar": {
+      "type": "MESH",
+      "parent": "environment_upper",
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "placement_id": "fixtures_28"
+      },
+      "vertices": 648,
+      "triangles": 324,
+      "polygon_degenerate_faces": 0,
+      "legacy_bmesh_degenerate_faces": 0,
+      "positions_sha256": "f4956f966f911519ef2c0d2ceabddafdc2bb05225ec66648a0f2e8744a03cc87",
+      "materials": [
+        "dark_cedar"
+      ]
+    },
+    "environment_upper__fuji_mural": {
+      "type": "MESH",
+      "parent": "environment_upper",
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "placement_id": "additional_fuji_mural"
+      },
+      "vertices": 24,
+      "triangles": 12,
+      "polygon_degenerate_faces": 0,
+      "legacy_bmesh_degenerate_faces": 0,
+      "positions_sha256": "1553da44daee97380214d4ae85d2bbcd2b67728091ef09ad0fd8b1f1515d1ba1",
+      "materials": [
+        "fuji_mural"
+      ]
+    },
+    "environment_upper__mirror_glass": {
+      "type": "MESH",
+      "parent": "environment_upper",
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "placement_id": "decor_11"
+      },
+      "vertices": 24,
+      "triangles": 12,
+      "polygon_degenerate_faces": 0,
+      "legacy_bmesh_degenerate_faces": 0,
+      "positions_sha256": "306caa82fccae95ca8a0bdf6ed1fdd6e9cb7110e91b1401f43c65d635b78debc",
+      "materials": [
+        "mirror_glass"
+      ]
+    },
+    "environment_upper__navy_cloth": {
+      "type": "MESH",
+      "parent": "environment_upper",
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "placement_id": "decor_02"
+      },
+      "vertices": 144,
+      "triangles": 72,
+      "polygon_degenerate_faces": 0,
+      "legacy_bmesh_degenerate_faces": 0,
+      "positions_sha256": "7e9c6c5edc4b50bdf4b52db0ab465fd5f009f7a360b3a00b6789e648bb6931ce",
+      "materials": [
+        "navy_cloth"
+      ]
+    },
+    "environment_upper__rose_cloth": {
+      "type": "MESH",
+      "parent": "environment_upper",
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "placement_id": "decor_00"
+      },
+      "vertices": 72,
+      "triangles": 36,
+      "polygon_degenerate_faces": 0,
+      "legacy_bmesh_degenerate_faces": 0,
+      "positions_sha256": "1bb8f13b173d1331425e2d2ea1fcbffc9a850ed1234dac462d291206144e0f55",
+      "materials": [
+        "rose_cloth"
+      ]
+    },
+    "environment_upper__straw": {
+      "type": "MESH",
+      "parent": "environment_upper",
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "placement_id": "fixtures_06"
+      },
+      "vertices": 24,
+      "triangles": 12,
+      "polygon_degenerate_faces": 0,
+      "legacy_bmesh_degenerate_faces": 0,
+      "positions_sha256": "a3978a10fe6a0b006a026a32491907850ec385b20bc5af985bf91f087be9d46f",
+      "materials": [
+        "straw"
+      ]
+    },
+    "environment_upper__warm_plaster": {
+      "type": "MESH",
+      "parent": "environment_upper",
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "placement_id": "fixtures_07"
+      },
+      "vertices": 368,
+      "triangles": 204,
+      "polygon_degenerate_faces": 0,
+      "legacy_bmesh_degenerate_faces": 0,
+      "positions_sha256": "8ca699862d1f7af9384916c3538a3cde3778febf2b33631d33e73525525f4ed8",
+      "materials": [
+        "warm_plaster"
+      ]
+    },
+    "sauna_door": {
+      "type": "EMPTY",
+      "parent": "sento_environment",
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {}
+    },
+    "sauna_door__cedar": {
+      "type": "MESH",
+      "parent": "sauna_door",
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "placement_id": "additional_sauna_door"
+      },
+      "vertices": 48,
+      "triangles": 44,
+      "polygon_degenerate_faces": 0,
+      "legacy_bmesh_degenerate_faces": 0,
+      "positions_sha256": "0821f65ff1e5ad933ea6213a90c119b09e46ab9d4eb2a42cb8a2dbc5999b1233",
+      "materials": [
+        "cedar"
+      ]
+    },
+    "sauna_door__dark_cedar": {
+      "type": "MESH",
+      "parent": "sauna_door",
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "placement_id": "additional_sauna_door"
+      },
+      "vertices": 40,
+      "triangles": 28,
+      "polygon_degenerate_faces": 0,
+      "legacy_bmesh_degenerate_faces": 0,
+      "positions_sha256": "8586cd866eb16ed6fff09f6a30e993279ed4bb53263cc395377b6d7f22f9624f",
+      "materials": [
+        "dark_cedar"
+      ]
+    },
+    "sauna_door__mirror_glass": {
+      "type": "MESH",
+      "parent": "sauna_door",
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "properties": {
+        "placement_id": "additional_sauna_door"
+      },
+      "vertices": 48,
+      "triangles": 44,
+      "polygon_degenerate_faces": 0,
+      "legacy_bmesh_degenerate_faces": 0,
+      "positions_sha256": "b740557080338579757b695a2869e43aeca8950378f62e02adcff43767b48d61",
+      "materials": [
+        "mirror_glass"
+      ]
+    }
+  },
+  "images": [
+    {
+      "name": "bath_floor_basecolor",
+      "path": "//textures/bath_floor_basecolor.png",
+      "packed": true,
+      "packed_paths": [
+        "//textures/bath_floor_basecolor.png"
+      ],
+      "size": [
+        512,
+        512
+      ],
+      "decoded_pixels_sha256": "2a6616e5893aefeb804f01b13fabb346ea97f1fde5250ee3f88161e26083fe7d"
+    },
+    {
+      "name": "ceramic_cream_basecolor",
+      "path": "//textures/ceramic_cream_basecolor.png",
+      "packed": true,
+      "packed_paths": [
+        "//textures/ceramic_cream_basecolor.png"
+      ],
+      "size": [
+        512,
+        512
+      ],
+      "decoded_pixels_sha256": "59e838f3cf3d81a6ea6d0cc86b9c84cb5a1527221580d96c160b4f5bc38cd0c4"
+    },
+    {
+      "name": "ceramic_teal_basecolor",
+      "path": "//textures/ceramic_teal_basecolor.png",
+      "packed": true,
+      "packed_paths": [
+        "//textures/ceramic_teal_basecolor.png"
+      ],
+      "size": [
+        512,
+        512
+      ],
+      "decoded_pixels_sha256": "d0f4bc72ee0dc24f3ef5eb2ca04f3801b25d9c37967b05aa321e2682deaad162"
+    },
+    {
+      "name": "hinoki_planks_diff_1k.jpg",
+      "path": "//textures/hinoki_planks_diff_1k.jpg.png",
+      "packed": true,
+      "packed_paths": [
+        "//textures/hinoki_planks_diff_1k.jpg.png"
+      ],
+      "size": [
+        1024,
+        1024
+      ],
+      "decoded_pixels_sha256": "84e8ebbb6b97c87217029dfb1791e94fc702a8554351260343bcb5da393ae294"
+    },
+    {
+      "name": "hinoki_planks_nor_gl_1k.jpg",
+      "path": "//textures/hinoki_planks_nor_gl_1k.jpg.png",
+      "packed": true,
+      "packed_paths": [
+        "//textures/hinoki_planks_nor_gl_1k.jpg.png"
+      ],
+      "size": [
+        1024,
+        1024
+      ],
+      "decoded_pixels_sha256": "8b35c8f38b205d71c9bb18f859928b0bf4d942e15e46a331bfab22fa6cd645be"
+    },
+    {
+      "name": "hinoki_planks_rough_1k.jpg",
+      "path": "//textures/hinoki_planks_rough_1k.jpg.png",
+      "packed": true,
+      "packed_paths": [
+        "//textures/hinoki_planks_rough_1k.jpg.png"
+      ],
+      "size": [
+        1024,
+        1024
+      ],
+      "decoded_pixels_sha256": "d78853f50e40e4a75447879e5f07c1d810ea75048a4eba7e5acb7a7ae504c6d6"
+    },
+    {
+      "name": "npc_bath_standing_basecolor",
+      "path": "//textures/npc_bath_standing_basecolor.png",
+      "packed": true,
+      "packed_paths": [
+        "//textures/npc_bath_standing_basecolor.png"
+      ],
+      "size": [
+        512,
+        512
+      ],
+      "decoded_pixels_sha256": "f0e3886898f7878e3fd1b49f3f729a777f388e2716b2fe86c1a34677759e6c89"
+    },
+    {
+      "name": "npc_seated_basecolor",
+      "path": "//textures/npc_seated_basecolor.png",
+      "packed": true,
+      "packed_paths": [
+        "//textures/npc_seated_basecolor.png"
+      ],
+      "size": [
+        512,
+        512
+      ],
+      "decoded_pixels_sha256": "94a819f56c7f122cd8d3bdb7c86e32356a94c546b9dbbd893ed7bbfc34e68e77"
+    },
+    {
+      "name": "npc_staff_basecolor",
+      "path": "//textures/npc_staff_basecolor.png",
+      "packed": true,
+      "packed_paths": [
+        "//textures/npc_staff_basecolor.png"
+      ],
+      "size": [
+        512,
+        512
+      ],
+      "decoded_pixels_sha256": "440431f3706968bfc546e1dafa326202458c4507b7004d15b356e621c2218923"
+    },
+    {
+      "name": "sento_mural__v01.png",
+      "path": "//textures/sento_mural__v01.png.png",
+      "packed": true,
+      "packed_paths": [
+        "//textures/sento_mural__v01.png.png"
+      ],
+      "size": [
+        2172,
+        724
+      ],
+      "decoded_pixels_sha256": "1a818858768e0052c77c2264c339c69d8607902a9e5bb150ecf8c295312fc6b9"
+    },
+    {
+      "name": "straw_basecolor",
+      "path": "//textures/straw_basecolor.png",
+      "packed": true,
+      "packed_paths": [
+        "//textures/straw_basecolor.png"
+      ],
+      "size": [
+        512,
+        512
+      ],
+      "decoded_pixels_sha256": "f73159388fdad5778e56f573ca6945a40380e7ce39ad5780940f01e2e5fb3e8e"
+    }
+  ],
+  "npc_source_references": [
+    "assets/sento_visitors/blend/npc_staff__v01.blend",
+    "assets/sento_visitors/blend/npc_bath_standing__v01.blend",
+    "assets/sento_visitors/blend/npc_seated__v01.blend"
+  ],
+  "blender_polygon_degenerate_faces": 16,
+  "legacy_bmesh_degenerate_faces": 0,
+  "scope": "Editable reimport only; no canonical source or GLB was overwritten."
+}

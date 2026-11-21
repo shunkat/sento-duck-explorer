@@ -1,5 +1,5 @@
 {
-  "note": "Planned limits are provisional (see .kiro/specs/final-assets/design.md). 'measured' stays null until a GLB is exported and measured in Blender. Units: meters, +Y up, front +Z, origin at bottom center.",
+  "note": "Planned limits are provisional (see .kiro/specs/final-assets/design.md). 'measured' stays null until a GLB is exported and measured in Blender. Units: meters, +Y up, front +Z, origin at bottom center. Explicit per-asset authored placement frames take precedence over the generic bottom-center convention.",
   "assets": {
     "duck": {
       "stage": 2,
@@ -687,8 +687,49 @@
     "npc_staff": {
       "stage": 3,
       "status": "exported",
-      "parent_asset": "adult",
-      "revision": "compact_v02",
+      "parent_asset": "quaternius_universal_base",
+      "revision": "quaternius_v01",
+      "limits": {
+        "triangles": 1600,
+        "materials": 1,
+        "texture_px": 512,
+        "glb_mb": 0.25
+      },
+      "measured": {
+        "height": 1.5999999046325684,
+        "width": 0.4586595296859741,
+        "depth": 0.27589353919029236,
+        "max_width": 0.4586595296859741,
+        "triangles": 1593,
+        "vertices": 851,
+        "materials": 1,
+        "textures": 1,
+        "texture_px": 512,
+        "glb_bytes": 84176,
+        "glb_mb": 0.084176,
+        "bounds": {
+          "min": [
+            -0.22932976484298706,
+            0.0,
+            -0.13794676959514618
+          ],
+          "max": [
+            0.22932976484298706,
+            1.5999999046325684,
+            0.13794676959514618
+          ]
+        },
+        "sha256": "e479a4a9012e7de52216087cd18a706376e274f15589e576e473449110eac926",
+        "measured_date": "2026-11-21",
+        "tool": "Actual glTF binary attributes and world-space triangle measurements; Blender reimport review"
+      },
+      "notes": "Independent Quaternius CC0 source; project modifications MIT. Actual exported geometry, multi-view review and source preservation recorded in assets/sento_visitors. Static background adult; no playable father geometry reused. Seven existing world placements retain their transforms."
+    },
+    "npc_bath_standing": {
+      "stage": 3,
+      "status": "exported",
+      "parent_asset": "quaternius_universal_base",
+      "revision": "quaternius_v01",
       "limits": {
         "triangles": 1600,
         "materials": 1,
@@ -697,80 +738,39 @@
       },
       "measured": {
         "height": 1.600000023841858,
-        "width": 0.5555096864700317,
-        "depth": 0.3241509795188904,
-        "max_width": 0.5555096864700317,
-        "triangles": 1600,
-        "vertices": 1675,
+        "width": 0.4511750638484955,
+        "depth": 0.27078795433044434,
+        "max_width": 0.4511750638484955,
+        "triangles": 1594,
+        "vertices": 847,
         "materials": 1,
         "textures": 1,
         "texture_px": 512,
-        "glb_bytes": 148232,
-        "glb_mb": 0.148232,
+        "glb_bytes": 83996,
+        "glb_mb": 0.083996,
         "bounds": {
           "min": [
-            -0.27775484323501587,
+            -0.22558753192424774,
             0.0,
-            -0.162075474858284
+            -0.13539397716522217
           ],
           "max": [
-            0.27775484323501587,
+            0.22558753192424774,
             1.600000023841858,
-            0.1620754897594452
+            0.13539397716522217
           ]
         },
-        "sha256": "3b953cbbad8fb11e1279e76f5067c82c477112cf54e2cbb502c8f92890a2e90d",
+        "sha256": "0446e67bb93dbb2e0307b77732a490f96d654477d6dbf2bbae39fb753dc162cb",
         "measured_date": "2026-11-21",
-        "tool": "Blender 5.2.4 LTS; actual GLB reimport"
+        "tool": "Actual glTF binary attributes and world-space triangle measurements; Blender reimport review"
       },
-      "notes": "Adult-derived static background NPC; independent shape QA passed. World placement, scene budget and runtime integration pending. Natural 1.6m compact standing poses fit old footprint boxes; seated uses uniform 0.90/quarter-turn with 0.405m bench. No animation or close-up hero quality is claimed."
-    },
-    "npc_bath_standing": {
-      "stage": 3,
-      "status": "exported",
-      "parent_asset": "adult",
-      "revision": "compact_v02",
-      "limits": {
-        "triangles": 1600,
-        "materials": 1,
-        "texture_px": 512,
-        "glb_mb": 0.25
-      },
-      "measured": {
-        "height": 1.5999999046325684,
-        "width": 0.5551735758781433,
-        "depth": 0.32487058639526367,
-        "max_width": 0.5551735758781433,
-        "triangles": 1600,
-        "vertices": 1694,
-        "materials": 1,
-        "textures": 1,
-        "texture_px": 512,
-        "glb_bytes": 137692,
-        "glb_mb": 0.137692,
-        "bounds": {
-          "min": [
-            -0.27758678793907166,
-            0.0,
-            -0.16243529319763184
-          ],
-          "max": [
-            0.27758678793907166,
-            1.5999999046325684,
-            0.16243527829647064
-          ]
-        },
-        "sha256": "994ae0ce22b4e49528b7221929c5c82345c71340f84af10f4e4645c02f791614",
-        "measured_date": "2026-11-21",
-        "tool": "Blender 5.2.4 LTS; actual GLB reimport"
-      },
-      "notes": "Adult-derived static background NPC; independent shape QA passed. World placement, scene budget and runtime integration pending. Natural 1.6m compact standing poses fit old footprint boxes; seated uses uniform 0.90/quarter-turn with 0.405m bench. No animation or close-up hero quality is claimed."
+      "notes": "Independent Quaternius CC0 source; project modifications MIT. Actual exported geometry, multi-view review and source preservation recorded in assets/sento_visitors. Static background adult; no playable father geometry reused. Seven existing world placements retain their transforms."
     },
     "npc_seated": {
       "stage": 3,
       "status": "exported",
-      "parent_asset": "adult",
-      "revision": "v01",
+      "parent_asset": "quaternius_universal_base",
+      "revision": "quaternius_v01",
       "limits": {
         "triangles": 1800,
         "materials": 1,
@@ -778,40 +778,41 @@
         "glb_mb": 0.25
       },
       "measured": {
-        "height": 1.4174082279205322,
-        "width": 0.6654052138328552,
-        "depth": 0.6497056484222412,
-        "max_width": 0.6654052138328552,
-        "triangles": 1800,
-        "vertices": 1861,
+        "height": 1.301317811012268,
+        "width": 0.48798733949661255,
+        "depth": 0.589363805949688,
+        "max_width": 0.589363805949688,
+        "triangles": 1794,
+        "vertices": 972,
         "materials": 1,
         "textures": 1,
         "texture_px": 512,
-        "glb_bytes": 144336,
-        "glb_mb": 0.144336,
+        "glb_bytes": 89504,
+        "glb_mb": 0.089504,
         "bounds": {
           "min": [
-            -0.3327026069164276,
+            -0.24399366974830627,
             0.0,
-            -0.3248528242111206
+            0.025318093597888947
           ],
           "max": [
-            0.3327026069164276,
-            1.4174082279205322,
-            0.324852854013443
+            0.24399366974830627,
+            1.301317811012268,
+            0.6146818995475769
           ]
         },
-        "sha256": "a92cee73882b54df44a08d12bef55f0c462853ecaf5643961a32d39a3d7506c9",
+        "sha256": "9580c0fdded4e8dd0a9c2559eeae16af2d2c8f75aa7011d3f009567ac781be57",
         "measured_date": "2026-11-21",
-        "tool": "Blender 5.2.4 LTS; actual GLB reimport"
+        "tool": "Actual glTF binary attributes and world-space triangle measurements; Blender reimport review"
       },
-      "notes": "Adult-derived static background NPC; independent shape QA passed. World placement, scene budget and runtime integration pending. Natural 1.6m compact standing poses fit old footprint boxes; seated uses uniform 0.90/quarter-turn with 0.405m bench. No animation or close-up hero quality is claimed."
+      "notes": "Independent Quaternius CC0 source; project modifications MIT. Actual exported geometry, multi-view review and source preservation recorded in assets/sento_visitors. Static background adult; no playable father geometry reused. Seven existing world placements retain their transforms.",
+      "origin": "Existing bench placement frame; floor Y=0 and +Z forward offset for actual seat-board clearance. Do not recenter."
     },
     "npc_staff_lod_far": {
       "stage": 3,
       "status": "exported",
       "parent_asset": "npc_staff",
-      "revision": "far_v01",
+      "revision": "quaternius_v01",
       "limits": {
         "triangles": 600,
         "materials": 1,
@@ -819,40 +820,40 @@
         "glb_mb": 0.25
       },
       "measured": {
-        "height": 1.5977282524108887,
-        "width": 0.5547386705875397,
-        "depth": 0.3185315281152725,
-        "max_width": 0.5547386705875397,
-        "triangles": 600,
-        "vertices": 759,
+        "height": 1.5971587896347046,
+        "width": 0.45604372024536133,
+        "depth": 0.2853569835424423,
+        "max_width": 0.45604372024536133,
+        "triangles": 593,
+        "vertices": 351,
         "materials": 1,
         "textures": 1,
         "texture_px": 512,
-        "glb_bytes": 112248,
-        "glb_mb": 0.112248,
+        "glb_bytes": 62448,
+        "glb_mb": 0.062448,
         "bounds": {
           "min": [
-            -0.2769838273525238,
+            -0.22802188992500305,
             0.0,
-            -0.15645603835582733
+            -0.14741021394729614
           ],
           "max": [
-            0.27775484323501587,
-            1.5977282524108887,
-            0.1620754897594452
+            0.22802183032035828,
+            1.5971587896347046,
+            0.13794676959514618
           ]
         },
-        "sha256": "08f8e62f7e2930afeae5cce40c0db3a4f5882ed36fb19b6b3e25cb51a7705977",
+        "sha256": "dbb8deaf1319f0c330185d7fb83e39167c1172481f837145d683faed5ba4c3bc",
         "measured_date": "2026-11-21",
-        "tool": "Blender5.2.4 actualGLB reimport"
+        "tool": "Actual glTF binary attributes and world-space triangle measurements; Blender reimport review"
       },
-      "notes": "Source geometry and UV inherited from accepted NPC; independent material QA accepts only beyond6m camera-to-center or Overview. Use parent authored frame unchanged, no renormalization."
+      "notes": "Independent Quaternius CC0 source; project modifications MIT. Actual exported geometry, multi-view review and source preservation recorded in assets/sento_visitors. Distant use only beyond 6m camera-to-center or Overview; same atlas and authored frame as near."
     },
     "npc_bath_standing_lod_far": {
       "stage": 3,
       "status": "exported",
       "parent_asset": "npc_bath_standing",
-      "revision": "far_v01",
+      "revision": "quaternius_v01",
       "limits": {
         "triangles": 600,
         "materials": 1,
@@ -860,40 +861,40 @@
         "glb_mb": 0.25
       },
       "measured": {
-        "height": 1.5999999046325684,
-        "width": 0.5495697557926178,
-        "depth": 0.3192524313926697,
-        "max_width": 0.5495697557926178,
-        "triangles": 600,
-        "vertices": 749,
+        "height": 1.5968174934387207,
+        "width": 0.44860193133354187,
+        "depth": 0.2802351266145706,
+        "max_width": 0.44860193133354187,
+        "triangles": 594,
+        "vertices": 347,
         "materials": 1,
         "textures": 1,
         "texture_px": 512,
-        "glb_bytes": 100748,
-        "glb_mb": 0.100748,
+        "glb_bytes": 62284,
+        "glb_mb": 0.062284,
         "bounds": {
           "min": [
-            -0.27758678793907166,
+            -0.22430099546909332,
             0.0,
-            -0.15681715309619904
+            -0.14484114944934845
           ],
           "max": [
-            0.27198296785354614,
-            1.5999999046325684,
-            0.16243527829647064
+            0.22430093586444855,
+            1.5968174934387207,
+            0.13539397716522217
           ]
         },
-        "sha256": "02b12e2815c7f5304cd13d2214aca05def733af298e691fd801b768a8899d154",
+        "sha256": "d2bc8e2d2920d9d068ddd95772e9d516ff56bda17c87ab8004913b484dbd4bbe",
         "measured_date": "2026-11-21",
-        "tool": "Blender5.2.4 actualGLB reimport"
+        "tool": "Actual glTF binary attributes and world-space triangle measurements; Blender reimport review"
       },
-      "notes": "Source geometry and UV inherited from accepted NPC; independent material QA accepts only beyond6m camera-to-center or Overview. Use parent authored frame unchanged, no renormalization."
+      "notes": "Independent Quaternius CC0 source; project modifications MIT. Actual exported geometry, multi-view review and source preservation recorded in assets/sento_visitors. Distant use only beyond 6m camera-to-center or Overview; same atlas and authored frame as near."
     },
     "npc_seated_lod_far": {
       "stage": 3,
       "status": "exported",
       "parent_asset": "npc_seated",
-      "revision": "far_v01",
+      "revision": "quaternius_v01",
       "limits": {
         "triangles": 600,
         "materials": 1,
@@ -901,34 +902,35 @@
         "glb_mb": 0.25
       },
       "measured": {
-        "height": 1.4174082279205322,
-        "width": 0.6619561612606049,
-        "depth": 0.6408556997776031,
-        "max_width": 0.6619561612606049,
-        "triangles": 600,
-        "vertices": 742,
+        "height": 1.298815131187439,
+        "width": 0.459810733795166,
+        "depth": 0.5783245470374823,
+        "max_width": 0.5783245470374823,
+        "triangles": 594,
+        "vertices": 552,
         "materials": 1,
         "textures": 1,
         "texture_px": 512,
-        "glb_bytes": 100492,
-        "glb_mb": 0.100492,
+        "glb_bytes": 69144,
+        "glb_mb": 0.069144,
         "bounds": {
           "min": [
-            -0.32925355434417725,
+            -0.2299054116010666,
             0.0,
-            -0.31600284576416016
+            0.022772083058953285
           ],
           "max": [
-            0.3327026069164276,
-            1.4174082279205322,
-            0.324852854013443
+            0.22990532219409943,
+            1.298815131187439,
+            0.6010966300964355
           ]
         },
-        "sha256": "9ada2f668214e57a256d96971b471ed5997e15fb24713e5443e9d2e85ef6164c",
+        "sha256": "df793665d019e376347ddc5105e93d0961d3b1f0568c8530c2971d5dade1e8e4",
         "measured_date": "2026-11-21",
-        "tool": "Blender5.2.4 actualGLB reimport"
+        "tool": "Actual glTF binary attributes and world-space triangle measurements; Blender reimport review"
       },
-      "notes": "Source geometry and UV inherited from accepted NPC; independent material QA accepts only beyond6m camera-to-center or Overview. Use parent authored frame unchanged, no renormalization."
+      "notes": "Independent Quaternius CC0 source; project modifications MIT. Actual exported geometry, multi-view review and source preservation recorded in assets/sento_visitors. Distant use only beyond 6m camera-to-center or Overview; same atlas and authored frame as near.",
+      "origin": "Existing bench placement frame; floor Y=0 and +Z forward offset for actual seat-board clearance. Do not recenter."
     },
     "soap": {
       "stage": 3,
@@ -1093,7 +1095,7 @@
     "sento_environment": {
       "stage": 3,
       "status": "exported",
-      "revision": "v01",
+      "revision": "v02",
       "origin": "Identity root; authored world coordinates from LEVEL, not normalized",
       "limits": {
         "triangles": 20200,
@@ -1108,15 +1110,13 @@
         "width": 39.29999852180481,
         "depth": 21.200000762939453,
         "max_width": 39.29999852180481,
-        "triangles": 20196,
-        "architecture_triangles": 7996,
-        "npc_triangles": 12200,
-        "vertices": 26210,
+        "triangles": 20153,
+        "vertices": 19966,
         "materials": 17,
         "textures": 11,
         "texture_px": 2172,
-        "glb_bytes": 6328656,
-        "glb_mb": 6.328656,
+        "glb_bytes": 5931660,
+        "glb_mb": 5.93166,
         "bounds": {
           "min": [
             -3.200000047683716,
@@ -1129,9 +1129,11 @@
             12.100000381469727
           ]
         },
-        "sha256": "29f7ad1219bb6a6fef625c76d091bd34b73600d691de5c00e967c5ccceb7df61",
+        "sha256": "39cfd9954b2de71807ecf3e860063f0569a9bd2611f322b361c10232f963950e",
         "measured_date": "2026-11-21",
-        "tool": "Blender 5.2.4 actual GLB reimport"
+        "tool": "Actual glTF binary attributes and world-space triangle measurements; Blender reimport review",
+        "architecture_triangles": 7996,
+        "npc_triangles": 12157
       },
       "layout_sha256": "8bee95aa4ad7e753f521c4327e7586d3df4717e6c1aa9072790a0c40ecc52ab5",
       "quality_record": "assets/sento_environment/quality/measurements.json"

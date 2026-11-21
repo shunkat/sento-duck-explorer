@@ -1,0 +1,103 @@
+{
+  "role": "npc_seated",
+  "source_model": "public/models/npc_seated.glb",
+  "source_sha256": "9580c0fdded4e8dd0a9c2559eeae16af2d2c8f75aa7011d3f009567ac781be57",
+  "export_model": "public/models/npc_seated_lod_far.glb",
+  "export_sha256": "df793665d019e376347ddc5105e93d0961d3b1f0568c8530c2971d5dade1e8e4",
+  "near": {
+    "sha256": "9580c0fdded4e8dd0a9c2559eeae16af2d2c8f75aa7011d3f009567ac781be57",
+    "bytes": 89504,
+    "triangles": 1794,
+    "bounds": [
+      [
+        -0.24399366974830627,
+        0.0,
+        0.025318093597888947
+      ],
+      [
+        0.24399366974830627,
+        1.301317811012268,
+        0.6146818995475769
+      ]
+    ],
+    "atlas_pixels": [
+      512,
+      512
+    ],
+    "mesh_node": 0,
+    "root_node": 0
+  },
+  "far": {
+    "sha256": "df793665d019e376347ddc5105e93d0961d3b1f0568c8530c2971d5dade1e8e4",
+    "bytes": 69144,
+    "triangles": 594,
+    "bounds": [
+      [
+        -0.2299054116010666,
+        0.0,
+        0.022772083058953285
+      ],
+      [
+        0.22990532219409943,
+        1.298815131187439,
+        0.6010966300964355
+      ]
+    ],
+    "atlas_pixels": [
+      512,
+      512
+    ],
+    "mesh_node": 0,
+    "root_node": 0
+  },
+  "lod_min_max_distances_m": [
+    0.014316465600406995,
+    0.01973080052035009
+  ],
+  "floor_contact_adjustment_m": 0.0025026306975632906,
+  "source_envelope_fit_applied": false,
+  "face_protection": "Eye and brow connected components plus adjacent sockets, nose and mouth vertices excluded from collapse",
+  "protected_facial_island_vertices": 195,
+  "protected_hairline_vertices": 47,
+  "game_distance_comparison": {
+    "vertical_fov_degrees": 55,
+    "viewport": [
+      1280,
+      720
+    ],
+    "distance_m": 6.1
+  },
+  "raw_degenerate_triangles": 0,
+  "seat_board_envelope_intersections": 0,
+  "seat_contact_lifted_vertices": 8,
+  "normal_method": "Near-surface head normals; independent cross-product area-weighted body normals, split at sharp folds",
+  "source_atlas_bytes_identical": true,
+  "source_atlas_sha256": "694233060f1fbd04a64cf61165e9caf7bb4a1f7b09a38f5f4c53fa5d3275a8b1",
+  "blend_source": "assets/sento_visitors/lod/blend/npc_seated__lod_far_v01.blend",
+  "blend_sha256": "ff99604e772aa967ef8fc37a0c48958e3cf9f58c895cfe5450a1c05f57676bfe",
+  "reopened_geometry_images_identical": true,
+  "binary_metadata_audit": {
+    "decompressed_bytes": 888110,
+    "redacted_match_counts": {
+      "personal_absolute_paths": 0,
+      "private_candidate_paths": 0,
+      "file_uris": 0
+    }
+  },
+  "comparisons": [
+    {
+      "file": "assets/sento_visitors/lod/quality/npc_seated_near_far_front.png",
+      "sha256": "9c0aca90f1ce4520359a19995e01c0cf05bb664bb604a4d3e9110bf3a0545bd6"
+    },
+    {
+      "file": "assets/sento_visitors/lod/quality/npc_seated_near_far_threequarter.png",
+      "sha256": "629381cd98a5f88930828ed64907680d7ca70b634dccaa27ab6b968ae2eb2fd8"
+    },
+    {
+      "file": "assets/sento_visitors/lod/quality/npc_seated_near_far_game_distance.png",
+      "sha256": "7be2e107e792c2968fc78fbf04f1a2d33e92f12d8623baf4b54b527bc3ffea56"
+    }
+  ],
+  "source_unchanged": true,
+  "scope": "Static far LOD from independent near source; no playable family model referenced; visual acceptance is recorded separately."
+}

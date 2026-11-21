@@ -1,0 +1,309 @@
+{
+  "source_files_unchanged": true,
+  "source_file_count": 20,
+  "reopened_projects": {
+    "npc_staff": {
+      "blend_sha256": "5496201cbec6d0c71bd343698ff832f2fea51a77cf4136c351b135a21748de02",
+      "uncompressed_file_scanned": true,
+      "private_marker_matches": 0,
+      "preserved_source_geometry_matches_import_snapshot": true,
+      "packed_images": [
+        {
+          "name": "npc_staff_basecolor",
+          "packed": true,
+          "relative_path": true,
+          "pixels_available": true
+        },
+        {
+          "name": "T_Eye_Brown",
+          "packed": true,
+          "relative_path": true,
+          "pixels_available": true
+        },
+        {
+          "name": "T_Eye_Normal.png",
+          "packed": true,
+          "relative_path": true,
+          "pixels_available": true
+        },
+        {
+          "name": "T_Hair_1_BaseColor",
+          "packed": true,
+          "relative_path": true,
+          "pixels_available": true
+        },
+        {
+          "name": "T_Hair_1_BaseColor.001",
+          "packed": true,
+          "relative_path": true,
+          "pixels_available": true
+        },
+        {
+          "name": "T_Hair_1_Normal",
+          "packed": true,
+          "relative_path": true,
+          "pixels_available": true
+        },
+        {
+          "name": "T_Hair_1_Normal.png",
+          "packed": true,
+          "relative_path": true,
+          "pixels_available": true
+        },
+        {
+          "name": "T_Superhero_Male_Dark",
+          "packed": true,
+          "relative_path": true,
+          "pixels_available": true
+        },
+        {
+          "name": "T_Superhero_Male_Normal",
+          "packed": true,
+          "relative_path": true,
+          "pixels_available": true
+        },
+        {
+          "name": "T_Superhero_Male_Roughness",
+          "packed": true,
+          "relative_path": true,
+          "pixels_available": true
+        }
+      ],
+      "upstream_roughness_png_exif": "Original source retained: resolution tags only, independently recorded in public_sources/quality/quaternius-source-metadata.json."
+    },
+    "npc_bath_standing": {
+      "blend_sha256": "9f6cd6d7d63d73df7a074ed534e2b7b01753260d851204cc705ac9384289fae2",
+      "uncompressed_file_scanned": true,
+      "private_marker_matches": 0,
+      "preserved_source_geometry_matches_import_snapshot": true,
+      "packed_images": [
+        {
+          "name": "npc_bath_standing_basecolor",
+          "packed": true,
+          "relative_path": true,
+          "pixels_available": true
+        },
+        {
+          "name": "T_Eye_Brown",
+          "packed": true,
+          "relative_path": true,
+          "pixels_available": true
+        },
+        {
+          "name": "T_Eye_Normal.png",
+          "packed": true,
+          "relative_path": true,
+          "pixels_available": true
+        },
+        {
+          "name": "T_Hair_1_BaseColor",
+          "packed": true,
+          "relative_path": true,
+          "pixels_available": true
+        },
+        {
+          "name": "T_Hair_1_BaseColor.001",
+          "packed": true,
+          "relative_path": true,
+          "pixels_available": true
+        },
+        {
+          "name": "T_Hair_1_Normal",
+          "packed": true,
+          "relative_path": true,
+          "pixels_available": true
+        },
+        {
+          "name": "T_Hair_1_Normal.png",
+          "packed": true,
+          "relative_path": true,
+          "pixels_available": true
+        },
+        {
+          "name": "T_Superhero_Male_Dark",
+          "packed": true,
+          "relative_path": true,
+          "pixels_available": true
+        },
+        {
+          "name": "T_Superhero_Male_Normal",
+          "packed": true,
+          "relative_path": true,
+          "pixels_available": true
+        },
+        {
+          "name": "T_Superhero_Male_Roughness",
+          "packed": true,
+          "relative_path": true,
+          "pixels_available": true
+        }
+      ],
+      "upstream_roughness_png_exif": "Original source retained: resolution tags only, independently recorded in public_sources/quality/quaternius-source-metadata.json."
+    },
+    "npc_seated": {
+      "blend_sha256": "3be0a0946207c7b53a2dfb4eb7ed38a80ac52c459984f10bc665a6cea4318049",
+      "uncompressed_file_scanned": true,
+      "private_marker_matches": 0,
+      "preserved_source_geometry_matches_import_snapshot": true,
+      "packed_images": [
+        {
+          "name": "npc_seated_basecolor",
+          "packed": true,
+          "relative_path": true,
+          "pixels_available": true
+        },
+        {
+          "name": "T_Eye_Brown",
+          "packed": true,
+          "relative_path": true,
+          "pixels_available": true
+        },
+        {
+          "name": "T_Eye_Normal.png",
+          "packed": true,
+          "relative_path": true,
+          "pixels_available": true
+        },
+        {
+          "name": "T_Hair_1_BaseColor",
+          "packed": true,
+          "relative_path": true,
+          "pixels_available": true
+        },
+        {
+          "name": "T_Hair_1_BaseColor.001",
+          "packed": true,
+          "relative_path": true,
+          "pixels_available": true
+        },
+        {
+          "name": "T_Hair_1_Normal",
+          "packed": true,
+          "relative_path": true,
+          "pixels_available": true
+        },
+        {
+          "name": "T_Hair_1_Normal.png",
+          "packed": true,
+          "relative_path": true,
+          "pixels_available": true
+        },
+        {
+          "name": "T_Superhero_Male_Dark",
+          "packed": true,
+          "relative_path": true,
+          "pixels_available": true
+        },
+        {
+          "name": "T_Superhero_Male_Normal",
+          "packed": true,
+          "relative_path": true,
+          "pixels_available": true
+        },
+        {
+          "name": "T_Superhero_Male_Roughness",
+          "packed": true,
+          "relative_path": true,
+          "pixels_available": true
+        }
+      ],
+      "upstream_roughness_png_exif": "Original source retained: resolution tags only, independently recorded in public_sources/quality/quaternius-source-metadata.json."
+    }
+  },
+  "runtime_png_metadata": {
+    "npc_staff": {
+      "text_exif_chunks": 0,
+      "private_marker_matches": 0,
+      "embedded_png_sha256": "b1f8247e8f30ea59cccf6e70df3410d027b5b03a12bf973e257a710390a6ae60"
+    },
+    "npc_bath_standing": {
+      "text_exif_chunks": 0,
+      "private_marker_matches": 0,
+      "embedded_png_sha256": "d916499873cc6d57d5795dc6db191045d38def25c1d77dd4bc369e98bdc96a9e"
+    },
+    "npc_seated": {
+      "text_exif_chunks": 0,
+      "private_marker_matches": 0,
+      "embedded_png_sha256": "694233060f1fbd04a64cf61165e9caf7bb4a1f7b09a38f5f4c53fa5d3275a8b1"
+    }
+  },
+  "render_png_metadata": {
+    "npc_staff_front.png": {
+      "text_exif_chunks": 0,
+      "sha256": "5e0fe30af6de84425daede50249a59755f5d6b63f491c28f567c8eab25af73ca"
+    },
+    "npc_staff_threequarter.png": {
+      "text_exif_chunks": 0,
+      "sha256": "53da01bdf3e2d4af5b1b574ee45db4188e729f3c5185e7977772b245e3a3d2f2"
+    },
+    "npc_staff_side.png": {
+      "text_exif_chunks": 0,
+      "sha256": "b29bbb0567dfd51592d01a1c180779a6b98cf09a4e11c69c9a06b9774c21f82f"
+    },
+    "npc_staff_back.png": {
+      "text_exif_chunks": 0,
+      "sha256": "fe648a7d99118dab081c8bb69438328ae604d8d7b0e44f9c0879309121aa91c7"
+    },
+    "npc_staff_face.png": {
+      "text_exif_chunks": 0,
+      "sha256": "8e3562cd02ae67e93f08f8512b439236f4728c468c36ea28ef880fd62063360e"
+    },
+    "npc_staff_face_threequarter.png": {
+      "text_exif_chunks": 0,
+      "sha256": "5d341a289c6c8d483fa3ee3960b6a204208625746e43be008ce778137dbc4bb5"
+    },
+    "npc_bath_standing_front.png": {
+      "text_exif_chunks": 0,
+      "sha256": "0001cb429f2cfeeb3aace9a4ad357e5f9fd1f41355d7f5248f35129261fbaa88"
+    },
+    "npc_bath_standing_threequarter.png": {
+      "text_exif_chunks": 0,
+      "sha256": "d6dd95a112b6d04778a36723911a0eeecf69ce977fb39f63038812a4d3422832"
+    },
+    "npc_bath_standing_side.png": {
+      "text_exif_chunks": 0,
+      "sha256": "90494a3a4a91ab782c9486af5523f22a69c29d134b46b50c03b92e313d780b0c"
+    },
+    "npc_bath_standing_back.png": {
+      "text_exif_chunks": 0,
+      "sha256": "1b7a6c3c35c7a2e94f585da0f580bdfecef91351ad7d5c6a674e6ca8c3391c6a"
+    },
+    "npc_bath_standing_face.png": {
+      "text_exif_chunks": 0,
+      "sha256": "c5fd44d2b0988786c3da3e65f7ccff843066b3d31aefe69364375f065a09d728"
+    },
+    "npc_bath_standing_face_threequarter.png": {
+      "text_exif_chunks": 0,
+      "sha256": "4f8a940eab6762357e18206676d33235113527e582cc0b15364e3b6894ac5d97"
+    },
+    "npc_seated_front.png": {
+      "text_exif_chunks": 0,
+      "sha256": "444135a6d985ff5ab8dbace5996402256ec5bbffaeb432f90c021ef955d3161f"
+    },
+    "npc_seated_threequarter.png": {
+      "text_exif_chunks": 0,
+      "sha256": "5fef0825c5b7bfbfc3dfb1f8c67bd1200557fd7a4822e1c520eceac181872cf3"
+    },
+    "npc_seated_side.png": {
+      "text_exif_chunks": 0,
+      "sha256": "ebb6c4e6b72197f929627835b9c090ba0011edeff0f74b98612ea2c5eb474aef"
+    },
+    "npc_seated_back.png": {
+      "text_exif_chunks": 0,
+      "sha256": "dea810f3a4e0b46c625d8550b7a5f4d24b4095d1547ca4b9880324edf1be9072"
+    },
+    "npc_seated_face.png": {
+      "text_exif_chunks": 0,
+      "sha256": "789e32214aa4997d0cf75e70a4fadae0e981ab614dcd89e9a03159cbb5642adc"
+    },
+    "npc_seated_face_threequarter.png": {
+      "text_exif_chunks": 0,
+      "sha256": "00fe769ad7ea63c5ab164216102fb4240053a53b3153fa5ffe339673d034856b"
+    },
+    "npc_seated_seat-contact.png": {
+      "text_exif_chunks": 0,
+      "sha256": "e1cc0d9f1edd6e9f06b818c0a8ebb5be26d1a55d856b630de5db45f00d710eb3"
+    }
+  },
+  "fresh_import_matches_preserved_geometry": true
+}
