@@ -11,6 +11,10 @@ Revision v02, 2026-11-21: localized eye-surface smoothing, removal of the old
 irregular dark eye patches, and two matched smooth eye inserts. Original body,
 overall dimensions and sockets retained; 7,720 triangles, one material.
 
+Revision v03, 2026-11-21: source-measured head regularization, local torso
+fairing with protected wings, source-painted body texture and paired glossy
+eyes; 7,296 triangles and two materials. Original raw and sockets preserved.
+
 Source and provenance:
 https://github.com/shunkat/sento-duck-explorer/tree/main/assets/duck
 

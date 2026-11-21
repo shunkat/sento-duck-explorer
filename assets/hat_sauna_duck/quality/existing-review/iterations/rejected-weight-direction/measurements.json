@@ -1,0 +1,82 @@
+{
+  "revision": "v02",
+  "source_sha256": "748701e961177aafc0b5050a2ba75b045d4eca5077f88d50d6a3c587a659a7c5",
+  "source_uniform_scale": 0.09478333295408269,
+  "master": {
+    "triangles": 96572,
+    "vertices": 48284,
+    "nonmanifold_edges": 0,
+    "bounds_blender_zup_m": [
+      [
+        -0.08993517607450485,
+        -0.09000000357627869,
+        0.0
+      ],
+      [
+        0.08993517607450485,
+        0.09000000357627869,
+        0.16427183151245117
+      ]
+    ],
+    "dimensions_gltf_m": [
+      0.1798703521490097,
+      0.16427183151245117,
+      0.18000000715255737
+    ],
+    "finite_vertices": true
+  },
+  "runtime_before_export": {
+    "triangles": 1800,
+    "vertices": 898,
+    "nonmanifold_edges": 0,
+    "bounds_blender_zup_m": [
+      [
+        -0.08652389794588089,
+        -0.09184765070676804,
+        -0.0009566023945808411
+      ],
+      [
+        0.08948611468076706,
+        0.08724436908960342,
+        0.16437822580337524
+      ]
+    ],
+    "dimensions_gltf_m": [
+      0.17601001262664795,
+      0.16533482819795609,
+      0.17909201979637146
+    ],
+    "finite_vertices": true
+  },
+  "glb_sha256": "2e1797735b1819e13547ef5937a05fcdbbe4935a56776837e8adf9a636e4868f",
+  "glb_bytes": 33916,
+  "blend_sha256": "b9f3ceb9f8113c679e7fb91c4b631b93435a1026622049193d781f4f3eea6731",
+  "reimported_meshes": {
+    "hat_sauna_duck": {
+      "triangles": 1800,
+      "vertices": 898,
+      "nonmanifold_edges": 0,
+      "bounds_blender_zup_m": [
+        [
+          -0.08652389794588089,
+          -0.09184765070676804,
+          -0.0009566023945808411
+        ],
+        [
+          0.08948611468076706,
+          0.08724436908960342,
+          0.16437822580337524
+        ]
+      ],
+      "dimensions_gltf_m": [
+        0.17601001262664795,
+        0.16533482819795609,
+        0.17909201979637146
+      ],
+      "finite_vertices": true
+    }
+  },
+  "triangles": 1800,
+  "material_count": 1,
+  "texture_count": 0
+}

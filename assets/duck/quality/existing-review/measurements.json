@@ -1,0 +1,172 @@
+{
+  "source_sha256": "ea745e2c7d06b64610fc8791124c0e325b92007637d627da372b9aa7a9f3b727",
+  "revision": "v03",
+  "head_fit_center_blender_m": [
+    0.0,
+    -0.04811072755788744,
+    0.2275648364191556
+  ],
+  "head_fit_radii_m": [
+    0.07543373844364742,
+    0.06562306717561794,
+    0.07096844392705158
+  ],
+  "head_fit_source_samples": 7662,
+  "head_fit_limitation": "Measured quadric regularizes source head; not an exact reference-image reconstruction",
+  "eye_regions": [
+    {
+      "side": -1,
+      "center_blender_m": [
+        -0.04058200120925903,
+        -0.1013207659125328,
+        0.23800000548362732
+      ],
+      "radii_m": [
+        0.01,
+        0.0038,
+        0.014
+      ]
+    },
+    {
+      "side": 1,
+      "center_blender_m": [
+        0.04058200120925903,
+        -0.10131936520338058,
+        0.23800000548362732
+      ],
+      "radii_m": [
+        0.01,
+        0.0038,
+        0.014
+      ]
+    }
+  ],
+  "runtime_body_before_export": {
+    "triangles": 6400,
+    "vertices": 3202,
+    "nonmanifold_edges": 0,
+    "bounds_blender_zup_m": [
+      [
+        -0.09819937497377396,
+        -0.15113013982772827,
+        0.0
+      ],
+      [
+        0.09818785637617111,
+        0.15129108726978302,
+        0.2985098659992218
+      ]
+    ],
+    "dimensions_gltf_m": [
+      0.19638723134994507,
+      0.2985098659992218,
+      0.3024212270975113
+    ],
+    "finite_vertices": true
+  },
+  "runtime_eyes_before_export": {
+    "triangles": 896,
+    "vertices": 452,
+    "nonmanifold_edges": 0,
+    "bounds_blender_zup_m": [
+      [
+        -0.04983185604214668,
+        -0.10649321973323822,
+        0.2240000069141388
+      ],
+      [
+        0.04983186349272728,
+        -0.09614691138267517,
+        0.25200000405311584
+      ]
+    ],
+    "dimensions_gltf_m": [
+      0.09966371953487396,
+      0.02799999713897705,
+      0.01034630835056305
+    ],
+    "finite_vertices": true
+  },
+  "source_scale": 0.15916453655748658,
+  "glb_sha256": "75ca48aec7a8f19d2563dbd4a3f64940b3b299bf6f6d83d09e6283663d557ef2",
+  "glb_bytes": 350388,
+  "blend_sha256": "ae7d94e53e3c731ef3d84a037a1e7f6f5a2a9ea11ce188d3d0d813450cdef1bc",
+  "reimported_meshes": {
+    "duck_body": {
+      "triangles": 6400,
+      "vertices": 4572,
+      "nonmanifold_edges": 2514,
+      "bounds_blender_zup_m": [
+        [
+          -0.09819937497377396,
+          -0.15113013982772827,
+          0.0
+        ],
+        [
+          0.09818785637617111,
+          0.15129108726978302,
+          0.2985098659992218
+        ]
+      ],
+      "dimensions_gltf_m": [
+        0.19638723134994507,
+        0.2985098659992218,
+        0.3024212270975113
+      ],
+      "finite_vertices": true
+    },
+    "duck_eyes": {
+      "triangles": 896,
+      "vertices": 590,
+      "nonmanifold_edges": 280,
+      "bounds_blender_zup_m": [
+        [
+          -0.04983185604214668,
+          -0.10649321973323822,
+          0.2240000069141388
+        ],
+        [
+          0.04983186349272728,
+          -0.09614691138267517,
+          0.25200000405311584
+        ]
+      ],
+      "dimensions_gltf_m": [
+        0.09966371953487396,
+        0.02799999713897705,
+        0.01034630835056305
+      ],
+      "finite_vertices": true
+    }
+  },
+  "triangles": 7296,
+  "material_count": 2,
+  "texture_count": 1,
+  "source_mapping": {
+    "raw_bounds_blender_m": [
+      [
+        -0.61907196,
+        -0.947695673,
+        -0.944132745
+      ],
+      [
+        0.615118146,
+        0.951720357,
+        0.940709233
+      ]
+    ],
+    "original_runtime_bounds_blender_m": [
+      [
+        -0.098194189,
+        -0.151216611,
+        0
+      ],
+      [
+        0.098194189,
+        0.151216611,
+        0.300000012
+      ]
+    ],
+    "method": "Uniform source height normalization to 0.300m and original bottom-center coordinate convention; corrected bounds measured separately; exact socket matrices copied without rescaling."
+  }
+}

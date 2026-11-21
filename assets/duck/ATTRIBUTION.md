@@ -6,6 +6,8 @@ Source: the project's original reference image in `ref/`, the unmodified Meshy o
 
 **Modifications by the Sento Duck Explorer project, performed by Codex in Blender 5.2.4 LTS:** decimation of the original generated geometry; smooth normals; yellow/orange/dark vertex colors with one PBR material; uniform scale to 0.30 m; bottom-center origin and export-axis normalization; hat and label sockets; GLB export and render verification. In v02 (2026-11-21), the original eye patches were locally smoothed and recolored, and two matched smooth eye inserts were added. The generated body is retained; the preserved `gen/` file is unmodified. The adjusted mesh and derived previews remain CC BY 4.0. Details: [v02 refinement](blend/duck__v02.md).
 
+In [v03](blend/duck__v03.md), source-measured head regularization and localized torso fairing correct reconstruction artifacts while preserving wing identity. The runtime mesh uses a baked body palette and separate glossy paired eyes. Detailed source and runtime meshes are retained; the original download and socket coordinates stay unchanged. The new Blender scene, textures, GLB and comparison renders remain CC BY 4.0.
+
 The generated GLB, adjusted `.blend`, game GLB, and derived duck preview are distributed under CC BY 4.0. Retain this credit, the license link, and an indication of changes when redistributing them. No endorsement by Meshy is implied.
 
 The **reference PNG is separate**: it was AI-generated with OpenAI's image-generation tool and is released under the project's rights stated in [its README](ref/README.md). The repository's MIT code license does not replace the Meshy-derived asset license.

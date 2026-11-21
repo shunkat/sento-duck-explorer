@@ -32,6 +32,12 @@ The original body remains; the revised export has 7,720 triangles, one material,
 no textures and unchanged overall bounds and sockets. The modified mesh and
 its Blender-rendered previews remain CC BY 4.0.
 
+Revision v03 (2026-11-21): measured source-head regularization, local torso
+fairing with protected wing outlines, a clean baked body palette, and paired
+glossy eyes. The runtime export has 7,296 triangles and two materials.
+Original raw data and socket transforms are preserved. The new Blender scene,
+textures and comparison renders also remain CC BY 4.0.
+
 The input reference was separately AI-generated with OpenAI through Codex;
 the project releases its rights to that reference under MIT, to the extent
 permitted by law. See `assets/duck/ref/README.md` and `assets/ledger.csv` for
@@ -56,6 +62,11 @@ Meshy does not endorse this project. Reference-image rights and exact output
 checksums are recorded separately in `assets/hat_sauna_duck/ref/README.md`
 and `assets/ledger.csv`.
 
+Hat revision v02 (2026-11-21): uniform source scaling, retopology from measured
+inner/outer profiles, and a hanging loop fitted to the source contour. The
+2,064-triangle export has one matte material, no textures, and an open underside.
+The natural source height replaces the earlier vertically compressed fit.
+
 ## Child and adult characters — Meshy, CC BY 4.0
 
 The source meshes in `assets/child/gen/` and `assets/adult/gen/` were generated
@@ -74,6 +85,13 @@ variants are stylized, featureless toy figures. They are modifications of the
 generated meshes; no skeletal animation is included. See each asset's README
 for exact changes, measurements, and limitations, and `assets/ledger.csv` for
 the source-to-export checksums.
+
+Human revisions v02 (2026-11-21): smooth source-based shoulder and arm/carry
+pose corrections with protected legs, local facial-relief cleanup, continuous
+facial/clothing color baking after source-coordinate reprojection, and balanced
+reduction with detailed-source normals. Both opaque toy variants retain their
+authored sockets. The new scenes, textures and diagnostic renders remain
+CC BY 4.0. Earlier exports are preserved for reproducible comparison.
 
 Keep this attribution, license link, and modification notice with redistributed
 copies. Meshy does not endorse this project. The project releases its rights to

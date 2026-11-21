@@ -1,0 +1,75 @@
+{
+  "id": "child",
+  "bottom_center_correction": [
+    0.0003889501094818115,
+    0.0006604641675949097,
+    3.7484417134692194e-06
+  ],
+  "sha256": "e69c7427abf6104526ac34072c57d8775adb27da4435ab53dd0a5c5ed29ef141",
+  "bytes": 724184,
+  "blend_sha256": "3e84c6c847403bf2c6b93ee5262f37262cceeba4a15d655680e30118dd9f1bbc",
+  "meshes": {
+    "outfit_bath": {
+      "shoulder_band_z": [
+        0.64,
+        0.8
+      ],
+      "shoulder_width": 0.4536827504634857,
+      "hand_nearest_vertex_distance": 0.003301549928099702,
+      "vertices": 4383,
+      "triangles": 5600,
+      "head_triangles": 3046,
+      "bounds_blender_xyz": [
+        [
+          -0.3084936738014221,
+          -0.20662736892700195,
+          0.0
+        ],
+        [
+          0.3074663281440735,
+          0.20662736892700195,
+          1.1999963521957397
+        ]
+      ],
+      "nonmanifold_after_uv_weld": 0
+    },
+    "outfit_clothed": {
+      "shoulder_band_z": [
+        0.64,
+        0.8
+      ],
+      "shoulder_width": 0.4624243676662445,
+      "hand_nearest_vertex_distance": 0.003298384146525936,
+      "vertices": 4505,
+      "triangles": 5600,
+      "head_triangles": 2977,
+      "bounds_blender_xyz": [
+        [
+          -0.30918973684310913,
+          -0.20662736892700195,
+          0.0
+        ],
+        [
+          0.30918973684310913,
+          0.20662736892700195,
+          1.1999963521957397
+        ]
+      ],
+      "nonmanifold_after_uv_weld": 0
+    }
+  },
+  "sockets": {
+    "socket_hand_r": [
+      -0.23685123026371002,
+      -0.07554710656404495,
+      0.3859201669692993
+    ],
+    "socket_label": [
+      0.0,
+      0.0,
+      1.340000033378601
+    ]
+  },
+  "inspection_images_rendered_from_sha256": "31d2ea528cd03e9314e184a75ee1e2c85956254a8f82290eaa09687fd539d172",
+  "metadata_only_sanitization_proof": "assets/quality/existing-models/embedded-png-sanitization.json"
+}

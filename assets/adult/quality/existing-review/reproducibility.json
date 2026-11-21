@@ -1,0 +1,54 @@
+{
+  "accepted_sha256": "61ce44be0c7547ffc58ca3c3242ff86ed564246b6ca3515c73250e2117286fd2",
+  "rebuilt_sha256": "c992fa81e435ce99f00624476eeac32fca14b3c4eeeca193f69bdb731d574c76",
+  "matching_geometry_and_embedded_pngs": true,
+  "accepted_content_hashes": {
+    "outfit_bath": [
+      {
+        "attributes": {
+          "POSITION": "38ee2b9950536b223d0697becd9f493396bbb56d60202961707277623a3bc5cb",
+          "NORMAL": "c7f0c3e14cc53710951637a9edbe4cdff9b7757f00fb611bbc26baabfa45ce6c",
+          "TEXCOORD_0": "021f54ede47957a12816500e9ecaaa3d4b3f9098276b4a050c6a7b077dcef23b"
+        },
+        "indices": "c19cf248b89ef0afc60f058fae20fa54469dc9b5b40250551f7eefdc6026ae7e",
+        "embedded_png_sha256": "d9f5a3085bb8962cab220abdff1dc6675276b31ef4b90edaf9608a234bee5b75"
+      }
+    ],
+    "outfit_clothed": [
+      {
+        "attributes": {
+          "POSITION": "b97cc64acde8c13451d878b559bb2bef76053a44796a81b4c9d63ef4746c2163",
+          "NORMAL": "e2fcb238742a5b924de7594ae9309a1d3cf885839d2d8715496da657b0302529",
+          "TEXCOORD_0": "7e1713ffa4d465bf73a2820d219e1d22d67cf120c6a9211ccb8c89196c0aece1"
+        },
+        "indices": "9cddaec78a1e055c71bceb89f37fa031933753435c38115d8905222a44ac0a90",
+        "embedded_png_sha256": "05172176ea3f3634940fa53eef1c186cb3f820f076fd9876398336b069fdb84f"
+      }
+    ]
+  },
+  "rebuilt_content_hashes": {
+    "outfit_bath": [
+      {
+        "attributes": {
+          "POSITION": "38ee2b9950536b223d0697becd9f493396bbb56d60202961707277623a3bc5cb",
+          "NORMAL": "c7f0c3e14cc53710951637a9edbe4cdff9b7757f00fb611bbc26baabfa45ce6c",
+          "TEXCOORD_0": "021f54ede47957a12816500e9ecaaa3d4b3f9098276b4a050c6a7b077dcef23b"
+        },
+        "indices": "c19cf248b89ef0afc60f058fae20fa54469dc9b5b40250551f7eefdc6026ae7e",
+        "embedded_png_sha256": "d9f5a3085bb8962cab220abdff1dc6675276b31ef4b90edaf9608a234bee5b75"
+      }
+    ],
+    "outfit_clothed": [
+      {
+        "attributes": {
+          "POSITION": "b97cc64acde8c13451d878b559bb2bef76053a44796a81b4c9d63ef4746c2163",
+          "NORMAL": "e2fcb238742a5b924de7594ae9309a1d3cf885839d2d8715496da657b0302529",
+          "TEXCOORD_0": "7e1713ffa4d465bf73a2820d219e1d22d67cf120c6a9211ccb8c89196c0aece1"
+        },
+        "indices": "9cddaec78a1e055c71bceb89f37fa031933753435c38115d8905222a44ac0a90",
+        "embedded_png_sha256": "05172176ea3f3634940fa53eef1c186cb3f820f076fd9876398336b069fdb84f"
+      }
+    ]
+  },
+  "scope": "Independent private clean rebuild from preserved raw source and v01 sockets, using the final script. Named geometry accessors and embedded texture PNG contents compared."
+}

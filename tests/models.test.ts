@@ -3,6 +3,7 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it, vi } from "vitest";
 import * as THREE from "three";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import fc from "fast-check";
 import { GameScene } from "../src/view/scene";
 import { EnvironmentModels } from "../src/view/environmentModels";
@@ -145,7 +146,11 @@ describe("manifest bounds check", () => {
   for (const id of ["duck", "hat_sauna_duck"]) {
     it(`parses public/models/${id}.glb and matches the manifest height`, async () => {
       const b = readFileSync(new URL(`../public/models/${id}.glb`, import.meta.url));
-      const lib = new ModelLibrary();
+      // Preserve actual geometry while avoiding browser-only image decoding.
+      const loader = new GLTFLoader().register(() => ({
+        name: "model_bounds_skip_image_decode", loadTexture: async () => new THREE.Texture(),
+      }));
+      const lib = new ModelLibrary(loader);
       await lib.parse(id, b.buffer.slice(b.byteOffset, b.byteOffset + b.byteLength) as ArrayBuffer);
       const measured = measureModel(lib.get(id)!.root);
       expect(Math.abs(measured.height - manifest.assets[id].measured.height)).toBeLessThan(1e-3);

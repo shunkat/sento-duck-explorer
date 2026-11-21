@@ -1,0 +1,68 @@
+[
+  {
+    "file": "child.glb",
+    "before_sha256": "31d2ea528cd03e9314e184a75ee1e2c85956254a8f82290eaa09687fd539d172",
+    "after_sha256": "e69c7427abf6104526ac34072c57d8775adb27da4435ab53dd0a5c5ed29ef141",
+    "bytes": 724184,
+    "non_image_buffer_views_identical": true,
+    "geometry_materials_transforms_unchanged": true,
+    "images": [
+      {
+        "name": "child_bath_basecolor_v02",
+        "buffer_view": 4,
+        "removed_chunk_types": [
+          "eXIf"
+        ],
+        "png_before_sha256": "91f2459de0014485e5882769d79909632bb28cc3d7b717f314491211cd509ef5",
+        "png_after_sha256": "12ff23b933399e10bb14c5808f3016d9321d8ceb44f9c62b7a5c1d7ca91ea002",
+        "retained_chunks_sha256": "12ff23b933399e10bb14c5808f3016d9321d8ceb44f9c62b7a5c1d7ca91ea002",
+        "retained_chunks_identical": true
+      },
+      {
+        "name": "child_clothed_basecolor_v02",
+        "buffer_view": 9,
+        "removed_chunk_types": [
+          "eXIf"
+        ],
+        "png_before_sha256": "bfa369c781e03da208659d714451e38c082c3e4382f1098cffb5ec507039b80c",
+        "png_after_sha256": "fa98fbf76f7581d622d11ce4b2d7a98e390771d8558e038c858ce12c1eb70f8a",
+        "retained_chunks_sha256": "fa98fbf76f7581d622d11ce4b2d7a98e390771d8558e038c858ce12c1eb70f8a",
+        "retained_chunks_identical": true
+      }
+    ],
+    "scope": "Ancillary metadata removal only. Every retained PNG chunk, including IHDR and IDAT, is byte-identical."
+  },
+  {
+    "file": "adult.glb",
+    "before_sha256": "ce320d1466191b1c95cf9ce36f2725740b73af02ca6ca2cc6ca59b0dd50c0f8f",
+    "after_sha256": "61ce44be0c7547ffc58ca3c3242ff86ed564246b6ca3515c73250e2117286fd2",
+    "bytes": 739012,
+    "non_image_buffer_views_identical": true,
+    "geometry_materials_transforms_unchanged": true,
+    "images": [
+      {
+        "name": "adult_bath_basecolor_v02",
+        "buffer_view": 4,
+        "removed_chunk_types": [
+          "eXIf"
+        ],
+        "png_before_sha256": "08e7f31f0757a18dad590a1770d49b4724b8f17d0025fb92b45a0d52aa7bc3cb",
+        "png_after_sha256": "d9f5a3085bb8962cab220abdff1dc6675276b31ef4b90edaf9608a234bee5b75",
+        "retained_chunks_sha256": "d9f5a3085bb8962cab220abdff1dc6675276b31ef4b90edaf9608a234bee5b75",
+        "retained_chunks_identical": true
+      },
+      {
+        "name": "adult_clothed_basecolor_v02",
+        "buffer_view": 9,
+        "removed_chunk_types": [
+          "eXIf"
+        ],
+        "png_before_sha256": "fbc3abdee855c6edd8d3325e42c6559dd5065b4f1f84cd1eed9247675fa3a363",
+        "png_after_sha256": "05172176ea3f3634940fa53eef1c186cb3f820f076fd9876398336b069fdb84f",
+        "retained_chunks_sha256": "05172176ea3f3634940fa53eef1c186cb3f820f076fd9876398336b069fdb84f",
+        "retained_chunks_identical": true
+      }
+    ],
+    "scope": "Ancillary metadata removal only. Every retained PNG chunk, including IHDR and IDAT, is byte-identical."
+  }
+]

@@ -1,0 +1,216 @@
+{
+  "asset": "hat_sauna_duck",
+  "blender": "5.2.4 LTS",
+  "resolution": 512,
+  "projection": "orthographic",
+  "view_transform": "AgX",
+  "exposure": 0,
+  "gamma": 1,
+  "framing": "fixed metric frame; no candidate autofit",
+  "fit": "authored metric geometry and origin preserved",
+  "outfit": null,
+  "envelope_blender_xyz_m": [
+    0.2199999988079071,
+    0.2199999988079071,
+    0.18000000715255737
+  ],
+  "directions": {
+    "front": [
+      0,
+      -1,
+      0.16
+    ],
+    "side": [
+      1,
+      0,
+      0.16
+    ],
+    "threequarter": [
+      0.48,
+      -1,
+      0.18
+    ],
+    "top": [
+      0.02,
+      -0.28,
+      1
+    ],
+    "underside": [
+      0.48,
+      -1,
+      -0.65
+    ]
+  },
+  "passes": [
+    "beauty",
+    "clay"
+  ],
+  "versions": {
+    "before": {
+      "file": "hat_sauna_duck.glb",
+      "sha256": "027796c5bba9e2f27fe8e9f5d6a5017f19e55521961e15998b8f90ba6bbe9102",
+      "authored_dimensions_blender_xyz_m": [
+        0.18010373413562775,
+        0.1800789088010788,
+        0.13997289538383484
+      ],
+      "uniform_scale": 1,
+      "placed_dimensions_blender_xyz_m": [
+        0.18010373413562775,
+        0.1800789088010788,
+        0.13997289538383484
+      ]
+    },
+    "after": {
+      "file": "hat_sauna_duck.glb",
+      "sha256": "e6362a9bdffa39b987d30540dbc8bce061b6c867bdddee563ebd0a1bcba7bce6",
+      "authored_dimensions_blender_xyz_m": [
+        0.179438054561615,
+        0.179438054561615,
+        0.16515982151031494
+      ],
+      "uniform_scale": 1,
+      "placed_dimensions_blender_xyz_m": [
+        0.179438054561615,
+        0.179438054561615,
+        0.16515982151031494
+      ]
+    }
+  },
+  "limitation": "Diagnostic views, not gameplay validation or an automatic visual-quality verdict.",
+  "renderer": {
+    "engine": "CYCLES",
+    "samples": 32,
+    "denoising": true
+  },
+  "camera": {
+    "focus_blender_xyz_m": [
+      0.0,
+      0.0,
+      0.09000000357627869
+    ],
+    "distance_m": 0.8799999952316284,
+    "ortho_scale_m": 0.3343999981880188
+  },
+  "view_cameras": {
+    "front": {
+      "focus_blender_xyz_m": [
+        0.0,
+        0.0,
+        0.09000000357627869
+      ],
+      "ortho_scale_m": 0.3343999981880188
+    },
+    "side": {
+      "focus_blender_xyz_m": [
+        0.0,
+        0.0,
+        0.09000000357627869
+      ],
+      "ortho_scale_m": 0.3343999981880188
+    },
+    "threequarter": {
+      "focus_blender_xyz_m": [
+        0.0,
+        0.0,
+        0.09000000357627869
+      ],
+      "ortho_scale_m": 0.3343999981880188
+    },
+    "top": {
+      "focus_blender_xyz_m": [
+        0.0,
+        0.0,
+        0.09000000357627869
+      ],
+      "ortho_scale_m": 0.3343999981880188
+    },
+    "underside": {
+      "focus_blender_xyz_m": [
+        0.0,
+        0.0,
+        0.09000000357627869
+      ],
+      "ortho_scale_m": 0.3343999981880188
+    }
+  },
+  "lights": [
+    {
+      "name": "key",
+      "offset_from_focus_m": [
+        0.3959999978542328,
+        -0.5719999969005585,
+        0.6599999964237213
+      ],
+      "energy_w": 14.519999842643738,
+      "rectangle_size_m": [
+        0.4619999974966049,
+        0.4619999974966049
+      ]
+    },
+    {
+      "name": "fill",
+      "offset_from_focus_m": [
+        -0.5499999970197678,
+        -0.2199999988079071,
+        0.35199999809265137
+      ],
+      "energy_w": 5.323999942302704,
+      "rectangle_size_m": [
+        0.4839999973773957,
+        0.4839999973773957
+      ]
+    },
+    {
+      "name": "rim",
+      "offset_from_focus_m": [
+        0.10999999940395355,
+        0.4839999973773957,
+        0.527999997138977
+      ],
+      "energy_w": 10.647999884605408,
+      "rectangle_size_m": [
+        0.32999999821186066,
+        0.32999999821186066
+      ]
+    },
+    {
+      "name": "reflection-strip",
+      "offset_from_focus_m": [
+        0.2639999985694885,
+        -0.4399999976158142,
+        0.3959999978542328
+      ],
+      "energy_w": 7.74399991607666,
+      "rectangle_size_m": [
+        0.6159999966621399,
+        0.02199999988079071
+      ]
+    }
+  ],
+  "lighting_passes": {
+    "beauty_and_clay": [
+      "key",
+      "fill",
+      "rim"
+    ],
+    "reflection": [
+      "reflection-strip"
+    ],
+    "silhouette": []
+  },
+  "world": {
+    "color_linear_rgb": [
+      0.095,
+      0.095,
+      0.095
+    ],
+    "strength": 0.45,
+    "silhouette_color_linear_rgb": [
+      1,
+      1,
+      1
+    ],
+    "silhouette_strength": 1
+  }
+}

@@ -1,5 +1,9 @@
 # Child character model
 
+**Current revision: [v02](blend/child__v02.md), 2026-11-21.** The original generated mesh is corrected again from the detailed source: smoother shoulder/arm transitions, clean facial and clothing colors, balanced reduction, and separate clothed/bath exports. The hand/label contract is preserved. See [clothed comparison](../quality/existing-models/child-clothed/index.html) and [bath comparison](../quality/existing-models/child-bath/index.html). Current files and measurements are in the ledger/manifest; the following v01 record is historical.
+
+## Archived v01 production record
+
 Created on **2026-11-20** through the required **reference image → Image to 3D → Blender adjustment → GLB** pipeline. Codex operated the image, Meshy, and Blender steps. The reference shows a clothed original toy character; the bathing variant is a documented Blender derivative of that same generated geometry, not a separate generation or a replacement primitive character.
 
 | Stage | File |

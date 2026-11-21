@@ -1,0 +1,80 @@
+{
+  "id": "adult",
+  "bottom_center_correction": [
+    0.014078214764595032,
+    0.001163199543952942,
+    -0.00022710429038852453
+  ],
+  "sha256": "61ce44be0c7547ffc58ca3c3242ff86ed564246b6ca3515c73250e2117286fd2",
+  "bytes": 739012,
+  "blend_sha256": "43418e26f3abe3951afa457d8c5daf5557fca6d9162815ab4cc150e211f9b78d",
+  "meshes": {
+    "outfit_bath": {
+      "shoulder_band_z": [
+        1.15,
+        1.25
+      ],
+      "shoulder_width": 0.6565626859664917,
+      "hand_nearest_vertex_distance": 0.008024517531400394,
+      "vertices": 4850,
+      "triangles": 5800,
+      "head_triangles": 2299,
+      "bounds_blender_xyz": [
+        [
+          -0.384249210357666,
+          -0.2743406891822815,
+          0.0
+        ],
+        [
+          0.3806253671646118,
+          0.2743406891822815,
+          1.7001031637191772
+        ]
+      ],
+      "nonmanifold_after_uv_weld": 0
+    },
+    "outfit_clothed": {
+      "shoulder_band_z": [
+        1.15,
+        1.25
+      ],
+      "shoulder_width": 0.656090259552002,
+      "hand_nearest_vertex_distance": 0.008024517531400394,
+      "vertices": 4847,
+      "triangles": 5800,
+      "head_triangles": 2218,
+      "bounds_blender_xyz": [
+        [
+          -0.38610392808914185,
+          -0.2743406891822815,
+          0.0
+        ],
+        [
+          0.38610392808914185,
+          0.2743406891822815,
+          1.7001031637191772
+        ]
+      ],
+      "nonmanifold_after_uv_weld": 0
+    }
+  },
+  "sockets": {
+    "socket_carry": [
+      -0.23999999463558197,
+      -0.20000000298023224,
+      0.8999999761581421
+    ],
+    "socket_hand_r": [
+      -0.3077082633972168,
+      -0.2201717048883438,
+      0.8723217844963074
+    ],
+    "socket_label": [
+      0.0,
+      0.0,
+      1.850000023841858
+    ]
+  },
+  "inspection_images_rendered_from_sha256": "ce320d1466191b1c95cf9ce36f2725740b73af02ca6ca2cc6ca59b0dd50c0f8f",
+  "metadata_only_sanitization_proof": "assets/quality/existing-models/embedded-png-sanitization.json"
+}

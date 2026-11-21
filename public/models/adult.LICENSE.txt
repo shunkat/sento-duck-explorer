@@ -9,6 +9,11 @@ and static carrying pose, project-color UV baking, smooth featureless bath
 variant, metric scale, bottom-center origin, hand/carry/label sockets and GLB export.
 The original generated head, face and hair geometry is retained.
 
+Revision v02, 2026-11-21: source-based shoulder/carry-pose correction with
+protected legs, localized facial-relief cleanup, continuous facial/clothing
+color baking, balanced reduction and detailed-source normals. Static opaque
+toy variants and original hand/carry/label sockets are retained.
+
 Source and provenance:
 https://github.com/shunkat/sento-duck-explorer/tree/main/assets/adult
 

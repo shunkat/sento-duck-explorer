@@ -89,6 +89,8 @@ The user deferred normal-input play and requested finishing work, then reported 
 - [x] Repeatable quality loop: archive prior exports; reimport actual GLBs; generate five directions × four diagnostic materials; reject visual regressions even when geometry checks pass. Preserve the research, rejected-candidate reasons, sampled errors and final comparison hashes.
 - [x] Prevent basin stretching in placement; test proportions and openings; count actual all-visible scene geometry with every human outfit combination (59,576 triangles under the unchanged 60,000 limit).
 - [x] Duck v02: local eye correction on the original generated body, export/reimport and multi-angle asset renders; bounds and sockets preserved.
+- [x] Broader existing-model correction after additional user feedback: Duck v03 head/torso/wing/color refinement, hat v02 source-profile/loop retopology, and human v02 facial/shoulder/pose/clothing corrections. Preserve prior GLBs, raw sources, detailed masters and the exact socket contracts. Fixed comparisons and separate material QA accepted the selected revisions; this is not Crew B code review or user acceptance. See `assets/quality/existing-models/index.html`.
+- [x] Verify current all-visible scene geometry (59,776 triangles), real exported human shoulders/hand proximity, static hat/carry fit and self-contained textures. Validate source-script reproducibility and remove embedded PNG metadata without changing geometry or retained image data. Final automated results are in the progress record.
 - [ ] Independent review of this finishing batch.
 - [ ] Final in-game visual checks / normal-input play: deferred at the user's request.
 

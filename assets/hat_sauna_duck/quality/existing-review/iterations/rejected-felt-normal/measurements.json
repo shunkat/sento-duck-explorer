@@ -1,0 +1,183 @@
+{
+  "revision": "v02",
+  "source_sha256": "748701e961177aafc0b5050a2ba75b045d4eca5077f88d50d6a3c587a659a7c5",
+  "source_uniform_scale": 0.09478333295408269,
+  "master": {
+    "triangles": 96572,
+    "vertices": 48284,
+    "nonmanifold_edges": 0,
+    "bounds_blender_zup_m": [
+      [
+        -0.08993517607450485,
+        -0.09000000357627869,
+        0.0
+      ],
+      [
+        0.08993517607450485,
+        0.09000000357627869,
+        0.16427183151245117
+      ]
+    ],
+    "dimensions_gltf_m": [
+      0.1798703521490097,
+      0.16427183151245117,
+      0.18000000715255737
+    ],
+    "finite_vertices": true
+  },
+  "runtime_before_export": {
+    "triangles": 2064,
+    "vertices": 1034,
+    "nonmanifold_edges": 0,
+    "bounds_blender_zup_m": [
+      [
+        -0.0897190272808075,
+        -0.0897190272808075,
+        0.0
+      ],
+      [
+        0.0897190272808075,
+        0.0897190272808075,
+        0.16515982151031494
+      ]
+    ],
+    "dimensions_gltf_m": [
+      0.179438054561615,
+      0.16515982151031494,
+      0.179438054561615
+    ],
+    "finite_vertices": true
+  },
+  "source_retopology": {
+    "outer_profile_radius_height_m": [
+      [
+        0.010863341146122649,
+        0.1245
+      ],
+      [
+        0.02108381006711831,
+        0.122
+      ],
+      [
+        0.03135579531715871,
+        0.116
+      ],
+      [
+        0.03710651948172866,
+        0.112
+      ],
+      [
+        0.04212310913733183,
+        0.108
+      ],
+      [
+        0.04716736975424415,
+        0.102
+      ],
+      [
+        0.050174961164860435,
+        0.096
+      ],
+      [
+        0.056594224455419395,
+        0.08
+      ],
+      [
+        0.06233564048005327,
+        0.06
+      ],
+      [
+        0.06893311782863223,
+        0.04
+      ],
+      [
+        0.07878454272651281,
+        0.023
+      ],
+      [
+        0.08731118813432212,
+        0.012
+      ],
+      [
+        0.08971902390175945,
+        0.006
+      ]
+    ],
+    "inner_profile_radius_height_m": [
+      [
+        0.07759070984295108,
+        0.006
+      ],
+      [
+        0.07041848588706048,
+        0.02
+      ],
+      [
+        0.06038383654291581,
+        0.042
+      ],
+      [
+        0.05316250530746414,
+        0.065
+      ],
+      [
+        0.04729883668965752,
+        0.085
+      ],
+      [
+        0.037635380837855725,
+        0.101
+      ],
+      [
+        0.02627177032483626,
+        0.111
+      ]
+    ],
+    "profile_segments": 40,
+    "loop_segments": 32,
+    "loop_cross_segments": 6,
+    "loop_source_fit": {
+      "center_z_m": 0.1443616056873035,
+      "centerline_radii_xz_m": [
+        0.012975242711664652,
+        0.01679822166284039
+      ],
+      "radial_halfwidth_m": 0.004,
+      "depth_halfwidth_m": 0.008272801623902926,
+      "tilt_y_slope": 0.2628252500793187,
+      "tilt_y_intercept": -0.03465912390587487
+    },
+    "regularization": "Radially averaged source profile; least-squares ellipse for source loop. Intended soft felt symmetry; no unrelated primitive."
+  },
+  "glb_sha256": "f81d6fba6f6b938a1820e10eb92d05eaf4edd763f3c0042fe6d3301b2f66feb0",
+  "glb_bytes": 318796,
+  "blend_sha256": "3164c60a87830bb72b9c8c5453b6e479ad883bfc6ec6888dfae7d78d3b6502f3",
+  "reimported_meshes": {
+    "hat_sauna_duck": {
+      "triangles": 2064,
+      "vertices": 1417,
+      "nonmanifold_edges": 718,
+      "bounds_blender_zup_m": [
+        [
+          -0.0897190272808075,
+          -0.0897190272808075,
+          0.0
+        ],
+        [
+          0.0897190272808075,
+          0.0897190272808075,
+          0.16515982151031494
+        ]
+      ],
+      "dimensions_gltf_m": [
+        0.179438054561615,
+        0.16515982151031494,
+        0.179438054561615
+      ],
+      "finite_vertices": true
+    }
+  },
+  "triangles": 2064,
+  "material_count": 1,
+  "texture_count": 1
+}

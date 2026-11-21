@@ -9,6 +9,11 @@ project-color UV baking, a simplified opaque bathing-state derivative,
 metric scale, bottom-center origin, hand/label sockets, and GLB export.
 The original generated face and hair are retained in both outfit variants.
 
+Revision v02, 2026-11-21: source-based shoulder/arm pose correction,
+localized facial-relief cleanup, continuous facial and clothing color baking,
+balanced runtime reduction and detailed-source normals. Static opaque toy
+variants and original hand/label sockets are retained.
+
 Source and provenance:
 https://github.com/shunkat/sento-duck-explorer/tree/main/assets/child
 
