@@ -1,0 +1,60 @@
+{
+  "revision": "v01",
+  "retrieved": "2026-11-21",
+  "style_reference": "assets/sento_environment/ref/sento_environment__style_v01.png",
+  "public_sources": [
+    {
+      "creator": "Quaternius",
+      "pack": "Ultimate RPG Pack",
+      "official_page": "https://quaternius.com/packs/ultimaterpg.html",
+      "license": "CC0 1.0 Universal",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "retained_files": [
+        {
+          "path": "source/Coin.mtl",
+          "bytes": 230,
+          "sha256": "cbddbfee4e54e88152d619a0c3c1dafd2b3b6294c2d7e28264efaec9cf59aa26"
+        },
+        {
+          "path": "source/Coin.obj",
+          "bytes": 17199,
+          "sha256": "4947422a5be8d460fa5cf21e3a7428d08c20db51edd8d5440f5591edd9d0d89a"
+        },
+        {
+          "path": "source/Key1.mtl",
+          "bytes": 231,
+          "sha256": "e5807ded7a18ef9e2d209b78b75a58963c1abbde521275112ac2d7553d7d163e"
+        },
+        {
+          "path": "source/Key1.obj",
+          "bytes": 10790,
+          "sha256": "829a354bf303c6033e6a836a12aef7df4ec1cebdf91e6a3ddd3d25c56935defb"
+        },
+        {
+          "path": "source/Quaternius-License.txt",
+          "bytes": 364,
+          "sha256": "83d8959f9fc56353ed571fbe2dc52e4bcd64508e2399501cd45ac2ce3df0bf8c"
+        }
+      ],
+      "selection": "Coin.obj and Key1.obj were downloaded, inspected and used. Key2, Key3 and Key4 were inspected privately and rejected for overly ornate silhouettes."
+    }
+  ],
+  "other_research": [
+    {
+      "pack": "Kenney Furniture Kit and Nature Kit",
+      "official_pages": [
+        "https://kenney.nl/assets/furniture-kit",
+        "https://kenney.nl/assets/nature-kit"
+      ],
+      "terms": "https://kenney.nl/support",
+      "result": "Parallel curator inventory of the actual downloaded archives found no matching soap, folded towel, coin or key."
+    }
+  ],
+  "authored_assets": [
+    "soap",
+    "towel"
+  ],
+  "project_rights": "Project-held rights in authored geometry, edits and code are released under the repository MIT license; unmodified Quaternius inputs remain CC0.",
+  "paid_services_used": false,
+  "gameplay_verified": false
+}

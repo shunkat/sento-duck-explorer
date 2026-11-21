@@ -803,6 +803,335 @@
         "tool": "Blender 5.2.4 LTS; actual GLB reimport"
       },
       "notes": "Adult-derived static background NPC; independent shape QA passed. World placement, scene budget and runtime integration pending. Natural 1.6m compact standing poses fit old footprint boxes; seated uses uniform 0.90/quarter-turn with 0.405m bench. No animation or close-up hero quality is claimed."
+    },
+    "npc_staff_lod_far": {
+      "stage": 3,
+      "status": "exported",
+      "parent_asset": "npc_staff",
+      "revision": "far_v01",
+      "limits": {
+        "triangles": 600,
+        "materials": 1,
+        "texture_px": 512,
+        "glb_mb": 0.25
+      },
+      "measured": {
+        "height": 1.5977282524108887,
+        "width": 0.5547386705875397,
+        "depth": 0.3185315281152725,
+        "max_width": 0.5547386705875397,
+        "triangles": 600,
+        "vertices": 759,
+        "materials": 1,
+        "textures": 1,
+        "texture_px": 512,
+        "glb_bytes": 112248,
+        "glb_mb": 0.112248,
+        "bounds": {
+          "min": [
+            -0.2769838273525238,
+            0.0,
+            -0.15645603835582733
+          ],
+          "max": [
+            0.27775484323501587,
+            1.5977282524108887,
+            0.1620754897594452
+          ]
+        },
+        "sha256": "08f8e62f7e2930afeae5cce40c0db3a4f5882ed36fb19b6b3e25cb51a7705977",
+        "measured_date": "2026-11-21",
+        "tool": "Blender5.2.4 actualGLB reimport"
+      },
+      "notes": "Source geometry and UV inherited from accepted NPC; independent material QA accepts only beyond6m camera-to-center or Overview. Use parent authored frame unchanged, no renormalization."
+    },
+    "npc_bath_standing_lod_far": {
+      "stage": 3,
+      "status": "exported",
+      "parent_asset": "npc_bath_standing",
+      "revision": "far_v01",
+      "limits": {
+        "triangles": 600,
+        "materials": 1,
+        "texture_px": 512,
+        "glb_mb": 0.25
+      },
+      "measured": {
+        "height": 1.5999999046325684,
+        "width": 0.5495697557926178,
+        "depth": 0.3192524313926697,
+        "max_width": 0.5495697557926178,
+        "triangles": 600,
+        "vertices": 749,
+        "materials": 1,
+        "textures": 1,
+        "texture_px": 512,
+        "glb_bytes": 100748,
+        "glb_mb": 0.100748,
+        "bounds": {
+          "min": [
+            -0.27758678793907166,
+            0.0,
+            -0.15681715309619904
+          ],
+          "max": [
+            0.27198296785354614,
+            1.5999999046325684,
+            0.16243527829647064
+          ]
+        },
+        "sha256": "02b12e2815c7f5304cd13d2214aca05def733af298e691fd801b768a8899d154",
+        "measured_date": "2026-11-21",
+        "tool": "Blender5.2.4 actualGLB reimport"
+      },
+      "notes": "Source geometry and UV inherited from accepted NPC; independent material QA accepts only beyond6m camera-to-center or Overview. Use parent authored frame unchanged, no renormalization."
+    },
+    "npc_seated_lod_far": {
+      "stage": 3,
+      "status": "exported",
+      "parent_asset": "npc_seated",
+      "revision": "far_v01",
+      "limits": {
+        "triangles": 600,
+        "materials": 1,
+        "texture_px": 512,
+        "glb_mb": 0.25
+      },
+      "measured": {
+        "height": 1.4174082279205322,
+        "width": 0.6619561612606049,
+        "depth": 0.6408556997776031,
+        "max_width": 0.6619561612606049,
+        "triangles": 600,
+        "vertices": 742,
+        "materials": 1,
+        "textures": 1,
+        "texture_px": 512,
+        "glb_bytes": 100492,
+        "glb_mb": 0.100492,
+        "bounds": {
+          "min": [
+            -0.32925355434417725,
+            0.0,
+            -0.31600284576416016
+          ],
+          "max": [
+            0.3327026069164276,
+            1.4174082279205322,
+            0.324852854013443
+          ]
+        },
+        "sha256": "9ada2f668214e57a256d96971b471ed5997e15fb24713e5443e9d2e85ef6164c",
+        "measured_date": "2026-11-21",
+        "tool": "Blender5.2.4 actualGLB reimport"
+      },
+      "notes": "Source geometry and UV inherited from accepted NPC; independent material QA accepts only beyond6m camera-to-center or Overview. Use parent authored frame unchanged, no renormalization."
+    },
+    "soap": {
+      "stage": 3,
+      "status": "exported",
+      "revision": "v01",
+      "parent_asset": "sento_environment",
+      "limits": {
+        "triangles": 300,
+        "materials": 2,
+        "texture_px": 0,
+        "glb_mb": 0.05
+      },
+      "measured": {
+        "height": 0.07999999821186066,
+        "width": 0.30000001192092896,
+        "depth": 0.18000000715255737,
+        "max_width": 0.30000001192092896,
+        "triangles": 236,
+        "vertices": 120,
+        "materials": 1,
+        "textures": 0,
+        "texture_px": 0,
+        "glb_bytes": 5612,
+        "glb_mb": 0.005612,
+        "bounds": {
+          "min": [
+            -0.15000000596046448,
+            0.0,
+            -0.09000000357627869
+          ],
+          "max": [
+            0.15000000596046448,
+            0.07999999821186066,
+            0.09000000357627869
+          ]
+        },
+        "sha256": "778a302d2997b4f07ccd7716cccefd6110fc6308e610b91fa1dde3c6ff8ee4a1",
+        "measured_date": "2026-11-21",
+        "tool": "Blender 5.2.4 actual GLB reimport"
+      }
+    },
+    "towel": {
+      "stage": 3,
+      "status": "exported",
+      "revision": "v01",
+      "parent_asset": "sento_environment",
+      "limits": {
+        "triangles": 350,
+        "materials": 2,
+        "texture_px": 0,
+        "glb_mb": 0.05
+      },
+      "measured": {
+        "height": 0.03999999910593033,
+        "width": 0.25999999046325684,
+        "depth": 0.18000000715255737,
+        "max_width": 0.25999999046325684,
+        "triangles": 296,
+        "vertices": 194,
+        "materials": 2,
+        "textures": 0,
+        "texture_px": 0,
+        "glb_bytes": 8536,
+        "glb_mb": 0.008536,
+        "bounds": {
+          "min": [
+            -0.12999999523162842,
+            0.0,
+            -0.09000000357627869
+          ],
+          "max": [
+            0.12999999523162842,
+            0.03999999910593033,
+            0.09000000357627869
+          ]
+        },
+        "sha256": "6e62f7d6670f3dcacb256c473bf5f0524c6acec6afc188e90bf81eff34913af2",
+        "measured_date": "2026-11-21",
+        "tool": "Blender 5.2.4 actual GLB reimport"
+      }
+    },
+    "coin_500": {
+      "stage": 3,
+      "status": "exported",
+      "revision": "v01",
+      "parent_asset": "quaternius_coin",
+      "limits": {
+        "triangles": 650,
+        "materials": 2,
+        "texture_px": 0,
+        "glb_mb": 0.05
+      },
+      "measured": {
+        "height": 0.029999999329447746,
+        "width": 0.20000000298023224,
+        "depth": 0.20000000298023224,
+        "max_width": 0.20000000298023224,
+        "triangles": 608,
+        "vertices": 432,
+        "materials": 2,
+        "textures": 0,
+        "texture_px": 0,
+        "glb_bytes": 16264,
+        "glb_mb": 0.016264,
+        "bounds": {
+          "min": [
+            -0.10000000149011612,
+            0.0,
+            -0.10000000149011612
+          ],
+          "max": [
+            0.10000000149011612,
+            0.029999999329447746,
+            0.10000000149011612
+          ]
+        },
+        "sha256": "dbe1edb0df17fc89c2cf0bda731cfffc0d34532354e8c3189c6e80e0e9cca728",
+        "measured_date": "2026-11-21",
+        "tool": "Blender 5.2.4 actual GLB reimport"
+      }
+    },
+    "sauna_key": {
+      "stage": 3,
+      "status": "exported",
+      "revision": "v01",
+      "parent_asset": "quaternius_key",
+      "limits": {
+        "triangles": 500,
+        "materials": 2,
+        "texture_px": 0,
+        "glb_mb": 0.05
+      },
+      "measured": {
+        "height": 0.03999999910593033,
+        "width": 0.18000000715255737,
+        "depth": 0.07999999821186066,
+        "max_width": 0.18000000715255737,
+        "triangles": 468,
+        "vertices": 530,
+        "materials": 1,
+        "textures": 0,
+        "texture_px": 0,
+        "glb_bytes": 21348,
+        "glb_mb": 0.021348,
+        "bounds": {
+          "min": [
+            -0.09000000357627869,
+            0.0,
+            -0.03999999910593033
+          ],
+          "max": [
+            0.09000000357627869,
+            0.03999999910593033,
+            0.03999999910593033
+          ]
+        },
+        "sha256": "af26205e80c9ecb4a850e01c1c8169ddecc01858cffa449835587e4eed5a217a",
+        "measured_date": "2026-11-21",
+        "tool": "Blender 5.2.4 actual GLB reimport"
+      }
+    },
+    "sento_environment": {
+      "stage": 3,
+      "status": "exported",
+      "revision": "v01",
+      "origin": "Identity root; authored world coordinates from LEVEL, not normalized",
+      "limits": {
+        "triangles": 20200,
+        "architecture_triangles": 8000,
+        "materials": 18,
+        "textures": 11,
+        "texture_px": 2172,
+        "glb_mb": 7
+      },
+      "measured": {
+        "height": 3.0399999916553497,
+        "width": 39.29999852180481,
+        "depth": 21.200000762939453,
+        "max_width": 39.29999852180481,
+        "triangles": 20196,
+        "architecture_triangles": 7996,
+        "npc_triangles": 12200,
+        "vertices": 26210,
+        "materials": 17,
+        "textures": 11,
+        "texture_px": 2172,
+        "glb_bytes": 6328656,
+        "glb_mb": 6.328656,
+        "bounds": {
+          "min": [
+            -3.200000047683716,
+            -0.28999999165534973,
+            -9.100000381469727
+          ],
+          "max": [
+            36.099998474121094,
+            2.75,
+            12.100000381469727
+          ]
+        },
+        "sha256": "29f7ad1219bb6a6fef625c76d091bd34b73600d691de5c00e967c5ccceb7df61",
+        "measured_date": "2026-11-21",
+        "tool": "Blender 5.2.4 actual GLB reimport"
+      },
+      "layout_sha256": "8bee95aa4ad7e753f521c4327e7586d3df4717e6c1aa9072790a0c40ecc52ab5",
+      "quality_record": "assets/sento_environment/quality/measurements.json"
     }
   },
   "scene_limits": {

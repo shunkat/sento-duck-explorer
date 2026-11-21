@@ -1,0 +1,390 @@
+{
+  "package": "kenney_nature",
+  "creator": "Kenney",
+  "version_from_bundled_license": "2.1",
+  "official_page": "https://kenney.nl/assets/nature-kit",
+  "license": "CC0-1.0",
+  "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "license_file": "assets/public_sources/kenney_nature/License.txt",
+  "license_sha256": "cb96b75e3560ac78d7a53ce6f083f4cdb5c53faea6141b62d63458dcfe1e4b9d",
+  "download_url": "https://github.com/WaviestSun/atelier-packs/releases/download/packs-2/kenney_nature-kit.zip",
+  "redistributor": "WaviestSun/atelier-packs",
+  "redistributor_manifest": "https://github.com/WaviestSun/atelier-packs",
+  "archive_sha256": "fa7974a0d342bfe63c38664ba9f8ec1a4aab8ea25f099bdc56870e33588c4d9d",
+  "archive_bytes": 10537521,
+  "provenance_note": "Author asset page confirms CC0; included author license retained. Download is an explicitly identified CC0 redistribution. Archive SHA matches the redistributor published checksum. No direct byte comparison against a current author download is claimed.",
+  "models": [
+    {
+      "original_filename": "fence_planks.glb",
+      "path": "assets/public_sources/kenney_nature/models/fence_planks.glb",
+      "sha256": "2db68f60d24443dbeab05dedd92fcc665d0e21bd261c6a668ea9022a732a06a9",
+      "bytes": 7720,
+      "triangles": 96,
+      "dimensions_gltf_xyz": [
+        1.0,
+        0.34502729773521423,
+        0.09589999914169312
+      ],
+      "bounds_blender_xyz": [
+        [
+          -0.5,
+          0.4300000071525574,
+          -0.05000000074505806
+        ],
+        [
+          0.5,
+          0.5259000062942505,
+          0.2950272858142853
+        ]
+      ],
+      "finite": true,
+      "materials": [
+        {
+          "name": "wood",
+          "metallic": 1.0
+        }
+      ],
+      "original_archive_path": "Models/GLTF format/fence_planks.glb",
+      "original_bytes_preserved": true,
+      "inspection": "quality/kenney_nature-source-review.png",
+      "selection_note": "Usable source silhouette; match the approved sento palette and physical dimensions during Blender integration."
+    },
+    {
+      "original_filename": "fence_simpleHigh.glb",
+      "path": "assets/public_sources/kenney_nature/models/fence_simpleHigh.glb",
+      "sha256": "12fec55c302bdcfc7d67946e8c4bed8d96bcb2a8d42817c3021cc94b7272891e",
+      "bytes": 4300,
+      "triangles": 44,
+      "dimensions_gltf_xyz": [
+        1.041205883026123,
+        0.34502729773521423,
+        0.11120572686195374
+      ],
+      "bounds_blender_xyz": [
+        [
+          -0.5206030011177063,
+          0.409397155046463,
+          -0.05000000074505806
+        ],
+        [
+          0.5206028819084167,
+          0.5206028819084167,
+          0.2950272858142853
+        ]
+      ],
+      "finite": true,
+      "materials": [
+        {
+          "name": "wood.001",
+          "metallic": 1.0
+        }
+      ],
+      "original_archive_path": "Models/GLTF format/fence_simpleHigh.glb",
+      "original_bytes_preserved": true,
+      "inspection": "quality/kenney_nature-source-review.png",
+      "selection_note": "Usable source silhouette; match the approved sento palette and physical dimensions during Blender integration."
+    },
+    {
+      "original_filename": "plant_bushDetailed.glb",
+      "path": "assets/public_sources/kenney_nature/models/plant_bushDetailed.glb",
+      "sha256": "2e0487020d68ccf664435db9d829c78ae00e6d2785ee3ec10b9f89cc70a10406",
+      "bytes": 10172,
+      "triangles": 104,
+      "dimensions_gltf_xyz": [
+        0.6025437116622925,
+        0.3604109287261963,
+        0.6025437116622925
+      ],
+      "bounds_blender_xyz": [
+        [
+          -0.30127185583114624,
+          -0.30127185583114624,
+          -0.05000000074505806
+        ],
+        [
+          0.30127185583114624,
+          0.30127185583114624,
+          0.31041091680526733
+        ]
+      ],
+      "finite": true,
+      "materials": [
+        {
+          "name": "grass",
+          "metallic": 1.0
+        }
+      ],
+      "original_archive_path": "Models/GLTF format/plant_bushDetailed.glb",
+      "original_bytes_preserved": true,
+      "inspection": "quality/kenney_nature-source-review.png",
+      "selection_note": "Preferred outdoor foliage: coherent layered leaf silhouette; remap to natural green and metallic 0."
+    },
+    {
+      "original_filename": "plant_bushLarge.glb",
+      "path": "assets/public_sources/kenney_nature/models/plant_bushLarge.glb",
+      "sha256": "10e1d9fbf29d96d1d1a56fb2ce25ae66537505101759229afe01ae22c6c45e02",
+      "bytes": 6436,
+      "triangles": 60,
+      "dimensions_gltf_xyz": [
+        0.3743099868297577,
+        0.2429330199956894,
+        0.3356877863407135
+      ],
+      "bounds_blender_xyz": [
+        [
+          -0.18715499341487885,
+          -0.16784389317035675,
+          -0.05000000074505806
+        ],
+        [
+          0.18715499341487885,
+          0.16784389317035675,
+          0.19293302297592163
+        ]
+      ],
+      "finite": true,
+      "materials": [
+        {
+          "name": "grass.001",
+          "metallic": 1.0
+        }
+      ],
+      "original_archive_path": "Models/GLTF format/plant_bushLarge.glb",
+      "original_bytes_preserved": true,
+      "inspection": "quality/kenney_nature-source-review.png",
+      "selection_note": "Conditional: open bowl-like silhouette; do not use unmodified as a dense hedge."
+    },
+    {
+      "original_filename": "plant_flatTall.glb",
+      "path": "assets/public_sources/kenney_nature/models/plant_flatTall.glb",
+      "sha256": "b192523736f32754788de4dc7a5dcf30a58322b260ec8969120c91432a10b633",
+      "bytes": 3480,
+      "triangles": 32,
+      "dimensions_gltf_xyz": [
+        0.2716556191444397,
+        0.28430941700935364,
+        0.2716556191444397
+      ],
+      "bounds_blender_xyz": [
+        [
+          -0.13582780957221985,
+          -0.13582780957221985,
+          -0.05000000074505806
+        ],
+        [
+          0.13582780957221985,
+          0.13582780957221985,
+          0.23430941998958588
+        ]
+      ],
+      "finite": true,
+      "materials": [
+        {
+          "name": "leafsGreen",
+          "metallic": 1.0
+        }
+      ],
+      "original_archive_path": "Models/GLTF format/plant_flatTall.glb",
+      "original_bytes_preserved": true,
+      "inspection": "quality/kenney_nature-source-review.png",
+      "selection_note": "Conditional: thin one-sided leaves show dark backs; fix normals/double-sided material before use."
+    },
+    {
+      "original_filename": "rock_largeA.glb",
+      "path": "assets/public_sources/kenney_nature/models/rock_largeA.glb",
+      "sha256": "6dd15390fd96501dcd1454765a17ba61dbbd8d47705dfe5149c8dd92b353ce25",
+      "bytes": 7552,
+      "triangles": 80,
+      "dimensions_gltf_xyz": [
+        0.7849066853523254,
+        0.25977596640586853,
+        1.0154614448547363
+      ],
+      "bounds_blender_xyz": [
+        [
+          -0.3924533426761627,
+          -0.5077307224273682,
+          -0.05000000074505806
+        ],
+        [
+          0.3924533426761627,
+          0.5077307224273682,
+          0.20977596938610077
+        ]
+      ],
+      "finite": true,
+      "materials": [
+        {
+          "name": "dirt",
+          "metallic": 1.0
+        },
+        {
+          "name": "grass.002",
+          "metallic": 1.0
+        }
+      ],
+      "original_archive_path": "Models/GLTF format/rock_largeA.glb",
+      "original_bytes_preserved": true,
+      "inspection": "quality/kenney_nature-source-review.png",
+      "selection_note": "Rejected for tall rock-row colliders: the low source silhouette reads as flat stacked stones when piled. Retained original may suit a low ground accent; use the later round-rock selection for the onsen row."
+    },
+    {
+      "original_filename": "rock_largeC.glb",
+      "path": "assets/public_sources/kenney_nature/models/rock_largeC.glb",
+      "sha256": "23aee8b727adeaf260207af3e0615dc69aa766c6d87de1d44cbc8c2711d74dd1",
+      "bytes": 7004,
+      "triangles": 72,
+      "dimensions_gltf_xyz": [
+        1.064409852027893,
+        0.3211120069026947,
+        1.0156620740890503
+      ],
+      "bounds_blender_xyz": [
+        [
+          -0.5322049260139465,
+          -0.5078310370445251,
+          -0.05000000074505806
+        ],
+        [
+          0.5322049260139465,
+          0.5078310370445251,
+          0.27111199498176575
+        ]
+      ],
+      "finite": true,
+      "materials": [
+        {
+          "name": "dirt.001",
+          "metallic": 1.0
+        },
+        {
+          "name": "grass.003",
+          "metallic": 1.0
+        }
+      ],
+      "original_archive_path": "Models/GLTF format/rock_largeC.glb",
+      "original_bytes_preserved": true,
+      "inspection": "quality/kenney_nature-source-review.png",
+      "selection_note": "Rejected for tall rock-row colliders: the low source silhouette reads as flat stacked stones when piled. Retained original may suit a low ground accent; use the later round-rock selection for the onsen row."
+    },
+    {
+      "original_filename": "rock_largeE.glb",
+      "path": "assets/public_sources/kenney_nature/models/rock_largeE.glb",
+      "sha256": "8207ce8100b7c756e55e67bee030edadeb332d7d72220027b5818f1987039def",
+      "bytes": 6464,
+      "triangles": 64,
+      "dimensions_gltf_xyz": [
+        1.095458745956421,
+        0.2922479808330536,
+        0.9198710918426514
+      ],
+      "bounds_blender_xyz": [
+        [
+          -0.5477293729782104,
+          -0.4599355459213257,
+          -0.05000000074505806
+        ],
+        [
+          0.5477293729782104,
+          0.4599355459213257,
+          0.24224798381328583
+        ]
+      ],
+      "finite": true,
+      "materials": [
+        {
+          "name": "dirt.002",
+          "metallic": 1.0
+        },
+        {
+          "name": "grass.004",
+          "metallic": 1.0
+        }
+      ],
+      "original_archive_path": "Models/GLTF format/rock_largeE.glb",
+      "original_bytes_preserved": true,
+      "inspection": "quality/kenney_nature-source-review.png",
+      "selection_note": "Rejected for tall rock-row colliders: the low source silhouette reads as flat stacked stones when piled. Retained original may suit a low ground accent; use the later round-rock selection for the onsen row."
+    },
+    {
+      "original_filename": "rock_smallH.glb",
+      "path": "assets/public_sources/kenney_nature/models/rock_smallH.glb",
+      "sha256": "c798f7445350e8d79710a1d3e344b9ce4d4bcff5416a50268781d5121a353a7f",
+      "bytes": 6200,
+      "triangles": 60,
+      "dimensions_gltf_xyz": [
+        0.4618239998817444,
+        0.40739190578460693,
+        0.4618239998817444
+      ],
+      "bounds_blender_xyz": [
+        [
+          -0.2309119999408722,
+          -0.2309119999408722,
+          -0.05000000074505806
+        ],
+        [
+          0.2309119999408722,
+          0.2309119999408722,
+          0.357391893863678
+        ]
+      ],
+      "finite": true,
+      "materials": [
+        {
+          "name": "dirt",
+          "metallic": 1.0
+        },
+        {
+          "name": "grass",
+          "metallic": 1.0
+        }
+      ],
+      "original_archive_path": "Models/GLTF format/rock_smallH.glb",
+      "original_bytes_preserved": true,
+      "inspection": "quality/kenney_nature-round-rock-review.png",
+      "height_to_max_horizontal_extent": 0.8821367141788312,
+      "selection_note": "Round single boulder suitable for a single-layer onsen rock row; H is the fuller primary form, I is a lower accent. Do not stack flat source rocks or stretch this model vertically. Remap the original palette and metallic setting to matte stone/moss."
+    },
+    {
+      "original_filename": "rock_smallI.glb",
+      "path": "assets/public_sources/kenney_nature/models/rock_smallI.glb",
+      "sha256": "f7bbf2f4efbfe63977c4c6520762143ede95c63bff6484b9719db5e666a618e4",
+      "bytes": 5120,
+      "triangles": 44,
+      "dimensions_gltf_xyz": [
+        0.3583313226699829,
+        0.2778159976005554,
+        0.41376543045043945
+      ],
+      "bounds_blender_xyz": [
+        [
+          -0.17916566133499146,
+          -0.20688271522521973,
+          -0.05000000074505806
+        ],
+        [
+          0.17916566133499146,
+          0.20688271522521973,
+          0.22781600058078766
+        ]
+      ],
+      "finite": true,
+      "materials": [
+        {
+          "name": "grass.001",
+          "metallic": 1.0
+        },
+        {
+          "name": "dirt.001",
+          "metallic": 1.0
+        }
+      ],
+      "original_archive_path": "Models/GLTF format/rock_smallI.glb",
+      "original_bytes_preserved": true,
+      "inspection": "quality/kenney_nature-round-rock-review.png",
+      "height_to_max_horizontal_extent": 0.671433563935284,
+      "selection_note": "Round single boulder suitable for a single-layer onsen rock row; H is the fuller primary form, I is a lower accent. Do not stack flat source rocks or stretch this model vertically. Remap the original palette and metallic setting to matte stone/moss."
+    }
+  ]
+}

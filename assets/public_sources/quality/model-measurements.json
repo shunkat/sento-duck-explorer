@@ -1,0 +1,673 @@
+{
+  "kenney_furniture": [
+    {
+      "original_filename": "bathroomCabinet.glb",
+      "path": "assets/public_sources/kenney_furniture/models/bathroomCabinet.glb",
+      "sha256": "9db540227acaaedbbadc6a085f4a00460b73944e608afaad4770e53238a3b7f8",
+      "bytes": 7216,
+      "triangles": 64,
+      "dimensions_gltf_xyz": [
+        0.23000000417232513,
+        0.39000001549720764,
+        0.12999999523162842
+      ],
+      "bounds_blender_xyz": [
+        [
+          0.20000000298023224,
+          0.07999999821186066,
+          0.0
+        ],
+        [
+          0.4300000071525574,
+          0.20999999344348907,
+          0.39000001549720764
+        ]
+      ],
+      "finite": true,
+      "materials": [
+        {
+          "name": "wood",
+          "metallic": 0.0
+        },
+        {
+          "name": "wood",
+          "metallic": 0.0
+        },
+        {
+          "name": "woodDark",
+          "metallic": 0.0
+        },
+        {
+          "name": "metal",
+          "metallic": 0.0
+        }
+      ]
+    },
+    {
+      "original_filename": "bathroomMirror.glb",
+      "path": "assets/public_sources/kenney_furniture/models/bathroomMirror.glb",
+      "sha256": "940b986894101ea59b50541554b6dc608a22b133057975849259009012984175",
+      "bytes": 6792,
+      "triangles": 72,
+      "dimensions_gltf_xyz": [
+        0.3013399839401245,
+        0.4346250295639038,
+        0.1444000005722046
+      ],
+      "bounds_blender_xyz": [
+        [
+          0.0,
+          -0.09560000151395798,
+          4.443999015351155e-15
+        ],
+        [
+          0.3013399839401245,
+          0.04879999905824661,
+          0.4346250295639038
+        ]
+      ],
+      "finite": true,
+      "materials": [
+        {
+          "name": "wood.001",
+          "metallic": 0.0
+        },
+        {
+          "name": "metal.001",
+          "metallic": 0.0
+        },
+        {
+          "name": "glass",
+          "metallic": 0.0
+        }
+      ]
+    },
+    {
+      "original_filename": "bathroomSink.glb",
+      "path": "assets/public_sources/kenney_furniture/models/bathroomSink.glb",
+      "sha256": "39d4f19608cab7e0fed52303b2c689f5f51fae1bad9b6913cb53d838875e797e",
+      "bytes": 22536,
+      "triangles": 316,
+      "dimensions_gltf_xyz": [
+        0.3400000035762787,
+        0.5600000023841858,
+        0.28999999165534973
+      ],
+      "bounds_blender_xyz": [
+        [
+          0.0,
+          0.0,
+          -0.4000000059604645
+        ],
+        [
+          0.3400000035762787,
+          0.28999999165534973,
+          0.1599999964237213
+        ]
+      ],
+      "finite": true,
+      "materials": [
+        {
+          "name": "_defaultMat",
+          "metallic": 0.0
+        },
+        {
+          "name": "metalLight",
+          "metallic": 0.0
+        },
+        {
+          "name": "carpetWhite",
+          "metallic": 0.0
+        }
+      ]
+    },
+    {
+      "original_filename": "bench.glb",
+      "path": "assets/public_sources/kenney_furniture/models/bench.glb",
+      "sha256": "ba05a6d23a5a5a44da016757632070e47ff7587ce10e2f6d6d52328b4cf5489b",
+      "bytes": 10756,
+      "triangles": 170,
+      "dimensions_gltf_xyz": [
+        0.4000000059604645,
+        0.4699999988079071,
+        0.20000000298023224
+      ],
+      "bounds_blender_xyz": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.4000000059604645,
+          0.20000000298023224,
+          0.4699999988079071
+        ]
+      ],
+      "finite": true,
+      "materials": [
+        {
+          "name": "wood.002",
+          "metallic": 0.0
+        }
+      ]
+    },
+    {
+      "original_filename": "bookcaseOpenLow.glb",
+      "path": "assets/public_sources/kenney_furniture/models/bookcaseOpenLow.glb",
+      "sha256": "6d4d625faf977a2dbf155f1313cd32c6310e463114a1cd4c08cb9f80a5fb1d75",
+      "bytes": 11520,
+      "triangles": 184,
+      "dimensions_gltf_xyz": [
+        0.4000000059604645,
+        0.4000000059604645,
+        0.25
+      ],
+      "bounds_blender_xyz": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.4000000059604645,
+          0.25,
+          0.4000000059604645
+        ]
+      ],
+      "finite": true,
+      "materials": [
+        {
+          "name": "wood.003",
+          "metallic": 0.0
+        }
+      ]
+    },
+    {
+      "original_filename": "coatRack.glb",
+      "path": "assets/public_sources/kenney_furniture/models/coatRack.glb",
+      "sha256": "0f56540d57367ea6fea6b9aedf305d4fc58abeec8ff3b039dbff44360d819c76",
+      "bytes": 9948,
+      "triangles": 132,
+      "dimensions_gltf_xyz": [
+        0.4479999840259552,
+        0.2800000011920929,
+        0.13439999520778656
+      ],
+      "bounds_blender_xyz": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.4479999840259552,
+          0.13439999520778656,
+          0.2800000011920929
+        ]
+      ],
+      "finite": true,
+      "materials": [
+        {
+          "name": "metalMedium",
+          "metallic": 0.0
+        },
+        {
+          "name": "wood.004",
+          "metallic": 0.0
+        }
+      ]
+    },
+    {
+      "original_filename": "plantSmall1.glb",
+      "path": "assets/public_sources/kenney_furniture/models/plantSmall1.glb",
+      "sha256": "2b9c022feb47be857b2c4fdc29f36522766ba9b70c578c31d7c05d71b4377d15",
+      "bytes": 8224,
+      "triangles": 102,
+      "dimensions_gltf_xyz": [
+        0.09466072916984558,
+        0.14000000059604645,
+        0.09466072916984558
+      ],
+      "bounds_blender_xyz": [
+        [
+          -0.04733036458492279,
+          -0.04733036458492279,
+          0.0
+        ],
+        [
+          0.04733036458492279,
+          0.04733036458492279,
+          0.14000000059604645
+        ]
+      ],
+      "finite": true,
+      "materials": [
+        {
+          "name": "wood.005",
+          "metallic": 0.0
+        },
+        {
+          "name": "plant",
+          "metallic": 0.0
+        }
+      ]
+    },
+    {
+      "original_filename": "plantSmall2.glb",
+      "path": "assets/public_sources/kenney_furniture/models/plantSmall2.glb",
+      "sha256": "d7c8ff42c66dd4f9238a73570549813d1ca6c5f6f661d7af9cb764c4fce314b9",
+      "bytes": 12996,
+      "triangles": 158,
+      "dimensions_gltf_xyz": [
+        0.09466072916984558,
+        0.14000000059604645,
+        0.09466072916984558
+      ],
+      "bounds_blender_xyz": [
+        [
+          -0.04733036458492279,
+          -0.04733036458492279,
+          0.0
+        ],
+        [
+          0.04733036458492279,
+          0.04733036458492279,
+          0.14000000059604645
+        ]
+      ],
+      "finite": true,
+      "materials": [
+        {
+          "name": "wood.006",
+          "metallic": 0.0
+        },
+        {
+          "name": "plant.001",
+          "metallic": 0.0
+        }
+      ]
+    },
+    {
+      "original_filename": "pottedPlant.glb",
+      "path": "assets/public_sources/kenney_furniture/models/pottedPlant.glb",
+      "sha256": "5b760eda2766f75fda36b2c5df652a1662f82981ef64cd8fa7fe7bcd386b3a15",
+      "bytes": 7576,
+      "triangles": 60,
+      "dimensions_gltf_xyz": [
+        0.21205927431583405,
+        0.6540167927742004,
+        0.24146194756031036
+      ],
+      "bounds_blender_xyz": [
+        [
+          -0.10602963715791702,
+          -0.12073097378015518,
+          0.0
+        ],
+        [
+          0.10602963715791702,
+          0.12073097378015518,
+          0.6540167927742004
+        ]
+      ],
+      "finite": true,
+      "materials": [
+        {
+          "name": "wood.007",
+          "metallic": 0.0
+        },
+        {
+          "name": "woodDark.001",
+          "metallic": 0.0
+        },
+        {
+          "name": "plant.002",
+          "metallic": 0.0
+        }
+      ]
+    }
+  ],
+  "kenney_nature": [
+    {
+      "original_filename": "fence_planks.glb",
+      "path": "assets/public_sources/kenney_nature/models/fence_planks.glb",
+      "sha256": "2db68f60d24443dbeab05dedd92fcc665d0e21bd261c6a668ea9022a732a06a9",
+      "bytes": 7720,
+      "triangles": 96,
+      "dimensions_gltf_xyz": [
+        1.0,
+        0.34502729773521423,
+        0.09589999914169312
+      ],
+      "bounds_blender_xyz": [
+        [
+          -0.5,
+          0.4300000071525574,
+          -0.05000000074505806
+        ],
+        [
+          0.5,
+          0.5259000062942505,
+          0.2950272858142853
+        ]
+      ],
+      "finite": true,
+      "materials": [
+        {
+          "name": "wood",
+          "metallic": 1.0
+        }
+      ]
+    },
+    {
+      "original_filename": "fence_simpleHigh.glb",
+      "path": "assets/public_sources/kenney_nature/models/fence_simpleHigh.glb",
+      "sha256": "12fec55c302bdcfc7d67946e8c4bed8d96bcb2a8d42817c3021cc94b7272891e",
+      "bytes": 4300,
+      "triangles": 44,
+      "dimensions_gltf_xyz": [
+        1.041205883026123,
+        0.34502729773521423,
+        0.11120572686195374
+      ],
+      "bounds_blender_xyz": [
+        [
+          -0.5206030011177063,
+          0.409397155046463,
+          -0.05000000074505806
+        ],
+        [
+          0.5206028819084167,
+          0.5206028819084167,
+          0.2950272858142853
+        ]
+      ],
+      "finite": true,
+      "materials": [
+        {
+          "name": "wood.001",
+          "metallic": 1.0
+        }
+      ]
+    },
+    {
+      "original_filename": "plant_bushDetailed.glb",
+      "path": "assets/public_sources/kenney_nature/models/plant_bushDetailed.glb",
+      "sha256": "2e0487020d68ccf664435db9d829c78ae00e6d2785ee3ec10b9f89cc70a10406",
+      "bytes": 10172,
+      "triangles": 104,
+      "dimensions_gltf_xyz": [
+        0.6025437116622925,
+        0.3604109287261963,
+        0.6025437116622925
+      ],
+      "bounds_blender_xyz": [
+        [
+          -0.30127185583114624,
+          -0.30127185583114624,
+          -0.05000000074505806
+        ],
+        [
+          0.30127185583114624,
+          0.30127185583114624,
+          0.31041091680526733
+        ]
+      ],
+      "finite": true,
+      "materials": [
+        {
+          "name": "grass",
+          "metallic": 1.0
+        }
+      ]
+    },
+    {
+      "original_filename": "plant_bushLarge.glb",
+      "path": "assets/public_sources/kenney_nature/models/plant_bushLarge.glb",
+      "sha256": "10e1d9fbf29d96d1d1a56fb2ce25ae66537505101759229afe01ae22c6c45e02",
+      "bytes": 6436,
+      "triangles": 60,
+      "dimensions_gltf_xyz": [
+        0.3743099868297577,
+        0.2429330199956894,
+        0.3356877863407135
+      ],
+      "bounds_blender_xyz": [
+        [
+          -0.18715499341487885,
+          -0.16784389317035675,
+          -0.05000000074505806
+        ],
+        [
+          0.18715499341487885,
+          0.16784389317035675,
+          0.19293302297592163
+        ]
+      ],
+      "finite": true,
+      "materials": [
+        {
+          "name": "grass.001",
+          "metallic": 1.0
+        }
+      ]
+    },
+    {
+      "original_filename": "plant_flatTall.glb",
+      "path": "assets/public_sources/kenney_nature/models/plant_flatTall.glb",
+      "sha256": "b192523736f32754788de4dc7a5dcf30a58322b260ec8969120c91432a10b633",
+      "bytes": 3480,
+      "triangles": 32,
+      "dimensions_gltf_xyz": [
+        0.2716556191444397,
+        0.28430941700935364,
+        0.2716556191444397
+      ],
+      "bounds_blender_xyz": [
+        [
+          -0.13582780957221985,
+          -0.13582780957221985,
+          -0.05000000074505806
+        ],
+        [
+          0.13582780957221985,
+          0.13582780957221985,
+          0.23430941998958588
+        ]
+      ],
+      "finite": true,
+      "materials": [
+        {
+          "name": "leafsGreen",
+          "metallic": 1.0
+        }
+      ]
+    },
+    {
+      "original_filename": "rock_largeA.glb",
+      "path": "assets/public_sources/kenney_nature/models/rock_largeA.glb",
+      "sha256": "6dd15390fd96501dcd1454765a17ba61dbbd8d47705dfe5149c8dd92b353ce25",
+      "bytes": 7552,
+      "triangles": 80,
+      "dimensions_gltf_xyz": [
+        0.7849066853523254,
+        0.25977596640586853,
+        1.0154614448547363
+      ],
+      "bounds_blender_xyz": [
+        [
+          -0.3924533426761627,
+          -0.5077307224273682,
+          -0.05000000074505806
+        ],
+        [
+          0.3924533426761627,
+          0.5077307224273682,
+          0.20977596938610077
+        ]
+      ],
+      "finite": true,
+      "materials": [
+        {
+          "name": "dirt",
+          "metallic": 1.0
+        },
+        {
+          "name": "grass.002",
+          "metallic": 1.0
+        }
+      ]
+    },
+    {
+      "original_filename": "rock_largeC.glb",
+      "path": "assets/public_sources/kenney_nature/models/rock_largeC.glb",
+      "sha256": "23aee8b727adeaf260207af3e0615dc69aa766c6d87de1d44cbc8c2711d74dd1",
+      "bytes": 7004,
+      "triangles": 72,
+      "dimensions_gltf_xyz": [
+        1.064409852027893,
+        0.3211120069026947,
+        1.0156620740890503
+      ],
+      "bounds_blender_xyz": [
+        [
+          -0.5322049260139465,
+          -0.5078310370445251,
+          -0.05000000074505806
+        ],
+        [
+          0.5322049260139465,
+          0.5078310370445251,
+          0.27111199498176575
+        ]
+      ],
+      "finite": true,
+      "materials": [
+        {
+          "name": "dirt.001",
+          "metallic": 1.0
+        },
+        {
+          "name": "grass.003",
+          "metallic": 1.0
+        }
+      ]
+    },
+    {
+      "original_filename": "rock_largeE.glb",
+      "path": "assets/public_sources/kenney_nature/models/rock_largeE.glb",
+      "sha256": "8207ce8100b7c756e55e67bee030edadeb332d7d72220027b5818f1987039def",
+      "bytes": 6464,
+      "triangles": 64,
+      "dimensions_gltf_xyz": [
+        1.095458745956421,
+        0.2922479808330536,
+        0.9198710918426514
+      ],
+      "bounds_blender_xyz": [
+        [
+          -0.5477293729782104,
+          -0.4599355459213257,
+          -0.05000000074505806
+        ],
+        [
+          0.5477293729782104,
+          0.4599355459213257,
+          0.24224798381328583
+        ]
+      ],
+      "finite": true,
+      "materials": [
+        {
+          "name": "dirt.002",
+          "metallic": 1.0
+        },
+        {
+          "name": "grass.004",
+          "metallic": 1.0
+        }
+      ]
+    },
+    {
+      "original_filename": "rock_smallH.glb",
+      "path": "assets/public_sources/kenney_nature/models/rock_smallH.glb",
+      "sha256": "c798f7445350e8d79710a1d3e344b9ce4d4bcff5416a50268781d5121a353a7f",
+      "bytes": 6200,
+      "triangles": 60,
+      "dimensions_gltf_xyz": [
+        0.4618239998817444,
+        0.40739190578460693,
+        0.4618239998817444
+      ],
+      "bounds_blender_xyz": [
+        [
+          -0.2309119999408722,
+          -0.2309119999408722,
+          -0.05000000074505806
+        ],
+        [
+          0.2309119999408722,
+          0.2309119999408722,
+          0.357391893863678
+        ]
+      ],
+      "finite": true,
+      "materials": [
+        {
+          "name": "dirt",
+          "metallic": 1.0
+        },
+        {
+          "name": "grass",
+          "metallic": 1.0
+        }
+      ],
+      "original_archive_path": "Models/GLTF format/rock_smallH.glb",
+      "original_bytes_preserved": true,
+      "inspection": "quality/kenney_nature-round-rock-review.png",
+      "height_to_max_horizontal_extent": 0.8821367141788312,
+      "selection_note": "Round single boulder suitable for a single-layer onsen rock row; H is the fuller primary form, I is a lower accent. Do not stack flat source rocks or stretch this model vertically. Remap the original palette and metallic setting to matte stone/moss."
+    },
+    {
+      "original_filename": "rock_smallI.glb",
+      "path": "assets/public_sources/kenney_nature/models/rock_smallI.glb",
+      "sha256": "f7bbf2f4efbfe63977c4c6520762143ede95c63bff6484b9719db5e666a618e4",
+      "bytes": 5120,
+      "triangles": 44,
+      "dimensions_gltf_xyz": [
+        0.3583313226699829,
+        0.2778159976005554,
+        0.41376543045043945
+      ],
+      "bounds_blender_xyz": [
+        [
+          -0.17916566133499146,
+          -0.20688271522521973,
+          -0.05000000074505806
+        ],
+        [
+          0.17916566133499146,
+          0.20688271522521973,
+          0.22781600058078766
+        ]
+      ],
+      "finite": true,
+      "materials": [
+        {
+          "name": "grass.001",
+          "metallic": 1.0
+        },
+        {
+          "name": "dirt.001",
+          "metallic": 1.0
+        }
+      ],
+      "original_archive_path": "Models/GLTF format/rock_smallI.glb",
+      "original_bytes_preserved": true,
+      "inspection": "quality/kenney_nature-round-rock-review.png",
+      "height_to_max_horizontal_extent": 0.671433563935284,
+      "selection_note": "Round single boulder suitable for a single-layer onsen rock row; H is the fuller primary form, I is a lower accent. Do not stack flat source rocks or stretch this model vertically. Remap the original palette and metallic setting to matte stone/moss."
+    }
+  ]
+}

@@ -1,0 +1,381 @@
+{
+  "package": "kenney_furniture",
+  "creator": "Kenney",
+  "version_from_bundled_license": "2.0",
+  "official_page": "https://kenney.nl/assets/furniture-kit",
+  "license": "CC0-1.0",
+  "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "license_file": "assets/public_sources/kenney_furniture/License.txt",
+  "license_sha256": "bc0de1a0742cb490f9ed4bae0bd284286ebb27e23149b9917c7d8c0d590b8b29",
+  "download_url": "https://github.com/WaviestSun/atelier-packs/releases/download/packs-2/kenney_furniture-kit.zip",
+  "redistributor": "WaviestSun/atelier-packs",
+  "redistributor_manifest": "https://github.com/WaviestSun/atelier-packs",
+  "archive_sha256": "e67652d0932cee41683f74711c03d3e192a2af9979ef8e6b237711f5482d46b0",
+  "archive_bytes": 5130729,
+  "provenance_note": "Author asset page confirms CC0; included author license retained. Download is an explicitly identified CC0 redistribution. Archive SHA matches the redistributor published checksum. No direct byte comparison against a current author download is claimed.",
+  "models": [
+    {
+      "original_filename": "bathroomCabinet.glb",
+      "path": "assets/public_sources/kenney_furniture/models/bathroomCabinet.glb",
+      "sha256": "9db540227acaaedbbadc6a085f4a00460b73944e608afaad4770e53238a3b7f8",
+      "bytes": 7216,
+      "triangles": 64,
+      "dimensions_gltf_xyz": [
+        0.23000000417232513,
+        0.39000001549720764,
+        0.12999999523162842
+      ],
+      "bounds_blender_xyz": [
+        [
+          0.20000000298023224,
+          0.07999999821186066,
+          0.0
+        ],
+        [
+          0.4300000071525574,
+          0.20999999344348907,
+          0.39000001549720764
+        ]
+      ],
+      "finite": true,
+      "materials": [
+        {
+          "name": "wood",
+          "metallic": 0.0
+        },
+        {
+          "name": "wood",
+          "metallic": 0.0
+        },
+        {
+          "name": "woodDark",
+          "metallic": 0.0
+        },
+        {
+          "name": "metal",
+          "metallic": 0.0
+        }
+      ],
+      "original_archive_path": "Models/GLTF format/bathroomCabinet.glb",
+      "original_bytes_preserved": true,
+      "inspection": "quality/kenney_furniture-source-review.png",
+      "selection_note": "Usable source silhouette; match the approved sento palette and physical dimensions during Blender integration."
+    },
+    {
+      "original_filename": "bathroomMirror.glb",
+      "path": "assets/public_sources/kenney_furniture/models/bathroomMirror.glb",
+      "sha256": "940b986894101ea59b50541554b6dc608a22b133057975849259009012984175",
+      "bytes": 6792,
+      "triangles": 72,
+      "dimensions_gltf_xyz": [
+        0.3013399839401245,
+        0.4346250295639038,
+        0.1444000005722046
+      ],
+      "bounds_blender_xyz": [
+        [
+          0.0,
+          -0.09560000151395798,
+          4.443999015351155e-15
+        ],
+        [
+          0.3013399839401245,
+          0.04879999905824661,
+          0.4346250295639038
+        ]
+      ],
+      "finite": true,
+      "materials": [
+        {
+          "name": "wood.001",
+          "metallic": 0.0
+        },
+        {
+          "name": "metal.001",
+          "metallic": 0.0
+        },
+        {
+          "name": "glass",
+          "metallic": 0.0
+        }
+      ],
+      "original_archive_path": "Models/GLTF format/bathroomMirror.glb",
+      "original_bytes_preserved": true,
+      "inspection": "quality/kenney_furniture-source-review.png",
+      "selection_note": "Usable source silhouette; match the approved sento palette and physical dimensions during Blender integration."
+    },
+    {
+      "original_filename": "bathroomSink.glb",
+      "path": "assets/public_sources/kenney_furniture/models/bathroomSink.glb",
+      "sha256": "39d4f19608cab7e0fed52303b2c689f5f51fae1bad9b6913cb53d838875e797e",
+      "bytes": 22536,
+      "triangles": 316,
+      "dimensions_gltf_xyz": [
+        0.3400000035762787,
+        0.5600000023841858,
+        0.28999999165534973
+      ],
+      "bounds_blender_xyz": [
+        [
+          0.0,
+          0.0,
+          -0.4000000059604645
+        ],
+        [
+          0.3400000035762787,
+          0.28999999165534973,
+          0.1599999964237213
+        ]
+      ],
+      "finite": true,
+      "materials": [
+        {
+          "name": "_defaultMat",
+          "metallic": 0.0
+        },
+        {
+          "name": "metalLight",
+          "metallic": 0.0
+        },
+        {
+          "name": "carpetWhite",
+          "metallic": 0.0
+        }
+      ],
+      "original_archive_path": "Models/GLTF format/bathroomSink.glb",
+      "original_bytes_preserved": true,
+      "inspection": "quality/kenney_furniture-source-review.png",
+      "selection_note": "Source for ceramic basin/faucet parts; domestic pedestal silhouette is not a ready sento wash station."
+    },
+    {
+      "original_filename": "bench.glb",
+      "path": "assets/public_sources/kenney_furniture/models/bench.glb",
+      "sha256": "ba05a6d23a5a5a44da016757632070e47ff7587ce10e2f6d6d52328b4cf5489b",
+      "bytes": 10756,
+      "triangles": 170,
+      "dimensions_gltf_xyz": [
+        0.4000000059604645,
+        0.4699999988079071,
+        0.20000000298023224
+      ],
+      "bounds_blender_xyz": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.4000000059604645,
+          0.20000000298023224,
+          0.4699999988079071
+        ]
+      ],
+      "finite": true,
+      "materials": [
+        {
+          "name": "wood.002",
+          "metallic": 0.0
+        }
+      ],
+      "original_archive_path": "Models/GLTF format/bench.glb",
+      "original_bytes_preserved": true,
+      "inspection": "quality/kenney_furniture-source-review.png",
+      "selection_note": "Recognizable wood bench; fit seat height and length through structural edits, add controlled bevel/wood material."
+    },
+    {
+      "original_filename": "bookcaseOpenLow.glb",
+      "path": "assets/public_sources/kenney_furniture/models/bookcaseOpenLow.glb",
+      "sha256": "6d4d625faf977a2dbf155f1313cd32c6310e463114a1cd4c08cb9f80a5fb1d75",
+      "bytes": 11520,
+      "triangles": 184,
+      "dimensions_gltf_xyz": [
+        0.4000000059604645,
+        0.4000000059604645,
+        0.25
+      ],
+      "bounds_blender_xyz": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.4000000059604645,
+          0.25,
+          0.4000000059604645
+        ]
+      ],
+      "finite": true,
+      "materials": [
+        {
+          "name": "wood.003",
+          "metallic": 0.0
+        }
+      ],
+      "original_archive_path": "Models/GLTF format/bookcaseOpenLow.glb",
+      "original_bytes_preserved": true,
+      "inspection": "quality/kenney_furniture-source-review.png",
+      "selection_note": "Usable source silhouette; match the approved sento palette and physical dimensions during Blender integration."
+    },
+    {
+      "original_filename": "coatRack.glb",
+      "path": "assets/public_sources/kenney_furniture/models/coatRack.glb",
+      "sha256": "0f56540d57367ea6fea6b9aedf305d4fc58abeec8ff3b039dbff44360d819c76",
+      "bytes": 9948,
+      "triangles": 132,
+      "dimensions_gltf_xyz": [
+        0.4479999840259552,
+        0.2800000011920929,
+        0.13439999520778656
+      ],
+      "bounds_blender_xyz": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.4479999840259552,
+          0.13439999520778656,
+          0.2800000011920929
+        ]
+      ],
+      "finite": true,
+      "materials": [
+        {
+          "name": "metalMedium",
+          "metallic": 0.0
+        },
+        {
+          "name": "wood.004",
+          "metallic": 0.0
+        }
+      ],
+      "original_archive_path": "Models/GLTF format/coatRack.glb",
+      "original_bytes_preserved": true,
+      "inspection": "quality/kenney_furniture-source-review.png",
+      "selection_note": "Usable source silhouette; match the approved sento palette and physical dimensions during Blender integration."
+    },
+    {
+      "original_filename": "plantSmall1.glb",
+      "path": "assets/public_sources/kenney_furniture/models/plantSmall1.glb",
+      "sha256": "2b9c022feb47be857b2c4fdc29f36522766ba9b70c578c31d7c05d71b4377d15",
+      "bytes": 8224,
+      "triangles": 102,
+      "dimensions_gltf_xyz": [
+        0.09466072916984558,
+        0.14000000059604645,
+        0.09466072916984558
+      ],
+      "bounds_blender_xyz": [
+        [
+          -0.04733036458492279,
+          -0.04733036458492279,
+          0.0
+        ],
+        [
+          0.04733036458492279,
+          0.04733036458492279,
+          0.14000000059604645
+        ]
+      ],
+      "finite": true,
+      "materials": [
+        {
+          "name": "wood.005",
+          "metallic": 0.0
+        },
+        {
+          "name": "plant",
+          "metallic": 0.0
+        }
+      ],
+      "original_archive_path": "Models/GLTF format/plantSmall1.glb",
+      "original_bytes_preserved": true,
+      "inspection": "quality/kenney_furniture-source-review.png",
+      "selection_note": "Usable source silhouette; match the approved sento palette and physical dimensions during Blender integration."
+    },
+    {
+      "original_filename": "plantSmall2.glb",
+      "path": "assets/public_sources/kenney_furniture/models/plantSmall2.glb",
+      "sha256": "d7c8ff42c66dd4f9238a73570549813d1ca6c5f6f661d7af9cb764c4fce314b9",
+      "bytes": 12996,
+      "triangles": 158,
+      "dimensions_gltf_xyz": [
+        0.09466072916984558,
+        0.14000000059604645,
+        0.09466072916984558
+      ],
+      "bounds_blender_xyz": [
+        [
+          -0.04733036458492279,
+          -0.04733036458492279,
+          0.0
+        ],
+        [
+          0.04733036458492279,
+          0.04733036458492279,
+          0.14000000059604645
+        ]
+      ],
+      "finite": true,
+      "materials": [
+        {
+          "name": "wood.006",
+          "metallic": 0.0
+        },
+        {
+          "name": "plant.001",
+          "metallic": 0.0
+        }
+      ],
+      "original_archive_path": "Models/GLTF format/plantSmall2.glb",
+      "original_bytes_preserved": true,
+      "inspection": "quality/kenney_furniture-source-review.png",
+      "selection_note": "Usable source silhouette; match the approved sento palette and physical dimensions during Blender integration."
+    },
+    {
+      "original_filename": "pottedPlant.glb",
+      "path": "assets/public_sources/kenney_furniture/models/pottedPlant.glb",
+      "sha256": "5b760eda2766f75fda36b2c5df652a1662f82981ef64cd8fa7fe7bcd386b3a15",
+      "bytes": 7576,
+      "triangles": 60,
+      "dimensions_gltf_xyz": [
+        0.21205927431583405,
+        0.6540167927742004,
+        0.24146194756031036
+      ],
+      "bounds_blender_xyz": [
+        [
+          -0.10602963715791702,
+          -0.12073097378015518,
+          0.0
+        ],
+        [
+          0.10602963715791702,
+          0.12073097378015518,
+          0.6540167927742004
+        ]
+      ],
+      "finite": true,
+      "materials": [
+        {
+          "name": "wood.007",
+          "metallic": 0.0
+        },
+        {
+          "name": "woodDark.001",
+          "metallic": 0.0
+        },
+        {
+          "name": "plant.002",
+          "metallic": 0.0
+        }
+      ],
+      "original_archive_path": "Models/GLTF format/pottedPlant.glb",
+      "original_bytes_preserved": true,
+      "inspection": "quality/kenney_furniture-source-review.png",
+      "selection_note": "Usable source silhouette; match the approved sento palette and physical dimensions during Blender integration."
+    }
+  ]
+}

@@ -150,6 +150,7 @@ export class GameScene {
   private environmentModels = new EnvironmentModels(this.scene);
   private worldEnvironment = new WorldEnvironment(this.scene, this.environmentFallback);
   private waterAppearance = new WaterAppearance();
+  private fixtureWater: { mesh: THREE.Mesh; rimHeight: number }[] = [];
   private camera = new THREE.PerspectiveCamera(55, 1, 0.05, 200);
   private chars = {} as Record<CharacterId, THREE.Group>;
   private rings = {} as Record<CharacterId, THREE.Mesh>;
@@ -299,8 +300,10 @@ export class GameScene {
       if (f.kind === "plunge" || f.kind === "outdoorBath" || f.kind === "basin") {
         const r = 0.12;
         const w = { minX: f.box.minX + r, minZ: f.box.minZ + r, maxX: f.box.maxX - r, maxZ: f.box.maxZ - r };
-        this.scene.add(boxMesh(w, 0.02, f.height + 0.002, f.kind === "plunge" ? 0x7fc4e8 : ZONE_COLORS.bathwater!, 0.9,
-          this.waterAppearance.material(f.kind === "plunge" ? "plunge" : "bath", 0.9)));
+        const surface = boxMesh(w, 0.02, f.height + 0.002, f.kind === "plunge" ? 0x7fc4e8 : ZONE_COLORS.bathwater!, 0.9,
+          this.waterAppearance.material(f.kind === "plunge" ? "plunge" : "bath", 0.9));
+        this.scene.add(surface);
+        this.fixtureWater.push({ mesh: surface, rimHeight: f.height });
       }
       if (f.label) this.fixtureLabel(f.label, f.box, f.height + 0.35);
       // Receptionist (provisional): the fixture box is the body; add a head.
@@ -431,6 +434,11 @@ export class GameScene {
     // The full world has a different geometry allocation. Keep the playable
     // fallback until every washing-station LOD can satisfy that allocation.
     if (this.environmentModels.hasWashingDetailSet()) this.worldEnvironment.use(lib);
+    // Authored hollow vessels need the water below their real rim. The legacy
+    // solid-box fallback retains its original above-top surface until replaced.
+    for (const { mesh, rimHeight } of this.fixtureWater) {
+      mesh.position.y = rimHeight + (this.worldEnvironment.active ? -.035 : .012);
+    }
     const towel = lib.get("towel");
     if (towel) this.setTowelModel(towel.root);
     for (const id of ["duck", "child", "adult"] as const) {
@@ -662,6 +670,7 @@ export class GameScene {
     this.camera.position.set(pose.eye.x, pose.eye.y, pose.eye.z);
     this.camera.lookAt(pose.target.x, pose.target.y, pose.target.z);
     this.environmentModels.updateDetail(this.camera.position, overview);
+    this.worldEnvironment.updateDetail(this.camera.position);
     this.camera.updateMatrixWorld();
     this.sizeLabels(view.active, overview, view.items);
     this.renderer.render(this.scene, this.camera);

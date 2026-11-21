@@ -13,6 +13,8 @@ This design defines how final assets are produced and how they replace the place
 
 ## Pipeline
 
+**User-confirmed update, 2026-11-21:** new architecture, environment, facilities and small props may be authored directly in Blender, with a preference for free public assets that improve quality. The original generated-model flow below remains the provenance of the six existing models and their source-derived LOD/NPC variants. Alternative final routes are (a) verified free public model/texture → preserved source and license → Blender adaptation → GLB, and (b) art reference → authored editable Blender scene → GLB. Public geometry is reused only where it fits the sento style and exact LEVEL envelopes; original construction covers the gaps. Source names, creator, URLs, redistribution terms, modifications and SHA-256 stay in the ledger. Do not relabel these routes as Image-to-3D generation.
+
 ```mermaid
 flowchart LR
   A[Original reference image<br/>three-quarter view] --> B[Image to 3D<br/>Meshy Free / 6 Lite]
@@ -46,7 +48,7 @@ Derivation: an asset may be cut or edited from another asset's generated model o
 | `blend` row | The derived asset's own `.blend`, or the named object inside the parent's `.blend` (object name in `notes`), with its own checksum |
 | `final` row | The derived asset's own GLB |
 
-A row may not say "not applicable" to skip a stage of a final asset. Only `prototype` rows, which are never final, may use it. An asset whose inherited rows point to a missing file or a parent stage that is not `done` cannot be marked `final`.
+Every stage of the chosen user-approved route needs real evidence. A public input uses a `source` row with its original downloaded file and license; a directly authored environment/prop uses a reference and editable Blend evidence without fabricating a `generated` row. Generated derivatives still require the parent stages above. Missing inherited files or non-completed parent stages cannot support a `final` claim.
 
 ### Production order
 
@@ -196,6 +198,40 @@ Reasons:
 - No mesh or texture compression at first, so no extra decoder is needed. If the size limits are exceeded, consider meshopt or KTX2 through a tool such as glTF-Transform. Record that tool and its license before using it.
 - Frame rate: target 60 fps at 1280 × 720 on a reference machine. **No reference machine has been chosen yet.** The progress record will name it at the first measurement.
 
+### Whole-environment production allocation (2026-11-21)
+
+The approved free-source/direct-authoring refresh consolidates the room kits into
+one world-space GLB. The implementation adopts this explicit allocation in place
+of the provisional per-kit rows above: architecture up to 8,000 triangles plus
+12,200 source-derived near NPC triangles, up to 18 materials, 11 embedded images
+and 7 MB for the combined world. The panoramic mural retains its 2172 × 724
+pixels (1.57 megapixels); wood maps are 1024² and ceramic/NPC maps are 512².
+This exception preserves the mural and readable separate surface materials;
+it does not raise the whole-scene 60,000 triangles, 120 calls or 12 MB first-load
+limits. Those require actual integrated measurements before publication.
+
+Small-item allocations are soap 300, towel 350, coin 650 and key 500 triangles,
+up to two materials and 0.05 MB each. Their selected exports use 236 / 296 /
+608 / 468 triangles, 51,760 bytes total and no textures. With two towels the
+visible allocation is 1,904 triangles. The coin's extra profile/relief vertices
+are retained for shape quality rather than forcing the old provisional 500.
+
+Washing stations preserve the existing detailed exports within 1.6 m (at most
+two close instances per type), medium detail through 4.5 m and far detail beyond
+that distance or in Overview. Background NPCs retain near detail through 6 m
+camera-to-center and use separately inspected 600-triangle derivatives farther
+away or in Overview. All variants preserve their placement frames. Numerical
+budgets do not replace silhouette review at those actual viewing distances.
+
+The shared style uses cream and muted teal ceramics with broad tile rhythm,
+warm Hinoki wood at a consistent physical scale, satin toy characters, matte
+foliage/stone and restrained metal trim. Bevels are concentrated on silhouettes
+and exposed rims. Source normal/roughness maps support the wood; generated tile
+maps use 512² repeated material-space coordinates rather than per-object large
+textures. The mural sits above the bathing area and the water remains a separate
+shared lit material with gentle ripples. Original collision and interaction
+coordinates remain authoritative.
+
 ## File layout and ledger
 
 ```
@@ -220,7 +256,7 @@ Ledger columns (`assets/ledger.csv`):
 
 `asset_id, stage, file, status, creator, method, tool_or_service, tool_version, source_type, terms_url, input_rights, output_license, redistributable, commercial_use, attribution, parent_asset, sha256, created_date, notes`
 
-- `stage`: `prototype`, `reference`, `generated`, `blend`, `final`.
+- `stage`: `prototype`, `source`, `reference`, `generated`, `blend`, `final`.
 - `status`: `planned`, `in_progress`, `done`, `rejected`.
 - `redistributable`: `yes`, `no`, `unknown`. Only `yes` may enter `public/models/` (Requirement 7.2).
 

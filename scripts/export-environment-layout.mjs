@@ -20,6 +20,7 @@ const placement = {
   npcs: LEVEL.npcs,
   crowdGaps: LEVEL.crowdGaps,
   narrowHole: LEVEL.narrowHole,
+  duckWater: LEVEL.duckWater,
   saunaDoorBlocker: LEVEL.saunaDoorBlocker,
   doors: LEVEL.doors,
   nodes: LEVEL.nodes,

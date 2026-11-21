@@ -4,6 +4,6 @@
 
 The reference sets the intended cream/teal ceramic, natural cedar, muted navy fabric, gentle edge rounding and clear miniature silhouettes. It is a style target, not a screenshot of implemented game assets or an authoritative map. The game retains the exact layout, narrow opening, room dimensions, existing character models and collision contracts from LEVEL. Do not move rooms or props to match this composition. The separate original wall-mural PNG is under `assets/sento_mural/ref/`.
 
-The previously confirmed Image-to-3D production method remains in force until the user decides the proposed direct-Blender exception for architecture and small props. This image alone does not complete a GeneratedModel, BlendFile or FinalGLB stage.
+On 2026-11-21 the user approved direct Blender production for new architecture and small props, and requested free public assets where they improve quality. The environment therefore combines verified public models/textures with authored geometry in Blender; this image is its art-direction reference. It is not an Image-to-3D output or evidence that the 3D implementation is already complete.
 
 The project releases its rights to this original output under the repository MIT license, to the extent permitted by law, under [OpenAI's Terms of Use](https://openai.com/policies/terms-of-use/). This does not guarantee copyright protection or uniqueness. Meshy-derived geometry has separate CC BY 4.0 attribution and licensing. The original source PNG is preserved.

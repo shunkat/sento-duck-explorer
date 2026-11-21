@@ -1,0 +1,31 @@
+Sento environment v01 — composite asset, CC BY 4.0
+https://creativecommons.org/licenses/by/4.0/
+
+Assembled and modified by this project in Blender. Preserve this credit,
+license link and change notice when redistributing the combined GLB.
+The composite license does not revoke the independent component licenses:
+
+Kenney Furniture Kit 2.0 / Nature Kit 2.1 — CC0 1.0:
+https://kenney.nl/assets/furniture-kit
+https://kenney.nl/assets/nature-kit
+Actual selected bench, round rock and shrub geometry is fitted, rematerialed
+and combined. Original files/author licenses are in assets/public_sources/.
+
+Charlotte Baglioni / Poly Haven, Hinoki Planks — CC0 1.0:
+https://polyhaven.com/a/hinoki_planks
+https://polyhaven.com/license
+Diffuse, normal and roughness maps used for the wood material.
+
+Meshy — CC BY 4.0:
+https://www.meshy.ai/
+https://www.meshy.ai/terms-of-use
+The background NPCs are posed and reduced modifications of the project's
+Meshy 6 Lite Adult model, with the source texture and authored frame retained.
+Meshy does not endorse this project. See assets/sento_npcs/ATTRIBUTION.md.
+
+Rooms, fixtures and tile materials were authored for this project. Project-held
+rights are MIT. The mural was generated from an original prompt through OpenAI;
+project-held rights in it are MIT to the extent permitted by law.
+Full provenance, precise source files, alterations and hashes are recorded in
+assets/ledger.csv, assets/sento_environment/quality/measurements.json and
+THIRD_PARTY_NOTICES.md. No paid source assets were used.

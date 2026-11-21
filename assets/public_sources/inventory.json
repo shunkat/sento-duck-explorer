@@ -1,0 +1,58 @@
+{
+  "scope": "Selected original public source assets only; no runtime adoption or scene-quality completion is implied.",
+  "checked_date_utc": "2026-11-21",
+  "license": "CC0-1.0 for all selected source assets",
+  "packages": [
+    {
+      "package": "kenney_furniture",
+      "source_record": "assets/public_sources/kenney_furniture/source.json",
+      "selected_models": 9
+    },
+    {
+      "package": "kenney_nature",
+      "source_record": "assets/public_sources/kenney_nature/source.json",
+      "selected_models": 10
+    }
+  ],
+  "texture_sets": [
+    {
+      "asset_id": "hinoki_planks",
+      "source_record": "assets/public_sources/polyhaven/hinoki_planks/source.json",
+      "authors": {
+        "Charlotte Baglioni": "All"
+      },
+      "files": 3,
+      "bytes": 1140620
+    },
+    {
+      "asset_id": "rounded_square_tiled_wall",
+      "source_record": "assets/public_sources/polyhaven/rounded_square_tiled_wall/source.json",
+      "authors": {
+        "Charlotte Baglioni": "All"
+      },
+      "files": 3,
+      "bytes": 2192388
+    }
+  ],
+  "selected_model_count": 19,
+  "selected_texture_count": 6,
+  "texture_bytes": 3333008,
+  "source_model_bytes": 162012,
+  "geometry_inspection": "quality/model-measurements.json",
+  "coordinate_note": "Dimensions are measured from actual imported GLBs, including node transforms, in native glTF XYZ (Y up). They are author native values, not verified real furniture dimensions.",
+  "absent_requested_items": [
+    "soap",
+    "towel",
+    "coin",
+    "key",
+    "sento locker"
+  ],
+  "unmodified_source_files_sha256": "SHA256SUMS",
+  "actions_not_taken": [
+    "No purchase or account creation",
+    "No source geometry or texture modification",
+    "No shared ledger/manifest/src changes",
+    "No commit, push or deployment"
+  ],
+  "round_rock_supplement": "quality/round-rock-measurements.json"
+}

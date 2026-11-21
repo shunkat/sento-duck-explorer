@@ -1,0 +1,74 @@
+{
+  "kenney_nature": [
+    {
+      "original_filename": "rock_smallH.glb",
+      "path": "assets/public_sources/kenney_nature/models/rock_smallH.glb",
+      "sha256": "c798f7445350e8d79710a1d3e344b9ce4d4bcff5416a50268781d5121a353a7f",
+      "bytes": 6200,
+      "triangles": 60,
+      "dimensions_gltf_xyz": [
+        0.4618239998817444,
+        0.40739190578460693,
+        0.4618239998817444
+      ],
+      "bounds_blender_xyz": [
+        [
+          -0.2309119999408722,
+          -0.2309119999408722,
+          -0.05000000074505806
+        ],
+        [
+          0.2309119999408722,
+          0.2309119999408722,
+          0.357391893863678
+        ]
+      ],
+      "finite": true,
+      "materials": [
+        {
+          "name": "dirt",
+          "metallic": 1.0
+        },
+        {
+          "name": "grass",
+          "metallic": 1.0
+        }
+      ]
+    },
+    {
+      "original_filename": "rock_smallI.glb",
+      "path": "assets/public_sources/kenney_nature/models/rock_smallI.glb",
+      "sha256": "f7bbf2f4efbfe63977c4c6520762143ede95c63bff6484b9719db5e666a618e4",
+      "bytes": 5120,
+      "triangles": 44,
+      "dimensions_gltf_xyz": [
+        0.3583313226699829,
+        0.2778159976005554,
+        0.41376543045043945
+      ],
+      "bounds_blender_xyz": [
+        [
+          -0.17916566133499146,
+          -0.20688271522521973,
+          -0.05000000074505806
+        ],
+        [
+          0.17916566133499146,
+          0.20688271522521973,
+          0.22781600058078766
+        ]
+      ],
+      "finite": true,
+      "materials": [
+        {
+          "name": "grass.001",
+          "metallic": 1.0
+        },
+        {
+          "name": "dirt.001",
+          "metallic": 1.0
+        }
+      ]
+    }
+  ]
+}

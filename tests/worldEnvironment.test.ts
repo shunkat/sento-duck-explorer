@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import * as THREE from "three";
 import { WorldEnvironment, WORLD_ENVIRONMENT_NODES } from "../src/view/worldEnvironment";
 import { ModelLibrary } from "../src/view/models";
+import { NPC_LOD_IDS, NPC_SLOTS } from "../src/view/backgroundNpcs";
 
 const material = new THREE.MeshStandardMaterial();
 function world(): THREE.Group {
@@ -14,10 +15,20 @@ function world(): THREE.Group {
     part.add(mesh);
     root.add(part);
   });
+  for (const [suffix] of NPC_SLOTS) {
+    const slot = new THREE.Group(); slot.name = `npc_slot_${suffix}`;
+    const high = new THREE.Mesh(new THREE.BoxGeometry(.4, .4, .4), material);
+    high.name = `npc_high_${suffix}`; slot.add(high);
+    root.getObjectByName("environment_static")!.add(slot);
+  }
   return root;
 }
 function library(get: () => THREE.Object3D): ModelLibrary {
-  return new ModelLibrary({ loadAsync: async () => ({ scene: get() }), parseAsync: async () => ({ scene: get() }) });
+  return new ModelLibrary({ loadAsync: async url => ({ scene: url === "npc-fixture"
+    ? new THREE.Mesh(new THREE.BoxGeometry(.4, .4, .4), material) : get() }), parseAsync: async () => ({ scene: get() }) });
+}
+async function loadNpcs(lib: ModelLibrary): Promise<void> {
+  for (const id of NPC_LOD_IDS) await lib.load(id, "npc-fixture");
 }
 afterEach(() => vi.restoreAllMocks());
 
@@ -28,6 +39,7 @@ describe("authored world environment", () => {
     fallback.add(priorBatch); parent.add(fallback);
     const adapter = new WorldEnvironment(parent, fallback);
     const source = world(), lib = library(() => source);
+    await loadNpcs(lib);
     adapter.setView(true, false); // A model may load after the camera/state changed.
     await lib.load("sento_environment", "world-fixture");
     adapter.use(lib); adapter.use(lib);
@@ -56,6 +68,7 @@ describe("authored world environment", () => {
     const adapter = new WorldEnvironment(parent, fallback);
     let candidate: THREE.Object3D = world();
     const lib = library(() => candidate);
+    await loadNpcs(lib);
     const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
     candidate.remove(candidate.getObjectByName("sauna_door")!);
     await lib.load("sento_environment", "missing-door"); adapter.use(lib); adapter.use(lib);

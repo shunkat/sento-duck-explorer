@@ -51,7 +51,7 @@ Production status updated by Codex on 2026-11-20. Codex operates the image → M
     - _Requirements: 4.1, 4.2, 4.5_
 
 - [ ] 6. Bath section kit (stage 2, third)
-  - [ ] 6.1 Reference → generation → Blender kit: walls, NarrowHole wall (clear 0.40–0.45 m), door frame, tub, kakeyu, soap, coin. Derived pieces have inherited `reference` and `generated` rows pointing to the parent's real files (design: Derivation)
+  - [ ] 6.1 Approved source route → Blender kit: walls, NarrowHole wall (clear 0.40–0.45 m), door frame, tub, kakeyu, soap, coin. Existing generated derivatives retain inherited source rows; newly approved public-source/direct-authoring pieces record their actual route (design: Derivation)
   - [ ] 6.2 Place the kit on the existing layout coordinates; collision still comes from `src/level/layout.ts`
   - [ ] 6.3 Readability checks in the DuckView and the Overview (hole rim, items, Duck on water)
     - _Requirements: 1.2–1.4, 2.2, 3.1, 5.2, 8.1–8.5_
@@ -105,7 +105,7 @@ The body, beak and wings remain source-derived; the two eye inserts are explicit
 - [x] Generate original panoramic mural artwork with source prompt and rights record; this is a 2D asset, not completed 3D architecture.
 - [x] Produce independently reviewed washing LODs and natural-sized Adult-derived background NPCs; retain original sources and add measured local exports/license/ledger records. These exports remain unregistered pending world integration.
 - [x] Prepare water-material and background-color changes with scoped tests and independent code review; GPU shader/display checks remain open.
-- [ ] Resolve the proposed architecture/small-prop production-method change from the previously confirmed mandatory Image-to-3D pipeline. Direct Blender authoring has not been assumed approved.
+- [x] The user approved direct Blender creation for new architecture/facilities/props and requested free public assets wherever suitable. Record actual Kenney/Poly Haven/Quaternius inputs and author only the unmatched components; no paid service was used.
 - [ ] Verify accepted LOD/NPC candidates at their actual game camera distances and place every crowd slot without narrowing the existing 0.60 m gaps; source-shape QA and footprint preflight are complete.
 - [ ] Produce and replace all structural, furnishing, outdoor, water/background and small-item assets; verify visibility, openings and scene budgets on actual exports.
 - [ ] Complete rights/ledger checks, fixed-version visual checks and the authorized production publication. Normal-input play remains separately deferred.

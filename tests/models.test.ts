@@ -26,7 +26,7 @@ function sceneHarness() {
   const items = { coin: new THREE.Group(), key: new THREE.Group(), hat: new THREE.Group() };
   const hatPrimitive = new THREE.Mesh(new THREE.ConeGeometry(), new THREE.MeshBasicMaterial());
   items.hat.add(hatPrimitive);
-  Object.assign(scene, { chars, primitives, items, models: {}, itemModels: {},
+  Object.assign(scene, { chars, primitives, items, models: {}, itemModels: {}, fixtureWater: [],
     environmentModels: new EnvironmentModels(new THREE.Group()),
     humanBody: {}, towels: {}, clothing: { child: "unclothed", adult: "unclothed" } });
   return { scene, chars, primitives, items, hatPrimitive };

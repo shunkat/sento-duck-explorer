@@ -1,0 +1,47 @@
+{
+  "scope": "Saved Blend source/packed images plus scoped decompressed marker scan; not exhaustive security audit",
+  "records": [
+    {
+      "model": "npc_staff",
+      "blend_sha256": "734b1f328fb7c076720c0104aa45b245aa486f5b83b35ed2aab8975e9e1fadb7",
+      "scoped_private_markers": 0,
+      "packed_images": [
+        {
+          "name": "npc_staff_basecolor_v02",
+          "packed": true,
+          "pixels_available": true,
+          "relative_path": true
+        }
+      ],
+      "saved_source_matches_fresh_import": true
+    },
+    {
+      "model": "npc_bath_standing",
+      "blend_sha256": "c6ae822ebbd4afbfcfffc6bf7f075c4d2b4a49da04f44ff525770314f33046c5",
+      "scoped_private_markers": 0,
+      "packed_images": [
+        {
+          "name": "npc_bath_standing_basecolor_v02",
+          "packed": true,
+          "pixels_available": true,
+          "relative_path": true
+        }
+      ],
+      "saved_source_matches_fresh_import": true
+    },
+    {
+      "model": "npc_seated",
+      "blend_sha256": "e49211e9ecf3af0256531273c4c11a4a86614b57e9a935f572a720c6ecfb1823",
+      "scoped_private_markers": 0,
+      "packed_images": [
+        {
+          "name": "npc_seated_basecolor_v01",
+          "packed": true,
+          "pixels_available": true,
+          "relative_path": true
+        }
+      ],
+      "saved_source_matches_fresh_import": true
+    }
+  ]
+}

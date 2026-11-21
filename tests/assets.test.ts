@@ -101,9 +101,9 @@ describe("production washing-station assets", () => {
 });
 
 describe("connected models (shoulder-view Req 6)", () => {
-  it("lists all three pipeline character models and the hat", () => {
+  it("lists all three character models and all carried items", () => {
     expect(Object.keys(CHARACTER_MODEL_URLS)).toEqual(["duck", "child", "adult"]);
-    expect(Object.keys(ITEM_MODEL_URLS)).toEqual(["hat"]);
+    expect(Object.keys(ITEM_MODEL_URLS)).toEqual(["hat", "coin", "key"]);
   });
 
   it("files match the confirmed SHA-256 and size", () => {

@@ -9,6 +9,7 @@ import { deriveView } from "../src/view/deriveView";
 import { FacingTracker } from "../src/view/shoulder";
 import { TOWEL_DEPTH, TOWEL_THICKNESS, TOWEL_WIDTH } from "../src/view/humanModel";
 import { SENTO_BACKGROUND_COLOR } from "../src/view/waterAppearance";
+import { NPC_LOD_IDS, NPC_SLOTS } from "../src/view/backgroundNpcs";
 
 vi.mock("three", async () => {
   const actual = await vi.importActual<typeof import("three")>("three");
@@ -36,6 +37,11 @@ const worldModel = () => {
   const root = new THREE.Group();
   for (const name of WORLD_ENVIRONMENT_NODES) {
     const part = boxModel(); part.name = name; root.add(part);
+  }
+  for (const [suffix] of NPC_SLOTS) {
+    const slot = new THREE.Group(); slot.name = `npc_slot_${suffix}`;
+    const high = boxModel(); high.name = `npc_high_${suffix}`;
+    slot.add(high); root.getObjectByName("environment_static")!.add(slot);
   }
   return root;
 };
@@ -95,7 +101,19 @@ describe("world and prop integration", () => {
       expect(fallback.visible).toBe(true);
     }
     source = boxModel(); await lib.load("wash_basin_lod_far", "prop"); game.useModels(lib);
+    expect(fallback.visible).toBe(true);
+    for (const id of NPC_LOD_IDS) {
+      source = boxModel(); await lib.load(id, "npc"); game.useModels(lib);
+    }
     expect(fallback.visible).toBe(false);
+    for (const fixture of LEVEL.fixtures.filter(f => ["plunge", "outdoorBath", "basin"].includes(f.kind))) {
+      const cx = (fixture.box.minX + fixture.box.maxX) / 2;
+      const cz = (fixture.box.minZ + fixture.box.maxZ) / 2;
+      const water = internal.scene.children.find(o => o instanceof THREE.Mesh &&
+        !Array.isArray(o.material) && o.material.name.startsWith("sento_water_") &&
+        Math.abs(o.position.x - cx) < 1e-6 && Math.abs(o.position.z - cz) < 1e-6)!;
+      expect(new THREE.Box3().setFromObject(water, true).max.y).toBeCloseTo(fixture.height - .025);
+    }
     let oldVisible = 0; fallback.traverseVisible(o => { if (o instanceof THREE.Mesh) oldVisible++; });
     expect(oldVisible).toBe(0);
     expect(internal.scene.children.filter(o => o instanceof THREE.Sprite)).toEqual(sprites);

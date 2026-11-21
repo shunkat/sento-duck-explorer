@@ -2,6 +2,7 @@
 // normalization or layout inference may move the architectural geometry.
 import * as THREE from "three";
 import type { ModelLibrary } from "./models";
+import { BackgroundNpcs, NPC_LOD_IDS } from "./backgroundNpcs";
 
 export const WORLD_ENVIRONMENT_ID = "sento_environment";
 export const WORLD_ENVIRONMENT_NODES = ["environment_static", "environment_upper", "environment_ceiling", "sauna_door"] as const;
@@ -46,29 +47,36 @@ function inspect(root: THREE.Object3D): Parts | null {
 }
 
 export class WorldEnvironment {
-  private attempted?: THREE.Object3D;
-  private current?: { root: THREE.Object3D; parts: Parts };
+  private attempted?: (THREE.Object3D | undefined)[];
+  private current?: { root: THREE.Object3D; parts: Parts; npcs: BackgroundNpcs };
   private overview = false;
   private doorLocked = true;
+  private eye = new THREE.Vector3();
 
   constructor(private parent: THREE.Object3D, private fallback: THREE.Object3D) {}
 
+  get active(): boolean { return this.current !== undefined; }
+
   use(lib: ModelLibrary): void {
     const source = lib.get(WORLD_ENVIRONMENT_ID)?.root;
-    if (!source || source === this.attempted) return;
-    this.attempted = source;
+    const bank = [source, ...NPC_LOD_IDS.map(id => lib.get(id)?.root)];
+    if (bank.some(model => !model) || bank.every((model, i) => this.attempted?.[i] === model)) return;
+    this.attempted = bank;
+    if (!source) return;
     const root = source.clone(true);
     const parts = inspect(root);
-    if (!parts) {
+    const npcs = parts ? BackgroundNpcs.create(root, lib) : null;
+    if (!parts || !npcs) {
       console.warn("World environment failed its named-part/geometry contract; keeping the current display.");
       return;
     }
     this.current?.root.removeFromParent();
     root.name = WORLD_ENVIRONMENT_ID;
     this.parent.add(root);
-    this.current = { root, parts };
+    this.current = { root, parts, npcs };
     this.fallback.visible = false;
     this.setView(this.overview, this.doorLocked);
+    npcs.update(this.eye, this.overview);
   }
 
   setView(overview: boolean, doorLocked = this.doorLocked): void {
@@ -80,5 +88,11 @@ export class WorldEnvironment {
     p.environment_upper.visible = !overview;
     p.environment_ceiling.visible = !overview;
     p.sauna_door.visible = doorLocked;
+    this.current.npcs.update(this.eye, overview);
+  }
+
+  updateDetail(eye: THREE.Vector3): void {
+    this.eye.copy(eye);
+    this.current?.npcs.update(eye, this.overview);
   }
 }

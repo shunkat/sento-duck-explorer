@@ -1,0 +1,271 @@
+{
+  "revision": "v01",
+  "date": "2026-11-21",
+  "scope": "Source preparation, actual GLB reimport, local topology and fixed-light render inspection; no game/GPU/normal-input play.",
+  "items": {
+    "soap": {
+      "file": "soap.glb",
+      "bytes": 5612,
+      "sha256": "778a302d2997b4f07ccd7716cccefd6110fc6308e610b91fa1dde3c6ff8ee4a1",
+      "blend": "assets/sento_small_items/blend/soap__v01.blend",
+      "blend_sha256": "12a6f234d9ff95f701dde931079d5e4de0d556fa1bc5838c63df2c35c7bbfe7d",
+      "provenance": {
+        "source": "Project-authored six-section rounded bar",
+        "profile": [
+          [
+            0.78,
+            0
+          ],
+          [
+            0.94,
+            0.008
+          ],
+          [
+            1,
+            0.027
+          ],
+          [
+            1,
+            0.049
+          ],
+          [
+            0.94,
+            0.071
+          ],
+          [
+            0.78,
+            0.08
+          ]
+        ]
+      },
+      "reimport": {
+        "triangles": 236,
+        "vertices": 120,
+        "dimensions_gltf_m": [
+          0.30000001192092896,
+          0.07999999821186066,
+          0.18000000715255737
+        ],
+        "bounds_gltf_m": [
+          [
+            -0.15000000596046448,
+            0.0,
+            -0.09000000357627869
+          ],
+          [
+            0.15000000596046448,
+            0.07999999821186066,
+            0.09000000357627869
+          ]
+        ],
+        "nonmanifold_edges_after_seam_weld": 0,
+        "degenerate_faces": 0,
+        "connected_components": [
+          120
+        ],
+        "finite": true,
+        "materials": 1,
+        "textures": 0,
+        "metadata_private_markers": 0,
+        "retained_original_geometry_digests": {}
+      }
+    },
+    "towel": {
+      "file": "towel.glb",
+      "bytes": 8536,
+      "sha256": "6e62f7d6670f3dcacb256c473bf5f0524c6acec6afc188e90bf81eff34913af2",
+      "blend": "assets/sento_small_items/blend/towel__v01.blend",
+      "blend_sha256": "5cb30434627a541fba06b310f55c57fc2980fce7468f0ea1f1f54d5b5262c1e5",
+      "provenance": {
+        "source": "Project-authored folded cotton shell with continuous back fold and three visible seam edges",
+        "grid": [
+          7,
+          5
+        ],
+        "perimeter_sections": 6,
+        "hem": "two end bands, separate rough matte material"
+      },
+      "reimport": {
+        "triangles": 296,
+        "vertices": 194,
+        "dimensions_gltf_m": [
+          0.25999999046325684,
+          0.03999999910593033,
+          0.18000000715255737
+        ],
+        "bounds_gltf_m": [
+          [
+            -0.12999999523162842,
+            0.0,
+            -0.09000000357627869
+          ],
+          [
+            0.12999999523162842,
+            0.03999999910593033,
+            0.09000000357627869
+          ]
+        ],
+        "nonmanifold_edges_after_seam_weld": 0,
+        "degenerate_faces": 0,
+        "connected_components": [
+          150
+        ],
+        "finite": true,
+        "materials": 2,
+        "textures": 0,
+        "metadata_private_markers": 0,
+        "retained_original_geometry_digests": {},
+        "attachment_size": {
+          "scope": "Dimensional head/hand proxies, not game rig or gameplay verification",
+          "head_towel_bottom_gap_m": 0.0,
+          "held_towel_top_gap_m": -2.9802322387695312e-08,
+          "centering_translation_m": -0.02,
+          "held_rotation_x_radians": 1.5707963267948966
+        }
+      }
+    },
+    "coin_500": {
+      "file": "coin_500.glb",
+      "bytes": 16264,
+      "sha256": "dbe1edb0df17fc89c2cf0bda731cfffc0d34532354e8c3189c6e80e0e9cca728",
+      "blend": "assets/sento_small_items/blend/coin_500__v01.blend",
+      "blend_sha256": "c454ada8712950bd30c76af9c95c00d49cbe6f4cd1e8c5f37349c7912b2bee36",
+      "provenance": {
+        "source": "Quaternius Coin.obj, CC0 1.0",
+        "source_sha256": "4947422a5be8d460fa5cf21e3a7428d08c20db51edd8d5440f5591edd9d0d89a",
+        "actual_source_profile": [
+          [
+            0.25497867602429236,
+            -0.038576
+          ],
+          [
+            0.26918069836426184,
+            -0.084564
+          ],
+          [
+            0.31178584755502553,
+            -0.090595
+          ],
+          [
+            0.35439116655681785,
+            -0.079271
+          ],
+          [
+            0.3685928881838264,
+            -0.045298
+          ],
+          [
+            0.3685928881838264,
+            0.045298
+          ],
+          [
+            0.35439116655681785,
+            0.079271
+          ],
+          [
+            0.31178584755502553,
+            0.090595
+          ],
+          [
+            0.26918069836426184,
+            0.084564
+          ],
+          [
+            0.25497867602429236,
+            0.038576
+          ]
+        ],
+        "retained_profile_sections": 10,
+        "sectors": 28,
+        "changes": "28-sector resampling, restrained 1 mm raised rim and 18 mm annulus, generic closed leaf relief, metric dimensions and two satin metal materials"
+      },
+      "reimport": {
+        "triangles": 608,
+        "vertices": 432,
+        "dimensions_gltf_m": [
+          0.20000000298023224,
+          0.029999999329447746,
+          0.20000000298023224
+        ],
+        "bounds_gltf_m": [
+          [
+            -0.10000000149011612,
+            0.0,
+            -0.10000000149011612
+          ],
+          [
+            0.10000000149011612,
+            0.029999999329447746,
+            0.10000000149011612
+          ]
+        ],
+        "nonmanifold_edges_after_seam_weld": 0,
+        "degenerate_faces": 0,
+        "connected_components": [
+          280,
+          12,
+          12,
+          8
+        ],
+        "finite": true,
+        "materials": 2,
+        "textures": 0,
+        "metadata_private_markers": 0,
+        "retained_original_geometry_digests": {
+          "SOURCE_UNMODIFIED_Coin": "dc0b13ba1871274c3f6a3b8f74f1d51af932ed29d36e03157f0b6e3ce1d03682"
+        }
+      }
+    },
+    "sauna_key": {
+      "file": "sauna_key.glb",
+      "bytes": 21348,
+      "sha256": "af26205e80c9ecb4a850e01c1c8169ddecc01858cffa449835587e4eed5a217a",
+      "blend": "assets/sento_small_items/blend/sauna_key__v01.blend",
+      "blend_sha256": "de63f958d85b8c70449aede8b79db3045ae43a5472a3b9750a13a0787dfd2284",
+      "provenance": {
+        "source": "Quaternius Key1.obj, CC0 1.0",
+        "source_sha256": "829a354bf303c6033e6a836a12aef7df4ec1cebdf91e6a3ddd3d25c56935defb",
+        "outward_components_corrected": 0,
+        "changes": "Axes and authored dimensions fitted; outward component orientation; real two-tooth notch; 0.85 mm bow chamfer; weighted normals; satin brass"
+      },
+      "reimport": {
+        "triangles": 468,
+        "vertices": 530,
+        "dimensions_gltf_m": [
+          0.18000000715255737,
+          0.03999999910593033,
+          0.07999999821186066
+        ],
+        "bounds_gltf_m": [
+          [
+            -0.09000000357627869,
+            0.0,
+            -0.03999999910593033
+          ],
+          [
+            0.09000000357627869,
+            0.03999999910593033,
+            0.03999999910593033
+          ]
+        ],
+        "nonmanifold_edges_after_seam_weld": 0,
+        "degenerate_faces": 0,
+        "connected_components": [
+          84,
+          122,
+          32
+        ],
+        "finite": true,
+        "bow_hole_clear": true,
+        "two_tooth_notch_clear": true,
+        "materials": 1,
+        "textures": 0,
+        "metadata_private_markers": 0,
+        "retained_original_geometry_digests": {
+          "SOURCE_UNMODIFIED_Key1": "8131f9fab4a82b22702b18edb1a99c78eb5953973ae3fcceccbacc996f276dc0"
+        }
+      }
+    }
+  },
+  "visible_triangle_total_two_towels": 1904
+}

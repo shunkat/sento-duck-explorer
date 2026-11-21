@@ -1,6 +1,6 @@
 # Third-party notices
 
-This file records runtime dependencies and generated 3D assets.
+This file records runtime dependencies, generated 3D assets and free public source assets.
 The Vite build includes this file as `dist/THIRD_PARTY_NOTICES.md`; retain it
 when distributing the built application. This notice does not choose a license
 for the project's own code.
@@ -148,6 +148,68 @@ model. Their new seated/compact standing poses, protected facial UVs and reduced
 background geometry do not change the source license. Retain the Meshy credit,
 license link and modification notice in `assets/sento_npcs/ATTRIBUTION.md` and
 the individual `public/models/npc_*.LICENSE.txt` files with redistributed copies.
+
+The three `npc_*_lod_far` models and their editable Blender scenes/render
+previews are further CC BY 4.0 modifications of those accepted NPC sources.
+They preserve the authored coordinate frame and source texture UVs, with
+600 triangles each for distant rendering. See
+`assets/sento_npcs/quality/distance-lod/README.md` for actual checks and limits.
+
+## Free public environment sources — CC0
+
+The refreshed environment uses selected geometry from **Kenney Furniture Kit
+2.0** and **Nature Kit 2.1**. Source pages:
+[constituent furniture](https://kenney.nl/assets/furniture-kit),
+[nature](https://kenney.nl/assets/nature-kit).
+The original author licenses these packs under
+[CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/).
+Selected originals, author license texts and exact checksums are retained in
+`assets/public_sources/kenney_furniture/` and `kenney_nature/`.
+The downloaded archives came from the explicitly identified CC0 redistribution
+[WaviestSun/atelier-packs](https://github.com/WaviestSun/atelier-packs);
+archive checksums match that redistributor's published manifest. This is not a
+claim of byte comparison against a current author download. Selection is not
+the same as use: the environment quality record lists actual geometry uses.
+Instances are fitted to the existing map, given coherent matte materials,
+and combined into material batches. Original source files are unchanged.
+
+**Poly Haven**, creator **Charlotte Baglioni**, supplies the CC0
+[Hinoki Planks](https://polyhaven.com/a/hinoki_planks) texture used by the wood
+surfaces. The separate [Rounded Square Tiled Wall](https://polyhaven.com/a/rounded_square_tiled_wall)
+source was retained for material exploration; retention does not imply runtime
+use. Original diffuse, OpenGL normal and roughness JPEGs, API checksums and
+[license terms](https://polyhaven.com/license) are recorded under
+`assets/public_sources/polyhaven/`. Source texture files are unchanged;
+Blender material scale and appearance adjustments are documented separately.
+
+The mural and environment art-direction reference were separately generated
+from original project prompts through OpenAI. Project-held output rights are
+released under MIT to the extent permitted by law. See `assets/sento_mural/ref/`
+and `assets/sento_environment/ref/`; original PNGs and provenance are retained.
+The art-direction image is a reference, not a screenshot or a map.
+
+The assembled `sento_environment.glb` is distributed as a CC BY 4.0 composite.
+Its source-derived NPCs retain the Meshy credit and modification notice above;
+independent CC0 and project MIT components retain their original licenses.
+See `public/models/sento_environment.LICENSE.txt` and the per-placement source
+record in `assets/sento_environment/quality/measurements.json`.
+
+## Small items — original work and Quaternius CC0 sources
+
+`soap.glb` and `towel.glb` were authored in Blender for this project. The rounded
+soap, folded cotton form, materials and project-held rights are MIT licensed.
+
+`coin_500.glb` and `sauna_key.glb` use actual **Quaternius** Coin and Key1 sources
+from the [Ultimate RPG Pack](https://quaternius.com/packs/ultimaterpg.html),
+licensed [CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/).
+Original OBJ, MTL and bundled license files are retained in
+`assets/sento_small_items/source/`. The coin profile was resampled and fitted,
+with a generic raised leaf decoration and two satin metal materials. The key
+was fitted to the game's dimensions, its two-tooth notch cleaned, and its bow
+chamfered. Project-held rights in these modifications are MIT; the unchanged
+public sources remain CC0. Full records, checksums and inspections are in
+`assets/sento_small_items/README.md`, `provenance.json` and `quality/`.
+Keep the per-model license files when distributing the exports.
 
 ## three.js
 

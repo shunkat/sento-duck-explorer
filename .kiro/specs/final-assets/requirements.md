@@ -6,7 +6,7 @@ This spec covers the final 3D assets of Sento Duck Explorer and their integratio
 
 **reference image → Image to 3D → Blender adjustment → glTF (GLB) export → game integration**
 
-The pipeline is confirmed by the user and must not be skipped. Placeholder primitives or Blender scripts alone do not complete this spec.
+The original pipeline remains the recorded provenance for the existing six models and their genuine derivatives. **User update, 2026-11-21:** for the new building, environment, facilities and small props, the user explicitly approved direct Blender production and requested reuse of free public assets wherever it improves quality. These assets may instead use licensed public source → Blender adjustment → GLB, or art reference → authored Blender model → GLB. Source provenance, rights, measurable shape quality and game integration remain mandatory; placeholder primitives alone do not complete the spec.
 
 ### Status at creation (2026-11-20)
 
@@ -20,7 +20,7 @@ The pipeline is confirmed by the user and must not be skipped. Placeholder primi
 
 - **[User-confirmed game content]**, decided by the user in `KIRO_HANDOFF.md`:
   - the three characters, the 10-step route, the goal, and F1–F7;
-  - the mandatory pipeline for final models (image → Image to 3D → Blender adjustment → game integration), which must not be skipped;
+  - the original image → Image to 3D → Blender pipeline, with the 2026-11-21 confirmed environment/small-prop exception and preference for quality free public assets described above;
   - the production order: prototype → Duck, hat, and one bath section to fix the art style → humans and facilities in the same style.
 - **[User chose to consider]**: Adult accompanies Child, and Child alone passes the crowd gaps (`KIRO_HANDOFF.md`, 2026-11-20). The user said they would consider this. They did not confirm the mechanism.
 - **[Provisional, from existing steering and specs]**: implementation designs that Kiro adopted per `.kiro/steering/project-autonomy.md` and the `prototype-core-gameplay` spec. They are not user decisions and can change:
@@ -53,10 +53,10 @@ The pipeline is confirmed by the user and must not be skipped. Placeholder primi
 
 #### Acceptance Criteria
 
-1. THE Project SHALL produce each FinalGLB in this spec by the pipeline ReferenceImage → GeneratedModel → BlendFile → FinalGLB → game integration. *(User-confirmed)*
+1. THE Project SHALL record the actual production route for each FinalGLB. Existing generated models retain ReferenceImage → GeneratedModel → BlendFile → FinalGLB; the user-approved new environment/facility/small-prop route may use licensed free public sources or direct Blender authoring with an art reference, followed by Blender → GLB → game integration. *(User-confirmed update, 2026-11-21)*
 2. IF an asset is derived from another asset instead of its own generation (for example, bath wall variants cut from one generated wall), THEN THE AssetLedger SHALL name the parent AssetID and SHALL trace the derived asset to the parent's existing `done` rows for the ReferenceImage, the GeneratedModel, and the BlendFile, by file and SHA-256. The derived asset inherits those stages. It SHALL have its own BlendFile (or a named object in the parent's BlendFile, recorded by name) and its own FinalGLB. *(Provisional: derivation is allowed; the user has not specified the scope.)*
-3. THE Project SHALL NOT mark an asset `final` unless every pipeline stage is covered by a `done` ledger row that points to an existing file: its own ReferenceImage, GeneratedModel, BlendFile, and FinalGLB, or, for a derived asset, the inherited parent rows from criterion 2 plus its own BlendFile and FinalGLB rows.
-4. THE AssetLedger SHALL NOT use "not applicable" or a similar note to skip the ReferenceImage, GeneratedModel, or BlendFile stage of a final asset. The only rows that may record "not applicable" are placeholder (`prototype`) rows, which are never final assets.
+3. THE Project SHALL NOT mark an asset `final` unless its actual approved route has existing source/reference evidence, an editable BlendFile, a FinalGLB, checksums and completed rights records. Generated derivatives inherit genuine parent rows per criterion 2; public-source assets retain the downloaded original files, source URLs and license copies, and directly authored assets retain their reference and editable construction evidence.
+4. THE AssetLedger SHALL distinguish `generated`, `source` (downloaded public material) and direct `blend` authoring honestly. It SHALL NOT invent an Image-to-3D stage or treat an unrelated source as a parent. The 2026-11-21 approved alternative route does not require a fictitious `generated` row; all required stages of the chosen route must be real.
 5. THE Project SHALL keep placeholder primitives in the game until the matching FinalGLB passes Requirement 9, and SHALL NOT describe the placeholder build as the finished work.
 
 ### Requirement 2: Production order
