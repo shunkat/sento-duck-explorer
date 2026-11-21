@@ -1,0 +1,57 @@
+{
+  "reason": "Fixed candidate preserved before local arch-curvature correction",
+  "artifacts": [
+    {
+      "file": "bath_stool.glb",
+      "sha256": "0f9c82e8e49d9982cffaf2dda4e6b0eeec3cedb01c370016bd783d7b8fbfdb21"
+    },
+    {
+      "file": "bath_stool__v02.blend",
+      "sha256": "ffecd95c51579870e643934d89e0c97e504dd1e3031e644235175753b6178428"
+    },
+    {
+      "file": "comparison-high.glb",
+      "sha256": "1a21972970ac33bf55b2c37219e9264a8ba2176fadbae4aeaffd628e21751420"
+    },
+    {
+      "file": "measurements.json",
+      "sha256": "0f055722237f3407c7faad30c310367db679bc775bc594e4b39d6993e676b5ec"
+    },
+    {
+      "file": "metadata-audit.json",
+      "sha256": "744c1488bd5876025ee86c56b9ea23848cab0e8de27e6047b85ea853598664c8"
+    },
+    {
+      "file": "reimported-left.png",
+      "sha256": "d727908d2e85e117c1cb5635e1be44855ee59deffa86bb6401e257294101634e"
+    },
+    {
+      "file": "reimported-top.png",
+      "sha256": "c3cc9b5df272be5487ba95a0120180e3d75c6a08238551447833fedbb37e66e0"
+    },
+    {
+      "file": "reimported-reference.png",
+      "sha256": "ba6874352be56997d73083ad30735a4761de3e71db2b2b31341deb7f1941747f"
+    },
+    {
+      "file": "reimported-front.png",
+      "sha256": "e2b03b3c44ebcae0248fbb3075b8af232f018f93aa9e50ff89da9a0aa227caa6"
+    },
+    {
+      "file": "reimported-underside.png",
+      "sha256": "a19b1f1b6f7ec0f631f96b51a8e2efab1ef1a0733fd7f90660e6fd408e09e920"
+    },
+    {
+      "file": "comparison-high-front.png",
+      "sha256": "90e54c831f3027653932a589958ed2822dd6f8a7385fd57327934a083c78e270"
+    },
+    {
+      "file": "comparison-high-reference.png",
+      "sha256": "ec0e4375fa2fed1c4916c698894dc969742f2f7c9cae072d63376ab1401d6246"
+    },
+    {
+      "file": "comparison-high-underside.png",
+      "sha256": "0fde0b9264f869ee343077576b80e7a0da4137a44ab523b83136b58383489e37"
+    }
+  ]
+}

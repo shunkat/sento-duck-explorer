@@ -17,10 +17,7 @@ const parse = (buf: Buffer): Promise<Object3D> =>
 const size = (o: Object3D) => new Box3().setFromObject(o).getSize(new Vector3());
 
 describe("production washing-station assets", () => {
-  it.each([
-    ["bath_stool", [0.36, 0.30, 0.36]],
-    ["wash_basin", [0.20, 0.14, 0.18]],
-  ] as const)("%s has a self-contained, bounded export matching its production record", async (id, dimensions) => {
+  it.each(["bath_stool", "wash_basin"] as const)("%s has a self-contained, bounded export matching its production record", async (id) => {
     const url = ENVIRONMENT_MODEL_URLS[id];
     expect(url).toBeTruthy();
     const bytes = file(url!);
@@ -39,7 +36,18 @@ describe("production washing-station assets", () => {
     const root = await parse(bytes);
     const bounds = new Box3().setFromObject(root, true);
     const measured = bounds.getSize(new Vector3()).toArray();
+    const dimensions = [asset.measured.width, asset.measured.height, asset.measured.depth];
     measured.forEach((value, axis) => expect(value).toBeCloseTo(dimensions[axis]!, 5));
+    expect(measured[1]).toBeGreaterThanOrEqual(asset.limits.height[0]);
+    expect(measured[1]).toBeLessThanOrEqual(asset.limits.height[1]);
+    expect(Math.max(measured[0]!, measured[2]!)).toBeLessThanOrEqual(asset.limits.max_width + 1e-6);
+    if (id === "wash_basin") {
+      // Preserve the measured source's circular footprint and natural profile.
+      // The old envelope stretch made the basin 1.55x taller and oval.
+      expect(measured[0]).toBeCloseTo(measured[2]!, 5);
+      expect(measured[1]! / measured[0]!).toBeGreaterThan(0.42);
+      expect(measured[1]! / measured[0]!).toBeLessThan(0.49);
+    }
     expect(bounds.min.y).toBeCloseTo(0, 6);
     expect(bounds.getCenter(new Vector3()).x).toBeCloseTo(0, 6);
     expect(bounds.getCenter(new Vector3()).z).toBeCloseTo(0, 6);
@@ -61,7 +69,7 @@ describe("production washing-station assets", () => {
     const basin = await parse(file(ENVIRONMENT_MODEL_URLS.wash_basin!));
     basin.updateMatrixWorld(true);
     const hits = (origin: Vector3, direction: Vector3) => new Raycaster(origin, direction).intersectObject(basin, true);
-    // A filled/closed reconstruction would hit near the 0.14 m rim here.
+    // A filled/closed reconstruction would hit near the rim here.
     const interior = hits(new Vector3(0, 0.2, 0), new Vector3(0, -1, 0));
     expect(interior.length).toBeGreaterThan(0);
     expect(interior[0]!.point.y).toBeGreaterThan(0.001);
@@ -80,8 +88,10 @@ describe("production washing-station assets", () => {
   it("the stool keeps its central drain and clearance beneath the seat", async () => {
     const stool = await parse(file(ENVIRONMENT_MODEL_URLS.bath_stool!));
     stool.updateMatrixWorld(true);
-    const drain = new Raycaster(new Vector3(0, 0.4, 0), new Vector3(0, -1, 0));
-    expect(drain.intersectObject(stool, true)).toHaveLength(0);
+    for (const [x, z] of [[0, 0], [-0.02, 0], [0.02, 0], [0, -0.005], [0, 0.005]]) {
+      const drain = new Raycaster(new Vector3(x, 0.4, z), new Vector3(0, -1, 0));
+      expect(drain.intersectObject(stool, true)).toHaveLength(0);
+    }
     for (const direction of [new Vector3(1, 0, 0), new Vector3(-1, 0, 0), new Vector3(0, 0, 1), new Vector3(0, 0, -1)]) {
       const clearance = new Raycaster(new Vector3(0, 0.10, 0), direction);
       expect(clearance.intersectObject(stool, true)).toHaveLength(0);

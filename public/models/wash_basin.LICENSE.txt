@@ -4,13 +4,16 @@ License: Creative Commons Attribution 4.0 International (CC BY 4.0).
 https://creativecommons.org/licenses/by/4.0/
 
 Modified by the Sento Duck Explorer project through Codex and Blender 5.2.4 LTS:
-retopology fitted to 12 radial sections measured from the actual generated mesh,
-angular dent removal through section averaging, central bottom flattening,
-smooth shading, one warm-yellow satin-plastic material, metric dimensions,
-bottom-center origin, and GLB export. Source rim, wall taper, interior and
-bottom shape retained within the measured fitting tolerances.
+uniform scaling of the original, averaging 12 measured radial sections,
+restrained noise cleanup and floor transition, an editable subdivided master,
+curvature-adaptive low topology, custom normals transferred from the clean
+master, one yellow satin-plastic material, bottom-center origin and GLB export.
+The rolled rim, tapered wall, open interior and closed bottom are source-derived.
+The original download is unchanged. v02 corrects the prior non-uniform fitting;
+its project dimensions are not measurements of a physical basin. Inspection
+renders do not establish final in-game appearance or user visual acceptance.
 
-Source and provenance:
+Source, provenance, measured limits and comparison records:
 https://github.com/shunkat/sento-duck-explorer/tree/main/assets/wash_basin
 
 Retain attribution and the license link, and indicate further changes.

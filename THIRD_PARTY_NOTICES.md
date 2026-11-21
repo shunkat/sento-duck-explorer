@@ -91,12 +91,14 @@ The generated meshes, adjusted Blender sources, derived render previews and
 `public/models/bath_stool.glb` / `public/models/wash_basin.glb` are distributed
 under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
 
-Codex used Blender 5.2.4 to regularize the stool's generated legs and seat,
-remove unwanted seat rings, retain its drain and underside clearance, smooth
-and retopologize the source surface, and add one ivory material. The basin
-was retopologized along measured cross-sections of its generated mesh to
-remove surface waviness while retaining its rim, hollow interior and solid
-floor, with one yellow material. Both exports use metric dimensions,
+Codex used Blender 5.2.4 to measure the stool's generated surface, rebuild
+supported quad contours, remove unwanted seat rings, regularize leg and arch
+curvature, retain the drain and underside, and add one ivory material. The
+basin was retopologized along measured cross-sections, preserving its natural
+round proportions, rim, hollow interior and solid floor, with one yellow
+material. Detailed editable masters are retained; runtime meshes concentrate
+vertices at important curves and transfer normals from those clean masters.
+Both exports use metric dimensions,
 bottom-centered origins, +Y up, and no textures. Original generated meshes
 are retained; see each asset's README and `assets/ledger.csv` for the exact
 modifications and source-to-export checksums.

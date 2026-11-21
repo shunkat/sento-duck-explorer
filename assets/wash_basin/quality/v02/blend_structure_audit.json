@@ -1,0 +1,25 @@
+{
+  "blend_sha256": "11dea22f4048b8d1f55ad8b21b2225af6d79f55a3cac3f931f990276c709fabe",
+  "external_path_counts": {
+    "images": 0,
+    "libraries": 0,
+    "texts": 0,
+    "movieclips": 0,
+    "sounds": 0,
+    "fonts": 0,
+    "cache_files": 0,
+    "volumes": 0
+  },
+  "text_blocks": 0,
+  "source_objects": [
+    "SOURCE_original_Meshy_geometry",
+    "SOURCE_uniform_scale_only"
+  ],
+  "master_objects": [
+    "MASTER_evaluated_inspection",
+    "MASTER_source_fitted_basin"
+  ],
+  "profile_objects": [
+    "PROFILE_measured_radius_height"
+  ]
+}

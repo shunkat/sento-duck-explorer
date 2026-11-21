@@ -10,14 +10,22 @@ The earlier automatic upload tool returned an error referring to a ChatGPT exten
 
 The renderer can replace the five stools and five basins through `EnvironmentModels`, preserving existing LEVEL envelopes and primitive fallback. Both runtime URLs are registered after the production and rights checks. The remaining bath-section kit is unfinished. The fixture boxes used in automated tests are test-only, not artwork.
 
-## Finished assets and remaining verification
+## v02 correction after visual-quality feedback
+
+The user rejected the v01 Blender quality. The new workflow keeps a detailed editable master and a separate game export, places support loops around important contours, reduces flatter regions first, reimports the GLB and compares it under fixed conditions. A separate material critique rejected intermediate versions with arch pinching, pointed feet, triangular seat shading or a dark basin material. Geometry checks alone did not approve those versions.
+
+[Open the before/after comparison](quality/v02/index.html). Each asset also has five views in beauty, clay, silhouette and grazing-reflection materials. The actual export hashes and camera/lighting conditions are recorded beside the images. Diagnostic reflection materials expose defects; they are not the intended final plastic.
 
 | Asset | Blender correction | Final export |
 | --- | --- | --- |
-| [Ivory stool](../bath_stool/README.md) | Removed seat rings; regularized four generated legs; retained drain and underside; smoothed feet | 3,000 triangles, 55,568 bytes; 0.36 × 0.30 × 0.36 m |
-| [Yellow basin](../wash_basin/README.md) | Retopologized measured generated cross-sections; removed angular waviness; preserved rolled rim, cavity and solid floor | 1,920 triangles, 36,176 bytes; 0.20 × 0.14 × 0.18 m |
+| [Ivory stool](../bath_stool/README.md) | Source-derived quad surface; supported slot/feet; corrected side-arch correspondence locally; protected feature loops and detailed-master normals | 4,610 triangles, 84,676 bytes; 0.36 × 0.30 × 0.36 m |
+| [Yellow basin](../wash_basin/README.md) | Preserved natural circular proportions; adaptive rim/profile sampling; detailed-master normals; brighter yellow tested separately with identical geometry | 2,816 triangles, 52,320 bytes; 0.20 × 0.090517 × 0.20 m |
 
-Both have one material, no texture, finite geometry, no nonmanifold edges, bottom-center origins and +Y up. Their original generated meshes and editable Blender sources are retained. The 1,200/800-triangle drafts were rejected for contour damage; final budgets are 3,000/2,000. Five pairs draw 24,600 triangles and use ten shared-resource instances. The exports total 91,744 bytes.
+Both have one material, no texture, finite geometry, no nonmanifold edges, bottom-center origins and +Y up. Original generated meshes, v01 exports and editable masters are retained. Five pairs contain **37,130 triangles** across ten shared-resource instances; the two exports total **136,996 bytes**. The offline test constructs the actual scene and counts **59,576 visible triangles** without frustum culling in each outfit combination. The 60,000 scene limit is unchanged. This is a geometry bound, not a GPU draw-call or frame-rate measurement. The partial bath-kit allocation is now 37,500; further facilities need allocation or LOD work.
+
+Placement uses a single uniform scale within each existing LEVEL envelope. The basin therefore appears at 0.18 m diameter and about 0.0815 m height inside its old 0.20 × 0.18 × 0.14 m envelope. The previous independent-axis scaling made it oval and unnecessarily tall. Colliders, routes and placement coordinates are unchanged.
+
+The final low-poly contours retain slight polygonal edges under close inspection. A single reference does not determine hidden surfaces or exact material response; reference and diagnostic lighting differ. The comparisons document specific improvements, not a numerical fidelity percentage or user acceptance. See [the research and experiment record](../../reports/Blender%20素材品質%20改善実験.md).
 
 These are asset production and automated integration results. Independent review and the user's deferred in-game checks remain pending: Duck-height silhouette, stool feet/drain, basin interior under game lighting, labels, and washing-station passage. Do not restart a full playthrough for this individual change.
 

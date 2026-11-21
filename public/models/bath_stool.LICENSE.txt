@@ -4,10 +4,13 @@ License: Creative Commons Attribution 4.0 International (CC BY 4.0).
 https://creativecommons.org/licenses/by/4.0/
 
 Modified by the Sento Duck Explorer project, through Codex and Blender 5.2.4 LTS:
-mirrored source quadrant for four-leg symmetry, surface smoothing, removal
-of unwanted seat rings, foot-contact leveling, voxel retopology, decimation,
+source-measured symmetric quad retopology, feature support loops and subdivision,
+removal of unwanted seat rings, local side-arch correction preserving lower feet,
+level contacts, protected planar simplification, detailed-surface normal transfer,
 ivory plastic material, metric scale, bottom-center origin and GLB export.
-The generated source geometry is preserved separately; the drain remains open.
+The generated source geometry and transform are preserved separately;
+the four legs and drain remain intact. The single-reference reconstruction
+is an approximation, including its hidden underside and close-up contours.
 
 Source and provenance:
 https://github.com/shunkat/sento-duck-explorer/tree/main/assets/bath_stool

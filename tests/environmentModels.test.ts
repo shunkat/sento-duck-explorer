@@ -5,7 +5,7 @@ import { EnvironmentModels } from "../src/view/environmentModels";
 import { ModelLibrary } from "../src/view/models";
 
 describe("washing-station model placement", () => {
-  it("fits all five stools and basins to LEVEL, sharing resources without moving the source", async () => {
+  it("contains all five pairs in LEVEL without distorting their authored proportions", async () => {
     const parent = new THREE.Group();
     const adapter = new EnvironmentModels(parent);
     const slots = [
@@ -25,6 +25,7 @@ describe("washing-station model placement", () => {
     root.position.set(4, -2, 8);
     root.rotation.y = 0.4;
     const original = root.position.clone();
+    const authoredSize = new THREE.Box3().setFromObject(root, true).getSize(new THREE.Vector3());
     const library = new ModelLibrary({ loadAsync: async () => ({ scene: root }), parseAsync: async () => ({ scene: root }) });
     adapter.use(library);
     expect(primitives.every(p => p.visible)).toBe(true);
@@ -38,12 +39,19 @@ describe("washing-station model placement", () => {
     for (const [i, instance] of models.entries()) {
       const s = slots[i]!;
       const b = new THREE.Box3().setFromObject(instance, true);
-      expect(b.min.x).toBeCloseTo(s.box.minX);
-      expect(b.max.x).toBeCloseTo(s.box.maxX);
-      expect(b.min.z).toBeCloseTo(s.box.minZ);
-      expect(b.max.z).toBeCloseTo(s.box.maxZ);
+      const size = b.getSize(new THREE.Vector3());
+      expect(b.min.x).toBeGreaterThanOrEqual(s.box.minX - 1e-6);
+      expect(b.max.x).toBeLessThanOrEqual(s.box.maxX + 1e-6);
+      expect(b.min.z).toBeGreaterThanOrEqual(s.box.minZ - 1e-6);
+      expect(b.max.z).toBeLessThanOrEqual(s.box.maxZ + 1e-6);
       expect(b.min.y).toBeCloseTo(s.bottom);
-      expect(b.max.y).toBeCloseTo(s.bottom + s.height);
+      expect(b.max.y).toBeLessThanOrEqual(s.bottom + s.height + 1e-6);
+      expect(b.getCenter(new THREE.Vector3()).x).toBeCloseTo((s.box.minX + s.box.maxX) / 2);
+      expect(b.getCenter(new THREE.Vector3()).z).toBeCloseTo((s.box.minZ + s.box.maxZ) / 2);
+      expect(size.x / size.y).toBeCloseTo(authoredSize.x / authoredSize.y);
+      expect(size.z / size.y).toBeCloseTo(authoredSize.z / authoredSize.y);
+      expect(Math.max(size.x / (s.box.maxX - s.box.minX), size.y / s.height,
+        size.z / (s.box.maxZ - s.box.minZ))).toBeCloseTo(1);
       instance.traverse(o => {
         if (o instanceof THREE.Mesh) {
           expect(o.geometry).toBe(mesh.geometry);

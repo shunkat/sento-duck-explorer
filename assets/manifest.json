@@ -119,7 +119,7 @@
       "stage": 2,
       "status": "planned",
       "limits": {
-        "triangles_drawn": 25000,
+        "triangles_drawn": 37500,
         "materials": 4,
         "textures": 4,
         "texture_px": 1024,
@@ -138,7 +138,7 @@
         ]
       },
       "measured": null,
-      "notes": "Partial kit: five stool/basin pairs now total 24,600 drawn triangles. Remaining facilities are not complete; revisit the provisional kit allocation before adding their final models."
+      "notes": "Partial kit: five v02 stool/basin pairs total 37,130 visible triangles. Provisional allocation revised after counting actual exclusive-outfit scene geometry; global 60,000-triangle requirement unchanged. Remaining facilities need allocation/LOD work before adding their final meshes."
     },
     "child": {
       "stage": 3,
@@ -426,7 +426,7 @@
           0.31
         ],
         "max_width": 0.36,
-        "triangles": 3000,
+        "triangles": 4700,
         "materials": 1,
         "texture_px": 0,
         "glb_mb": 0.1
@@ -437,14 +437,14 @@
         "max_width": 0.36000001430511475,
         "width": 0.36000001430511475,
         "depth": 0.36000001430511475,
-        "triangles": 3000,
-        "vertices": 1500,
+        "triangles": 4610,
+        "vertices": 2305,
         "materials": 1,
         "textures": 0,
-        "nonmanifold_edges": 0,
         "texture_px": 0,
-        "glb_bytes": 55568,
-        "glb_mb": 0.055568,
+        "nonmanifold_edges": 0,
+        "glb_bytes": 84676,
+        "glb_mb": 0.084676,
         "bounds": {
           "min": [
             -0.18000000715255737,
@@ -457,70 +457,70 @@
             0.18000000715255737
           ]
         },
-        "sha256": "235fd70ad4cefaadbf311f804afb0ab57e13a31a0404222a0fa5ef1a00a24910",
+        "sha256": "1df13475185623882db1d63d99cc52f9ebff03cc40d62fb5136672a4f7515e55",
         "measured_date": "2026-11-21",
         "tool": "Blender 5.2.4 LTS; reimported exported GLB",
         "center_drain_clear": true,
         "separate_legs_below_14cm": 4,
         "foot_contact_heights_m": [
-          7.253927469719201e-05,
           0.0,
-          8.651022653793916e-05,
-          9.378851245855913e-05
+          0.0,
+          0.0,
+          0.0
         ]
       },
-      "notes": "Independent Meshy 6 Lite generation, freely downloaded and corrected in Blender as chosen by the user. Runtime connected in the local finishing branch. Multi-angle asset checks complete; independent review and deferred in-game visual checks remain pending.",
-      "revision": "v01"
+      "notes": "v02 source-derived supported retopology, separate detail master, curvature-aware simplification and transferred normals. Fixed-condition visual comparison and separate material critique; local runtime candidate. Crew B code review and deferred in-game appearance checks remain pending.",
+      "revision": "v02"
     },
     "wash_basin": {
       "stage": 2,
       "status": "exported",
       "limits": {
         "height": [
-          0.13,
-          0.15
+          0.085,
+          0.095
         ],
         "max_width": 0.2,
-        "triangles": 2000,
+        "triangles": 2900,
         "materials": 1,
         "texture_px": 0,
         "glb_mb": 0.1
       },
       "sockets": [],
       "measured": {
-        "height": 0.14000000059604645,
-        "max_width": 0.20000000298023224,
-        "width": 0.20000000298023224,
-        "depth": 0.18000000715255737,
-        "triangles": 1920,
-        "vertices": 962,
+        "height": 0.09051680564880371,
+        "max_width": 0.19999998807907104,
+        "width": 0.19999998807907104,
+        "depth": 0.19999998807907104,
+        "triangles": 2816,
+        "vertices": 1410,
         "materials": 1,
         "textures": 0,
-        "nonmanifold_edges": 0,
         "texture_px": 0,
-        "glb_bytes": 36176,
-        "glb_mb": 0.036176,
+        "nonmanifold_edges": 0,
+        "glb_bytes": 52320,
+        "glb_mb": 0.05232,
         "bounds": {
           "min": [
-            -0.10000000149011612,
+            -0.09999999403953552,
             0.0,
-            -0.09000000357627869
+            -0.09999999403953552
           ],
           "max": [
-            0.10000000149011612,
-            0.14000000059604645,
-            0.09000000357627869
+            0.09999999403953552,
+            0.09051680564880371,
+            0.09999999403953552
           ]
         },
-        "sha256": "354e136b96fc55c6a58bbdf7b92a2da3682893eaaabc9718d9bd54f269a8075c",
+        "sha256": "29196b8bc4b62edec5f81a4831b183472f34f86cc2477ae1cd7653386be80111",
         "measured_date": "2026-11-21",
         "tool": "Blender 5.2.4 LTS; reimported exported GLB",
-        "center_interior_floor_height_m": 0.008783161640167236,
-        "cavity_depth_m": 0.1312168389558792,
-        "source_surface_distance_p95_m": 0.0006518339505419135
+        "center_interior_floor_height_m": 0.00568467378616333,
+        "cavity_depth_m": 0.08483213186264038,
+        "center_floor_thickness_m": 0.00568467378616333
       },
-      "notes": "Independent Meshy 6 Lite generation, freely downloaded and corrected in Blender as chosen by the user. Runtime connected in the local finishing branch. Multi-angle asset checks complete; independent review and deferred in-game visual checks remain pending.",
-      "revision": "v01"
+      "notes": "v02 source-derived supported retopology, separate detail master, curvature-aware simplification and transferred normals. Fixed-condition visual comparison and separate material critique; local runtime candidate. Crew B code review and deferred in-game appearance checks remain pending.",
+      "revision": "v02"
     }
   },
   "scene_limits": {

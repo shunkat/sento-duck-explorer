@@ -1,0 +1,167 @@
+{
+  "result": "PASS",
+  "scope": "Private home paths, email-like strings and common token prefixes; heuristic, not exhaustive",
+  "binary_artifacts": [
+    {
+      "artifact": "blend_decompressed",
+      "finding_categories": []
+    },
+    {
+      "artifact": "candidate_glb",
+      "finding_categories": []
+    },
+    {
+      "artifact": "comparison_high_glb",
+      "finding_categories": []
+    }
+  ],
+  "pngs": [
+    {
+      "file": "reimported-front.png",
+      "removed_metadata_chunks": [
+        "eXIf",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt"
+      ],
+      "finding_categories": []
+    },
+    {
+      "file": "reimported-left.png",
+      "removed_metadata_chunks": [
+        "eXIf",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt"
+      ],
+      "finding_categories": []
+    },
+    {
+      "file": "reimported-reference.png",
+      "removed_metadata_chunks": [
+        "eXIf",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt"
+      ],
+      "finding_categories": []
+    },
+    {
+      "file": "reimported-top.png",
+      "removed_metadata_chunks": [
+        "eXIf",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt"
+      ],
+      "finding_categories": []
+    },
+    {
+      "file": "reimported-underside.png",
+      "removed_metadata_chunks": [
+        "eXIf",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt"
+      ],
+      "finding_categories": []
+    },
+    {
+      "file": "comparison-high-front.png",
+      "removed_metadata_chunks": [
+        "eXIf",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt"
+      ],
+      "finding_categories": []
+    },
+    {
+      "file": "comparison-high-reference.png",
+      "removed_metadata_chunks": [
+        "eXIf",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt"
+      ],
+      "finding_categories": []
+    },
+    {
+      "file": "comparison-high-underside.png",
+      "removed_metadata_chunks": [
+        "eXIf",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt",
+        "tEXt"
+      ],
+      "finding_categories": []
+    }
+  ],
+  "raw_preserved_exactly": true,
+  "candidate_sha256": "0f9c82e8e49d9982cffaf2dda4e6b0eeec3cedb01c370016bd783d7b8fbfdb21",
+  "blend_sha256": "ffecd95c51579870e643934d89e0c97e504dd1e3031e644235175753b6178428"
+}

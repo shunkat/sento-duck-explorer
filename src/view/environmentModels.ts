@@ -48,8 +48,11 @@ export class EnvironmentModels {
         instance.add(template.clone(true));
         instance.position.set((slot.box.minX + slot.box.maxX) / 2, slot.bottom,
           (slot.box.minZ + slot.box.maxZ) / 2);
-        instance.scale.set((slot.box.maxX - slot.box.minX) / size.x, slot.height / size.y,
-          (slot.box.maxZ - slot.box.minZ) / size.z);
+        // LEVEL is a containment envelope, not a target shape. Independent
+        // axis scaling made round basins oval and stretched their side walls.
+        const scale = Math.min((slot.box.maxX - slot.box.minX) / size.x,
+          slot.height / size.y, (slot.box.maxZ - slot.box.minZ) / size.z);
+        instance.scale.setScalar(scale);
         this.parent.add(instance);
         slot.instance?.removeFromParent();
         slot.instance = instance;

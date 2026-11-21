@@ -1,0 +1,20 @@
+{
+  "before_sha256": "1e4b6a1abac3e8f22ceaafe1f9d82f36b5d91a2b667555ce2ac0d5ed78104980",
+  "after_sha256": "29196b8bc4b62edec5f81a4831b183472f34f86cc2477ae1cd7653386be80111",
+  "before_linear_rgba": [
+    0.6499999761581421,
+    0.4399999976158142,
+    0.0020000000949949026,
+    1
+  ],
+  "after_linear_rgba": [
+    1.0,
+    0.68,
+    0.003,
+    1.0
+  ],
+  "only_base_color_json_changed": true,
+  "binary_chunk_identical": true,
+  "geometry_and_normal_data_identical": true,
+  "after_bytes": 52320
+}

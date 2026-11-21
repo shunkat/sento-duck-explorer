@@ -146,13 +146,30 @@ Both separate Meshy 6 Lite generations completed and their untextured GLBs were 
 
 Visual replacement uses the existing `LEVEL.fixtures` stool boxes (0.36 × 0.36 m footprint, 0.30 m height) and `LEVEL.decor` bucket boxes (0.20 × 0.18 m footprint, 0.14 m height, bottom at 0.50 m). Colliders, routes, camera obstacles, gameplay state and placement coordinates remain authoritative in LEVEL. Roots are bottom-centered with +Y up, and five instances share each asset's geometry/material. Missing or invalid models keep the primitive. Per-instance transforms fit the existing envelopes; assets must not cover labels or change movement.
 
-Revised provisional budget: stool ≤ 3,000 triangles and basin ≤ 2,000 triangles, one material each, no texture and combined exports ≤ 0.2 MB. The 1,200/800-triangle drafts damaged foot, hole and rim contours; the user chose Blender correction with quality prioritized. Final counts are 3,000 and 1,920 triangles, so five pairs draw 24,600 triangles in ten draw calls; the two GLBs total 91,744 bytes. This consumes most of the existing 25,000-triangle bath-kit allocation, which must be revisited before adding the remaining facilities. Automated checks cover actual GLB bounds, finite geometry, placement, failure fallback and repeat loading. Blender reimport renders assess asset shape; in-game appearance remains final-verification pending.
+The first v01 exports used 3,000 stool triangles and 1,920 basin triangles, one material each and no textures. Five pairs totaled 24,600 triangles; the two GLBs totaled 91,744 bytes. The user subsequently rejected their visual quality. These counts and successful topology checks did not establish acceptable shape quality. The v01 GLBs remain archived beside their Blender scenes for reproducible comparison.
 
 ### Shape-quality gate (2026-11-21 user feedback)
 
 The user reported poor Duck eye geometry. A clean reference image or successful mesh export is insufficient. Inspect the reimported export at front, both three-quarter views, side/back and a close-up of important features before registering a model for runtime use. Check silhouette, intended bilateral alignment, smooth contour and shading, floating/intersecting parts, and preservation of holes and hollow interiors. For stools inspect all feet, seat and clearance underneath; for basins inspect the entire rim, inner wall, bottom thickness and underside. Keep a reference/raw/adjusted comparison. Repair a bad reconstruction in Blender or regenerate it; do not mark it done merely because it meets size or triangle limits.
 
 The Duck v02 local correction retains the original generated body, removes irregular eye coloring, smooths only the old eye patches and adds a matched pair of smooth eye inserts. The provisional Duck triangle budget increases from 6,000 to 8,000 to preserve facial contours without decimating the body again; one material and no textures remain the target. Hat/label sockets, metric scale and body extents must match v01. This is a local Blender modification of the existing Image-to-3D asset, not a newly generated model. Asset renders do not constitute normal-input gameplay or user acceptance.
+
+### Repeatable correction and visual comparison
+
+The user's second quality report exposed two process defects: preserving the generated source too literally retained bad surface features, while forcing an arbitrary bounding box distorted the basin. Its measured source height/diameter ratio is about 0.452; stretching it to 0.14 m high at 0.20 m wide changed that ratio to 0.70. Runtime placement now uses one uniform scale inside the existing LEVEL envelope and aligns the bottom. The envelope is a containment boundary, not a shape target. Collision and gameplay data remain unchanged.
+
+For each revision:
+
+1. Preserve the unmodified generated input and the previous GLB. Name the visible defects before editing: silhouette, important openings, local curvature and material response.
+2. Build a source-derived editable control mesh. Place loops around the drain, rim, arch and foot contacts; use subdivision for continuous curves. Keep an evaluated high-detail master separate from the export. Do not repeatedly smooth the entire object or force a triangle count with unreviewed collapse.
+3. Reduce low-curvature regions first, retaining samples at silhouette and curvature changes. Compare the export with the clean master; source-distance measurements describe geometry changes, not reference-image accuracy.
+4. Reimport the actual exported GLB. Use `scripts/compare-asset-quality.py` for before/after beauty, neutral clay, silhouette and grazing-reflection views from five fixed directions. The camera, lights, framing, exposure and uniform containment are identical for both versions. Save hashes, conditions, images and the comparison HTML. PNG text metadata is removed without changing pixels.
+5. Inspect the views and receive a separate material critique. Correct visible dents, pinching, broken highlight flow or missing openings even when numeric checks pass. Record retained limitations. A diagnostic metal-like reflection pass is deliberately harsher than the intended satin plastic.
+6. Check actual GLB bounds, openings, finite geometry, provenance and total scene geometry before promotion. The scene-budget test constructs the real GameScene and counts all visible geometry without frustum culling, including five repeated pairs and the active human outfits. This is an offline geometry bound; it does not measure FPS, actual GPU draw calls or normal-input gameplay.
+
+The reusable method follows Blender's reference/result comparison practice and feature-preserving surface modeling; sources and limitations are collected in `reports/Blender 素材品質 改善実験.md`. A plugin installation itself is not a quality improvement. The existing Blender Python and render tools can perform this loop without a paid service. Final in-game appearance and Crew B's code review remain separate checks.
+
+The selected v02 exports contain 4,610 stool triangles and 2,816 basin triangles, one material and no texture each, totaling 136,996 bytes. Five pairs contain 37,130 triangles. Counting the actual scene with either outfit for each human gives 59,576 visible triangles before frustum culling. The partial bath-kit allocation is revised from 25,000 to 37,500 based on the actual exclusive-outfit geometry, while the required whole-scene limit remains 60,000. New facilities cannot simply consume another allocation; reduction or LOD work must keep the same global limit. Close-up low-poly contour differences and reference-lighting differences are documented, not hidden by successful topology checks.
 
 The game is a browser demo that judges open from a URL on unknown machines. Image to 3D output is often much denser than a game needs, so Blender reduction is planned for every asset. All values are provisional starting points, not measurements.
 
@@ -161,14 +178,14 @@ The game is a browser demo that judges open from a URL on unknown machines. Imag
 | `duck` | ≤ 8,000 (v02 eye refinement) | 1 | base color 1024², optional normal 1024² | ≤ 1.5 MB |
 | `hat_sauna_duck` | ≤ 1,500 | 1 | base color 512² | ≤ 0.3 MB |
 | small items (`coin_500`, `sauna_key`, `soap`, `towel`) | ≤ 500 each | share 1 | shared 512² atlas | ≤ 0.2 MB each |
-| bath section kit (all pieces) | ≤ 25,000 drawn | ≤ 4 | ≤ 4 × 1024² | ≤ 5 MB total |
+| bath section kit (all pieces) | ≤ 37,500 drawn (reallocated after v02 count) | ≤ 4 | ≤ 4 × 1024² | ≤ 5 MB total |
 | `child`, `adult` (both outfits) | ≤ 12,000 each | ≤ 2 | 1024² per outfit | ≤ 3 MB each |
 | each later facility kit | ≤ 25,000 drawn | ≤ 4 | ≤ 4 × 1024² | ≤ 5 MB |
 
 Reasons:
 
 - Duck is close to the camera in the low view, so it needs a smooth silhouette. 6,000 triangles is enough for a toy-like duck, and it is small next to the scene budget.
-- Scene: 60,000 triangles and 120 draw calls. The stage-2 total is about 35,000 triangles (Duck 6k, hat 1.5k, items 2k, bath kit 25k, placeholder humans). That leaves room for the stage-3 humans (24k), which brings the total to about 59k.
+- Scene: 60,000 triangles and 120 draw calls. The earlier 35k/59k planning estimate is superseded by the v02 offline all-visible count of 59,576 triangles, including the actual human outfits and five washing stations. Real GPU draw calls and frame time still require final verification.
 - Download: stage 2 is about 7.6 MB against a 12 MB limit. The full set is limited to 30 MB, so the first load stays short on ordinary connections.
 - No mesh or texture compression at first, so no extra decoder is needed. If the size limits are exceeded, consider meshopt or KTX2 through a tool such as glTF-Transform. Record that tool and its license before using it.
 - Frame rate: target 60 fps at 1280 × 720 on a reference machine. **No reference machine has been chosen yet.** The progress record will name it at the first measurement.

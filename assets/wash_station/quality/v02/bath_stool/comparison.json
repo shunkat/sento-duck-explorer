@@ -1,0 +1,175 @@
+{
+  "asset": "bath_stool",
+  "blender": "5.2.4 LTS",
+  "resolution": 512,
+  "projection": "orthographic",
+  "view_transform": "AgX",
+  "exposure": 0,
+  "gamma": 1,
+  "framing": "fixed frame from unchanged LEVEL envelope",
+  "fit": "uniform containment; bottom aligned; proportions preserved",
+  "envelope_blender_xyz_m": [
+    0.36000001430511475,
+    0.36000001430511475,
+    0.30000001192092896
+  ],
+  "directions": {
+    "front": [
+      0,
+      -1,
+      0.16
+    ],
+    "side": [
+      1,
+      0,
+      0.16
+    ],
+    "threequarter": [
+      0.48,
+      -1,
+      0.66
+    ],
+    "top": [
+      0.02,
+      -0.28,
+      1
+    ],
+    "underside": [
+      0.48,
+      -1,
+      -0.65
+    ]
+  },
+  "passes": [
+    "beauty",
+    "clay",
+    "silhouette",
+    "reflection"
+  ],
+  "versions": {
+    "before": {
+      "file": "bath_stool__v01.glb",
+      "sha256": "235fd70ad4cefaadbf311f804afb0ab57e13a31a0404222a0fa5ef1a00a24910",
+      "authored_dimensions_blender_xyz_m": [
+        0.36000001430511475,
+        0.36000001430511475,
+        0.30000001192092896
+      ],
+      "uniform_scale": 1.0,
+      "placed_dimensions_blender_xyz_m": [
+        0.36000001430511475,
+        0.36000001430511475,
+        0.30000001192092896
+      ]
+    },
+    "after": {
+      "file": "bath_stool_archfix.glb",
+      "sha256": "1df13475185623882db1d63d99cc52f9ebff03cc40d62fb5136672a4f7515e55",
+      "authored_dimensions_blender_xyz_m": [
+        0.36000001430511475,
+        0.36000001430511475,
+        0.30000001192092896
+      ],
+      "uniform_scale": 1.0,
+      "placed_dimensions_blender_xyz_m": [
+        0.36000001430511475,
+        0.36000001430511475,
+        0.30000001192092896
+      ]
+    }
+  },
+  "limitation": "Diagnostic views, not gameplay validation or an automatic visual-quality verdict.",
+  "renderer": {
+    "engine": "CYCLES",
+    "samples": 32,
+    "denoising": true
+  },
+  "camera": {
+    "focus_blender_xyz_m": [
+      0,
+      0,
+      0.15000000596046448
+    ],
+    "distance_m": 1.440000057220459,
+    "ortho_scale_m": 0.5472000217437745
+  },
+  "lights": [
+    {
+      "name": "key",
+      "offset_from_focus_m": [
+        0.6480000257492066,
+        -0.9360000371932984,
+        1.0800000429153442
+      ],
+      "energy_w": 38.88000308990485,
+      "rectangle_size_m": [
+        0.756000030040741,
+        0.756000030040741
+      ]
+    },
+    {
+      "name": "fill",
+      "offset_from_focus_m": [
+        -0.9000000357627869,
+        -0.36000001430511475,
+        0.5760000228881836
+      ],
+      "energy_w": 14.25600113296511,
+      "rectangle_size_m": [
+        0.7920000314712525,
+        0.7920000314712525
+      ]
+    },
+    {
+      "name": "rim",
+      "offset_from_focus_m": [
+        0.18000000715255737,
+        0.7920000314712525,
+        0.8640000343322753
+      ],
+      "energy_w": 28.51200226593022,
+      "rectangle_size_m": [
+        0.5400000214576721,
+        0.5400000214576721
+      ]
+    },
+    {
+      "name": "reflection-strip",
+      "offset_from_focus_m": [
+        0.4320000171661377,
+        -0.7200000286102295,
+        0.6480000257492066
+      ],
+      "energy_w": 20.73600164794925,
+      "rectangle_size_m": [
+        1.0080000400543212,
+        0.03600000143051148
+      ]
+    }
+  ],
+  "lighting_passes": {
+    "beauty_and_clay": [
+      "key",
+      "fill",
+      "rim"
+    ],
+    "reflection": [
+      "reflection-strip"
+    ],
+    "silhouette": []
+  },
+  "world": {
+    "color_linear_rgb": [
+      0.095,
+      0.095,
+      0.095
+    ],
+    "strength": 0.45,
+    "silhouette_color_linear_rgb": [
+      1,
+      1,
+      1
+    ],
+    "silhouette_strength": 1
+  }
+}
