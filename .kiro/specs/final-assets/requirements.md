@@ -30,6 +30,9 @@ The original pipeline remains the recorded provenance for the existing six model
   - every number in this spec. The reason for each value is in design.md.
 - **[Proposal]**: an idea for the user to decide. The Costume Contest presentation ("night sento, a small steam spirit and lanterns that show the way and the dangers") comes from `docs/kiroween-review.md`. The user has **not** adopted it, and it does not change the game content above.
 
+
+> **Update 2026-11-21.** The route to preserve is now the growth route (prototype-core-gameplay Requirement 11 and design "Growth and exit"): F1–F8, three stages, two milk bottles and the exit clear. The coin, key and hat models stay in the repository with their records but are no longer used in play. A new milk bottle prop is defined in that design's "Milk bottle asset contract".
+
 ## Glossary
 
 - **Asset**: one model that ships in the game (e.g. `duck`, `hat_sauna_duck`, `bath_wall_2m`).

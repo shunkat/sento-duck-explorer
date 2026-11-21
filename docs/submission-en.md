@@ -11,7 +11,11 @@ Draft for the Kiroween 2026 English description. It is a working draft, not a su
 - No user study, learning effect or accident reduction is claimed.
 - Development demo: [GitHub Pages](https://shunkat.github.io/sento-duck-explorer/). The [deployment workflow](https://github.com/shunkat/sento-duck-explorer/actions/workflows/pages.yml) records publication status and the built commit. No demo video is recorded. This is a draft, not a Devpost submission.
 
-## Summary
+## Current direction (2026-11-21)
+
+The user replaced character switching with growth: the player starts as the duck, drinks milk bottles to grow into the child and then the adult, and clears by leaving the bathhouse through the front entrance. Details are in the prototype-core-gameplay spec (Requirement 11, design "Growth and exit"). The sections below describe the earlier three-character version and its verification, kept as a record; they will be rewritten for the submission once the growth version is verified.
+
+## Summary (three-character version, 2026-11-20)
 
 Sento Duck Explorer is a 3D cooperative puzzle set in a fictional Japanese public bathhouse (sento). The player switches between three characters, a duck, a child and an adult, and combines their different abilities to reach a hidden pond. The duck must arrive there wearing a sauna hat.
 
@@ -42,7 +46,7 @@ The child and adult are a parent-child pair. They must stay within 3 m of each o
 
 ## Game-over rules (F1 to F8)
 
-Each rule is a bathhouse manner. Breaking one ends the attempt and the game restarts from the latest checkpoint.
+These rules are unchanged in the growth version and apply while the player is the child or the adult. Each rule is a bathhouse manner. Breaking one ends the attempt and the game restarts from the latest checkpoint.
 
 | ID | Rule |
 | --- | --- |

@@ -135,3 +135,12 @@ Integrated validation: 219 tests passed across 16 files; the production build pa
   - [x] 15.4 Tests: Adult/Child attempts, carrying Duck, free Duck blocked without F8, idle/parallel/away/side-wall false positives, diagonal/run approaches, restart after F8, whole route (`tests/womens-entrance.test.ts`)
   - [ ] 15.5 Final normal-input check (Codex, joins the existing final check)
 
+- [ ] 16. Growth and exit (2026-11-21 user request; Kiro Crew A, review by B)
+  - [ ] 16.1 Steering, KIRO_HANDOFF, specs (Req 11, design "Growth and exit"), README and English text
+  - [ ] 16.2 Core: one player, stages, milk pickup and atomic growth, high-handle doors, exit clear, guardian, three checkpoints; retire switching, transfers, carry, payment/key/hat, pond goal
+  - [ ] 16.3 Level: trough joined to the tub, kids' pool, Duck-only gap, child passage, Adult room and gate, front exit door, guardian spots, growth spots
+  - [ ] 16.4 View: one visible body per stage, milk placeholder, guardian, doors and handles, HUD, camera blend, growth cue
+  - [ ] 16.5 Tests: new route by normal inputs, milk rules, clearances, growth state, checkpoints, exit, F1–F8 regressions, view/HUD/camera
+  - [ ] 16.6 Final milk asset (`public/models/milk_bottle.glb`) by the asset role
+  - [ ] 16.7 Final normal-input check (Codex), after B's review
+

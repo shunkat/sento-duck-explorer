@@ -10,6 +10,8 @@ Real character models come only through the confirmed pipeline: image → Image 
 
 Items marked *(Provisional)* are working choices under `.kiro/steering/project-autonomy.md`. They are not user decisions.
 
+> **Update 2026-11-21.** Character switching is replaced by growth (prototype-core-gameplay Requirement 11): one player grows Duck → Child → Adult. Every criterion below that mentions a switch applies to a growth change of the stage (the camera blends to the new stage's profile, keeps the facing, and never passes through walls). Requirement 7's route-preservation clause now means the growth route.
+
 ## Glossary
 
 - **ShoulderCamera**: The follow camera behind and slightly to the right of the active character, looking ahead past its shoulder.
