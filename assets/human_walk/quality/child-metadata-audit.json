@@ -1,0 +1,90 @@
+{
+  "result": "PASS",
+  "scope": "Heuristic private paths, emails, token prefixes, embedded PNG ancillary metadata; not exhaustive",
+  "artifacts": {
+    "reopened_blend": [],
+    "candidate_glb": []
+  },
+  "glb_meshes": 2,
+  "skin_joints": 13,
+  "images": [
+    {
+      "size": [
+        1024,
+        1024
+      ],
+      "chunks": [
+        "IHDR",
+        "sRGB",
+        "gAMA",
+        "cHRM",
+        "oFFs",
+        "pHYs",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IEND"
+      ]
+    },
+    {
+      "size": [
+        1024,
+        1024
+      ],
+      "chunks": [
+        "IHDR",
+        "sRGB",
+        "gAMA",
+        "cHRM",
+        "oFFs",
+        "pHYs",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IEND"
+      ]
+    }
+  ],
+  "blend_sha256": "16277f8093f6b3e4a436eaecac3a78bf8f45ba1fcaf30a358820dde9a1473893",
+  "glb_sha256": "32e09215c68721545ff240b57927d53f29e01b896c865b04e2529d6d3034ca88"
+}

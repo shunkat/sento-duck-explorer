@@ -14,6 +14,10 @@ localized facial-relief cleanup, continuous facial and clothing color baking,
 balanced runtime reduction and detailed-source normals. Static opaque toy
 variants and original hand/label sockets are retained.
 
+Revision v03, 2026-11-21: shared 13-bone skeleton and skin weights for
+distance-driven runtime walking, retaining both outfit geometries and
+attachment contracts. Original v02 texture pixels are retained.
+
 Source and provenance:
 https://github.com/shunkat/sento-duck-explorer/tree/main/assets/child
 

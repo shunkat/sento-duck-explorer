@@ -174,7 +174,7 @@
         "vertices": 8888,
         "materials": 2,
         "textures": 2,
-        "glb_bytes": 724184,
+        "glb_bytes": 906716,
         "bounds": {
           "min": [
             -0.30918973684310913,
@@ -187,11 +187,11 @@
             0.20662736892700195
           ]
         },
-        "sha256": "e69c7427abf6104526ac34072c57d8775adb27da4435ab53dd0a5c5ed29ef141",
+        "sha256": "32e09215c68721545ff240b57927d53f29e01b896c865b04e2529d6d3034ca88",
         "texture_px": 1024,
-        "glb_mb": 0.724184,
+        "glb_mb": 0.906716,
         "measured_date": "2026-11-21",
-        "tool": "Blender 5.2.4 LTS; reimported exported GLB",
+        "tool": "Blender 5.2.4 LTS; reimported rigged GLB, rest-pose geometry preserved",
         "variants": {
           "outfit_bath": {
             "bounds": {
@@ -247,20 +247,21 @@
         ],
         "shoulder_measurement": "Outer upper-arm and shoulder silhouette in recorded variant Y band",
         "triangles_per_visible_variant": 5600,
-        "materials_per_visible_variant": 1
+        "materials_per_visible_variant": 1,
+        "bones": 13
       },
       "outfit_nodes": {
         "clothed": "outfit_clothed",
         "bath": "outfit_bath"
       },
       "default_outfit": "clothed",
-      "visibility_policy": "Exactly one outfit mesh visible before first draw; static full-body alternatives with no head_shared node.",
+      "visibility_policy": "Exactly one outfit mesh visible before first draw; both share one 13-bone skeleton.",
       "socket_positions": {
         "socket_hand_r": {
           "x": -0.23685123026371002,
           "y": 0.3859201669692993,
           "z": 0.07554710656404495,
-          "meaning": "actual right-hand anchor; negative X when facing +Z"
+          "meaning": "Right forearm bone attachment; this is the unchanged root-local rest position; follows the animated hand."
         },
         "socket_label": {
           "x": 0.0,
@@ -269,8 +270,9 @@
           "meaning": "label anchor above the head; excluded from mesh bounds"
         }
       },
-      "revision": "v02",
-      "notes": "v02: Source-based smooth shoulder and arm deformation; local facial relief cleanup; continuous face/clothing texture bake; balanced weighted reduction and detail normals. Fixed-condition asset comparison and separate material critique; Crew B code review and deferred game-lighting/play checks remain pending. Embedded PNG text/EXIF sanitized after export; geometry and retained image chunks unchanged."
+      "revision": "v03",
+      "notes": "v03: Preserve v02 geometry and add source-space weighted shared skeleton. Preserve v02 embedded PNG bytes. Actual skinned-vertex, attachment and game-render checks recorded in docs/human-face-walk-verification.md; full normal-input play remains deferred.",
+      "animation_status": "Distance-driven skeletal walking in view code; stop/held-arm constraints and support-foot height correction. No baked glTF clips; authored drying/pickup/carry transitions remain open."
     },
     "adult": {
       "stage": 3,
@@ -304,10 +306,10 @@
         "width": 0.7722078561782837,
         "depth": 0.548681378364563,
         "triangles": 11600,
-        "vertices": 9697,
+        "vertices": 8979,
         "materials": 2,
         "textures": 2,
-        "glb_bytes": 739012,
+        "glb_bytes": 960660,
         "bounds": {
           "min": [
             -0.38610392808914185,
@@ -320,11 +322,11 @@
             0.2743406891822815
           ]
         },
-        "sha256": "61ce44be0c7547ffc58ca3c3242ff86ed564246b6ca3515c73250e2117286fd2",
+        "sha256": "0ec65252a0554fcefcf36b55d3871788367440e215d40fb8040fbbf691bcb867",
         "texture_px": 1024,
-        "glb_mb": 0.739012,
+        "glb_mb": 0.96066,
         "measured_date": "2026-11-21",
-        "tool": "Blender 5.2.4 LTS; reimported exported GLB",
+        "tool": "Blender 5.2.4 LTS; reimported rigged GLB, rest-pose geometry preserved",
         "variants": {
           "outfit_clothed": {
             "bounds": {
@@ -380,20 +382,21 @@
         ],
         "shoulder_measurement": "Outer upper-arm and shoulder silhouette in recorded variant Y band",
         "triangles_per_visible_variant": 5800,
-        "materials_per_visible_variant": 1
+        "materials_per_visible_variant": 1,
+        "bones": 13
       },
       "socket_positions": {
         "socket_carry": {
           "x": -0.23999999463558197,
           "y": 0.8999999761581421,
           "z": 0.20000000298023224,
-          "meaning": "carried Duck bottom-origin root; static right-hand pose; Y=0.90 m core contract preserved"
+          "meaning": "Duck bottom-origin root, unchanged local rest Y=0.90 m; follows complete-model support-foot bob while carrying."
         },
         "socket_hand_r": {
           "x": -0.3077082633972168,
           "y": 0.8723217844963074,
           "z": 0.2201717048883438,
-          "meaning": "actual right-hand anchor; negative X when facing +Z"
+          "meaning": "Right forearm bone attachment; this is the unchanged root-local rest position; follows the animated hand."
         },
         "socket_label": {
           "x": 0.0,
@@ -407,10 +410,10 @@
         "bath": "outfit_bath"
       },
       "default_outfit": "clothed",
-      "visibility_policy": "Exactly one outfit mesh visible before first draw; static full-body alternatives with no head_shared node.",
-      "animation_status": "Static carry-ready pose only; no rig, walking, pickup or carry animation.",
-      "revision": "v02",
-      "notes": "v02: Source-based shoulder and carry-pose correction with protected legs; local facial cleanup; continuous face/clothing texture bake; balanced weighted reduction and detail normals. Fixed-condition asset comparison and separate material critique; Crew B code review and deferred game-lighting/play checks remain pending. Embedded PNG text/EXIF sanitized after export; geometry and retained image chunks unchanged."
+      "visibility_policy": "Exactly one outfit mesh visible before first draw; both share one 13-bone skeleton.",
+      "animation_status": "Distance-driven skeletal walking in view code; stop/held-arm constraints and support-foot height correction. No baked glTF clips; authored drying/pickup/carry transitions remain open.",
+      "revision": "v03",
+      "notes": "v03: Preserve v02 geometry and add source-space weighted shared skeleton. Correct face UV allocation and ear mask; rebake both 1024-square outfit textures. Actual skinned-vertex, attachment and game-render checks recorded in docs/human-face-walk-verification.md; full normal-input play remains deferred."
     },
     "bath_stool": {
       "stage": 2,

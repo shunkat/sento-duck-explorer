@@ -131,7 +131,7 @@ Hat GLB origin: center of the inner base, so attaching it to `socket_hat` needs 
 ### Characters, rig, outfits
 
 - **Duck**: no skeleton. Motion from whole-model bob, tilt, and yaw as in `KIRO_HANDOFF.md`.
-- **Child and Adult** (stage 3): shared bone names and hierarchy, at most 40 bones. Shared clips: idle, walk, run, hold, dry, carry. Retarget by bone name.
+- **Child and Adult** (stage 3): shared bone names and hierarchy, at most 40 bones. Target motion set: idle, walk, run, hold, dry, carry. Retarget by bone name. The 2026-11-21 walking correction uses the same 13 named bones in both outfits and applies distance-driven poses in the view layer; it does not require bundled glTF animation clips. Rest-to-walk blending and held-arm constraints are part of this correction. Separate authored drying, pickup and carry-transition clips remain open.
 - **Bathing representation** (`KIRO_HANDOFF.md` leaves this to the design stage): two body variants per human on the same skeleton. The renderer picks the variant from `ClothingState`, and logic is unchanged. *(Provisional; chosen for a child-friendly public demo.)*
   - `clothed`: everyday clothes.
   - `bath`: an abstract toy-figure body, like a wooden kokeshi or a capsule doll. It has a smooth, single-color body with no anatomical detail and **no towel on the body**, so no towel ever touches the bathwater. That would contradict F1, because towels must not go in the bath.

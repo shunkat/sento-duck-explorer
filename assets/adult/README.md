@@ -42,3 +42,14 @@ The editable scene was reopened and the final GLB reimported to verify both mesh
 **Exported asset status does not mean game integration or a completed browser playthrough.** Runtime outfit switching, carried-item attachment, camera framing and the full route need their integration checks. The game must continue to enforce its existing clothing and safety rules.
 
 Meshy-derived geometry, adjusted scenes, textures, exports and derived previews are **CC BY 4.0**, separately from the MIT code and reference-image rights. See [ATTRIBUTION.md](ATTRIBUTION.md) and `public/models/adult.LICENSE.txt` in the repository.
+
+## Revision v03: face and skeletal walking
+
+The original reference and Meshy source remain unchanged. The current runtime
+uses a shared 13-bone skeleton in both outfits; the view layer moves limbs from
+actual travelled distance and preserves held-object support. The original
+static revisions above remain archived. The [face correction](blend/adult__face_uv_v03.md)
+repairs UV allocation and ear colors without remeshing. See the
+[rig source and checks](../human_walk/README.md) and
+[release verification](../../docs/human-face-walk-verification.md).
+The derivative model and its Blender source remain CC BY 4.0.

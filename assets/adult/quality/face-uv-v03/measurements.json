@@ -1,0 +1,76 @@
+{
+  "source": "assets/adult/blend/adult__v02.blend",
+  "source_sha256": "43418e26f3abe3951afa457d8c5daf5557fca6d9162815ab4cc150e211f9b78d",
+  "cause": "Face UV selection used posed world depth instead of source reference depth; the Adult +0.10 m pose offset split the face into small body islands.",
+  "geometry_unchanged": true,
+  "meshes": {
+    "outfit_clothed": {
+      "vertices": 2902,
+      "triangles": 5800,
+      "position_sha256": "21f46647f6ee9c3a84445d0f9b689a4e2fe6e9408dce2781173d17bd40780d63",
+      "topology_sha256": "25187cdfd6d2fe73920780c1069875c9b33c10181d60d97bc7401af84f91bb2c",
+      "reference_position_sha256": "fe017c5da12da9bbf39be5d5b3f102fd26c1c30997fab4dc62546db88ff27064",
+      "corner_normals_sha256": "f4594bc7b3c48287da1ea542fb41e8cd5402d9d49effd0e117e2da7f1ea4f950",
+      "face_patch_triangles": 1065,
+      "eye_region_triangles": 126,
+      "old_eye_patch_triangles": 50,
+      "repaired_eye_patch_triangles": 126,
+      "embedded_texture_size": [
+        1024,
+        1024
+      ]
+    },
+    "outfit_bath": {
+      "vertices": 2902,
+      "triangles": 5800,
+      "position_sha256": "133d2074aabaf84153d398a6f5cea105c65b1b04b56c5093063c3fc4e3acb11a",
+      "topology_sha256": "55b117b44ae7cda1ee4be732c4839a0851ad6954413ce14f03b27cd5249ff1ad",
+      "reference_position_sha256": "39e9ed7adc9b8af3e5b7130ff3658a7e49287d362418bbd30a4a327de031777c",
+      "corner_normals_sha256": "79af538779f9d268e0384baae556f5a5723173a9f0c5babf1111c02cd6df390d",
+      "face_patch_triangles": 1108,
+      "eye_region_triangles": 135,
+      "old_eye_patch_triangles": 58,
+      "repaired_eye_patch_triangles": 135,
+      "embedded_texture_size": [
+        1024,
+        1024
+      ]
+    }
+  },
+  "png_sanitization": {
+    "file": "adult-face-v03.glb",
+    "before_sha256": "fcb9125335730eda3b4ccef22e84d79c404ed0ae39ba08149a7d65761a141793",
+    "after_sha256": "888017c8912e37dcce7f7c9522fe4aad8e26200b354b1b867d8238eea0ee98a6",
+    "bytes": 776136,
+    "non_image_buffer_views_identical": true,
+    "geometry_materials_transforms_unchanged": true,
+    "images": [
+      {
+        "name": "adult_bath_basecolor_face_uv_v03",
+        "buffer_view": 4,
+        "removed_chunk_types": [
+          "eXIf"
+        ],
+        "png_before_sha256": "38fb9e671205e66a186d1864e614c305a68501f3720c5187f1aa7226f09688ce",
+        "png_after_sha256": "46fb09990bb290a9399194bb0c37ba164b83ad8f790b9d25f186c48b4aa258df",
+        "retained_chunks_sha256": "46fb09990bb290a9399194bb0c37ba164b83ad8f790b9d25f186c48b4aa258df",
+        "retained_chunks_identical": true
+      },
+      {
+        "name": "adult_clothed_basecolor_face_uv_v03",
+        "buffer_view": 9,
+        "removed_chunk_types": [
+          "eXIf"
+        ],
+        "png_before_sha256": "2dd7b76114bb7ac809e47cf63d80c142e1e340837e752d0a6267db09abdecdef",
+        "png_after_sha256": "291ed2cd2a9d13f4c4624c96e786984ba3ae2aa119ec2bb85edb8a9e97bbac62",
+        "retained_chunks_sha256": "291ed2cd2a9d13f4c4624c96e786984ba3ae2aa119ec2bb85edb8a9e97bbac62",
+        "retained_chunks_identical": true
+      }
+    ],
+    "scope": "Ancillary metadata removal only. Every retained PNG chunk, including IHDR and IDAT, is byte-identical."
+  },
+  "candidate_sha256": "888017c8912e37dcce7f7c9522fe4aad8e26200b354b1b867d8238eea0ee98a6",
+  "candidate_bytes": 776136,
+  "blend_sha256": "a784feee08ee32ee948ced387355a2a87d6b6462bdbec40797af9d5626741a41"
+}

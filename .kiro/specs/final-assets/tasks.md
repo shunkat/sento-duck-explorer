@@ -63,8 +63,8 @@ Production status updated by Codex on 2026-11-20. Codex operates the image → M
     - _Requirements: 2.3, 5.2–5.4, 9.3, 9.5_
 
 - [ ] 8. Stage 3: humans and facilities in the recorded style
-  - [ ] 8.1 Child and Adult with a shared skeleton, `clothed` and `bath` body variants (abstract toy-figure body, no towel on the body), `socket_hand_r`, and Adult's `socket_carry`
-    - Original references, raw Meshy models, editable Blender scenes and exported v01 variants/sockets are complete; exact files and measurements are in the ledger and manifest. The initial GLBs are static meshes: a shared skeleton and walking/carry/wiping animations are not implemented or claimed complete.
+  - [x] 8.1 Child and Adult with a shared skeleton, `clothed` and `bath` body variants (abstract toy-figure body, no towel on the body), `socket_hand_r`, and Adult's `socket_carry`
+    - Original references, raw Meshy models, editable Blender scenes and exported v01 variants/sockets are complete; exact files and measurements are in the ledger and manifest. The v01/v02 GLBs were static. Revision v03 adds a shared 13-bone skeleton and distance-driven walking, rest blending and held-arm constraints in both outfits. Separate authored drying/pickup/carry-transition clips and the deferred final normal-input play remain open; see `docs/human-face-walk-verification.md`.
   - [x] 8.2 Towel (while its owner is in the bathwater, drawn on the head or on the tub edge, never in the water), key; reception, changing room, sauna and seated crowd (gaps kept at 0.60 m), open-air bath, pond
   - [ ] 8.3 Repeat the checks in tasks 2.5 and 7 for every replacement
     - _Requirements: 2.4, 3.3, 3.4, 4.3, 4.4, 9_

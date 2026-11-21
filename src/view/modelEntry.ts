@@ -2,7 +2,7 @@
 // .kiro/specs/shoulder-view (Req 6). A URL is listed only after the model went
 // through its approved production route, Blender/GLB and rights checks. Anything
 // not listed keeps its placeholder primitive. The full environment and small
-// props are connected; human meshes remain static, without a skeletal rig.
+// props are connected; human rigs use the distance-driven view-layer gait.
 //
 // Source-specific credits/licenses are recorded in THIRD_PARTY_NOTICES.md and
 // public/models/*.LICENSE.txt (Req 6.6); generated and free public assets differ.

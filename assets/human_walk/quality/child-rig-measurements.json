@@ -1,0 +1,339 @@
+{
+  "id": "child",
+  "glb_sha256": "32e09215c68721545ff240b57927d53f29e01b896c865b04e2529d6d3034ca88",
+  "bytes": 906716,
+  "bone_count": 13,
+  "bones": [
+    "hips",
+    "spine",
+    "head",
+    "upper_arm_l",
+    "forearm_l",
+    "upper_arm_r",
+    "forearm_r",
+    "thigh_l",
+    "shin_l",
+    "foot_l",
+    "thigh_r",
+    "shin_r",
+    "foot_r"
+  ],
+  "outfits": {
+    "outfit_bath": {
+      "triangles": 5600,
+      "vertices": 4383
+    },
+    "outfit_clothed": {
+      "triangles": 5600,
+      "vertices": 4505
+    }
+  },
+  "rest_sockets_blender_xyz": {
+    "socket_hand_r": [
+      -0.23685112595558167,
+      -0.07554720342159271,
+      0.385919988155365
+    ],
+    "socket_label": [
+      0.0,
+      0.0,
+      1.340000033378601
+    ]
+  },
+  "posed_frames": [
+    {
+      "phase": 0.0,
+      "hand": [
+        -0.23685117065906525,
+        -0.07554719597101212,
+        0.38592010736465454
+      ],
+      "root_vertical_offset": -0.0,
+      "foot_ankles_blender_xyz": {
+        "r": [
+          -0.11999998241662979,
+          -0.0006604138761758804,
+          0.05000002682209015
+        ],
+        "l": [
+          0.11999998241662979,
+          -0.0006604157388210297,
+          0.05000002682209015
+        ]
+      },
+      "outfits": {
+        "outfit_bath": {
+          "bounds_blender_xyz": [
+            [
+              -0.3084936738014221,
+              -0.20662736892700195,
+              -8.579791455076702e-08
+            ],
+            [
+              0.3074662983417511,
+              0.20662736892700195,
+              1.1999963521957397
+            ]
+          ],
+          "hand_nearest_vertex_distance": 0.003301662518620391
+        },
+        "outfit_clothed": {
+          "bounds_blender_xyz": [
+            [
+              -0.30918973684310913,
+              -0.20662736892700195,
+              -8.579791455076702e-08
+            ],
+            [
+              0.30918970704078674,
+              0.20662736892700195,
+              1.1999963521957397
+            ]
+          ],
+          "hand_nearest_vertex_distance": 0.0032985054193176598
+        }
+      }
+    },
+    {
+      "phase": 1.5707963267948966,
+      "hand": [
+        -0.23685117065906525,
+        -0.013203121721744537,
+        0.3584567904472351
+      ],
+      "root_vertical_offset": -0.023718148469924927,
+      "foot_ankles_blender_xyz": {
+        "r": [
+          -0.1199997067451477,
+          -0.13100212812423706,
+          0.05000002682209015
+        ],
+        "l": [
+          0.12000063806772232,
+          0.21114014089107513,
+          0.11767253279685974
+        ]
+      },
+      "outfits": {
+        "outfit_bath": {
+          "bounds_blender_xyz": [
+            [
+              -0.3084936738014221,
+              -0.27082622051239014,
+              6.640888750553131e-05
+            ],
+            [
+              0.3074662983417511,
+              0.254864901304245,
+              1.1762782335281372
+            ]
+          ],
+          "hand_nearest_vertex_distance": 0.0033016154730046115
+        },
+        "outfit_clothed": {
+          "bounds_blender_xyz": [
+            [
+              -0.30918973684310913,
+              -0.27082622051239014,
+              6.640888750553131e-05
+            ],
+            [
+              0.30918970704078674,
+              0.25486472249031067,
+              1.1762782335281372
+            ]
+          ],
+          "hand_nearest_vertex_distance": 0.003298461388192863
+        }
+      }
+    },
+    {
+      "phase": 3.141592653589793,
+      "hand": [
+        -0.23685117065906525,
+        -0.07554719597101212,
+        0.38592010736465454
+      ],
+      "root_vertical_offset": -0.0,
+      "foot_ankles_blender_xyz": {
+        "r": [
+          -0.11999998241662979,
+          -0.0006604138761758804,
+          0.05000002682209015
+        ],
+        "l": [
+          0.11999998241662979,
+          -0.0006604157388210297,
+          0.05000002682209015
+        ]
+      },
+      "outfits": {
+        "outfit_bath": {
+          "bounds_blender_xyz": [
+            [
+              -0.3084936738014221,
+              -0.20662736892700195,
+              -8.579791455076702e-08
+            ],
+            [
+              0.3074662983417511,
+              0.20662736892700195,
+              1.1999963521957397
+            ]
+          ],
+          "hand_nearest_vertex_distance": 0.003301662518620391
+        },
+        "outfit_clothed": {
+          "bounds_blender_xyz": [
+            [
+              -0.30918973684310913,
+              -0.20662736892700195,
+              -8.579791455076702e-08
+            ],
+            [
+              0.30918970704078674,
+              0.20662736892700195,
+              1.1999963521957397
+            ]
+          ],
+          "hand_nearest_vertex_distance": 0.0032985054193176598
+        }
+      }
+    },
+    {
+      "phase": 4.71238898038469,
+      "hand": [
+        -0.23685117065906525,
+        -0.14634782075881958,
+        0.3869025409221649
+      ],
+      "root_vertical_offset": -0.023718148469924927,
+      "foot_ankles_blender_xyz": {
+        "r": [
+          -0.12000063806772232,
+          0.21114014089107513,
+          0.11767253279685974
+        ],
+        "l": [
+          0.1199997067451477,
+          -0.13100212812423706,
+          0.05000002682209015
+        ]
+      },
+      "outfits": {
+        "outfit_bath": {
+          "bounds_blender_xyz": [
+            [
+              -0.3084936738014221,
+              -0.2701730728149414,
+              -8.568167686462402e-08
+            ],
+            [
+              0.3074662685394287,
+              0.25477924942970276,
+              1.1762782335281372
+            ]
+          ],
+          "hand_nearest_vertex_distance": 0.003301625344491144
+        },
+        "outfit_clothed": {
+          "bounds_blender_xyz": [
+            [
+              -0.3091897666454315,
+              -0.2701730728149414,
+              -8.568167686462402e-08
+            ],
+            [
+              0.30918967723846436,
+              0.25482213497161865,
+              1.1762782335281372
+            ]
+          ],
+          "hand_nearest_vertex_distance": 0.0032984721835585965
+        }
+      }
+    }
+  ],
+  "hand_stride_distance": 0.13614945305701187,
+  "source_file": "assets/child/blend/child__v02.blend",
+  "source_sha256": "3e84c6c847403bf2c6b93ee5262f37262cceeba4a15d655680e30118dd9f1bbc",
+  "blend_file": "assets/human_walk/blend/child__walk_v03.blend",
+  "blend_sha256": "16277f8093f6b3e4a436eaecac3a78bf8f45ba1fcaf30a358820dde9a1473893",
+  "weights": {
+    "outfit_clothed": {
+      "vertices": 2802,
+      "triangles": 5600,
+      "max_influences": 4,
+      "pre_normalization_max_loss": 1.1102230246251565e-16,
+      "influenced_vertices": {
+        "hips": 211,
+        "spine": 334,
+        "head": 1663,
+        "upper_arm_r": 95,
+        "forearm_r": 128,
+        "upper_arm_l": 91,
+        "forearm_l": 131,
+        "thigh_r": 111,
+        "shin_r": 123,
+        "foot_r": 129,
+        "thigh_l": 117,
+        "shin_l": 123,
+        "foot_l": 131
+      }
+    },
+    "outfit_bath": {
+      "vertices": 2802,
+      "triangles": 5600,
+      "max_influences": 4,
+      "pre_normalization_max_loss": 9.28164624047767e-08,
+      "influenced_vertices": {
+        "hips": 174,
+        "spine": 305,
+        "head": 1701,
+        "upper_arm_r": 94,
+        "forearm_r": 134,
+        "upper_arm_l": 94,
+        "forearm_l": 140,
+        "thigh_r": 105,
+        "shin_r": 115,
+        "foot_r": 134,
+        "thigh_l": 97,
+        "shin_l": 114,
+        "foot_l": 136
+      }
+    }
+  },
+  "sanitization": {
+    "file": "child.glb",
+    "before_sha256": "bf61c0b4475be99d6d40d77e900c7204b7d5feb9912dafde4c6d700dc500495e",
+    "after_sha256": "32e09215c68721545ff240b57927d53f29e01b896c865b04e2529d6d3034ca88",
+    "bytes": 906716,
+    "non_image_buffer_views_identical": true,
+    "geometry_materials_transforms_unchanged": true,
+    "images": [
+      {
+        "name": "child_bath_basecolor_v02.001",
+        "buffer_view": 6,
+        "removed_chunk_types": [
+          "eXIf"
+        ],
+        "png_before_sha256": "91f2459de0014485e5882769d79909632bb28cc3d7b717f314491211cd509ef5",
+        "png_after_sha256": "12ff23b933399e10bb14c5808f3016d9321d8ceb44f9c62b7a5c1d7ca91ea002",
+        "retained_chunks_sha256": "12ff23b933399e10bb14c5808f3016d9321d8ceb44f9c62b7a5c1d7ca91ea002",
+        "retained_chunks_identical": true
+      },
+      {
+        "name": "child_clothed_basecolor_v02.001",
+        "buffer_view": 14,
+        "removed_chunk_types": [
+          "eXIf"
+        ],
+        "png_before_sha256": "bfa369c781e03da208659d714451e38c082c3e4382f1098cffb5ec507039b80c",
+        "png_after_sha256": "fa98fbf76f7581d622d11ce4b2d7a98e390771d8558e038c858ce12c1eb70f8a",
+        "retained_chunks_sha256": "fa98fbf76f7581d622d11ce4b2d7a98e390771d8558e038c858ce12c1eb70f8a",
+        "retained_chunks_identical": true
+      }
+    ],
+    "scope": "Ancillary metadata removal only. Every retained PNG chunk, including IHDR and IDAT, is byte-identical."
+  }
+}

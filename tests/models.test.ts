@@ -28,7 +28,7 @@ function sceneHarness() {
   items.hat.add(hatPrimitive);
   Object.assign(scene, { chars, primitives, items, models: {}, itemModels: {}, fixtureWater: [],
     environmentModels: new EnvironmentModels(new THREE.Group()),
-    humanBody: {}, towels: {}, clothing: { child: "unclothed", adult: "unclothed" } });
+    humanBody: {}, humanMotion: {}, towels: {}, clothing: { child: "unclothed", adult: "unclothed" } });
   return { scene, chars, primitives, items, hatPrimitive };
 }
 

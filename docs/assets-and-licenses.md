@@ -1,6 +1,6 @@
 # Assets and licenses
 
-Inventory of code, dependencies and assets. Last checked against the repository contents on 2026-11-20. Update it whenever dependencies or assets change.
+Inventory of code, dependencies and assets. Last checked against the repository contents on 2026-11-21. Update it whenever dependencies or assets change.
 
 ## Current inventory
 
@@ -13,17 +13,17 @@ Inventory of code, dependencies and assets. Last checked against the repository 
 
 ## Images and 3D assets
 
-The runtime loads four GLBs from `public/models/`: Duck, Child, Adult and the sauna hat. Each has a final-stage ledger row, a recorded hash, an attribution sidecar and a matching source history. The project records original OpenAI-generated reference images separately from Meshy-generated meshes and Blender modifications.
+The runtime registers 18 GLBs from `public/models/`: three characters, three gameplay items, the complete environment, washing furniture and its distance variants, soap, towel, and three distant NPC variants. Each has a final-stage ledger row, a recorded hash, an attribution sidecar and source history. See [environment release verification](environment-release-verification.md) and [human face/walk correction](human-face-walk-verification.md). The project records original OpenAI-generated reference images separately from Meshy-generated meshes and Blender modifications.
 
 | Material | Recorded license / status | Evidence |
 | --- | --- | --- |
 | Project rights in original reference PNGs | MIT; subject to applicable output rights | Per-asset reference README and ledger |
 | Meshy Free / Meshy 6 Lite raw models | CC BY 4.0, redistributable according to the recorded service review | `assets/service-selection.md`, per-asset attribution and ledger |
 | Blender-adjusted models and game GLBs | CC BY 4.0, with modifications identified | `.blend` sources, `public/models/*.LICENSE.txt`, `THIRD_PARTY_NOTICES.md` |
-| Provisional level geometry, towel and remaining small props | Code-generated placeholders, not completed final assets | `src/view/scene.ts` |
+| Buildings, equipment, garden, small props and NPC distance variants | Approved direct Blender authoring; Kenney, Poly Haven and Quaternius CC0 source components; original mural; Meshy-derived NPCs | Per-component provenance in `assets/sento_environment`, `assets/sento_small_items`, notices and ledger; fallback geometry remains for failed loads |
 | Box GLB under `tests/fixtures/` | Locally generated test fixture, not a final asset or runtime model | `scripts/make-test-glb.mjs` |
 
-Human models contain embedded textures and two outfit variants; no shared skeleton or skeletal animations are claimed. No audio or custom font asset is listed in the current inventory. The [ledger](../assets/ledger.csv) and [manifest](../assets/manifest.json) are the detailed file/measurement records. Code MIT does not replace the models' separate CC BY 4.0 terms.
+Human v03 models contain embedded textures, two outfit variants and a shared 13-bone skeleton for distance-driven runtime walking. Authored drying/pickup motion clips remain unimplemented. The original v01/v02 static revisions remain archived. No audio or custom font asset is listed in the current inventory. The [ledger](../assets/ledger.csv) and [manifest](../assets/manifest.json) are the detailed file/measurement records. Code MIT does not replace the models' separate CC BY 4.0 terms.
 
 ## Checks for future assets
 

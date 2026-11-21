@@ -89,7 +89,7 @@ and poses, create separate clothed and simplified bathing variants, paint and
 bake embedded color textures, set metric scale and bottom-center origins with
 +Z front/+Y up, and add hand, label, and adult carry sockets. The bathing
 variants are stylized, featureless toy figures. They are modifications of the
-generated meshes; no skeletal animation is included. See each asset's README
+generated meshes. See each asset's README
 for exact changes, measurements, and limitations, and `assets/ledger.csv` for
 the source-to-export checksums.
 
@@ -99,6 +99,13 @@ facial/clothing color baking after source-coordinate reprojection, and balanced
 reduction with detailed-source normals. Both opaque toy variants retain their
 authored sockets. The new scenes, textures and diagnostic renders remain
 CC BY 4.0. Earlier exports are preserved for reproducible comparison.
+
+Human revisions v03 (2026-11-21): the Adult face UV region and color bake are
+corrected; both humans receive a shared 13-bone skeleton and skin weights
+for runtime walking. The original mesh geometry and two outfit triangle
+counts are retained. The rigged exports and their editable Blender sources
+remain CC BY 4.0. Distance-driven pose code is part of the MIT game code;
+no third-party animation or paid service was introduced.
 
 Keep this attribution, license link, and modification notice with redistributed
 copies. Meshy does not endorse this project. The project releases its rights to
