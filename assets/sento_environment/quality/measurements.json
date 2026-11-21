@@ -1,8 +1,8 @@
 {
   "layout_sha256": "8bee95aa4ad7e753f521c4327e7586d3df4717e6c1aa9072790a0c40ecc52ab5",
-  "export_sha256": "39cfd9954b2de71807ecf3e860063f0569a9bd2611f322b361c10232f963950e",
+  "export_sha256": "6ac2a9e99b4d068118ad30ddd01c9feda9ec273ade594aa157a39010d21b4c98",
   "export_bytes": 5931660,
-  "blend_sha256": "4f635fd15c629889f19b0df34a4c716bf02d5b0cdd5a9230316b18bad98fddd6",
+  "blend_sha256": "95ee169db14ea863c656f987e090f8d162398f304d02340bc0d746daaf04d838",
   "architecture_triangles": 7996,
   "npc_triangles": 12157,
   "triangles_by_placement": {
@@ -2058,5 +2058,13 @@
   },
   "triangles_by_placement_scope": "Architecture only, totaling 7996 triangles; inherited byte-identically from v01. NPC triangles are measured separately.",
   "npc_source_record": "assets/public_sources/quaternius_universal_base/source.json",
-  "preservation_record": "assets/sento_environment/quality/v02/replacement-proof.json"
+  "preservation_record": "assets/sento_environment/quality/v02/replacement-proof.json",
+  "mural_uv_correction": {
+    "revision": "v03",
+    "prior_export_sha256": "39cfd9954b2de71807ecf3e860063f0569a9bd2611f322b361c10232f963950e",
+    "audit": "assets/sento_environment/quality/v03/mural-uv-audit.json",
+    "scope": "Four inward-facing U coordinates only; positions, indices, normals, transforms, material/image bytes, and all other UVs identical to v02",
+    "geometry_measurements_reused_from": "assets/sento_environment/quality/v02/measurements.json",
+    "visibility": "Upper wall: visible in normal view; intentionally hidden in Overview cutaway"
+  }
 }

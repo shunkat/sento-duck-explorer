@@ -1095,7 +1095,7 @@
     "sento_environment": {
       "stage": 3,
       "status": "exported",
-      "revision": "v02",
+      "revision": "v03",
       "origin": "Identity root; authored world coordinates from LEVEL, not normalized",
       "limits": {
         "triangles": 20200,
@@ -1129,9 +1129,9 @@
             12.100000381469727
           ]
         },
-        "sha256": "39cfd9954b2de71807ecf3e860063f0569a9bd2611f322b361c10232f963950e",
+        "sha256": "6ac2a9e99b4d068118ad30ddd01c9feda9ec273ade594aa157a39010d21b4c98",
         "measured_date": "2026-11-21",
-        "tool": "Actual glTF binary attributes and world-space triangle measurements; Blender reimport review",
+        "tool": "Actual v02 measurements retained by v03 four-U-value byte-preservation audit; Blender UV/image reimport review",
         "architecture_triangles": 7996,
         "npc_triangles": 12157
       },

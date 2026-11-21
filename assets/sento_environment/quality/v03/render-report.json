@@ -1,0 +1,37 @@
+{
+  "source_world_sha256": "6ac2a9e99b4d068118ad30ddd01c9feda9ec273ade594aa157a39010d21b4c98",
+  "views": [
+    {
+      "file": "bath_mural_context.png",
+      "sha256": "778a6be508b89ce03778bc27db7d695200fece2f30e2b7b3f5bb9433cca699e5",
+      "eye_gltf_m": [
+        10.8,
+        1.45,
+        2.0
+      ],
+      "target_gltf_m": [
+        6.3,
+        1.2,
+        8.7
+      ],
+      "lens_mm": 25
+    },
+    {
+      "file": "bath_mural_front.png",
+      "sha256": "c0d6c5c4e4eb427532d03410bd6bbefc011b1a929a22c87441c9ccb7b7aa30c8",
+      "eye_gltf_m": [
+        7.6,
+        1.75,
+        4.7
+      ],
+      "target_gltf_m": [
+        7.6,
+        1.75,
+        8.882
+      ],
+      "lens_mm": 27
+    }
+  ],
+  "source_geometry_materials_visibility_unchanged": true,
+  "scope": "Actual GLB reimport with QA-only lights and cameras; no game or play verification."
+}

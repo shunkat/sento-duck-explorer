@@ -88,4 +88,44 @@ describe("complete environment export", () => {
     }
     expect([...roles].sort()).toEqual(["npc_bath_standing", "npc_seated", "npc_staff"]);
   });
+
+  it("embeds the full Fuji artwork on the bath wall, upright and unmirrored from inside", () => {
+    const bytes = read("public/models/sento_environment.glb");
+    const jsonLength = bytes.readUInt32LE(12);
+    const world = JSON.parse(bytes.subarray(20, 20 + jsonLength).toString());
+    const binary = bytes.subarray(28 + jsonLength);
+    const panelIndex = world.nodes.findIndex((n: { name?: string }) => n.name === "environment_upper__fuji_mural");
+    expect(panelIndex).toBeGreaterThanOrEqual(0);
+    const panel = world.nodes[panelIndex];
+    expect(world.nodes.find((n: { name?: string }) => n.name === "environment_upper").children).toContain(panelIndex);
+    const primitive = world.meshes[panel.mesh].primitives[0];
+    const material = world.materials[primitive.material];
+    const texture = world.textures[material.pbrMetallicRoughness.baseColorTexture.index];
+    const image = world.images[texture.source];
+    const imageView = world.bufferViews[image.bufferView];
+    const imageBytes = binary.subarray(imageView.byteOffset ?? 0, (imageView.byteOffset ?? 0) + imageView.byteLength);
+    expect(sha(imageBytes)).toBe(sha(read("assets/sento_mural/ref/sento_mural__v01.png")));
+    expect([imageBytes.readUInt32BE(16), imageBytes.readUInt32BE(20)]).toEqual([2172, 724]);
+    const floats = (id: number, width: number) => {
+      const accessor = world.accessors[id], view = world.bufferViews[accessor.bufferView];
+      expect(accessor.componentType).toBe(5126);
+      return Array.from({ length: accessor.count }, (_, i) => Array.from({ length: width }, (_, j) =>
+        binary.readFloatLE((view.byteOffset ?? 0) + (accessor.byteOffset ?? 0) + i * (view.byteStride ?? width * 4) + j * 4)));
+    };
+    const positions = floats(primitive.attributes.POSITION, 3);
+    const normals = floats(primitive.attributes.NORMAL, 3);
+    const uvs = floats(primitive.attributes.TEXCOORD_0, 2);
+    const inward = normals.flatMap((n, i) => n[2]! < -.99 ? [i] : []);
+    expect(inward).toHaveLength(4);
+    const xs = inward.map(i => positions[i]![0]!), ys = inward.map(i => positions[i]![1]!);
+    const minX = Math.min(...xs), maxX = Math.max(...xs), minY = Math.min(...ys), maxY = Math.max(...ys);
+    expect((maxX - minX) / (maxY - minY)).toBeCloseTo(3, 4);
+    for (const i of inward) {
+      const [x, y, z] = positions[i]!;
+      expect(z).toBeCloseTo(8.882, 4); // Just inside the existing Z=8.9 bath wall.
+      // Looking from the bath toward +Z, screen-right is -X; glTF V grows downward.
+      expect(uvs[i]![0]).toBeCloseTo((maxX - x!) / (maxX - minX), 5);
+      expect(uvs[i]![1]).toBeCloseTo((maxY - y!) / (maxY - minY), 5);
+    }
+  });
 });

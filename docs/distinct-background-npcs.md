@@ -13,7 +13,7 @@ the author license and checksums are preserved under `assets/public_sources/`.
 The [production record](../assets/sento_visitors/README.md) covers facial clarity,
 continuous clothing masks, source preservation and the distinct adult poses.
 
-## Accepted output
+## Accepted output (NPC replacement v02)
 
 Three near models use 1,593 / 1,594 / 1,794 triangles. Their distant variants use
 593 / 594 / 594. All six have one mesh, one material and one embedded 512px atlas.
@@ -62,3 +62,8 @@ with the old v01 layout without assessing the differences.
 versioned original world, independent NPC masters and the private replacement,
 measurement and editable-reimport workflow. The final world SHA is
 `39cfd9954b2de71807ecf3e860063f0569a9bd2611f322b361c10232f963950e`.
+
+That v02 export is preserved under `assets/sento_environment/blend/`. The later
+[Fuji mural correction](../assets/sento_mural/README.md) changes only four mural
+U coordinates; the NPC geometry, textures, placements and these review results
+remain applicable. Its world checksum is recorded separately.

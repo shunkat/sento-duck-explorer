@@ -1,4 +1,4 @@
-Sento environment v02 — composite asset, CC BY 4.0
+Sento environment v03 — composite asset, CC BY 4.0
 https://creativecommons.org/licenses/by/4.0/
 
 Assembled and modified by this project in Blender. Preserve this credit,
@@ -26,6 +26,10 @@ used for these NPCs. See assets/sento_visitors/README.md.
 v02 replaces only the NPC payloads in the v01 composite, retaining architecture,
 non-NPC materials/images and all placement transforms. The prior v01 export and
 its Meshy attribution remain preserved beside the original editable source.
+
+v03 corrects four inward-facing UV coordinates on the Fuji wall mural to show
+the original artwork without horizontal reflection from the bath. All other
+v02 bytes, including the full original image and all geometry, are unchanged.
 
 Rooms, fixtures and tile materials were authored for this project. Project-held
 rights are MIT. The mural was generated from an original prompt through OpenAI;

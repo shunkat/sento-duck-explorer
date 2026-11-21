@@ -219,3 +219,15 @@ uses the existing authorized Pages path, public commit identity and deadline
 checks; see [the complete release record](../../../docs/environment-release-verification.md)
 for evidence and authoritative production version/workflow links. Normal-input
 play, animation and competition submission remain separate and unclaimed.
+
+## Mount Fuji bath-wall inspection (2026-11-21)
+
+The requested Fuji painting uses the existing original panoramic artwork above
+the indoor bath. Environment v03 corrects four inward-facing U values so the
+picture matches the original orientation. All geometry, image bytes and other
+GLB data remain identical to the independent-NPC v02. Actual GLB reimport views,
+six relevant asset/visibility tests, three producer regressions and the Pages
+build passed; independent review has no required findings. See the
+[mural record](../../../assets/sento_mural/README.md). Main/production integration
+remains held for the concurrent growth/exit work; normal-input bath viewing and
+game lighting are included in the single combined final verification.
