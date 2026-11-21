@@ -1,4 +1,4 @@
-import { BoxGeometry, Group, Mesh, MeshStandardMaterial, Object3D, Quaternion, Sprite, SpriteMaterial, Vector3 } from "three";
+import { BoxGeometry, DoubleSide, FrontSide, Group, Mesh, MeshStandardMaterial, Object3D, Quaternion, Sprite, SpriteMaterial, Vector3 } from "three";
 import { describe, expect, it } from "vitest";
 import { applyOutfit, checkHumanContract } from "../src/view/humanModel";
 import { placeCharacterAtSocket } from "../src/view/shoulder";
@@ -19,8 +19,9 @@ function human(adult = false): Group {
 }
 
 describe("pipeline human models", () => {
-  it("rebuilds an already opaque material when fading starts/ends, while labels stay opaque", () => {
-    const material = new MeshStandardMaterial();
+  it.each([[FrontSide, false], [DoubleSide, false], [DoubleSide, true]] as const)(
+    "temporarily fades side=%i singlePass=%s without changing the opaque material or labels", (side, singlePass) => {
+    const material = new MeshStandardMaterial({ side, forceSinglePass: singlePass });
     const label = new Sprite(new SpriteMaterial());
     const root = new Group();
     root.add(new Mesh(new BoxGeometry(), material), label);
@@ -30,13 +31,23 @@ describe("pipeline human models", () => {
     expect(material.transparent).toBe(true);
     expect(material.opacity).toBe(0.3);
     expect(material.depthWrite).toBe(false);
+    expect(material.side).toBe(side);
+    expect(material.forceSinglePass).toBe(side === DoubleSide || singlePass);
     expect(label.material.opacity).toBe(1);
     setBodyOpacity(root, 0.5);
     expect(material.version).toBe(version + 1);
+    expect(material.forceSinglePass).toBe(side === DoubleSide || singlePass);
     setBodyOpacity(root, 1);
     expect(material.version).toBe(version + 2);
     expect(material.transparent).toBe(false);
     expect(material.depthWrite).toBe(true);
+    expect(material.side).toBe(side);
+    expect(material.forceSinglePass).toBe(singlePass);
+    // A later fade must capture the then-current flag, not a stale first fade.
+    material.forceSinglePass = !singlePass;
+    setBodyOpacity(root, 0.2);
+    setBodyOpacity(root, 1);
+    expect(material.forceSinglePass).toBe(!singlePass);
   });
 
   it("accepts complete heads within each outfit and checks carry height in model-local space", () => {

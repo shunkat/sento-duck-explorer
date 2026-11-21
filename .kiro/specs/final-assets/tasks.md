@@ -91,7 +91,8 @@ The user deferred normal-input play and requested finishing work, then reported 
 - [x] Duck v02: local eye correction on the original generated body, export/reimport and multi-angle asset renders; bounds and sockets preserved.
 - [x] Broader existing-model correction after additional user feedback: Duck v03 head/torso/wing/color refinement, hat v02 source-profile/loop retopology, and human v02 facial/shoulder/pose/clothing corrections. Preserve prior GLBs, raw sources, detailed masters and the exact socket contracts. Fixed comparisons and separate material QA accepted the selected revisions; this is not Crew B code review or user acceptance. See `assets/quality/existing-models/index.html`.
 - [x] Verify current all-visible scene geometry (59,776 triangles), real exported human shoulders/hand proximity, static hat/carry fit and self-contained textures. Validate source-script reproducibility and remove embedded PNG metadata without changing geometry or retained image data. Final automated results are in the progress record.
-- [ ] Independent review of this finishing batch.
-- [ ] Final in-game visual checks / normal-input play: deferred at the user's request.
+- [x] Independent code/acceptance review of `ab085bf..9123a01`: no required findings. Codex covered the unavailable Crew B route; this is recorded as a Codex review, not Crew B execution. The existing 259-test result was reused; provenance and PNG lineage were independently checked.
+- [x] Local rendering checks and release preparation: inspect actual GameScene lighting, outfits, static attachments, washing station and overview; fix opaque batching and temporary fade pass cost. See `docs/model-release-verification.md` for scope and measured results.
+- [ ] Normal-input play and remaining route/layout/F8 checks: deferred at the user's request; static diagnostics do not complete these checks.
 
 The body, beak and wings remain source-derived; the two eye inserts are explicit Blender corrections, not another Image-to-3D generation. See `assets/duck/blend/duck__v02.md` and `assets/wash_station/README.md`.

@@ -139,7 +139,7 @@ The pipeline is confirmed by the user and must not be skipped. Placeholder primi
 
 1. WHILE the DuckView is active at the NarrowHole approach, THE NarrowHole entrance SHALL be visible on screen and distinguishable from the wall (contrast of the opening rim against the wall).
 2. WHILE the Overview is active at 1280 × 720, THE three characters SHALL be distinguishable from each other by silhouette and color without reading their labels.
-3. THE Duck and hat SHALL contrast with the bathwater and the pond (Duck saturated yellow, hat red, water desaturated blue-green). *(Provisional palette rule)*
+3. THE Duck and hat SHALL contrast with the bathwater and the pond (Duck saturated yellow, hat pale aqua, water desaturated blue-green; verify the hat silhouette under the game lighting as well as color). *(Provisional palette rule)*
 4. THE soap, coin, key, and hat SHALL each be distinguishable from the floor in both cameras.
 5. THE existing label sizing (12–22 px, active character's label hidden) SHALL stay in force after the models are replaced.
 

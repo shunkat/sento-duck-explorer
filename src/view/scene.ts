@@ -9,6 +9,7 @@ import type { Pose } from "./camera";
 import { BODY_HEIGHT, type Vec3, type View } from "./deriveView";
 import type { ModelLibrary } from "./models";
 import { EnvironmentModels } from "./environmentModels";
+import { batchOpaqueMeshes } from "./staticMeshes";
 import { applyOutfit, checkHumanContract, type Clothing, TOWEL_DEPTH, TOWEL_THICKNESS, TOWEL_WIDTH, headAnchor, towelPose } from "./humanModel";
 import { CEILING_Y, type FacingTracker, forwardOf, HOLE_LID_Y, bodyOpacity, modelRotationY, placeAtSocket, placeCharacterAtSocket, WALL_HEIGHT } from "./shoulder";
 import {
@@ -110,12 +111,24 @@ function boxMesh(b: AABB, height: number, y0: number, color: number, opacity = 1
   return mesh;
 }
 
+const originalFadeSinglePass = new WeakMap<THREE.Material, boolean>();
+
 /** Fade model meshes, keeping labels opaque; rebuild the shader at the opaque boundary. */
 export function setBodyOpacity(root: THREE.Object3D, opacity: number): void {
   root.traverse((o) => {
     if (!(o instanceof THREE.Mesh)) return;
     for (const m of Array.isArray(o.material) ? o.material : [o.material]) {
       const transparent = opacity < 1;
+      // Obstruction fading is a visibility aid. Avoid the renderer's second
+      // back/front pass for DoubleSide transparency, then restore the authored
+      // flag when the temporary fade ends. Geometry and side stay unchanged.
+      if (transparent && m.side === THREE.DoubleSide) {
+        if (!originalFadeSinglePass.has(m)) originalFadeSinglePass.set(m, m.forceSinglePass);
+        m.forceSinglePass = true;
+      } else if (originalFadeSinglePass.has(m)) {
+        m.forceSinglePass = originalFadeSinglePass.get(m)!;
+        originalFadeSinglePass.delete(m);
+      }
       if (m.transparent !== transparent) {
         m.transparent = transparent;
         // Three's OPAQUE shader define otherwise keeps alpha at 1 even after
@@ -228,6 +241,7 @@ export class GameScene {
     const sun = new THREE.DirectionalLight(0xffffff, 1.1);
     sun.position.set(10, 25, 12);
     this.scene.add(sun);
+    const staticSurfaces: THREE.Mesh[] = [];
 
     // Floors per zone, with name labels.
     for (const z of [...level.zones].reverse()) {
@@ -248,16 +262,22 @@ export class GameScene {
     }
     // Fixtures at their own height; every other wall is full height.
     const fixtureBoxes = new Set<AABB>(level.fixtures.map((f) => f.box));
+    const fullHeightWalls: THREE.Mesh[] = [];
     for (const w of level.walls) {
       if (fixtureBoxes.has(w)) continue;
-      const m = boxMesh(w, WALL_HEIGHT, 0, 0xe8e8e8);
-      this.tallWalls.push({ mesh: m, height: WALL_HEIGHT });
-      this.scene.add(m);
+      fullHeightWalls.push(boxMesh(w, WALL_HEIGHT, 0, 0xe8e8e8));
+    }
+    // These walls share one height and bottom. Keep their Y origin at the
+    // center, so the existing overview scale/translation remains exact.
+    for (const mesh of batchOpaqueMeshes(fullHeightWalls, new THREE.Vector3(0, WALL_HEIGHT / 2, 0))) {
+      this.tallWalls.push({ mesh, height: WALL_HEIGHT });
+      this.scene.add(mesh);
     }
     for (const f of level.fixtures) {
       const fm = boxMesh(f.box, f.height, 0, FIXTURE_COLORS[f.kind]);
       if (f.height > OVERVIEW_WALL_HEIGHT) this.tallWalls.push({ mesh: fm, height: f.height });
-      this.scene.add(fm);
+      if (f.height > OVERVIEW_WALL_HEIGHT || f.kind === "stool") this.scene.add(fm);
+      else staticSurfaces.push(fm);
       if (f.kind === "stool") this.environmentModels.register("bath_stool", fm, f.box, 0, f.height);
       // Rimmed water that cannot be entered (cold plunge, outdoor bath, kakeyu basin) shows its water.
       if (f.kind === "plunge" || f.kind === "outdoorBath" || f.kind === "basin") {
@@ -270,12 +290,13 @@ export class GameScene {
       if (f.kind === "staff") {
         const hx = (f.box.maxX - f.box.minX) / 4;
         const hz = (f.box.maxZ - f.box.minZ) / 4;
-        this.scene.add(boxMesh({ minX: f.box.minX + hx, minZ: f.box.minZ + hz, maxX: f.box.maxX - hx, maxZ: f.box.maxZ - hz }, 0.25, f.height, 0xf1c9a5));
+        staticSurfaces.push(boxMesh({ minX: f.box.minX + hx, minZ: f.box.minZ + hz, maxX: f.box.maxX - hx, maxZ: f.box.maxZ - hz }, 0.25, f.height, 0xf1c9a5));
       }
     }
     for (const d of level.decor) {
       const dm = boxMesh(d.box, d.height, d.y0, DECOR_COLORS[d.kind], d.kind === "mirror" ? 0.85 : 1);
-      this.scene.add(dm);
+      if (d.kind === "bucket" || d.kind === "mirror") this.scene.add(dm);
+      else staticSurfaces.push(dm);
       if (d.kind === "bucket") this.environmentModels.register("wash_basin", dm, d.box, d.y0, d.height);
       if (d.label) this.fixtureLabel(d.label, d.box, d.y0 + d.height + 0.3);
     }
@@ -294,8 +315,8 @@ export class GameScene {
     }
     // Sauna: occupied bench rows (seated bathers on a bench), placeholder shapes.
     for (const n of level.npcs) {
-      this.scene.add(boxMesh(n, 0.45, 0, 0x8a5a32));
-      this.scene.add(boxMesh({ minX: n.minX + 0.1, minZ: n.minZ + 0.05, maxX: n.maxX - 0.1, maxZ: n.maxZ - 0.05 }, 0.75, 0.45, 0xc27ba0));
+      staticSurfaces.push(boxMesh(n, 0.45, 0, 0x8a5a32));
+      staticSurfaces.push(boxMesh({ minX: n.minX + 0.1, minZ: n.minZ + 0.05, maxX: n.maxX - 0.1, maxZ: n.maxZ - 0.05 }, 0.75, 0.45, 0xc27ba0));
     }
     if (level.npcs.length > 0) {
       const b = level.npcs.reduce((u, n) => ({ minX: Math.min(u.minX, n.minX), minZ: Math.min(u.minZ, n.minZ), maxX: Math.max(u.maxX, n.maxX), maxZ: Math.max(u.maxZ, n.maxZ) }));
@@ -315,6 +336,7 @@ export class GameScene {
       this.scene.add(m);
       this.fixtureLabel("石鹸（走らない）", { minX: soap.pos.x, maxX: soap.pos.x, minZ: soap.pos.z, maxZ: soap.pos.z }, 0.5);
     }
+    this.scene.add(...batchOpaqueMeshes(staticSurfaces));
 
     // Characters: Duck sphere, Child small capsule, Adult tall capsule.
     for (const id of ["duck", "child", "adult"] as const) {
