@@ -130,6 +130,10 @@ describe("connected scene geometry budget", () => {
     for (const id of ["child", "adult"] as const) {
       expect(internal.chars[id].children.filter(o => o.name === "towel")).toHaveLength(1);
     }
+    for (const id of CHARACTERS) {
+      expect(library.get(id)!.root.parent, `${id} uses its real GLB`).toBe(internal.chars[id]);
+      expect(library.get(id)!.root.visible, `${id} GLB is visible`).toBe(true);
+    }
     for (const id of ["coin", "key", "hat"]) expect(library.get(id)!.root.parent).not.toBeNull();
     const view = deriveView(createInitialState(LEVEL), LEVEL);
     game.positionCharacters(view, 0, new FacingTracker());

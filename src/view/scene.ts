@@ -9,6 +9,7 @@ import type { Pose } from "./camera";
 import { BODY_HEIGHT, type Vec3, type View } from "./deriveView";
 import type { ModelLibrary } from "./models";
 import { EnvironmentModels } from "./environmentModels";
+import { createEnvironmentLight } from "./environmentLight";
 import { WorldEnvironment } from "./worldEnvironment";
 import { SENTO_BACKGROUND_COLOR, WaterAppearance } from "./waterAppearance";
 import { batchOpaqueMeshes } from "./staticMeshes";
@@ -244,6 +245,8 @@ export class GameScene {
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     container.appendChild(this.renderer.domElement);
     this.scene.background = new THREE.Color(SENTO_BACKGROUND_COLOR);
+    this.scene.environment = createEnvironmentLight();
+    this.scene.environmentIntensity = .65;
     this.scene.add(new THREE.HemisphereLight(0xffffff, 0x445566, 1.3));
     const sun = new THREE.DirectionalLight(0xffffff, 1.1);
     sun.position.set(10, 25, 12);
