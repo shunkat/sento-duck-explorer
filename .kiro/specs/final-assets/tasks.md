@@ -97,3 +97,15 @@ The user deferred normal-input play and requested finishing work, then reported 
 - [ ] Normal-input play and remaining route/layout/F8 checks: deferred at the user's request; static diagnostics do not complete these checks.
 
 The body, beak and wings remain source-derived; the two eye inserts are explicit Blender corrections, not another Image-to-3D generation. See `assets/duck/blend/duck__v02.md` and `assets/wash_station/README.md`.
+
+## Whole-environment refresh, 2026-11-21 (Codex; local preparation)
+
+- [x] Inventory all existing environment placements and export authoritative LEVEL coordinates without changing collision or gameplay rules.
+- [x] Prepare independently reviewed view-layer connections for the world, washing LODs and small items, including loading failure fallback. Candidate URLs remain unregistered.
+- [x] Generate original panoramic mural artwork with source prompt and rights record; this is a 2D asset, not completed 3D architecture.
+- [x] Produce independently reviewed washing LODs and natural-sized Adult-derived background NPCs; retain original sources and add measured local exports/license/ledger records. These exports remain unregistered pending world integration.
+- [x] Prepare water-material and background-color changes with scoped tests and independent code review; GPU shader/display checks remain open.
+- [ ] Resolve the proposed architecture/small-prop production-method change from the previously confirmed mandatory Image-to-3D pipeline. Direct Blender authoring has not been assumed approved.
+- [ ] Verify accepted LOD/NPC candidates at their actual game camera distances and place every crowd slot without narrowing the existing 0.60 m gaps; source-shape QA and footprint preflight are complete.
+- [ ] Produce and replace all structural, furnishing, outdoor, water/background and small-item assets; verify visibility, openings and scene budgets on actual exports.
+- [ ] Complete rights/ledger checks, fixed-version visual checks and the authorized production publication. Normal-input play remains separately deferred.

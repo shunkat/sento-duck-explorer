@@ -1,0 +1,14 @@
+{
+  "asset_id": "sento_environment",
+  "created_date": "2026-11-21",
+  "method": "Original text-only art-direction image generated with OpenAI built-in image generation through Codex; exact model version not exposed",
+  "prompt": "Create a polished 3D game environment art-direction reference for an original cozy Japanese public bath, as a single coherent isometric cutaway diorama in wide landscape format. This is a visual style reference, not a labelled plan. High-quality rounded handmade miniature forms, soft bevels, clean believable proportions, matte tactile ceramic and cedar, subtle surface variation, excellent silhouettes. A compact entrance and reception at the left with low cedar shoe lockers, a small wooden counter and muted navy noren; a warm cream changing area with lockers and a bench; the main bath in the center with ivory and muted teal tiled floor, a row of FIVE small ivory four-legged stools with capsule-shaped drain holes and round yellow hollow washing basins on a low shelf, individual round mirrors and elegant metal taps; a large clean aqua bath with a rounded cream-and-blue tiled edge and a beautiful broad flat mountain/lake mural in indigo, teal, cream and tiny apricot accents on the far wall; a cedar sauna on the right with natural benches and an unobtrusive stone heater; an open-air extension with carefully arranged natural rounded rocks, low plants, a cedar privacy fence and a quiet pond. Keep corridors and door openings clearly legible and visually open. No people. Include only one small bright yellow FOOTLESS classic rubber bath duck floating in the main bath, with a smooth continuous round belly, tiny symmetrical black eyes and an orange beak, absolutely no legs or feet. The main emphasis is the environment and craft of its objects, not the duck. Friendly, restrained, sophisticated toy-world art, not crude block placeholders, not noisy photorealism, not a generic modern spa. Soft neutral daylight, very clean visual hierarchy, pale blue-gray studio background around the diorama, no gloomy nighttime theme, no spooky effects, no lanterns, no text, labels, signs, numbers, logos or watermark, no real branded facility, no copied artwork. Straight architectural edges remain straight; avoid warped furniture, melted faucets, floating objects or unnaturally squeezed shapes.",
+  "file": "assets/sento_environment/ref/sento_environment__style_v01.png",
+  "input": "No input images; original project prompt",
+  "status": "Visual style reference only; not a game capture, not authoritative layout, not Image-to-3D output",
+  "rights": "Project output rights under MIT to extent permitted by law; generated/derived Meshy geometry remains separately CC BY 4.0",
+  "width": 1672,
+  "height": 941,
+  "bytes": 2443201,
+  "sha256": "e67b34b6e35f6f3a45fa61a898aeeffd1aeb5da08ea148f4368239a14b5e4cb4"
+}

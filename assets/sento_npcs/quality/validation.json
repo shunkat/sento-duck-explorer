@@ -1,0 +1,31 @@
+{
+  "generation": "Final geometry/material export and reimport block executed successfully. Diagnostic rendering and saved-artifact audit blocks executed against the same frozen files.",
+  "blender": "5.2.4 LTS",
+  "builder_sha256": "04a01647b2c02eae7f577e1e9287bc8c26eddc72126868bfa5e9078a0d276bd0",
+  "candidate_sha256": {
+    "npc_staff": "fb17617c79ab2fd81c79dd583b538e357726f15665e7bd213b7de63e23c57937",
+    "npc_seated": "a92cee73882b54df44a08d12bef55f0c462853ecaf5643961a32d39a3d7506c9",
+    "npc_bath_standing": "0b541f3b9c1f62990c072a6b90ce1e69095a7899144d93ec4186359a94f9f084"
+  },
+  "blend_sha256": "f9a050d51e5fa90d9a2e7d93f8da48b6b885a6e60951cceec2028dae2b0db813",
+  "checks": [
+    "source/reference/raw SHA unchanged",
+    "original raw matches fresh import",
+    "original masters geometry unchanged",
+    "packed image pixels available after reopen",
+    "actual exported GLB finite / manifold after UV weld / no degenerate faces",
+    "four-direction and close-up renders",
+    "high versus low gray-material comparisons",
+    "metadata audit",
+    "Python compile",
+    "scoped git diff --check"
+  ],
+  "not_claimed": [
+    "byte-identical rerun",
+    "independent quality approval",
+    "scene placement approval",
+    "short-band fit at natural adult height",
+    "gameplay tests",
+    "production promotion"
+  ]
+}

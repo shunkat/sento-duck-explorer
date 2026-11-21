@@ -25,3 +25,19 @@ export const ENVIRONMENT_MODEL_URLS: Partial<Record<EnvironmentModelId, string>>
   bath_stool: "models/bath_stool.glb",
   wash_basin: "models/wash_basin.glb",
 };
+
+// Production candidates. These are deliberately NOT loaded. Promote individual
+// entries into the registries above only after source, rights and visual QA.
+export const PENDING_ENVIRONMENT_MODEL_URLS: Partial<Record<EnvironmentModelId, string>> = {
+  sento_environment: "models/sento_environment.glb",
+  bath_stool_lod_medium: "models/bath_stool_lod_medium.glb",
+  bath_stool_lod_far: "models/bath_stool_lod_far.glb",
+  wash_basin_lod_medium: "models/wash_basin_lod_medium.glb",
+  wash_basin_lod_far: "models/wash_basin_lod_far.glb",
+  soap: "models/soap.glb",
+  towel: "models/towel.glb",
+};
+export const PENDING_ITEM_MODEL_URLS: Partial<Record<ItemId, string>> = {
+  coin: "models/coin_500.glb",
+  key: "models/sauna_key.glb",
+};

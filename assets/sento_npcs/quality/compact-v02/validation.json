@@ -1,0 +1,28 @@
+{
+  "revision": "compact-v02",
+  "builder_sha256": "819f0da35776b804b6f2390b557627067671b10080c98f6a715caf6c9d6dd67a",
+  "blend_sha256": "eeb5c9ea46456f2bb5a6513b1df08da42a7b62c647599b3bab538811f74f567d",
+  "model_sha256": {
+    "npc_staff": "3b953cbbad8fb11e1279e76f5067c82c477112cf54e2cbb502c8f92890a2e90d",
+    "npc_bath_standing": "994ae0ce22b4e49528b7221929c5c82345c71340f84af10f4e4645c02f791614"
+  },
+  "independent_asset_review": "Accepted both compact candidates; no mandatory shape findings. Actual scene placement remains pending.",
+  "checks": [
+    "actual GLB reimport with finite vertices, UV-weld manifold and degenerate-face checks",
+    "front/three-quarter/both sides/back/face renders of changed models only",
+    "saved Blend reopen and fresh raw import comparison",
+    "original raw/masters and parent file hashes preserved",
+    "packed texture pixels after reopen",
+    "PNG/GLB/decompressed Blend metadata audit",
+    "fixed seated v01 candidate and Blend hashes preserved",
+    "Python compile and scoped whitespace check"
+  ],
+  "lighting_control": "Same v01 GLB, camera and lights; green-head pixels 4206 with indirect bounce, zero with direct light and zero with emission. Old/new embedded staff basecolor PNGs match byte-for-byte.",
+  "not_claimed": [
+    "exact simultaneous ground contact of both soles",
+    "scene placement validation",
+    "gameplay",
+    "production deployment",
+    "byte-identical full rebuild"
+  ]
+}

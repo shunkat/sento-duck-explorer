@@ -9,6 +9,8 @@ import type { Pose } from "./camera";
 import { BODY_HEIGHT, type Vec3, type View } from "./deriveView";
 import type { ModelLibrary } from "./models";
 import { EnvironmentModels } from "./environmentModels";
+import { WorldEnvironment } from "./worldEnvironment";
+import { SENTO_BACKGROUND_COLOR, WaterAppearance } from "./waterAppearance";
 import { batchOpaqueMeshes } from "./staticMeshes";
 import { applyOutfit, checkHumanContract, type Clothing, TOWEL_DEPTH, TOWEL_THICKNESS, TOWEL_WIDTH, headAnchor, towelPose } from "./humanModel";
 import { CEILING_Y, type FacingTracker, forwardOf, HOLE_LID_Y, bodyOpacity, modelRotationY, placeAtSocket, placeCharacterAtSocket, WALL_HEIGHT } from "./shoulder";
@@ -102,10 +104,10 @@ function relativeMatrix(o: THREE.Object3D, root: THREE.Object3D): THREE.Matrix4 
   return new THREE.Matrix4().copy(root.matrixWorld).invert().multiply(o.matrixWorld);
 }
 
-function boxMesh(b: AABB, height: number, y0: number, color: number, opacity = 1): THREE.Mesh {
+function boxMesh(b: AABB, height: number, y0: number, color: number, opacity = 1, material?: THREE.Material): THREE.Mesh {
   const w = b.maxX - b.minX;
   const d = b.maxZ - b.minZ;
-  const mat = new THREE.MeshStandardMaterial({ color, transparent: opacity < 1, opacity, depthWrite: opacity >= 1 });
+  const mat = material ?? new THREE.MeshStandardMaterial({ color, transparent: opacity < 1, opacity, depthWrite: opacity >= 1 });
   const mesh = new THREE.Mesh(new THREE.BoxGeometry(w, height, d), mat);
   mesh.position.set(b.minX + w / 2, y0 + height / 2, b.minZ + d / 2);
   return mesh;
@@ -144,7 +146,10 @@ export function setBodyOpacity(root: THREE.Object3D, opacity: number): void {
 export class GameScene {
   readonly renderer: THREE.WebGLRenderer;
   private scene = new THREE.Scene();
+  private environmentFallback = new THREE.Group();
   private environmentModels = new EnvironmentModels(this.scene);
+  private worldEnvironment = new WorldEnvironment(this.scene, this.environmentFallback);
+  private waterAppearance = new WaterAppearance();
   private camera = new THREE.PerspectiveCamera(55, 1, 0.05, 200);
   private chars = {} as Record<CharacterId, THREE.Group>;
   private rings = {} as Record<CharacterId, THREE.Mesh>;
@@ -163,7 +168,8 @@ export class GameScene {
   private duckHatSocket: THREE.Object3D | null = null;
   private itemModels: Partial<Record<ItemId, THREE.Object3D>> = {};
   /** Provisional towels of the two humans. */
-  private towels = {} as Record<HumanId, THREE.Mesh>;
+  private towels = {} as Record<HumanId, THREE.Object3D>;
+  private towelAttempted?: THREE.Object3D;
   /** Head top and right hand of a loaded human model, in its group's local space. */
   private humanBody: Partial<Record<HumanId, { headTop: number; hand?: { x: number; y: number; z: number } }>> = {};
   /** Last ClothingState seen per human (the game starts in the bath). */
@@ -236,17 +242,26 @@ export class GameScene {
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     container.appendChild(this.renderer.domElement);
-    this.scene.background = new THREE.Color(0x1d2330);
+    this.scene.background = new THREE.Color(SENTO_BACKGROUND_COLOR);
     this.scene.add(new THREE.HemisphereLight(0xffffff, 0x445566, 1.3));
     const sun = new THREE.DirectionalLight(0xffffff, 1.1);
     sun.position.set(10, 25, 12);
     this.scene.add(sun);
+    this.environmentFallback.name = "environment_fallback";
+    this.scene.add(this.environmentFallback);
     const staticSurfaces: THREE.Mesh[] = [];
 
     // Floors per zone, with name labels.
     for (const z of [...level.zones].reverse()) {
       const sub = z.id === "bathwater" || z.id === "splash" || z.id === "narrow_hole" || z.id === "pond_goal";
-      this.scene.add(boxMesh(z.box, 0.02, sub ? 0.012 : 0, ZONE_COLORS[z.id] ?? 0xffffff, sub ? 0.9 : 0.75));
+      // Water and state overlays remain independent from the authored solid floors.
+      const surfaceParent = ["bathwater", "narrow_hole", "pond", "pond_goal", "splash"].includes(z.id)
+        ? this.scene : this.environmentFallback;
+      const opacity = sub ? 0.9 : 0.75;
+      const water = z.id === "pond" ? "pond" : z.id === "bathwater" || z.id === "narrow_hole" ? "bath" : null;
+      // Splash/goal overlays retain their existing semantic colors and alpha.
+      surfaceParent.add(boxMesh(z.box, 0.02, sub ? 0.012 : 0, ZONE_COLORS[z.id] ?? 0xffffff, opacity,
+        water ? this.waterAppearance.material(water, opacity) : undefined));
       const label = this.label(ZONE_NAME[z.id], "zone");
       if (ROUTE_ZONES.has(z.id)) this.labels[this.labels.length - 1]!.priority = LABEL_PRIORITY.fixture;
       const at = zoneLabelAnchor(z.id, z.box);
@@ -258,7 +273,7 @@ export class GameScene {
     const tubBox = level.zones.find((z) => z.id === "bathwater")!.box;
     for (const w of level.duckWater) {
       if (w.minX === tubBox.minX && w.maxX === tubBox.maxX && w.minZ === tubBox.minZ && w.maxZ === tubBox.maxZ) continue;
-      this.scene.add(boxMesh(w, 0.02, 0.014, ZONE_COLORS.bathwater!, 0.9));
+      this.scene.add(boxMesh(w, 0.02, 0.014, ZONE_COLORS.bathwater!, 0.9, this.waterAppearance.material("bath", 0.9)));
     }
     // Fixtures at their own height; every other wall is full height.
     const fixtureBoxes = new Set<AABB>(level.fixtures.map((f) => f.box));
@@ -271,19 +286,21 @@ export class GameScene {
     // center, so the existing overview scale/translation remains exact.
     for (const mesh of batchOpaqueMeshes(fullHeightWalls, new THREE.Vector3(0, WALL_HEIGHT / 2, 0))) {
       this.tallWalls.push({ mesh, height: WALL_HEIGHT });
-      this.scene.add(mesh);
+      this.environmentFallback.add(mesh);
     }
     for (const f of level.fixtures) {
       const fm = boxMesh(f.box, f.height, 0, FIXTURE_COLORS[f.kind]);
       if (f.height > OVERVIEW_WALL_HEIGHT) this.tallWalls.push({ mesh: fm, height: f.height });
-      if (f.height > OVERVIEW_WALL_HEIGHT || f.kind === "stool") this.scene.add(fm);
+      if (f.kind === "stool") this.scene.add(fm);
+      else if (f.height > OVERVIEW_WALL_HEIGHT) this.environmentFallback.add(fm);
       else staticSurfaces.push(fm);
       if (f.kind === "stool") this.environmentModels.register("bath_stool", fm, f.box, 0, f.height);
       // Rimmed water that cannot be entered (cold plunge, outdoor bath, kakeyu basin) shows its water.
       if (f.kind === "plunge" || f.kind === "outdoorBath" || f.kind === "basin") {
         const r = 0.12;
         const w = { minX: f.box.minX + r, minZ: f.box.minZ + r, maxX: f.box.maxX - r, maxZ: f.box.maxZ - r };
-        this.scene.add(boxMesh(w, 0.02, f.height + 0.002, f.kind === "plunge" ? 0x7fc4e8 : ZONE_COLORS.bathwater!, 0.9));
+        this.scene.add(boxMesh(w, 0.02, f.height + 0.002, f.kind === "plunge" ? 0x7fc4e8 : ZONE_COLORS.bathwater!, 0.9,
+          this.waterAppearance.material(f.kind === "plunge" ? "plunge" : "bath", 0.9)));
       }
       if (f.label) this.fixtureLabel(f.label, f.box, f.height + 0.35);
       // Receptionist (provisional): the fixture box is the body; add a head.
@@ -295,7 +312,8 @@ export class GameScene {
     }
     for (const d of level.decor) {
       const dm = boxMesh(d.box, d.height, d.y0, DECOR_COLORS[d.kind], d.kind === "mirror" ? 0.85 : 1);
-      if (d.kind === "bucket" || d.kind === "mirror") this.scene.add(dm);
+      if (d.kind === "bucket") this.scene.add(dm);
+      else if (d.kind === "mirror") this.environmentFallback.add(dm);
       else staticSurfaces.push(dm);
       if (d.kind === "bucket") this.environmentModels.register("wash_basin", dm, d.box, d.y0, d.height);
       if (d.label) this.fixtureLabel(d.label, d.box, d.y0 + d.height + 0.3);
@@ -303,15 +321,15 @@ export class GameScene {
     // NarrowHole alcove: lid over the corridor and the wall part above the opening.
     const lid = boxMesh({ minX: hole.minX - 0.2, minZ: hole.minZ - 0.2, maxX: hole.maxX, maxZ: hole.maxZ + 0.2 }, 0.05, HOLE_LID_Y, 0xd8d0e8);
     this.roofs.push(lid);
-    this.scene.add(lid);
+    this.environmentFallback.add(lid);
     const lintel = boxMesh({ minX: hole.maxX - 0.1, minZ: hole.minZ, maxX: hole.maxX + 0.1, maxZ: hole.maxZ }, WALL_HEIGHT - HOLE_LID_Y, HOLE_LID_Y, 0xe8e8e8);
     this.roofs.push(lintel);
-    this.scene.add(lintel);
+    this.environmentFallback.add(lintel);
     for (const z of level.zones) {
       if (!INDOOR.has(z.id)) continue;
       const c = boxMesh(z.box, 0.05, CEILING_Y, 0x3a3f4a);
       this.roofs.push(c);
-      this.scene.add(c);
+      this.environmentFallback.add(c);
     }
     // Sauna: occupied bench rows (seated bathers on a bench), placeholder shapes.
     for (const n of level.npcs) {
@@ -324,7 +342,7 @@ export class GameScene {
     }
 
     this.doorBlocker = boxMesh(level.saunaDoorBlocker, 2.2, 0, 0x5b3a1a);
-    this.scene.add(this.doorBlocker);
+    this.environmentFallback.add(this.doorBlocker);
     this.fixtureLabel("サウナの扉", level.saunaDoorBlocker, 1.6, "#fda");
 
     // Interaction spots without a fixture of their own.
@@ -334,9 +352,11 @@ export class GameScene {
       const m = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.08, 0.18), new THREE.MeshStandardMaterial({ color: 0xffffff }));
       m.position.set(soap.pos.x, 0.05, soap.pos.z);
       this.scene.add(m);
+      this.environmentModels.register("soap", m, { minX: soap.pos.x - 0.15, maxX: soap.pos.x + 0.15,
+        minZ: soap.pos.z - 0.09, maxZ: soap.pos.z + 0.09 }, 0.01, 0.08);
       this.fixtureLabel("石鹸（走らない）", { minX: soap.pos.x, maxX: soap.pos.x, minZ: soap.pos.z, maxZ: soap.pos.z }, 0.5);
     }
-    this.scene.add(...batchOpaqueMeshes(staticSurfaces));
+    this.environmentFallback.add(...batchOpaqueMeshes(staticSurfaces));
 
     // Characters: Duck sphere, Child small capsule, Adult tall capsule.
     for (const id of ["duck", "child", "adult"] as const) {
@@ -408,6 +428,11 @@ export class GameScene {
   /** Connect loaded assets through the existing, tested model-placement path. */
   useModels(lib: ModelLibrary): void {
     this.environmentModels.use(lib);
+    // The full world has a different geometry allocation. Keep the playable
+    // fallback until every washing-station LOD can satisfy that allocation.
+    if (this.environmentModels.hasWashingDetailSet()) this.worldEnvironment.use(lib);
+    const towel = lib.get("towel");
+    if (towel) this.setTowelModel(towel.root);
     for (const id of ["duck", "child", "adult"] as const) {
       const model = lib.get(id);
       if (!model || this.models[id] === model.root) continue;
@@ -420,6 +445,44 @@ export class GameScene {
     for (const id of ["coin", "key", "hat"] as const) {
       const model = lib.get(id);
       if (model && this.itemModels[id] !== model.root) this.setItemModel(id, model.root);
+    }
+  }
+
+  /** Center wrapper keeps the existing head/hand pose math unchanged. */
+  private setTowelModel(source: THREE.Object3D): void {
+    if (source === this.towelAttempted) return;
+    this.towelAttempted = source;
+    const template = source.clone(true);
+    template.updateMatrixWorld(true);
+    const bounds = new THREE.Box3().setFromObject(template, true);
+    const size = bounds.getSize(new THREE.Vector3());
+    if (![...size.toArray(), ...bounds.min.toArray(), ...bounds.max.toArray()].every(Number.isFinite) ||
+        [size.x, size.y, size.z].some(n => n <= 1e-6)) {
+      console.warn("Towel model has invalid bounds; keeping the current display.");
+      return;
+    }
+    template.position.sub(bounds.getCenter(new THREE.Vector3()));
+    const scale = Math.min(TOWEL_WIDTH / size.x, TOWEL_THICKNESS / size.y, TOWEL_DEPTH / size.z);
+    for (const id of ["child", "adult"] as const) {
+      const previous = this.towels[id];
+      const wrapper = new THREE.Group();
+      wrapper.name = "towel";
+      const model = template.clone(true);
+      // Character occlusion fade is per person; never share mutable materials
+      // between the two towels or with the source in ModelLibrary.
+      model.traverse(o => {
+        if (o instanceof THREE.Mesh) o.material = Array.isArray(o.material)
+          ? o.material.map(m => m.clone()) : o.material.clone();
+      });
+      const fitted = new THREE.Group();
+      fitted.scale.setScalar(scale);
+      fitted.add(model);
+      wrapper.add(fitted);
+      wrapper.position.copy(previous.position);
+      wrapper.quaternion.copy(previous.quaternion);
+      this.chars[id].add(wrapper);
+      previous.removeFromParent();
+      this.towels[id] = wrapper;
     }
   }
 
@@ -484,6 +547,7 @@ export class GameScene {
   }
 
   private setOverview(on: boolean): void {
+    this.worldEnvironment.setView(on);
     for (const { mesh, height } of this.tallWalls) {
       const h = on ? OVERVIEW_WALL_HEIGHT : height;
       mesh.scale.y = h / height;
@@ -504,6 +568,7 @@ export class GameScene {
 
   /** Resolve actual model poses before computing the camera, including carried Duck's socket. */
   positionCharacters(view: View, timeSeconds: number, facing: FacingTracker): Vec3 {
+    this.waterAppearance.update(timeSeconds);
     const carrierId = view.characters.duck.carrier ?? "adult";
     const carry = forwardOf(facing.yaw(carrierId));
     const duckShift = view.characters.duck.carried ? { x: carry.x * CARRY_FORWARD, z: carry.z * CARRY_FORWARD } : { x: 0, z: 0 };
@@ -593,8 +658,10 @@ export class GameScene {
       this.itemModels[id]?.position.set(0, -ITEM_PRIMITIVE_HALF_HEIGHT[id], 0);
     }
     this.doorBlocker.visible = view.saunaDoorLocked;
+    this.worldEnvironment.setView(overview, view.saunaDoorLocked);
     this.camera.position.set(pose.eye.x, pose.eye.y, pose.eye.z);
     this.camera.lookAt(pose.target.x, pose.target.y, pose.target.z);
+    this.environmentModels.updateDetail(this.camera.position, overview);
     this.camera.updateMatrixWorld();
     this.sizeLabels(view.active, overview, view.items);
     this.renderer.render(this.scene, this.camera);

@@ -1,0 +1,52 @@
+{
+  "scope": "AABB preflight only; actual scene placement and material QA remain independent.",
+  "npc_seated": {
+    "sha256": "a92cee73882b54df44a08d12bef55f0c462853ecaf5643961a32d39a3d7506c9",
+    "candidate_status": "independent quality review pending",
+    "uniform_scale": 0.9,
+    "yaw_degrees": 90,
+    "scaled_world_footprint_xz_m": [
+      0.5847350835800171,
+      0.5988646924495697
+    ],
+    "feet_y_m": 0,
+    "bench_surface_y_m": 0.405,
+    "normal_band_width_m": 0.6,
+    "normal_band_lengths_m": [
+      1.5,
+      1.7,
+      2.8,
+      2.5,
+      0.7
+    ],
+    "fits_normal_bands_centered": true,
+    "preserves_existing_gaps_when_centered": true,
+    "short_band_fit": false
+  },
+  "npc_staff": {
+    "sha256": "fb17617c79ab2fd81c79dd583b538e357726f15665e7bd213b7de63e23c57937",
+    "natural_placement_height_m": 1.6,
+    "uniform_scale_for_height": 0.9423716698986495,
+    "scaled_footprint_xz_m": [
+      0.7205905516759047,
+      0.5026459382580939
+    ],
+    "old_fixture_footprint_xz_m": [
+      0.6,
+      0.45
+    ],
+    "fits_old_fixture_box": false,
+    "status": "Counter clearance and visible arm overhang require scene review."
+  },
+  "short_band": {
+    "footprint_xz_m": [
+      0.6,
+      0.4
+    ],
+    "candidate_sha256": "0b541f3b9c1f62990c072a6b90ce1e69095a7899144d93ec4186359a94f9f084",
+    "candidate_status": "unaccepted",
+    "reason": "Standing source pose exceeds footprint at natural Adult stature. Shrinking to Child-like height was rejected. A compact natural arms-down derivative remains required.",
+    "collider_changed": false,
+    "nonuniform_scale_applied": false
+  }
+}

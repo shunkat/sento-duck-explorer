@@ -133,6 +133,22 @@ copies. Meshy does not endorse this project. The separate reference images
 have their own OpenAI-generation provenance and project MIT rights records;
 those rights do not replace the CC BY 4.0 license on the generated models.
 
+The four `bath_stool_lod_*` and `wash_basin_lod_*` exports and their editable
+LOD scenes/render previews are source-derived modifications of those same
+models and remain CC BY 4.0. They reduce geometry for distance rendering while
+preserving the source dimensions, openings and materials; the original high
+models are unchanged. See `assets/wash_station/quality/lod/README.md` for
+the method, inspection conditions and exact source/output checksums.
+
+## Background NPCs — Meshy, CC BY 4.0
+
+The static background NPC exports `npc_staff`, `npc_seated` and
+`npc_bath_standing` are also CC BY 4.0 modifications of the Meshy-derived Adult
+model. Their new seated/compact standing poses, protected facial UVs and reduced
+background geometry do not change the source license. Retain the Meshy credit,
+license link and modification notice in `assets/sento_npcs/ATTRIBUTION.md` and
+the individual `public/models/npc_*.LICENSE.txt` files with redistributed copies.
+
 ## three.js
 
 - Installed version reviewed: 0.187.0

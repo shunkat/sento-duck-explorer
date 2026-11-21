@@ -1,0 +1,158 @@
+{
+  "blender": "5.2.4 LTS",
+  "blend_sha256": "f9a050d51e5fa90d9a2e7d93f8da48b6b885a6e60951cceec2028dae2b0db813",
+  "source_files_unchanged": true,
+  "raw_geometry_matches_fresh_import": true,
+  "original_master_geometry_preserved": true,
+  "packed_images": [
+    {
+      "name": "adult_bath_basecolor_v02.001",
+      "packed": true,
+      "relative_path": true,
+      "pixels_available": true
+    },
+    {
+      "name": "adult_clothed_basecolor_v02.001",
+      "packed": true,
+      "relative_path": true,
+      "pixels_available": true
+    },
+    {
+      "name": "npc_bath_standing_basecolor_v01",
+      "packed": true,
+      "relative_path": true,
+      "pixels_available": true
+    },
+    {
+      "name": "npc_seated_basecolor_v01",
+      "packed": true,
+      "relative_path": true,
+      "pixels_available": true
+    },
+    {
+      "name": "npc_staff_basecolor_v01",
+      "packed": true,
+      "relative_path": true,
+      "pixels_available": true
+    }
+  ],
+  "metadata": {
+    "private_markers_in_decompressed_blend": 0,
+    "inspection_png_count": 20,
+    "text_exif_chunks_found": 0
+  },
+  "models": {
+    "npc_staff": {
+      "sha256": "fb17617c79ab2fd81c79dd583b538e357726f15665e7bd213b7de63e23c57937",
+      "embedded_png_chunks": [
+        [
+          "IHDR",
+          "sRGB",
+          "gAMA",
+          "cHRM",
+          "oFFs",
+          "pHYs",
+          "IDAT",
+          "IDAT",
+          "IDAT",
+          "IDAT",
+          "IDAT",
+          "IDAT",
+          "IDAT",
+          "IDAT",
+          "IDAT",
+          "IDAT",
+          "IDAT",
+          "IEND"
+        ]
+      ],
+      "embedded_buffers": true,
+      "embedded_images": true,
+      "no_cameras_or_lights": true,
+      "root_node": "npc_staff"
+    },
+    "npc_seated": {
+      "sha256": "a92cee73882b54df44a08d12bef55f0c462853ecaf5643961a32d39a3d7506c9",
+      "embedded_png_chunks": [
+        [
+          "IHDR",
+          "sRGB",
+          "gAMA",
+          "cHRM",
+          "oFFs",
+          "pHYs",
+          "IDAT",
+          "IDAT",
+          "IDAT",
+          "IDAT",
+          "IDAT",
+          "IDAT",
+          "IDAT",
+          "IDAT",
+          "IDAT",
+          "IEND"
+        ]
+      ],
+      "embedded_buffers": true,
+      "embedded_images": true,
+      "no_cameras_or_lights": true,
+      "root_node": "npc_seated",
+      "seat_underside_rays": [
+        {
+          "x_m": -0.15,
+          "z_gltf_m": -0.15,
+          "surface_y_m": 0.4592861533164978,
+          "height_from_seat_m": 0.009286153316497792
+        },
+        {
+          "x_m": 0,
+          "z_gltf_m": -0.15,
+          "surface_y_m": 0.4518599510192871,
+          "height_from_seat_m": 0.0018599510192870983
+        },
+        {
+          "x_m": 0.15,
+          "z_gltf_m": -0.15,
+          "surface_y_m": 0.4506441354751587,
+          "height_from_seat_m": 0.0006441354751586803
+        }
+      ],
+      "footprint_fit": {
+        "standard_band_width_m": 0.6,
+        "model_width_m": 0.6654052138328552,
+        "short_band_depth_m": 0.4,
+        "model_depth_m": 0.6497056484222412,
+        "fits_short_band_at_unit_scale": false,
+        "integration_status": "Placement/compact variant required; no anisotropic scaling or collision edit has been applied."
+      }
+    },
+    "npc_bath_standing": {
+      "sha256": "0b541f3b9c1f62990c072a6b90ce1e69095a7899144d93ec4186359a94f9f084",
+      "embedded_png_chunks": [
+        [
+          "IHDR",
+          "sRGB",
+          "gAMA",
+          "cHRM",
+          "oFFs",
+          "pHYs",
+          "IDAT",
+          "IDAT",
+          "IDAT",
+          "IDAT",
+          "IDAT",
+          "IDAT",
+          "IDAT",
+          "IDAT",
+          "IDAT",
+          "IEND"
+        ]
+      ],
+      "embedded_buffers": true,
+      "embedded_images": true,
+      "no_cameras_or_lights": true,
+      "root_node": "npc_bath_standing"
+    }
+  },
+  "scope": "Saved Blend and actual candidate GLBs only. No gameplay, publication or placed-scene footprint approval."
+}

@@ -1,0 +1,13 @@
+{
+  "old_staff_sha256": "fb17617c79ab2fd81c79dd583b538e357726f15665e7bd213b7de63e23c57937",
+  "compact_staff_sha256": "3b953cbbad8fb11e1279e76f5067c82c477112cf54e2cbb502c8f92890a2e90d",
+  "embedded_basecolor_png_exactly_unchanged": true,
+  "embedded_basecolor_png_sha256": "13e740577365355ff00b698767b23000361d301076765aa130ff5df991e9460a",
+  "green_pixel_count_above_lower_neck": {
+    "v01-staff-indirect": 4206,
+    "v01-staff-direct": 0,
+    "v01-staff-unlit": 0
+  },
+  "render_change": "Same old GLB, camera, lights and world; diffuse/glossy bounces switched 4 to 0, then basecolor-only emission.",
+  "conclusion": "Teal indirect light from the shirt causes the green jaw/ear in Cycles. The texture itself is unchanged; new inspection uses direct lighting matching runtime without path-traced color bleed."
+}

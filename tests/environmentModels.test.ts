@@ -95,3 +95,59 @@ describe("washing-station model placement", () => {
     } finally { warn.mockRestore(); }
   });
 });
+
+describe("washing-station detail selection", () => {
+  it("keeps one aligned level per instance and never forces nearby props into far detail", async () => {
+    const parent = new THREE.Group(), adapter = new EnvironmentModels(parent);
+    const slots = Array.from({ length: 5 }, (_, i) => ({ minX: i * .05, maxX: i * .05 + .36, minZ: 0, maxZ: .36 }));
+    for (const id of ["bath_stool", "wash_basin"] as const) for (const box of slots) {
+      const fallback = new THREE.Object3D(); parent.add(fallback);
+      adapter.register(id, fallback, box, 0, .3);
+    }
+    const source = new THREE.Group();
+    const mesh = new THREE.Mesh(new THREE.BoxGeometry(.36, .3, .36), new THREE.MeshStandardMaterial());
+    mesh.position.y = .15; source.add(mesh);
+    const lib = new ModelLibrary({ loadAsync: async () => ({ scene: source.clone(true) }), parseAsync: async () => ({ scene: source.clone(true) }) });
+    for (const id of ["bath_stool", "wash_basin"]) {
+      await lib.load(id, "high"); adapter.use(lib);
+      // Far can arrive before medium. Nearby models must keep high until
+      // medium is available, even after the high allocation is exhausted.
+      await lib.load(`${id}_lod_far`, "far"); adapter.use(lib);
+      adapter.updateDetail(new THREE.Vector3(.3, .4, .5), false);
+      expect(parent.children.filter(o => o.name === id).map(o => o.userData.detailLevel))
+        .toEqual(Array(5).fill("high"));
+      expect(adapter.hasWashingDetailSet()).toBe(false);
+      await lib.load(`${id}_lod_medium`, "medium"); adapter.use(lib);
+    }
+    expect(adapter.hasWashingDetailSet()).toBe(true);
+    const instances = parent.children.filter(o => o instanceof THREE.Group);
+    expect(instances).toHaveLength(10);
+    for (const instance of instances) instance.updateMatrixWorld(true);
+    const original = instances.map(o => o.matrixWorld.clone());
+    const check = (eye: THREE.Vector3, overview: boolean, expected: string[]) => {
+      adapter.updateDetail(eye, overview);
+      for (const instance of instances) {
+        expect(instance.children.filter(o => o.visible)).toHaveLength(1);
+        // All three LODs use one authored coordinate frame and instance scale.
+        const boxes = instance.children.map(o => new THREE.Box3().setFromObject(o, true));
+        expect(boxes.every(b => b.equals(boxes[0]!))).toBe(true);
+      }
+      for (const id of ["bath_stool", "wash_basin"]) {
+        const levels = instances.filter(o => o.name === id).map(o => o.userData.detailLevel);
+        expect(levels.filter(l => l === "high").length).toBeLessThanOrEqual(2);
+        expect(levels.sort()).toEqual(expected);
+      }
+    };
+    const near = ["high", "high", "medium", "medium", "medium"];
+    check(new THREE.Vector3(.3, .4, .5), false, near);
+    check(new THREE.Vector3(.3, .4, 3), false, Array(5).fill("medium"));
+    check(new THREE.Vector3(.3, .4, .5), true, Array(5).fill("far"));
+    check(new THREE.Vector3(30, 4, 20), false, Array(5).fill("far"));
+    check(new THREE.Vector3(.3, .4, .5), false, near);
+    for (const [i, o] of instances.entries()) {
+      o.updateMatrixWorld(true);
+      // compare world transform over the camera sequence, not visibility.
+      expect(o.matrixWorld.equals(original[i]!)).toBe(true);
+    }
+  });
+});

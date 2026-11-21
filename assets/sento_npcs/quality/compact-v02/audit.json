@@ -1,0 +1,97 @@
+{
+  "blender": "5.2.4 LTS",
+  "blend_sha256": "eeb5c9ea46456f2bb5a6513b1df08da42a7b62c647599b3bab538811f74f567d",
+  "source_files_unchanged": true,
+  "raw_geometry_matches_fresh_import": true,
+  "original_master_geometry_preserved": true,
+  "packed_images": [
+    {
+      "name": "adult_bath_basecolor_v02.001",
+      "packed": true,
+      "relative_path": true,
+      "pixels_available": true
+    },
+    {
+      "name": "adult_clothed_basecolor_v02.001",
+      "packed": true,
+      "relative_path": true,
+      "pixels_available": true
+    },
+    {
+      "name": "npc_bath_standing_basecolor_v02",
+      "packed": true,
+      "relative_path": true,
+      "pixels_available": true
+    },
+    {
+      "name": "npc_staff_basecolor_v02",
+      "packed": true,
+      "relative_path": true,
+      "pixels_available": true
+    }
+  ],
+  "metadata": {
+    "private_markers_in_decompressed_blend": 0,
+    "inspection_png_count": 16,
+    "text_exif_chunks_found": 0
+  },
+  "models": {
+    "npc_staff": {
+      "sha256": "3b953cbbad8fb11e1279e76f5067c82c477112cf54e2cbb502c8f92890a2e90d",
+      "embedded_png_chunks": [
+        [
+          "IHDR",
+          "sRGB",
+          "gAMA",
+          "cHRM",
+          "oFFs",
+          "pHYs",
+          "IDAT",
+          "IDAT",
+          "IDAT",
+          "IDAT",
+          "IDAT",
+          "IDAT",
+          "IDAT",
+          "IDAT",
+          "IDAT",
+          "IDAT",
+          "IDAT",
+          "IEND"
+        ]
+      ],
+      "embedded_buffers": true,
+      "embedded_images": true,
+      "no_cameras_or_lights": true,
+      "root_node": "npc_staff"
+    },
+    "npc_bath_standing": {
+      "sha256": "994ae0ce22b4e49528b7221929c5c82345c71340f84af10f4e4645c02f791614",
+      "embedded_png_chunks": [
+        [
+          "IHDR",
+          "sRGB",
+          "gAMA",
+          "cHRM",
+          "oFFs",
+          "pHYs",
+          "IDAT",
+          "IDAT",
+          "IDAT",
+          "IDAT",
+          "IDAT",
+          "IDAT",
+          "IDAT",
+          "IDAT",
+          "IDAT",
+          "IEND"
+        ]
+      ],
+      "embedded_buffers": true,
+      "embedded_images": true,
+      "no_cameras_or_lights": true,
+      "root_node": "npc_bath_standing"
+    }
+  },
+  "scope": "Saved Blend and actual candidate GLBs only. No gameplay, publication or placed-scene footprint approval."
+}
