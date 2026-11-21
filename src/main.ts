@@ -1,7 +1,7 @@
 // Browser entry: fixed 60 Hz logic, render at display rate.
 import { createInitialState } from "./core/initialState";
 import { checkInvariants } from "./core/invariants";
-import type { CharacterId, CheckpointId, GameState, ItemId } from "./core/types";
+import type { CharacterId, CheckpointId, GameState } from "./core/types";
 import { attachKeyboard, KeyboardState } from "./input/keyboard";
 import { LEVEL } from "./level/layout";
 import { advance } from "./loop";
@@ -40,7 +40,7 @@ canvas.addEventListener("pointercancel", endDrag);
 
 // Final models, when any are listed. A failure keeps the primitive.
 const charEntries = Object.entries(CHARACTER_MODEL_URLS) as [CharacterId, string][];
-const itemEntries = Object.entries(ITEM_MODEL_URLS) as [ItemId, string][];
+const itemEntries = Object.entries(ITEM_MODEL_URLS) as [string, string][];
 const modelEntries = [...charEntries, ...itemEntries, ...Object.entries(ENVIRONMENT_MODEL_URLS)];
 if (modelEntries.length > 0) {
   void import("./view/models").then(({ ModelLibrary }) => {
@@ -66,8 +66,8 @@ document.addEventListener("visibilitychange", () => {
 });
 
 /** WASD is relative to the camera's yaw; in the fixed overview W is up the map (shoulder-view Req 3.1, 3.2). */
-const takeFrame = (s: GameState) => {
-  const f = kb.takeFrame(s.dialog !== null);
+const takeFrame = () => {
+  const f = kb.takeFrame();
   return { ...f, move: cameraRelativeMove(f.move, camera.moveYaw) };
 };
 
@@ -90,7 +90,7 @@ function frame(nowMs: number): void {
 
   if (state.outcome.kind === "cleared") {
     // The core ignores input once cleared; R starts a new game from the view layer.
-    if (kb.takeFrame(false).restart) {
+    if (kb.takeFrame().restart) {
       state = createInitialState(LEVEL);
       viewAlong("start");
     }
@@ -102,13 +102,15 @@ function frame(nowMs: number): void {
     hud.onEvents(r.events, now);
     const loaded = r.events.find((e) => e.kind === "restored");
     if (loaded?.kind === "restored") viewAlong(loaded.id);
+    // Growth keeps the facing; the camera blends to the new stage's profile.
+    if (r.events.some((e) => e.kind === "grew")) scene.growthCue(now);
   }
   if (import.meta.env.DEV) hud.setDevWarnings(checkInvariants(state));
 
   const view = deriveView(state, LEVEL);
   facing.update(view);
   const focus = scene.positionCharacters(view, now, facing);
-  const pose = camera.update(view.active, focus, dt, facing.yaw(view.active), obstaclesFor(LEVEL, state.saunaDoor), facing.moving(view.active));
+  const pose = camera.update(view.active, focus, dt, facing.yaw(view.active), obstaclesFor(LEVEL, state.doors), facing.moving(view.active));
   scene.render(view, pose, camera.isOverview);
   hud.update(state, LEVEL, now, camera.isOverview);
 }

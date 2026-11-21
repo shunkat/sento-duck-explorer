@@ -7,14 +7,10 @@ export const RUN_SPEED = 4.5; // humans only; Duck cannot run
 
 /** Interaction distances. */
 export const REACH = {
-  coin: 0.5,
-  give: 1.0,
-  desk: 1.0,
-  saunaDoor: 1.0,
-  hat: 0.6,
-  equip: 1.0,
-  pickUpDuck: 1.0,
-  dryDuck: 1.0,
+  /** E drinks a milk bottle within this distance (clear straight line). */
+  milk: 0.6,
+  /** E opens a high-handle door within this distance of its handle (Adult only). */
+  handle: 1.0,
   locker: 1.0,
   /** E dries a wet human on the bath side within this distance of the changing-room or sauna door. */
   dryAtExit: 2.0,
@@ -22,15 +18,5 @@ export const REACH = {
   push: 0.8,
 } as const;
 
-/** Pair doors: the companion must be within this distance of the active human. */
-export const JOIN_RADIUS = 3.0;
-/** Companion is placed this far past the door center, into the new area. */
-export const COMPANION_OFFSET = 0.9;
-
-/** Pond: current pushes toward the goal (+x); input steers. */
-export const POND = {
-  current: { x: 1.2, z: 0 },
-  inputAccel: 3.0,
-  damping: 0.97, // per tick
-  maxSpeed: 2.5,
-} as const;
+/** The guardian walks at the Adult's walking speed. */
+export const GUARDIAN_SPEED = WALK_SPEED.adult;

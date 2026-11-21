@@ -1,7 +1,7 @@
 // Over-the-shoulder camera math (pure). See .kiro/specs/shoulder-view.
 // Yaw 0 looks toward −Z: forward = (sin y, −cos y), right = (cos y, sin y).
 import type { Object3D } from "three";
-import type { CharacterId, CheckpointId, Vec2 } from "../core/types";
+import type { CharacterId, CheckpointId, CoreState, Vec2 } from "../core/types";
 import type { Level } from "../level/layout";
 import { wallsFor } from "../sim/movement";
 import type { AABB } from "../sim/geometry";
@@ -123,11 +123,11 @@ export interface Obstacles {
   hole: AABB;
 }
 
-export const obstaclesFor = (level: Level, saunaDoor: "locked" | "unlocked"): Obstacles => {
+export const obstaclesFor = (level: Level, doors: CoreState["doors"]): Obstacles => {
   const lowFixtures = level.fixtures.filter((f) => f.height < WALL_HEIGHT - 0.4);
   const lowSet = new Set<AABB>(lowFixtures.map((f) => f.box));
   return {
-    boxes: wallsFor(level, saunaDoor).filter((b) => !lowSet.has(b)),
+    boxes: wallsFor(level, doors).filter((b) => !lowSet.has(b)),
     low: lowFixtures.map((f) => ({ box: f.box, top: f.height })),
     hole: level.narrowHole.box,
   };
@@ -178,59 +178,57 @@ export function safeEye(base: Vec2, eye: Vec3, obs: Obstacles): Vec3 {
   return { x: e2.x, y, z: e2.z };
 }
 
-/** View-only facing from movement between frames. A carried Duck faces like its carrier. */
+/**
+ * View-only facing of the one player, from its movement between frames. The
+ * yaw is shared by every stage, so a growth keeps the facing (2026-11-21).
+ */
 export class FacingTracker {
-  private yaws: Record<CharacterId, number> = { duck: 0, child: 0, adult: 0 };
-  private last: Partial<Record<CharacterId, Vec2>> = {};
-  private movedNow: Record<CharacterId, boolean> = { duck: false, child: false, adult: false };
+  private yawNow = 0;
+  private last: Vec2 | null = null;
+  private movedNow = false;
 
   update(view: View): void {
-    for (const id of ["child", "adult", "duck"] as const) {
-      const c = view.characters[id];
-      const prev = this.last[id];
-      this.last[id] = { x: c.pos.x, z: c.pos.z };
-      this.movedNow[id] = false;
-      if (id === "duck" && c.carried) {
-        this.yaws.duck = this.yaws[c.carrier ?? "adult"];
-        continue;
-      }
-      if (!prev) continue;
-      const d = { x: c.pos.x - prev.x, z: c.pos.z - prev.z };
-      const len = Math.hypot(d.x, d.z);
-      if (len > 1e-4 && len < 0.5) {
-        this.yaws[id] = yawFromDirection(d);
-        this.movedNow[id] = true;
-      }
+    const c = view.characters[view.active];
+    const prev = this.last;
+    this.last = { x: c.pos.x, z: c.pos.z };
+    this.movedNow = false;
+    if (!prev) return;
+    const d = { x: c.pos.x - prev.x, z: c.pos.z - prev.z };
+    const len = Math.hypot(d.x, d.z);
+    // A growth that moved the player to a safe spot is not read as movement (len ≥ 0.5).
+    if (len > 1e-4 && len < 0.5) {
+      this.yawNow = yawFromDirection(d);
+      this.movedNow = true;
     }
   }
 
-  yaw(id: CharacterId): number {
-    return this.yaws[id];
+  /** The player's facing; the same for every stage id. */
+  yaw(_id?: CharacterId): number {
+    return this.yawNow;
   }
 
-  /** After a checkpoint load or a new game: everyone faces `yaw`; the position jump is not read as movement. */
+  /** After a checkpoint load or a new game: face `yaw`; the position jump is not read as movement. */
   lookAlong(yaw: number): void {
-    this.yaws = { duck: yaw, child: yaw, adult: yaw };
-    this.last = {};
-    this.movedNow = { duck: false, child: false, adult: false };
+    this.yawNow = yaw;
+    this.last = null;
+    this.movedNow = false;
   }
 
-  /** True if the character moved in the last update. */
-  moving(id: CharacterId): boolean {
-    return this.movedNow[id];
+  /** True if the player moved in the last update. */
+  moving(_id?: CharacterId): boolean {
+    return this.movedNow;
   }
 }
 
 /**
  * View yaw after a checkpoint load, per checkpoint (view only). Start looks
- * toward the NarrowHole (−X) so Duck's first view is not filled by the humans
- * standing in front of it (review D-1); the others look toward the next goal.
+ * west along the tub toward the trough (−X); after each growth the view looks
+ * north (yaw 0), toward the child passage and then the gate.
  */
 export const CHECKPOINT_VIEW_YAW: Record<CheckpointId, number> = {
   start: -Math.PI / 2,
-  paidReturned: Math.PI / 2, // +X: along the bath hall toward the sauna door
-  hatEquipped: Math.PI / 2,
-  duckInPond: Math.PI / 2,
+  childGrown: 0,
+  adultGrown: 0,
 };
 
 /**

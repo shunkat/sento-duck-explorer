@@ -1,83 +1,84 @@
+// Three checkpoints (Requirement 11.6): start, after Child growth, after
+// Adult growth. Restores bring back the whole state together and the route
+// continues to the exit.
 import { describe, expect, it } from "vitest";
-import { toCore } from "../src/core/initialState";
-import { LEVEL } from "../src/level/layout";
+import { takeSnapshot } from "../src/core/checkpoints";
+import { CHARACTER_RADIUS, LEVEL } from "../src/level/layout";
+import { circleOverlapsBox } from "../src/sim/geometry";
+import { wallsFor } from "../src/sim/movement";
 import * as R from "./helpers/route";
-
-const W = LEVEL.waypoints;
 import { Sim } from "./helpers/sim";
 
-const restoreAndCheck = (sim: Sim) => {
-  expect(sim.state.outcome.kind).toBe("gameOver");
-  // Game over freezes everything except restart (Req 10.2).
-  const frozen = toCore(sim.state);
-  sim.step({ move: { x: 1, z: 0 }, interact: true, switchCharacter: true });
-  expect({ ...toCore(sim.state), tickCount: 0 }).toEqual({ ...frozen, tickCount: 0 });
-  sim.press("restart");
-  sim.expectPlaying();
-  expect(sim.state.dialog).toBeNull();
-  sim.idle(5); // no immediate repeat failure (Req 10.8)
-  sim.expectPlaying();
-};
+const W = LEVEL.waypoints;
 
-describe("checkpoint restore (Req 5.4, 6.9, 10.3–10.8)", () => {
-  it("start: restores the initial state", () => {
+describe("checkpoints", () => {
+  it("only start, childGrown and adultGrown exist", () => {
     const sim = new Sim();
-    sim.switchTo("child");
+    R.fullRoute(sim);
+    expect(Object.keys(sim.state.checkpoints).sort()).toEqual(["adultGrown", "childGrown", "start"]);
+  });
+
+  it("childGrown: F1 → R restores the Child in the pool with milk1 taken once; the route continues to clear", () => {
+    const sim = new Sim();
+    R.duckDrinksMilk1(sim);
+    sim.walk([W.passageSouth]);
+    sim.press("interact"); // towel to the hand
+    sim.walk([W.passageSouth, { x: 0.6, z: 7.6 }]); // back into the pool
     sim.press("dipTowel");
+    expect(sim.state.outcome).toEqual({ kind: "gameOver", reason: "F1" });
     sim.press("restart");
-    expect({ ...toCore(sim.state), tickCount: 0 }).toEqual({ ...sim.state.checkpoints.start!, tickCount: 0 });
-    expect(sim.active).toBe("duck");
-    expect(sim.owner("coin")).toBe("node:narrow_hole_coin");
-    sim.idle(5);
+    expect(sim.state.player).toMatchObject({ stage: "child", pos: LEVEL.growthSpots.milk1, wet: "wet", clothing: "unclothed", towel: "head" });
+    expect(sim.state.milk).toEqual({ milk1: "collected", milk2: "available" });
+    expect(sim.state.guardian).toEqual({ pos: LEVEL.guardianPath[0], at: 0 });
+    sim.idle(30);
     sim.expectPlaying();
+    R.childDrinksMilk2(sim);
+    R.adultDriesAndDresses(sim);
+    R.adultOpensFrontExit(sim);
+    R.adultLeaves(sim);
+    expect(sim.log.filter((e) => e.kind === "grew")).toHaveLength(2);
   });
 
-  it("hatEquipped: restore after F3, then finish the route from there", () => {
+  it("adultGrown: the snapshot keeps both bottles, closed doors, the Adult's state and the guardian at rest", () => {
     const sim = new Sim();
-    R.playUntilHatEquipped(sim);
-    R.adultRunsOverSoap(sim);
-    expect(sim.state.outcome).toEqual({ kind: "gameOver", reason: "F3" });
-    restoreAndCheck(sim);
-
-    expect(sim.state.lastCheckpoint).toBe("hatEquipped");
-    expect(sim.state.items.hat).toEqual({ owner: { kind: "character", id: "duck" }, status: "equipped" });
-    expect(sim.state.items.coin.status).toBe("paid");
-    expect(sim.owner("key")).toBe("character:child");
-    expect(sim.state.saunaDoor).toBe("unlocked");
-    expect(sim.state.duck.carriedBy).toBeNull();
-    for (const id of ["child", "adult"] as const) expect(sim.state[id].zone).toBe("bath");
-    expect(sim.state.duck.zone).toBe("bathwater"); // Duck on the water, not the floor
-
-    R.adultCarriesDuckToPond(sim);
-    R.duckSwimsToGoal(sim);
+    R.duckDrinksMilk1(sim);
+    R.childDrinksMilk2(sim);
+    const snap = sim.state.checkpoints.adultGrown!;
+    expect(snap.player).toMatchObject({ stage: "adult", pos: LEVEL.growthSpots.milk2, wet: "wet", clothing: "unclothed", towel: "head", vel: { x: 0, z: 0 } });
+    expect(snap.milk).toEqual({ milk1: "collected", milk2: "collected" });
+    expect(snap.doors).toEqual({ kidsGate: "closed", frontExit: "closed" });
+    expect(snap.guardian).toEqual({ pos: LEVEL.guardianPath[2], at: 2 });
+    expect(snap.outcome).toEqual({ kind: "playing" });
   });
 
-  it("duckInPond: saved with both humans on the shore; restore after F3, then reach the goal", () => {
+  it("restoring after the doors were opened puts back the snapshot's doors (no growth reversal, no duplicate bottles)", () => {
     const sim = new Sim();
-    R.playUntilHatEquipped(sim);
-    R.adultCarriesDuckToPond(sim);
-    const snap = sim.state.checkpoints.duckInPond!;
-    expect(snap.adult.zone).toBe("pond_entrance");
-    expect(snap.child.zone).toBe("pond_entrance");
-    expect(snap.duck.inPond).toBe(true);
-    expect(snap.active).toBe("duck");
+    R.duckDrinksMilk1(sim);
+    R.childDrinksMilk2(sim);
+    R.adultDriesAndDresses(sim);
+    sim.walk([W.lockerAisle, W.screenPassage, W.receptionDoorIn, W.receptionIn]);
+    sim.walk([W.frontExitIn]);
+    sim.press("interact");
+    expect(sim.state.doors.frontExit).toBe("open");
+    // F8 in the lobby, then R.
+    sim.walk([{ x: 4.8, z: -7.0 }, { x: 1.0, z: -7.0 }]);
+    sim.hold({ x: -1, z: 0 }, 60);
+    expect(sim.state.outcome).toEqual({ kind: "gameOver", reason: "F8" });
+    sim.press("restart");
+    expect(sim.state.player.stage).toBe("adult");
+    expect(sim.state.milk).toEqual({ milk1: "collected", milk2: "collected" });
+    expect(sim.state.doors).toEqual({ kidsGate: "closed", frontExit: "closed" });
+    expect(sim.state.lastCheckpoint).toBe("adultGrown");
+  });
 
-    // Walk the pair back to the bath and run onto the soap.
-    sim.switchTo("adult");
-    sim.walk([W.gardenGateOut]);
-    sim.switchTo("child");
-    sim.walk([W.openAirIn]);
-    sim.switchTo("adult");
-    sim.walk([W.openAirIn, W.openAirDoorBath, W.eastAisle, W.tubNorth]);
-    R.adultRunsOverSoap(sim);
-    expect(sim.state.outcome).toEqual({ kind: "gameOver", reason: "F3" });
-    restoreAndCheck(sim);
-
-    expect(sim.state.lastCheckpoint).toBe("duckInPond");
-    expect(sim.active).toBe("duck");
-    expect(sim.state.duck.inPond).toBe(true);
-    expect(sim.state.adult.zone).toBe("pond_entrance");
-    expect(sim.state.child.zone).toBe("pond_entrance");
-    R.duckSwimsToGoal(sim);
+  it("every snapshot spot fits its stage without overlapping a wall", () => {
+    const sim = new Sim();
+    R.duckDrinksMilk1(sim);
+    R.childDrinksMilk2(sim);
+    for (const id of ["childGrown", "adultGrown"] as const) {
+      const snap = takeSnapshot(sim.state, id, LEVEL);
+      const r = CHARACTER_RADIUS[sim.state.player.stage];
+      expect(wallsFor(LEVEL, snap.doors).some((w) => circleOverlapsBox(snap.player.pos, r, w)), id).toBe(false);
+    }
   });
 });

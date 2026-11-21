@@ -1,7 +1,8 @@
 // Japanese UI strings. Rules shown here belong to this fictional facility;
 // they are not presented as rules shared by every sento.
-import type { CharacterId, ViolationId } from "./types";
+import type { CharacterId, CheckpointId, MilkId, Stage, ViolationId, ZoneId } from "./types";
 
+/** Names of the three growth stages. */
 export const CHARACTER_NAME: Record<CharacterId, string> = {
   duck: "アヒル",
   child: "子ども",
@@ -23,30 +24,24 @@ export const VIOLATION_TEXT: Record<ViolationId, { reason: string; manner: strin
   },
 };
 
-export const ITEM_TEXT = {
-  coin: "家族が落とした500円玉（このゲームの施設のサウナ代）",
-  key: "親子で使えるサウナ室の鍵（このゲームの施設のルール）",
-  hat: "支払った家族が借りられるアヒル用サウナハット",
-} as const;
-
 export const MSG = {
   nothingHere: "ここではできることがありません",
-  needCoin: "500円玉が必要です",
-  moveTogether: (other: CharacterId) => `${CHARACTER_NAME[other]}と一緒に移動しましょう`,
-  companionDry: (other: CharacterId) => `${CHARACTER_NAME[other]}も出口の前でEを押して体を拭きましょう（Tabで切り替え）`,
-  companionDress: (other: CharacterId) => `${CHARACTER_NAME[other]}に服を着せましょう`,
-  needBothAtShore: "子どもと一緒に池のほとり（庭）まで来ましょう",
+  milkWrongStage: (needs: Stage) => `この牛乳びんは${CHARACTER_NAME[needs]}のときに飲めます`,
+  handleTooHigh: "取っ手が高くて届かない（大人になったら開けられる）",
   shoutOutsideSauna: "大声は周りの迷惑になります",
-  cannotPutDuckHere: "ここではアヒルを下ろせません。湯船か水路のそばでEを押そう",
   towelOnHead: "タオルは頭の上にあります（Eで手に持てます）",
   duckStepTooHigh: "段差が高くて、アヒルでは越えられない",
+  grew: (to: Stage) => `牛乳を飲んで${CHARACTER_NAME[to]}に育った！`,
 } as const;
 
-export const ZONE_NAME: Record<import("./types").ZoneId, string> = {
+export const ZONE_NAME: Record<ZoneId, string> = {
   bath: "浴室",
   bathwater: "湯船",
   splash: "かけ湯",
   narrow_hole: "小さな穴",
+  kids_pool: "浅い湯だまり",
+  kids_passage: "子ども用の通り道",
+  kids_room: "広い休憩所",
   changing: "更衣室",
   reception: "受付",
   common: "ロビー（休憩所）",
@@ -55,22 +50,13 @@ export const ZONE_NAME: Record<import("./types").ZoneId, string> = {
   sauna_crowd: "サウナ室（座っている人たち）",
   open_air: "露天風呂",
   pond_entrance: "庭（池のほとり）",
-  pond: "秘密の池",
-  pond_goal: "池の奥（ゴール）",
+  pond: "池",
 };
 
-export const NODE_NAME: Record<import("./types").NodeId, string> = {
-  narrow_hole_coin: "小さな穴の奥",
-  reception_desk: "受付台",
-  reception_register: "受付（支払い済み）",
-  sauna_hat_shelf: "サウナの棚",
-};
+export const MILK_NAME: Record<MilkId, string> = { milk1: "牛乳びん（1本目）", milk2: "牛乳びん（2本目）" };
 
-export const ITEM_NAME = { coin: "500円玉", key: "サウナの鍵", hat: "サウナハット" } as const;
-
-export const CHECKPOINT_NAME: Record<import("./types").CheckpointId, string> = {
+export const CHECKPOINT_NAME: Record<CheckpointId, string> = {
   start: "スタート",
-  paidReturned: "支払い後に浴室へ戻った所",
-  hatEquipped: "帽子を被せた所",
-  duckInPond: "アヒルを池に置いた所",
+  childGrown: "子どもに育った所",
+  adultGrown: "大人に育った所",
 };

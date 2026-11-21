@@ -1,8 +1,8 @@
 // Static level and fallback primitives, with pipeline-produced character/item
 // models following the view each frame. Gameplay state remains in core.
 import * as THREE from "three";
-import { CHARACTER_NAME, ITEM_NAME, ZONE_NAME } from "../core/text";
-import type { CharacterId, HumanId, ItemId } from "../core/types";
+import { CHARACTER_NAME, ZONE_NAME } from "../core/text";
+import type { CharacterId, HighDoorId, HumanId, MilkId } from "../core/types";
 import { CHARACTER_RADIUS, type DecorKind, type FixtureKind, type Level } from "../level/layout";
 import type { AABB } from "../sim/geometry";
 import type { Pose } from "./camera";
@@ -14,12 +14,11 @@ import { WorldEnvironment } from "./worldEnvironment";
 import { SENTO_BACKGROUND_COLOR, WaterAppearance } from "./waterAppearance";
 import { batchOpaqueMeshes } from "./staticMeshes";
 import { applyOutfit, checkHumanContract, type Clothing, TOWEL_DEPTH, TOWEL_THICKNESS, TOWEL_WIDTH, headAnchor, towelPose } from "./humanModel";
-import { CEILING_Y, type FacingTracker, forwardOf, HOLE_LID_Y, bodyOpacity, modelRotationY, placeAtSocket, placeCharacterAtSocket, WALL_HEIGHT } from "./shoulder";
+import { CEILING_Y, type FacingTracker, HOLE_LID_Y, bodyOpacity, modelRotationY, WALL_HEIGHT } from "./shoulder";
 import {
   CHARACTER_LABEL_GAP,
   LABEL_CANVAS_H,
-  ITEM_LABEL_Y,
-  itemLabelShown,
+  MILK_LABEL_Y,
   LABEL_CENTER_Y,
   LABEL_HIDE_DISTANCE,
   LABEL_PRIORITY,
@@ -36,10 +35,11 @@ const ZONE_COLORS: Record<string, number> = {
   bath: 0x6fa8dc, bathwater: 0x2f6fb3, splash: 0x9fc5e8, narrow_hole: 0x8e7cc3,
   changing: 0xf6b26b, reception: 0xe06666, common: 0xcc7755, exterior: 0x888888,
   sauna_entry: 0xb45f06, sauna_crowd: 0x8a4a12, open_air: 0x93c47d,
-  pond_entrance: 0x6aa84f, pond: 0x2f7f8f, pond_goal: 0xffd24a,
+  pond_entrance: 0x6aa84f, pond: 0x2f7f8f,
+  kids_pool: 0x7fb7e0, kids_passage: 0x9fc5e8, kids_room: 0xb7d7f0,
 };
 /** Rooms on the clear route: their names rank with fixtures, above other rooms (review N-5). */
-const ROUTE_ZONES = new Set(["reception", "changing", "bath", "narrow_hole", "sauna_entry", "open_air", "pond_entrance", "pond_goal"]);
+const ROUTE_ZONES = new Set(["reception", "changing", "bath", "kids_pool", "kids_passage", "kids_room", "exterior"]);
 
 /** Zones with a ceiling in the shoulder view (hidden in the overview). */
 const INDOOR = new Set(["reception", "common", "exterior", "changing", "bath", "sauna_entry", "sauna_crowd"]);
@@ -49,19 +49,19 @@ const FIXTURE_COLORS: Record<FixtureKind, number> = {
   screen: 0xd9c9a8, locker: 0xff9900, shoeLocker: 0xb08850, bench: 0x9b6b3d, desk: 0x8b5a2b, shelf: 0x6b4a2b,
   stool: 0xf2f2f2, basin: 0x9ab8c8, plunge: 0x9ab8c8, outdoorBath: 0x7b7f78, heater: 0x4a4a4a,
   holeSide: 0xd8d0e8, hedge: 0x3f7a3a, fence: 0x9c7b55, pondEdge: 0x8a8f86, rock: 0x8a8f86, shrub: 0x4f8a45,
-  step: 0xc9a46a, staff: 0x2f4f6f,
+  step: 0xc9a46a, staff: 0x2f4f6f, partition: 0xd9c9a8, storage: 0xb08850, curb: 0xc9c2b0,
 };
+/** Growth-route fixtures (2026-11-21): not in the authored world, so always drawn (provisional shapes). */
+const ROUTE_FIXTURES: ReadonlySet<FixtureKind> = new Set(["partition", "storage", "curb"]);
 const DECOR_COLORS: Record<DecorKind, number> = {
   mat: 0x6b8fb8, border: 0xdfe6ea, mirror: 0xcfe3f0, tap: 0xb0b0b0, bucket: 0xe8c547, shelf: 0xdfe6ea,
   shower: 0xb0b0b0, curtain: 0x2a3f7a, deck: 0xa07850, stone: 0xb0aca0, norenMen: 0x2c5aa0, norenWomen: 0xc0392b,
 };
-/** View-only: the carried Duck is drawn this far in front of its carrier's placeholder (models: sockets). */
-const CARRY_FORWARD = 0.3;
 /** Wall height while the overview shows the map as a cutaway. */
 const OVERVIEW_WALL_HEIGHT = 1.0;
 
-/** Half height of each item primitive: its group sits at the primitive's center. */
-const ITEM_PRIMITIVE_HALF_HEIGHT: Record<ItemId, number> = { coin: 0.015, key: 0.02, hat: 0.08 };
+/** Seconds of the ring pulse that marks a growth. */
+const GROWTH_CUE_SECONDS = 0.6;
 
 const CHAR_COLORS: Record<CharacterId, number> = { duck: 0xffe033, child: 0x3fa0ff, adult: 0x3fc76a };
 
@@ -72,8 +72,8 @@ interface Label {
   aspect: number;
   /** Hidden while this character is active (the ring already marks it). */
   owner?: CharacterId;
-  /** Item labels: hidden while the item is held or worn (Req 7.5). */
-  item?: ItemId;
+  /** Milk labels: hidden once the bottle is collected. */
+  milk?: MilkId;
   /** Overrides the kind's priority (route rooms rank with fixtures, review N-5). */
   priority?: number;
 }
@@ -155,8 +155,11 @@ export class GameScene {
   private camera = new THREE.PerspectiveCamera(55, 1, 0.05, 200);
   private chars = {} as Record<CharacterId, THREE.Group>;
   private rings = {} as Record<CharacterId, THREE.Mesh>;
-  private items = {} as Record<ItemId, THREE.Object3D>;
-  private doorBlocker: THREE.Mesh;
+  private items = {} as Record<MilkId, THREE.Object3D>;
+  /** High-handle doors (closed: drawn), provisional shapes. */
+  private highDoors = {} as Record<HighDoorId, THREE.Object3D>;
+  private guardian = new THREE.Group();
+  private growthCueUntil = -Infinity;
   private labels: Label[] = [];
   /** Full-height walls, cut down in the overview. */
   /** Meshes cut down to OVERVIEW_WALL_HEIGHT in the overview, with their own full height. */
@@ -166,9 +169,7 @@ export class GameScene {
   /** Primitive meshes per character; hidden when a model replaces them. */
   private primitives = {} as Record<CharacterId, THREE.Object3D[]>;
   private models: Partial<Record<CharacterId, THREE.Object3D>> = {};
-  /** `socket_hat` of a loaded Duck model; the hat follows its position and rotation. */
-  private duckHatSocket: THREE.Object3D | null = null;
-  private itemModels: Partial<Record<ItemId, THREE.Object3D>> = {};
+  private itemModels: Partial<Record<MilkId, THREE.Object3D>> = {};
   /** Provisional towels of the two humans. */
   private towels = {} as Record<HumanId, THREE.Object3D>;
   private towelAttempted?: THREE.Object3D;
@@ -196,15 +197,15 @@ export class GameScene {
    * The controlled character's own label shows only in the overview (the ring
    * marks it in the shoulder view).
    */
-  private sizeLabels(active: CharacterId, overview: boolean, items: View["items"]): void {
+  private sizeLabels(active: CharacterId, overview: boolean, milk: View["milk"]): void {
     const camPos = this.camera.position;
     const cand: { l: Label; rect: ScreenRect }[] = [];
     for (const l of this.labels) {
       l.sprite.getWorldPosition(this.tmp);
       const dist = this.tmp.distanceTo(camPos);
       const own = l.owner === active;
-      const held = l.item !== undefined && !itemLabelShown(items[l.item].owner, overview);
-      const hidden = (own && !overview) || held || dist < LABEL_HIDE_DISTANCE;
+      const gone = (l.milk !== undefined && !milk[l.milk].visible) || (l.owner !== undefined && !this.chars[l.owner].visible);
+      const hidden = (own && !overview) || gone || dist < LABEL_HIDE_DISTANCE;
       l.sprite.visible = !hidden;
       if (hidden) continue;
       const textPx = labelPixelHeight(l.kind, dist);
@@ -257,9 +258,9 @@ export class GameScene {
 
     // Floors per zone, with name labels.
     for (const z of [...level.zones].reverse()) {
-      const sub = z.id === "bathwater" || z.id === "splash" || z.id === "narrow_hole" || z.id === "pond_goal";
+      const sub = z.id === "bathwater" || z.id === "splash" || z.id === "narrow_hole";
       // Water and state overlays remain independent from the authored solid floors.
-      const surfaceParent = ["bathwater", "narrow_hole", "pond", "pond_goal", "splash"].includes(z.id)
+      const surfaceParent = ["bathwater", "narrow_hole", "pond", "splash"].includes(z.id)
         ? this.scene : this.environmentFallback;
       const opacity = sub ? 0.9 : 0.75;
       const water = z.id === "pond" ? "pond" : z.id === "bathwater" || z.id === "narrow_hole" ? "bath" : null;
@@ -295,7 +296,7 @@ export class GameScene {
     for (const f of level.fixtures) {
       const fm = boxMesh(f.box, f.height, 0, FIXTURE_COLORS[f.kind]);
       if (f.height > OVERVIEW_WALL_HEIGHT) this.tallWalls.push({ mesh: fm, height: f.height });
-      if (f.kind === "stool") this.scene.add(fm);
+      if (f.kind === "stool" || ROUTE_FIXTURES.has(f.kind)) this.scene.add(fm);
       else if (f.height > OVERVIEW_WALL_HEIGHT) this.environmentFallback.add(fm);
       else staticSurfaces.push(fm);
       if (f.kind === "stool") this.environmentModels.register("bath_stool", fm, f.box, 0, f.height);
@@ -347,13 +348,28 @@ export class GameScene {
       this.fixtureLabel("座っている人たち（押さない）", b, 1.6, "#ffd");
     }
 
-    this.doorBlocker = boxMesh(level.saunaDoorBlocker, 2.2, 0, 0x5b3a1a);
-    this.environmentFallback.add(this.doorBlocker);
-    this.fixtureLabel("サウナの扉", level.saunaDoorBlocker, 1.6, "#fda");
+    // High-handle doors (provisional shapes, always drawn over the authored world while closed).
+    for (const id of ["kidsGate", "frontExit"] as const) {
+      const d = level.highDoors[id];
+      const g = new THREE.Group();
+      const leafH = id === "frontExit" ? 2.2 : d.handleY + 0.1;
+      g.add(boxMesh(d.blocker, leafH, 0, 0x8b5a2b));
+      const handle = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.06, 0.14), new THREE.MeshStandardMaterial({ color: 0xd4af37, metalness: 0.6, roughness: 0.3 }));
+      handle.position.set(d.handle.x, d.handleY, d.handle.z);
+      g.add(handle);
+      this.scene.add(g);
+      this.highDoors[id] = g;
+      this.fixtureLabel(d.label, d.blocker, leafH + 0.3, "#fda");
+    }
 
-    // Interaction spots without a fixture of their own.
-    const e = level.channelEntrance;
-    this.fixtureLabel("水路の入口（子どもがアヒルを下ろす）", { minX: e.x, maxX: e.x, minZ: e.z, maxZ: e.z }, 0.9, "#bdf");
+    // Guardian (non-player adult who watches the Child): provisional primitive.
+    const gBody = new THREE.Mesh(new THREE.CapsuleGeometry(CHARACTER_RADIUS.adult, BODY_HEIGHT.adult - 2 * CHARACTER_RADIUS.adult, 8, 16),
+      new THREE.MeshStandardMaterial({ color: 0x8e6fd8 }));
+    this.guardian.add(gBody);
+    const gLabel = this.label("見守りの大人", "character", "#e8dcff");
+    gLabel.position.set(0, BODY_HEIGHT.adult / 2 + CHARACTER_LABEL_GAP, 0);
+    this.guardian.add(gLabel);
+    this.scene.add(this.guardian);
     for (const soap of level.soaps) {
       const m = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.08, 0.18), new THREE.MeshStandardMaterial({ color: 0xffffff }));
       m.position.set(soap.pos.x, 0.05, soap.pos.z);
@@ -415,16 +431,19 @@ export class GameScene {
       this.rings[id] = ring;
     }
 
-    // Items as independent primitives.
-    const coin = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, 0.03, 20), new THREE.MeshStandardMaterial({ color: 0xffc107, metalness: 0.6, roughness: 0.3 }));
-    const key = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.04, 0.08), new THREE.MeshStandardMaterial({ color: 0xd0d0d0, metalness: 0.7 }));
-    const hat = new THREE.Mesh(new THREE.ConeGeometry(0.13, 0.16, 20), new THREE.MeshStandardMaterial({ color: 0xe53935 }));
-    for (const [id, mesh] of [["coin", coin], ["key", key], ["hat", hat]] as const) {
+    // Milk bottles: provisional primitive (white bottle, blue cap) until the
+    // final GLB passes the milk bottle asset contract. Group origin = bottle base.
+    for (const id of ["milk1", "milk2"] as const) {
       const g = new THREE.Group();
-      g.add(mesh);
-      const l = this.label(ITEM_NAME[id], "item", "#ffe");
-      this.labels[this.labels.length - 1]!.item = id;
-      l.position.set(0, ITEM_LABEL_Y, 0);
+      const bottle = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.035, 0.17, 20), new THREE.MeshStandardMaterial({ color: 0xfbfbf5, roughness: 0.4 }));
+      bottle.position.y = 0.085;
+      const cap = new THREE.Mesh(new THREE.CylinderGeometry(0.032, 0.032, 0.025, 20), new THREE.MeshStandardMaterial({ color: 0x2f6fd8 }));
+      cap.position.y = 0.18;
+      g.add(bottle, cap);
+      g.name = "milk_bottle_provisional";
+      const l = this.label("牛乳びん", "item", "#ffe");
+      this.labels[this.labels.length - 1]!.milk = id;
+      l.position.set(0, MILK_LABEL_Y, 0);
       g.add(l);
       this.scene.add(g);
       this.items[id] = g;
@@ -453,9 +472,15 @@ export class GameScene {
         console.warn(`Model for ${id} failed its display contract; keeping the current model.`, error);
       }
     }
-    for (const id of ["coin", "key", "hat"] as const) {
-      const model = lib.get(id);
-      if (model && this.itemModels[id] !== model.root) this.setItemModel(id, model.root);
+    const milk = lib.get("milk_bottle");
+    if (milk) {
+      for (const id of ["milk1", "milk2"] as const) {
+        if (this.itemModels[id]?.userData.source !== milk.root) {
+          const root = milk.root.clone(true);
+          root.userData.source = milk.root;
+          this.setItemModel(id, root);
+        }
+      }
     }
   }
 
@@ -518,7 +543,6 @@ export class GameScene {
     root.position.set(0, -centerToBottom, 0);
     this.chars[id].add(root);
     this.models[id] = root;
-    if (id === "duck") this.duckHatSocket = root.getObjectByName("socket_hat") ?? null;
     // Name label at the model's socket_label, if it has one (final-assets sockets).
     const sl = root.getObjectByName("socket_label");
     const label = this.chars[id].children.find((o) => o instanceof THREE.Sprite);
@@ -542,13 +566,8 @@ export class GameScene {
     }
   }
 
-  /**
-   * Show a loaded item model instead of its primitive. Item GLBs have their
-   * origin at the base center (the hat: inner base), so off a socket the
-   * model is lowered to where the primitive's bottom was; on Duck's
-   * `socket_hat` the base sits on the socket itself.
-   */
-  setItemModel(id: ItemId, root: THREE.Object3D): void {
+  /** Show a loaded milk bottle model instead of the primitive (origin at the base center, like the group). */
+  setItemModel(id: MilkId, root: THREE.Object3D): void {
     const g = this.items[id];
     const old = this.itemModels[id];
     if (old) g.remove(old);
@@ -577,18 +596,21 @@ export class GameScene {
     this.camera.updateProjectionMatrix();
   }
 
-  /** Resolve actual model poses before computing the camera, including carried Duck's socket. */
+  /** Start the short ring pulse that marks a growth. */
+  growthCue(timeSeconds: number): void {
+    this.growthCueUntil = timeSeconds + GROWTH_CUE_SECONDS;
+  }
+
+  /** Place the one visible body (the current stage) before computing the camera. */
   positionCharacters(view: View, timeSeconds: number, facing: FacingTracker): Vec3 {
     this.waterAppearance.update(timeSeconds);
-    const carrierId = view.characters.duck.carrier ?? "adult";
-    const carry = forwardOf(facing.yaw(carrierId));
-    const duckShift = view.characters.duck.carried ? { x: carry.x * CARRY_FORWARD, z: carry.z * CARRY_FORWARD } : { x: 0, z: 0 };
+    const pulse = Math.max(0, this.growthCueUntil - timeSeconds) / GROWTH_CUE_SECONDS;
     for (const id of ["duck", "child", "adult"] as const) {
       const c = view.characters[id];
       let y = c.pos.y;
-      if (id === "duck" && !c.carried) y += Math.sin(timeSeconds * 3) * 0.015; // gentle bobbing
-      const shift = id === "duck" ? duckShift : { x: 0, z: 0 };
-      this.chars[id].position.set(c.pos.x + shift.x, y, c.pos.z + shift.z);
+      if (id === "duck") y += Math.sin(timeSeconds * 3) * 0.015; // gentle bobbing
+      this.chars[id].visible = c.visible;
+      this.chars[id].position.set(c.pos.x, y, c.pos.z);
       this.chars[id].rotation.y = modelRotationY(facing.yaw(id));
       if (id !== "duck" && c.towel) {
         const t = towelPose(c.towel, { height: c.height, radius: c.radius, ...this.humanBody[id] });
@@ -603,24 +625,9 @@ export class GameScene {
       const ring = this.rings[id];
       ring.visible = c.active;
       ring.position.set(c.pos.x, 0.04, c.pos.z);
+      ring.scale.setScalar(1 + 2.5 * pulse);
     }
-    // All character transforms are current before resolving sockets. Adult:
-    // the Duck GLB's bottom on `socket_carry`. Child has no carry socket, so
-    // Duck's center sits at the real right hand (`socket_hand_r`), turned
-    // like the Child (no socket tilt), never above the head or on Adult.
-    if (view.characters.duck.carried) {
-      if (carrierId === "adult") {
-        const carrySocket = this.models.adult?.getObjectByName("socket_carry");
-        if (carrySocket) placeCharacterAtSocket(this.chars.duck, carrySocket, CHARACTER_RADIUS.duck);
-      } else {
-        const hand = this.models.child?.getObjectByName("socket_hand_r");
-        if (hand) {
-          this.chars.child.updateWorldMatrix(true, true);
-          hand.getWorldPosition(this.chars.duck.position);
-          this.chars.duck.rotation.set(0, modelRotationY(facing.yaw("child")), 0);
-        }
-      }
-    }
+    this.guardian.position.set(view.guardian.x, view.guardian.y, view.guardian.z);
     const focus = this.chars[view.active].position;
     return { x: focus.x, y: focus.y, z: focus.z };
   }
@@ -633,49 +640,20 @@ export class GameScene {
       const fade = overview || c.active ? 1 : bodyOpacity(pose.eye, act, this.chars[id].position, c.radius);
       setBodyOpacity(this.chars[id], fade);
     }
-    for (const id of ["coin", "key", "hat"] as const) {
-      const it = view.items[id];
+    for (const id of ["milk1", "milk2"] as const) {
+      const it = view.milk[id];
       this.items[id].visible = it.visible;
-      if (id === "hat" && view.hatAttachedToDuck) {
-        if (this.duckHatSocket) {
-          placeAtSocket(this.items.hat, this.duckHatSocket);
-          this.itemModels.hat?.position.set(0, 0, 0);
-        } else {
-          // Even a fallback Duck may sit on a loaded Adult's real carry
-          // socket. Follow its actual group, not the old forward offset.
-          placeCharacterAtSocket(this.items.hat, this.chars.duck, it.pos.y - view.characters.duck.pos.y);
-          this.itemModels.hat?.position.set(0, -ITEM_PRIMITIVE_HALF_HEIGHT.hat, 0);
-        }
-        continue;
-      }
-      const hand = it.owner.kind === "character" && it.owner.id !== "duck"
-        ? this.models[it.owner.id]?.getObjectByName("socket_hand_r") : null;
-      if (hand) {
-        placeAtSocket(this.items[id], hand);
-        this.itemModels[id]?.position.set(0, 0, 0);
-        continue;
-      }
-      if (it.owner.kind === "character" && it.owner.id === "duck") {
-        // Follow the Duck as actually drawn (e.g. in Child's hand), keeping the view offset.
-        const d = view.characters.duck.pos;
-        const g = this.chars.duck.position;
-        this.items[id].position.set(g.x + it.pos.x - d.x, g.y + it.pos.y - d.y, g.z + it.pos.z - d.z);
-        this.items[id].quaternion.identity();
-        this.itemModels[id]?.position.set(0, -ITEM_PRIMITIVE_HALF_HEIGHT[id], 0);
-        continue;
-      }
       this.items[id].position.set(it.pos.x, it.pos.y, it.pos.z);
-      this.items[id].quaternion.identity();
-      this.itemModels[id]?.position.set(0, -ITEM_PRIMITIVE_HALF_HEIGHT[id], 0);
     }
-    this.doorBlocker.visible = view.saunaDoorLocked;
-    this.worldEnvironment.setView(overview, view.saunaDoorLocked);
+    for (const id of ["kidsGate", "frontExit"] as const) this.highDoors[id].visible = !view.doorsOpen[id];
+    // The sauna is never locked in the growth version: hide the authored closed door.
+    this.worldEnvironment.setView(overview, false);
     this.camera.position.set(pose.eye.x, pose.eye.y, pose.eye.z);
     this.camera.lookAt(pose.target.x, pose.target.y, pose.target.z);
     this.environmentModels.updateDetail(this.camera.position, overview);
     this.worldEnvironment.updateDetail(this.camera.position);
     this.camera.updateMatrixWorld();
-    this.sizeLabels(view.active, overview, view.items);
+    this.sizeLabels(view.active, overview, view.milk);
     this.renderer.render(this.scene, this.camera);
   }
 }

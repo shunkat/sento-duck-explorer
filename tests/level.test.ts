@@ -7,16 +7,14 @@ import {
   DOOR_WIDTH,
   LEVEL,
   NARROW_HOLE_WIDTH,
-  PAIR_DOORS,
   passWidthOf,
 } from "../src/level/layout";
-import { REACH } from "../src/core/tuning";
 import { moveCircle } from "../src/sim/collision";
 import { type AABB, circleOverlapsBox, distance, scale, sub } from "../src/sim/geometry";
 import { zoneAt } from "../src/sim/zones";
 
 const SAUNA_WALLS: AABB[] = [...LEVEL.walls, ...LEVEL.npcs];
-const BATH_WALLS: AABB[] = [...LEVEL.walls, ...LEVEL.npcs, LEVEL.saunaDoorBlocker];
+const BATH_WALLS: AABB[] = [...LEVEL.walls, ...LEVEL.npcs];
 
 /** Walk a circle through waypoints at 4 m/s with 60 Hz steps; returns every position visited. */
 function walk(id: CharacterId, start: Vec2, waypoints: Vec2[], walls: AABB[], maxTicks = 2000): Vec2[] {
@@ -65,10 +63,11 @@ describe("PassWidth comparisons (Req 2.1–2.4, 9.3, 9.4)", () => {
 });
 
 describe("Collision against narrow openings", () => {
-  const holeTarget = LEVEL.nodes.narrow_hole_coin;
+  // The NarrowHole stays as an optional Duck-only alcove (its coin is retired, 2026-11-21).
+  const holeTarget = { x: LEVEL.narrowHole.box.minX + 0.3, z: (LEVEL.narrowHole.box.minZ + LEVEL.narrowHole.box.maxZ) / 2 };
 
-  it("Duck walks from the bath into the NarrowHole and reaches the coin", () => {
-    const trail = walk("duck", LEVEL.initialPositions.duck, [{ x: 1, z: holeTarget.z }, holeTarget], BATH_WALLS);
+  it("Duck walks from the bath into the NarrowHole to its end", () => {
+    const trail = walk("duck", { x: 1, z: holeTarget.z }, [holeTarget], BATH_WALLS);
     const end = trail[trail.length - 1]!;
     expect(distance(end, holeTarget)).toBeLessThan(0.1);
     expect(zoneAt(LEVEL, end)).toBe("narrow_hole");
@@ -83,7 +82,7 @@ describe("Collision against narrow openings", () => {
         (id, startZ, aimOffset) => {
           const trail = walk(
             id,
-            { x: 1.2, z: startZ },
+            { x: 1.2, z: Math.min(startZ, 8.4) },
             [{ x: holeTarget.x, z: holeTarget.z + aimOffset }],
             BATH_WALLS,
             600,
@@ -101,14 +100,14 @@ describe("Collision against narrow openings", () => {
       const z = (g.box.minZ + g.box.maxZ) / 2;
       return [{ x: g.box.minX - 0.4, z }, { x: (g.box.minX + g.box.maxX) / 2, z }, { x: g.box.maxX + 0.4, z }];
     }),
-    LEVEL.nodes.sauna_hat_shelf,
+    { x: 17.9, z: 2.0 }, // in front of the (now empty) shelf
   ];
   const W = LEVEL.waypoints;
 
-  it("Child weaves through all three CrowdGaps to the hat shelf", () => {
+  it("a Child body still weaves through all three CrowdGaps to the shelf (geometry; the sauna is optional)", () => {
     const trail = walk("child", W.saunaIn, saunaPath, SAUNA_WALLS);
     const end = trail[trail.length - 1]!;
-    expect(distance(end, LEVEL.nodes.sauna_hat_shelf)).toBeLessThanOrEqual(REACH.hat);
+    expect(distance(end, { x: 17.9, z: 2.0 })).toBeLessThan(0.1);
     expect(zoneAt(LEVEL, end)).toBe("sauna_crowd");
     // Child never overlaps an NPC body (incidental contact is resolved, not tunnelled).
     for (const p of trail) {
@@ -127,11 +126,8 @@ describe("Collision against narrow openings", () => {
     );
   });
 
-  it("the locked sauna door blocks entry from the bath", () => {
-    const trail = walk("child", W.saunaDoorDry, [W.saunaIn], BATH_WALLS, 300);
-    expect(trail.every((p) => zoneAt(LEVEL, p) === "bath")).toBe(true);
-    // Without the blocker (door unlocked), the same walk reaches the sauna entry.
-    const open = walk("child", W.saunaDoorDry, [W.saunaIn], SAUNA_WALLS, 300);
+  it("the sauna door is open: a body walks from the drying spot into the sauna entry", () => {
+    const open = walk("adult", W.saunaDoorDry, [W.saunaIn], BATH_WALLS, 300);
     expect(zoneAt(LEVEL, open[open.length - 1]!)).toBe("sauna_entry");
   });
 
@@ -148,48 +144,34 @@ describe("Collision against narrow openings", () => {
 describe("Level data sanity", () => {
   const points: [string, Vec2][] = [
     ...Object.entries(LEVEL.nodes),
-    ...Object.entries(LEVEL.initialPositions),
-    ["pondSpawn", LEVEL.pondSpawn],
+    ["start", LEVEL.start],
     ["locker", LEVEL.locker],
-    ...Object.entries(LEVEL.checkpointSpawns.paidReturned).map(([k, v]) => [`paid.${k}`, v] as [string, Vec2]),
-    ...Object.entries(LEVEL.checkpointSpawns.hatEquipped).map(([k, v]) => [`hat.${k}`, v] as [string, Vec2]),
-    ...Object.entries(LEVEL.checkpointSpawns.duckInPondShore).map(([k, v]) => [`pond.${k}`, v] as [string, Vec2]),
+    ...Object.entries(LEVEL.growthSpots).map(([k, v]) => [`grow.${k}`, v] as [string, Vec2]),
+    ...LEVEL.guardianPath.map((v, i) => [`guardian.${i}`, v] as [string, Vec2]),
+    ...(["kidsGate", "frontExit"] as const).map((k) => [`handle.${k}`, LEVEL.highDoors[k].handle] as [string, Vec2]),
   ];
-
-  // Items resting on furniture sit on that fixture, not on the floor: the
-  // reception counter, and the hat on the sauna shelf's front edge.
-  const onFixture: Record<string, string> = { reception_desk: "desk", reception_register: "desk", sauna_hat_shelf: "shelf" };
+  // Handles sit on their door blocker (in the wall line), so only the zone is checked for them.
+  const onDoor = (name: string) => name.startsWith("handle.");
 
   it.each(points)("%s is inside a zone and clear of walls", (name, p) => {
     expect(zoneAt(LEVEL, p)).not.toBeNull();
-    const kind = onFixture[name];
-    if (kind) {
-      const b = LEVEL.fixtures.find((f) => f.kind === kind)!.box;
-      expect(p.x >= b.minX && p.x <= b.maxX && p.z >= b.minZ && p.z <= b.maxZ).toBe(true);
-      return;
-    }
+    if (onDoor(name)) return;
     for (const w of [...LEVEL.walls, ...LEVEL.npcs]) expect(circleOverlapsBox(p, 0.1, w)).toBe(false);
   });
 
-  it("checkpoint spawns are in the expected safe zones", () => {
-    const s = LEVEL.checkpointSpawns;
-    expect(zoneAt(LEVEL, s.paidReturned.adult)).toBe("bath");
-    expect(zoneAt(LEVEL, s.paidReturned.child)).toBe("bath");
-    expect(zoneAt(LEVEL, s.hatEquipped.child)).toBe("bath");
-    expect(zoneAt(LEVEL, s.hatEquipped.adult)).toBe("bath");
-    expect(zoneAt(LEVEL, s.hatEquipped.duck)).toBe("bathwater");
-    expect(zoneAt(LEVEL, s.duckInPondShore.adult)).toBe("pond_entrance");
-    expect(zoneAt(LEVEL, s.duckInPondShore.child)).toBe("pond_entrance");
-    expect(zoneAt(LEVEL, LEVEL.pondSpawn)).toBe("pond");
+  it("start, bottles and growth spots are in the expected zones", () => {
+    expect(zoneAt(LEVEL, LEVEL.start)).toBe("bathwater");
+    expect(zoneAt(LEVEL, LEVEL.nodes.milk1)).toBe("kids_pool");
+    expect(zoneAt(LEVEL, LEVEL.nodes.milk2)).toBe("kids_room");
+    expect(zoneAt(LEVEL, LEVEL.growthSpots.milk1)).toBe("kids_pool");
+    expect(zoneAt(LEVEL, LEVEL.growthSpots.milk2)).toBe("kids_room");
   });
 
-  it("pair doors cover the payment trip, the sauna entry, and the trip to the pond", () => {
-    const has = (a: string, b: string) => PAIR_DOORS.some(([x, y]) => (x === a && y === b) || (x === b && y === a));
-    expect(has("bath", "changing")).toBe(true);
-    expect(has("changing", "reception")).toBe(true);
-    expect(has("bath", "sauna_entry")).toBe(true);
-    expect(has("bath", "open_air")).toBe(true);
-    expect(has("open_air", "pond_entrance")).toBe(true);
-    expect(has("reception", "common")).toBe(false);
+  it("the front exit door is the reception ↔ genkan opening", () => {
+    const d = LEVEL.doors.find((x) => x.id === "reception_exterior")!.box;
+    const b = LEVEL.highDoors.frontExit.blocker;
+    expect([b.minX, b.maxX, b.minZ, b.maxZ]).toEqual([d.minX, d.maxX, d.minZ, d.maxZ]);
+    expect(LEVEL.highDoors.frontExit.handleY).toBeGreaterThan(1.2 + 0.2); // above the Child's height
+    expect(LEVEL.highDoors.kidsGate.handleY).toBeGreaterThan(1.2 + 0.2);
   });
 });

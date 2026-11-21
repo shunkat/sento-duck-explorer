@@ -1,13 +1,13 @@
 import { DT, RUN_SPEED, WALK_SPEED } from "../core/tuning";
-import type { CharacterId, Vec2 } from "../core/types";
+import type { CharacterId, CoreState, Vec2 } from "../core/types";
 import { CHARACTER_RADIUS, type Level } from "../level/layout";
 import { moveCircle } from "./collision";
 import { type AABB, circleOverlapsBox, length, scale } from "./geometry";
 
-/** Collidable boxes for the current door state. */
-export function wallsFor(level: Level, saunaDoor: "locked" | "unlocked"): AABB[] {
+/** Collidable boxes for the current door state: closed high doors block (the sauna is never locked). */
+export function wallsFor(level: Level, doors: CoreState["doors"]): AABB[] {
   const walls = [...level.walls, ...level.npcs];
-  if (saunaDoor === "locked") walls.push(level.saunaDoorBlocker);
+  for (const id of ["kidsGate", "frontExit"] as const) if (doors[id] === "closed") walls.push(level.highDoors[id].blocker);
   return walls;
 }
 

@@ -125,9 +125,8 @@ describe("world and prop integration", () => {
     game.positionCharacters(view, 0, new FacingTracker());
     game.render(view, { eye: { x: 6, y: 1, z: 2 }, target: { x: 6, y: 1, z: 1 } }, true);
     expect(world.getObjectByName("environment_upper")!.visible).toBe(false);
-    expect(world.getObjectByName("sauna_door")!.visible).toBe(view.saunaDoorLocked);
-    const unlocked = { ...view, saunaDoorLocked: false };
-    game.render(unlocked, { eye: { x: 6, y: 1, z: 2 }, target: { x: 6, y: 1, z: 1 } }, false);
+    expect(world.getObjectByName("sauna_door")!.visible).toBe(false); // the sauna is never locked (2026-11-21)
+    game.render(view, { eye: { x: 6, y: 1, z: 2 }, target: { x: 6, y: 1, z: 1 } }, false);
     expect(world.getObjectByName("environment_upper")!.visible).toBe(true);
     expect(world.getObjectByName("sauna_door")!.visible).toBe(false);
   });
@@ -153,15 +152,52 @@ describe("world and prop integration", () => {
     expect(material.opacity).toBe(1);
     expect(source.parent).toBeNull();
     expect(source.position.length()).toBe(0);
+    // One player: the Child stage with the towel on the head, then the Adult stage holding it.
     const state = createInitialState(LEVEL);
-    state.child.towel = "head";
-    state.adult.towel = "held";
+    Object.assign(state.player, { stage: "child", towel: "head" });
+    state.milk.milk1 = "collected";
     game.positionCharacters(deriveView(state, LEVEL), 0, new FacingTracker());
     expect(internal.towels.child.rotation.x).toBe(0);
-    expect(internal.towels.adult.rotation.x).toBeCloseTo(Math.PI / 2);
     expect(internal.towels.child.position.y).toBeCloseTo(.6 + TOWEL_THICKNESS / 2);
+    Object.assign(state.player, { stage: "adult", towel: "held" });
+    state.milk.milk2 = "collected";
+    game.positionCharacters(deriveView(state, LEVEL), 0, new FacingTracker());
+    expect(internal.towels.adult.rotation.x).toBeCloseTo(Math.PI / 2);
     // The held towel's top meets the placeholder hand; its center remains
     // half the folded depth below that hand, unchanged by the new GLB origin.
     expect(internal.towels.adult.position.y).toBeCloseTo(-.05 * 1.7 - TOWEL_DEPTH / 2);
+  });
+});
+
+describe("growth view in the scene (2026-11-21)", () => {
+  type G = { chars: Record<string, THREE.Group>; items: Record<string, THREE.Object3D>; highDoors: Record<string, THREE.Object3D>; rings: Record<string, THREE.Mesh>; guardian: THREE.Group };
+  it("draws one body per stage at the player, hides collected bottles and opened doors, and pulses the ring on growth", () => {
+    const game = new GameScene({ appendChild() {} } as unknown as HTMLElement, LEVEL);
+    const g = game as unknown as G;
+    const state = createInitialState(LEVEL);
+    const pose = { eye: { x: 6, y: 1, z: 9 }, target: { x: 6, y: 0.5, z: 6 } };
+    let view = deriveView(state, LEVEL);
+    game.positionCharacters(view, 0, new FacingTracker());
+    game.render(view, pose, false);
+    expect(["duck", "child", "adult"].filter((id) => g.chars[id]!.visible)).toEqual(["duck"]);
+    expect([g.items.milk1!.visible, g.items.milk2!.visible]).toEqual([true, true]);
+    expect(g.items.milk1!.position.toArray()).toEqual([LEVEL.nodes.milk1.x, 0, LEVEL.nodes.milk1.z]);
+    expect([g.highDoors.kidsGate!.visible, g.highDoors.frontExit!.visible]).toEqual([true, true]);
+    expect(g.guardian.position.x).toBe(LEVEL.guardianPath[0]!.x);
+
+    Object.assign(state.player, { stage: "adult", towel: "head" });
+    state.milk = { milk1: "collected", milk2: "collected" };
+    state.doors.kidsGate = "open";
+    view = deriveView(state, LEVEL);
+    game.growthCue(1);
+    game.positionCharacters(view, 1, new FacingTracker());
+    game.render(view, pose, false);
+    expect(["duck", "child", "adult"].filter((id) => g.chars[id]!.visible)).toEqual(["adult"]);
+    expect(g.chars.adult!.position.x).toBe(state.player.pos.x);
+    expect([g.items.milk1!.visible, g.items.milk2!.visible]).toEqual([false, false]);
+    expect([g.highDoors.kidsGate!.visible, g.highDoors.frontExit!.visible]).toEqual([false, true]);
+    expect(g.rings.adult!.scale.x).toBeGreaterThan(1);
+    game.positionCharacters(view, 2, new FacingTracker());
+    expect(g.rings.adult!.scale.x).toBe(1);
   });
 });

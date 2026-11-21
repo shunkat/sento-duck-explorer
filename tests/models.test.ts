@@ -23,9 +23,9 @@ function sceneHarness() {
   const chars = { duck: new THREE.Group(), child: new THREE.Group(), adult: new THREE.Group() };
   const primitives = { duck: [new THREE.Object3D()], child: [new THREE.Object3D()], adult: [new THREE.Object3D()] };
   for (const id of ["duck", "child", "adult"] as const) chars[id].add(...primitives[id]);
-  const items = { coin: new THREE.Group(), key: new THREE.Group(), hat: new THREE.Group() };
-  const hatPrimitive = new THREE.Mesh(new THREE.ConeGeometry(), new THREE.MeshBasicMaterial());
-  items.hat.add(hatPrimitive);
+  const items = { milk1: new THREE.Group(), milk2: new THREE.Group() };
+  const hatPrimitive = new THREE.Mesh(new THREE.CylinderGeometry(), new THREE.MeshBasicMaterial()); // the milk1 placeholder
+  items.milk1.add(hatPrimitive);
   Object.assign(scene, { chars, primitives, items, models: {}, itemModels: {}, fixtureWater: [],
     environmentModels: new EnvironmentModels(new THREE.Group()),
     humanBody: {}, towels: {}, clothing: { child: "unclothed", adult: "unclothed" } });
@@ -33,11 +33,11 @@ function sceneHarness() {
 }
 
 describe("ModelLibrary integration with the shoulder-view scene", () => {
-  it("keeps a failed human primitive while installing Duck and hat once", async () => {
+  it("keeps a failed human primitive while installing Duck and one milk bottle model per bottle", async () => {
     const h = sceneHarness();
     const lib = new ModelLibrary();
     await lib.parse("duck", fixtureBytes());
-    await lib.parse("hat", fixtureBytes());
+    await lib.parse("milk_bottle", fixtureBytes());
     await lib.parse("child", fixtureBytes()); // lacks the human outfit contract
     const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
     try {
@@ -48,7 +48,8 @@ describe("ModelLibrary integration with the shoulder-view scene", () => {
       expect(lib.get("duck")!.root.position.y).toBeCloseTo(-0.15);
       expect(h.chars.duck.children.filter((o) => o === lib.get("duck")!.root)).toHaveLength(1);
       expect(h.hatPrimitive.visible).toBe(false);
-      expect(lib.get("hat")!.root.parent).toBe(h.items.hat);
+      const bottles = [h.items.milk1, h.items.milk2].map((g) => g.children.filter((o) => o.userData.source === lib.get("milk_bottle")!.root));
+      expect(bottles.map((b) => b.length)).toEqual([1, 1]); // a clone per bottle, installed once
       expect(h.primitives.child[0]!.visible).toBe(true);
       expect(lib.get("child")!.root.parent).toBeNull();
       expect(h.primitives.adult[0]!.visible).toBe(true);

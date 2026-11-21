@@ -4,19 +4,26 @@ import { expect } from "vitest";
 import { createInitialState } from "../../src/core/initialState";
 import { checkInvariants } from "../../src/core/invariants";
 import { tick } from "../../src/core/tick";
-import { type CharacterId, EMPTY_INPUT, type CoreState, type GameEvent, type GameState, type InputFrame, type Vec2 } from "../../src/core/types";
+import { EMPTY_INPUT, type CoreState, type GameEvent, type GameState, type InputFrame, type Vec2 } from "../../src/core/types";
 import { CHARACTER_RADIUS, LEVEL } from "../../src/level/layout";
 import { circleOverlapsBox } from "../../src/sim/geometry";
-import { shoreBoxes } from "../../src/sim/movement";
+import { shoreBoxes, wallsFor } from "../../src/sim/movement";
 
-/** Outside the pond and Adult's arms, Duck's whole body is on the bath water (2026-11-20 user correction). */
+/** As Duck the whole body is on the water (never on the floor). */
 export function duckOnWater(s: GameState | CoreState): string[] {
-  const d = s.duck;
-  if (d.carriedBy !== null || d.inPond) return [];
+  const p = s.player;
+  if (p.stage !== "duck") return [];
   const r = CHARACTER_RADIUS.duck;
-  const onWater = LEVEL.duckWater.some((w) => d.pos.x >= w.minX && d.pos.x <= w.maxX && d.pos.z >= w.minZ && d.pos.z <= w.maxZ);
-  const onShore = shoreBoxes(LEVEL.duckWater).some((b) => circleOverlapsBox(d.pos, r - 1e-3, b));
-  return onWater && !onShore ? [] : [`duck off the water at ${JSON.stringify(d.pos)}`];
+  const onWater = LEVEL.duckWater.some((w) => p.pos.x >= w.minX && p.pos.x <= w.maxX && p.pos.z >= w.minZ && p.pos.z <= w.maxZ);
+  const onShore = shoreBoxes(LEVEL.duckWater).some((b) => circleOverlapsBox(p.pos, r - 1e-3, b));
+  return onWater && !onShore ? [] : [`duck off the water at ${JSON.stringify(p.pos)}`];
+}
+
+/** The player's body never overlaps a wall, fixture or closed door. */
+export function playerClear(s: GameState | CoreState): string[] {
+  const r = CHARACTER_RADIUS[s.player.stage];
+  const hit = wallsFor(LEVEL, s.doors).find((w) => circleOverlapsBox(s.player.pos, r - 1e-3, w));
+  return hit ? [`${s.player.stage} overlaps ${JSON.stringify(hit)} at ${JSON.stringify(s.player.pos)}`] : [];
 }
 
 export class Sim {
@@ -29,7 +36,7 @@ export class Sim {
     this.state = r.state;
     this.lastEvents = r.events;
     this.log.push(...r.events);
-    const bad = [...checkInvariants(this.state), ...duckOnWater(this.state)];
+    const bad = [...checkInvariants(this.state), ...duckOnWater(this.state), ...playerClear(this.state)];
     if (bad.length) throw new Error(`invariants violated at tick ${this.state.tickCount}: ${bad.join("; ")}`);
     return r.events;
   }
@@ -38,23 +45,17 @@ export class Sim {
     for (let i = 0; i < n; i++) this.step();
   }
 
-  get active(): CharacterId {
-    return this.state.active;
+  get stage() {
+    return this.state.player.stage;
   }
 
-  pos(id: CharacterId = this.state.active): Vec2 {
-    return this.state[id].pos;
-  }
-
-  /** Press the switch key until `id` is active (each press is one tick). */
-  switchTo(id: CharacterId): void {
-    for (let i = 0; i < 3 && this.state.active !== id; i++) this.step({ switchCharacter: true });
-    expect(this.state.active).toBe(id);
+  pos(): Vec2 {
+    return this.state.player.pos;
   }
 
   /**
-   * Hold the direction toward each waypoint until the active character is
-   * within `tol`. Fails if the game ends or the tick budget runs out.
+   * Hold the direction toward each waypoint until the player is within `tol`.
+   * Fails if the game ends or the tick budget runs out.
    */
   walk(waypoints: Vec2[], opts: { run?: boolean; tol?: number; maxTicks?: number; allowEnd?: boolean } = {}): void {
     const tol = opts.tol ?? 0.06;
@@ -72,20 +73,16 @@ export class Sim {
         }
         if (++ticks > (opts.maxTicks ?? 1500)) {
           const prompts = this.lastEvents.map((e) => JSON.stringify(e)).join(", ");
-          throw new Error(`${this.active} stuck at ${JSON.stringify(p)} → ${JSON.stringify(target)} [${prompts}]`);
+          throw new Error(`${this.stage} stuck at ${JSON.stringify(p)} → ${JSON.stringify(target)} [${prompts}]`);
         }
         this.step({ move: { x: dx / d, z: dz / d }, run: opts.run ?? false });
       }
     }
   }
 
-  /** Walk to within `reach` of a point (target shifted toward the current position). */
-  approach(target: Vec2, reach: number, opts: { tol?: number } = {}): void {
-    const p = this.pos();
-    const d = Math.hypot(p.x - target.x, p.z - target.z);
-    if (d <= reach) return;
-    const k = (reach * 0.7) / d;
-    this.walk([{ x: target.x + (p.x - target.x) * k, z: target.z + (p.z - target.z) * k }], opts);
+  /** Hold one direction for `n` ticks (or until the game ends). */
+  hold(move: Vec2, n: number, run = false): void {
+    for (let i = 0; i < n && this.state.outcome.kind === "playing"; i++) this.step({ move, run });
   }
 
   press(key: keyof Omit<InputFrame, "move">): GameEvent[] {
@@ -94,10 +91,5 @@ export class Sim {
 
   expectPlaying(): void {
     expect(this.state.outcome).toEqual({ kind: "playing" });
-  }
-
-  owner(item: "coin" | "key" | "hat"): string {
-    const o = this.state.items[item].owner;
-    return `${o.kind}:${o.id}`;
   }
 }

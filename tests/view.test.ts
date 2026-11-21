@@ -1,3 +1,4 @@
+// View, HUD and camera for the one growing player (2026-11-21).
 import { describe, expect, it } from "vitest";
 import { nearbyHints, objective } from "../src/core/guide";
 import { DT } from "../src/core/tuning";
@@ -6,28 +7,35 @@ import { KeyboardState } from "../src/input/keyboard";
 import { LEVEL } from "../src/level/layout";
 import { advance } from "../src/loop";
 import { blendPose, FollowCamera, SWITCH_SECONDS } from "../src/view/camera";
-import { CAMERA_PROFILE, obstaclesFor, shoulderPose } from "../src/view/shoulder";
-import { deriveView, statusLines } from "../src/view/deriveView";
+import { BODY_HEIGHT, deriveView, statusLines } from "../src/view/deriveView";
+import { KEY_HELP, toastFor } from "../src/view/hud";
+import { CAMERA_PROFILE, FacingTracker, obstaclesFor, shoulderPose } from "../src/view/shoulder";
 import * as R from "./helpers/route";
 import { Sim } from "./helpers/sim";
 
-const hatOnDuck = (s: GameState) => s.items.hat.owner.kind === "character" && s.items.hat.owner.id === "duck" && s.items.hat.status === "equipped";
+const W = LEVEL.waypoints;
+const STALE = /Tab|切り替|渡す|500円|鍵|帽子|ハット|池の奥|ゴール|抱え/;
 
 describe("view and guide along the full route", () => {
-  it("objective, hints, status, and hat display stay consistent at every step", () => {
+  it("one visible body at the player, objective/hints/status consistent at every step, no old-route wording", () => {
     const sim = new Sim();
     const seen: string[] = [];
     const check = () => {
       const s = sim.state;
       const v = deriveView(s, LEVEL);
-      expect(v.hatAttachedToDuck).toBe(hatOnDuck(s)); // Property 15 along a real playthrough
-      expect(v.active).toBe(s.active);
-      expect(v.characters[s.active].active).toBe(true);
+      const shown = (["duck", "child", "adult"] as const).filter((id) => v.characters[id].visible);
+      expect(shown).toEqual([s.player.stage]);
+      for (const id of ["duck", "child", "adult"] as const) {
+        expect([v.characters[id].pos.x, v.characters[id].pos.z]).toEqual([s.player.pos.x, s.player.pos.z]);
+      }
+      expect(v.active).toBe(s.player.stage);
+      expect(v.focus.y).toBe(v.characters[s.player.stage].pos.y);
+      for (const m of ["milk1", "milk2"] as const) expect(v.milk[m].visible).toBe(s.milk[m] === "available");
       const o = objective(s);
-      expect(o.length).toBeGreaterThan(0);
+      expect(o).not.toMatch(STALE);
+      for (const h of nearbyHints(s, LEVEL)) expect(h).not.toMatch(STALE);
+      for (const l of statusLines(s)) expect(l).not.toMatch(STALE);
       if (seen[seen.length - 1] !== o) seen.push(o);
-      expect(statusLines(s)).toHaveLength(8);
-      nearbyHints(s, LEVEL);
     };
     const origStep = sim.step.bind(sim);
     sim.step = (input) => {
@@ -35,93 +43,95 @@ describe("view and guide along the full route", () => {
       check();
       return ev;
     };
-
     check();
-    expect(objective(sim.state)).toContain("500円玉");
-    expect(objective(sim.state)).toContain("アヒル");
-    R.duckGetsCoin(sim);
-    R.duckGivesCoin(sim);
-    R.adultPaysWithChild(sim);
-    R.adultGivesKey(sim);
-    R.childUnlocksSauna(sim);
-    R.childEntersSauna(sim);
-    R.childGetsHat(sim);
-    R.childLeavesSauna(sim);
-    R.childEquipsHat(sim);
-    R.adultCarriesDuckToPond(sim);
-    R.duckSwimsToGoal(sim);
+    expect(objective(sim.state)).toContain("牛乳びん");
+    R.fullRoute(sim);
     expect(objective(sim.state)).toContain("クリア");
-    // The guide changed through the stages of the route.
-    expect(seen.length).toBeGreaterThanOrEqual(10);
+    expect(seen.length).toBeGreaterThanOrEqual(6);
   });
 
-  it("shows the action available nearby", () => {
+  it("the HUD shows the stage, the bottle count and the E action", () => {
     const sim = new Sim();
-    expect(nearbyHints(sim.state, LEVEL)).toEqual(["アヒルは水の上だけ泳げます"]);
-    expect(objective(sim.state)).toContain("Tabで子ども"); // start with Duck selected, hint to switch to Child
-    R.childCarriesDuckToChannel(sim);
-    sim.walk([{ x: LEVEL.nodes.narrow_hole_coin.x + 0.2, z: LEVEL.nodes.narrow_hole_coin.z }]);
-    expect(nearbyHints(sim.state, LEVEL)).toContain("E: 500円玉を拾う");
-    sim.switchTo("child");
-    expect(objective(sim.state)).toContain("Tabでアヒル");
-  });
-
-  it("held items are drawn at their holder; the carried Duck is in Adult's arms", () => {
-    const sim = new Sim();
-    R.playUntilHatEquipped(sim);
-    let v = deriveView(sim.state, LEVEL);
-    expect(v.items.hat.pos.x).toBe(v.characters.duck.pos.x);
-    expect(v.items.hat.pos.y).toBeGreaterThan(v.characters.duck.pos.y);
-    expect(v.items.key.pos.x).toBeCloseTo(v.characters.child.pos.x + 0.15, 9);
-    sim.switchTo("adult");
-    sim.approach(sim.pos("duck"), 1.0);
+    expect(statusLines(sim.state)[0]).toContain("アヒル");
+    expect(statusLines(sim.state)).toContain("牛乳びん：0 / 2 本");
+    sim.walk([W.tubWestDeep, W.troughGap, W.poolIn, W.milk1Swim]);
+    expect(nearbyHints(sim.state, LEVEL)).toContain("E: 牛乳びんを飲む（子どもに育つ）");
     sim.press("interact");
+    expect(statusLines(sim.state)[0]).toContain("子ども");
+    expect(statusLines(sim.state)).toContain("牛乳びん：1 / 2 本");
+    expect(toastFor({ kind: "grew", milk: "milk1", from: "duck", to: "child" })).toBe("牛乳を飲んで子どもに育った！");
+    for (const line of KEY_HELP) expect(line).not.toMatch(/Tab|渡す|Esc/);
+  });
+
+  it("near a high handle, a Child is told it cannot reach; the Adult is offered to open it", () => {
+    const sim = new Sim();
+    R.duckDrinksMilk1(sim);
+    sim.walk([W.passageSouth, W.passageNorth, { x: 0.9, z: 3.4 }]);
+    expect(nearbyHints(sim.state, LEVEL)).toContain("E: 取っ手が高くて届かない");
+    sim.walk([W.milk2Stand]);
+    sim.press("interact");
+    sim.walk([W.gateIn]);
+    expect(nearbyHints(sim.state, LEVEL)).toContain("E: 高い掛け金を外して戸を開ける");
+  });
+
+  it("doors are drawn closed until opened; the guardian is drawn at its state position", () => {
+    const sim = new Sim();
+    let v = deriveView(sim.state, LEVEL);
+    expect(v.doorsOpen).toEqual({ kidsGate: false, frontExit: false });
+    expect([v.guardian.x, v.guardian.z]).toEqual([LEVEL.guardianPath[0]!.x, LEVEL.guardianPath[0]!.z]);
+    expect(v.guardian.y).toBe(BODY_HEIGHT.adult / 2);
+    R.duckDrinksMilk1(sim);
+    R.childDrinksMilk2(sim);
+    R.adultDriesAndDresses(sim);
     v = deriveView(sim.state, LEVEL);
-    expect(v.characters.duck.carried).toBe(true);
-    expect(v.characters.duck.pos.x).toBe(v.characters.adult.pos.x);
-    expect(v.hatAttachedToDuck).toBe(true);
+    expect(v.doorsOpen).toEqual({ kidsGate: true, frontExit: false });
+    expect(v.characters.adult.clothing).toBe("clothed");
   });
 });
 
 describe("camera", () => {
-  const obs = obstaclesFor(LEVEL, "locked");
+  const obs = obstaclesFor(LEVEL, { kidsGate: "closed", frontExit: "closed" });
   const pose = (id: "duck" | "child" | "adult", x: number, y: number, z: number) => shoulderPose(id, { x, y, z }, 0, obs);
 
   it("Duck has the lowest eye line", () => {
     expect(CAMERA_PROFILE.duck.eye).toBeLessThan(CAMERA_PROFILE.child.eye);
     expect(CAMERA_PROFILE.child.eye).toBeLessThan(CAMERA_PROFILE.adult.eye);
-    expect(pose("duck", 4, 0.15, 5).eye.y).toBeLessThan(1);
+    expect(pose("duck", 6, 0.15, 6.8).eye.y).toBeLessThan(1);
   });
 
-  it("blends over 0.4 s after a switch and turns behind the new character", () => {
+  it("growth blends height and distance over 0.4 s at the same place and facing", () => {
     expect(SWITCH_SECONDS).toBe(0.4);
+    const sim = new Sim();
+    sim.walk([W.tubWestDeep, W.troughGap, W.poolIn, W.milk1Swim]);
+    const facing = new FacingTracker();
+    const cam = new FollowCamera();
+    let v = deriveView(sim.state, LEVEL);
+    facing.update(v);
+    facing.lookAlong(0.3);
+    const duckPose = cam.update(v.active, v.focus, 0.016, facing.yaw(v.active), obs);
+    sim.press("interact");
+    v = deriveView(sim.state, LEVEL);
+    facing.update(v);
+    expect(facing.yaw(v.active)).toBe(0.3); // growth keeps the facing
+    const first = cam.update(v.active, v.focus, 0.1, facing.yaw(v.active), obs);
+    const goal = shoulderPose("child", v.focus, 0.3, obs);
+    expect(first.eye.y).toBeGreaterThan(duckPose.eye.y);
+    expect(first.eye.y).toBeLessThan(goal.eye.y);
+    let p = first;
+    for (let t = 0; t < 0.4; t += 0.1) p = cam.update(v.active, v.focus, 0.1, facing.yaw(v.active), obs);
+    expect(p).toEqual(goal);
     const a = pose("duck", 4, 0.15, 5);
     const b = pose("adult", 10, 0.85, 4);
     expect(blendPose(a, b, 0)).toEqual(a);
     expect(blendPose(a, b, 0.4)).toEqual(b);
-    const mid = blendPose(a, b, 0.2);
-    expect(mid.eye.x).toBeGreaterThan(a.eye.x);
-    expect(mid.eye.x).toBeLessThan(b.eye.x);
-
-    const cam = new FollowCamera();
-    cam.update("duck", { x: 4, y: 0.15, z: 5 }, 0.016, 0, obs);
-    const p1 = cam.update("adult", { x: 10, y: 0.85, z: 4 }, 0.1, 0, obs);
-    expect(p1.eye.x).toBeLessThan(b.eye.x);
-    let p = p1;
-    for (let t = 0; t < 0.4; t += 0.1) p = cam.update("adult", { x: 10, y: 0.85, z: 4 }, 0.1, 0, obs);
-    expect(p).toEqual(b);
-
-    // Switching aligns the yaw to the new character's facing.
-    cam.update("child", { x: 8, y: 0.6, z: 4 }, 0.016, 1.2, obs);
-    expect(cam.yaw).toBe(1.2);
   });
 });
 
-describe("keyboard-driven start of the route", () => {
+describe("keyboard-driven route start", () => {
   /** Press 8-direction keys toward a target, like a player would. */
   function keyWalk(kb: KeyboardState, s: GameState, target: { x: number; z: number }, tol = 0.08): GameState {
-    for (let i = 0; i < 2000; i++) {
-      const p = s[s.active].pos;
+    for (let i = 0; i < 3000; i++) {
+      const p = s.player.pos;
       const dx = target.x - p.x;
       const dz = target.z - p.z;
       if (Math.hypot(dx, dz) <= tol) break;
@@ -130,45 +140,27 @@ describe("keyboard-driven start of the route", () => {
       if (dx < -0.02) kb.keyDown("KeyA");
       if (dz > 0.02) kb.keyDown("KeyS");
       if (dz < -0.02) kb.keyDown("KeyW");
-      s = advance(s, 0, DT, (st) => kb.takeFrame(st.dialog !== null), LEVEL).state;
+      s = advance(s, 0, DT, () => kb.takeFrame(), LEVEL).state;
     }
     for (const k of ["KeyW", "KeyA", "KeyS", "KeyD"]) kb.keyUp(k);
     return s;
   }
   const press = (kb: KeyboardState, s: GameState, code: string) => {
     kb.keyDown(code);
-    const r = advance(s, 0, DT, (st) => kb.takeFrame(st.dialog !== null), LEVEL).state;
+    const r = advance(s, 0, DT, () => kb.takeFrame(), LEVEL).state;
     kb.keyUp(code);
     return r;
   };
 
-  it("Child carries Duck to the channel, Duck finds the coin and hands it to Adult, keys only", () => {
+  it("Duck swims to the pool and grows; the Child walks the passage and grows into the Adult, keys only", () => {
     const kb = new KeyboardState();
-    const sim = new Sim();
-    let s = sim.state;
-    // Duck alone stays in the tub: the channel is across dry floor.
-    s = keyWalk(kb, s, { x: LEVEL.waypoints.troughEnd.x, z: s.duck.pos.z }); // toward the trough: stops at the tub edge
-    expect(s.duck.zone).toBe("bathwater");
-    s = press(kb, s, "Tab"); // → Child
-    expect(s.active).toBe("child");
-    s = keyWalk(kb, s, { x: s.duck.pos.x + 0.5, z: s.duck.pos.z });
+    let s = new Sim().state;
+    for (const p of [W.tubWestDeep, W.troughGap, W.poolIn, W.milk1Swim]) s = keyWalk(kb, s, p);
     s = press(kb, s, "KeyE");
-    expect(s.duck.carriedBy).toBe("child");
-    s = keyWalk(kb, s, LEVEL.channelEntrance);
+    expect(s.player.stage).toBe("child");
+    for (const p of [W.passageSouth, W.passageNorth, W.milk2Stand]) s = keyWalk(kb, s, p);
     s = press(kb, s, "KeyE");
-    expect(s.duck.carriedBy).toBeNull();
-    expect(s.active).toBe("duck"); // dropping onto the channel hands control to Duck
-    s = keyWalk(kb, s, { x: LEVEL.nodes.narrow_hole_coin.x + 0.2, z: LEVEL.nodes.narrow_hole_coin.z });
-    s = press(kb, s, "KeyE");
-    expect(s.items.coin.owner).toEqual({ kind: "character", id: "duck" });
-    s = keyWalk(kb, s, LEVEL.waypoints.troughEnd);
-    s = press(kb, s, "Tab"); // → Child
-    s = press(kb, s, "Tab"); // → Adult
-    s = keyWalk(kb, s, LEVEL.waypoints.troughGive);
-    s = press(kb, s, "Tab"); // → Duck
-    s = press(kb, s, "KeyE");
-    expect(s.dialog).toEqual({ item: "coin", from: "duck", to: "adult" });
-    s = press(kb, s, "KeyE"); // E confirms while the dialog is open
-    expect(s.items.coin.owner).toEqual({ kind: "character", id: "adult" });
+    expect(s.player.stage).toBe("adult");
+    expect(s.outcome).toEqual({ kind: "playing" });
   });
 });

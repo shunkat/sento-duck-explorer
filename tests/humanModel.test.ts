@@ -95,14 +95,15 @@ describe("pipeline human models", () => {
     expect(Math.abs(fallbackHat.quaternion.dot(q))).toBeCloseTo(1, 8);
   });
 
-  it("exposes clothing and current item owners to the renderer without changing core state", () => {
+  it("exposes the player's clothing to the stage body without changing core state", () => {
     const state = createInitialState(LEVEL);
-    state.child.clothing = "clothed";
-    state.items.hat.owner = { kind: "character", id: "child" };
+    Object.assign(state.player, { stage: "child", clothing: "clothed", towel: "head" });
+    state.milk.milk1 = "collected";
     const view = deriveView(state, LEVEL);
     expect(view.characters.child.clothing).toBe("clothed");
-    expect(view.characters.adult.clothing).toBe("unclothed");
-    expect(view.items.hat.owner).toEqual({ kind: "character", id: "child" });
-    expect(view.hatAttachedToDuck).toBe(false);
+    expect(view.characters.child.visible).toBe(true);
+    expect(view.characters.adult.visible).toBe(false);
+    expect(view.characters.duck.clothing).toBe("unclothed");
+    expect(state.player.clothing).toBe("clothed");
   });
 });

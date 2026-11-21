@@ -16,12 +16,12 @@ export function zoneAtOr(level: Level, p: Vec2, previous: ZoneId): ZoneId {
 }
 
 const SAUNA: ReadonlySet<ZoneId> = new Set(["sauna_entry", "sauna_crowd"]);
-const WET_SOURCES: ReadonlySet<ZoneId> = new Set(["bathwater", "splash", "pond", "pond_goal"]);
+const WET_SOURCES: ReadonlySet<ZoneId> = new Set(["bathwater", "splash", "pond"]);
 
 /**
  * The room a zone belongs to. Sub-zones inside the bath (bathwater, splash,
- * narrow hole) count as the bath; the goal counts as the pond. Pair doors and
- * entry rules compare areas, not raw zones.
+ * narrow hole, the kids' corner) count as the bath. Entry rules compare areas,
+ * not raw zones.
  */
 export type AreaId =
   | "bath" | "changing" | "reception" | "common" | "exterior"
@@ -32,9 +32,10 @@ export function areaOf(z: ZoneId): AreaId {
     case "bathwater":
     case "splash":
     case "narrow_hole":
+    case "kids_pool":
+    case "kids_passage":
+    case "kids_room":
       return "bath";
-    case "pond_goal":
-      return "pond";
     default:
       return z;
   }
@@ -42,6 +43,6 @@ export function areaOf(z: ZoneId): AreaId {
 
 export const isSauna = (z: ZoneId): boolean => SAUNA.has(z);
 
-/** On the bath water (tub, channel or hole: `LEVEL.duckWater`). Wets anyone; a held towel dipped here is F1. */
+/** On the bath water (tub, trough, kids' pool or hole: `LEVEL.duckWater`). Wets anyone; a held towel dipped here is F1. */
 export const inBathWater = (level: Level, p: Vec2): boolean => level.duckWater.some((w) => containsPoint(w, p));
 export const isWetSource = (z: ZoneId): boolean => WET_SOURCES.has(z);
