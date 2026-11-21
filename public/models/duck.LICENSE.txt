@@ -7,6 +7,19 @@ Modified by the Sento Duck Explorer project, through Codex and Blender 5.2.4 LTS
 original-mesh decimation, smooth normals, vertex colors and one PBR material,
 metric scale, bottom-center origin, hat/label sockets, and GLB export.
 
+Revision v02, 2026-11-21: localized eye-surface smoothing, removal of the old
+irregular dark eye patches, and two matched smooth eye inserts. Original body,
+overall dimensions and sockets retained; 7,720 triangles, one material.
+
+Revision v03, 2026-11-21: source-measured head regularization, local torso
+fairing with protected wings, source-painted body texture and paired glossy
+eyes; 7,296 triangles and two materials. Original raw and sockets preserved.
+
+Revision v04, 2026-11-21: user-requested footless rubber duck; removed legs
+and feet, faired the lower belly, and closed the rounded yellow underside.
+Head, eyes, beak, texture and exact sockets retained; 7,214 triangles and
+two materials. Original raw and previous revisions preserved.
+
 Source and provenance:
 https://github.com/shunkat/sento-duck-explorer/tree/main/assets/duck
 

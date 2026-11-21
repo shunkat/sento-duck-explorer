@@ -1,0 +1,71 @@
+{
+  "result": "PASS",
+  "scope": "Private home paths, email-like strings and common token prefixes; heuristic, not exhaustive",
+  "binary_artifacts": [
+    {
+      "artifact": "blend_decompressed",
+      "finding_categories": []
+    },
+    {
+      "artifact": "candidate_glb",
+      "finding_categories": []
+    },
+    {
+      "artifact": "comparison_high_glb",
+      "finding_categories": []
+    }
+  ],
+  "pngs": [
+    {
+      "file": "reimported-front.png",
+      "removed_metadata_chunks": [],
+      "finding_categories": [],
+      "scan_scope": "PNG metadata chunks; compressed pixel IDAT is not interpreted as text"
+    },
+    {
+      "file": "reimported-left.png",
+      "removed_metadata_chunks": [],
+      "finding_categories": [],
+      "scan_scope": "PNG metadata chunks; compressed pixel IDAT is not interpreted as text"
+    },
+    {
+      "file": "reimported-reference.png",
+      "removed_metadata_chunks": [],
+      "finding_categories": [],
+      "scan_scope": "PNG metadata chunks; compressed pixel IDAT is not interpreted as text"
+    },
+    {
+      "file": "reimported-top.png",
+      "removed_metadata_chunks": [],
+      "finding_categories": [],
+      "scan_scope": "PNG metadata chunks; compressed pixel IDAT is not interpreted as text"
+    },
+    {
+      "file": "reimported-underside.png",
+      "removed_metadata_chunks": [],
+      "finding_categories": [],
+      "scan_scope": "PNG metadata chunks; compressed pixel IDAT is not interpreted as text"
+    },
+    {
+      "file": "comparison-high-front.png",
+      "removed_metadata_chunks": [],
+      "finding_categories": [],
+      "scan_scope": "PNG metadata chunks; compressed pixel IDAT is not interpreted as text"
+    },
+    {
+      "file": "comparison-high-reference.png",
+      "removed_metadata_chunks": [],
+      "finding_categories": [],
+      "scan_scope": "PNG metadata chunks; compressed pixel IDAT is not interpreted as text"
+    },
+    {
+      "file": "comparison-high-underside.png",
+      "removed_metadata_chunks": [],
+      "finding_categories": [],
+      "scan_scope": "PNG metadata chunks; compressed pixel IDAT is not interpreted as text"
+    }
+  ],
+  "raw_preserved_exactly": true,
+  "candidate_sha256": "1df13475185623882db1d63d99cc52f9ebff03cc40d62fb5136672a4f7515e55",
+  "blend_sha256": "8eaf2e470f5b545e3b1989e02dd6acd6faeccd117ce3459a0525c0027afb860f"
+}

@@ -63,6 +63,7 @@ Kiroを主要な開発エージェントとして開発する、Kiroween 2026向
 | F5 | サウナ室に体を拭かずに入る |
 | F6 | サウナ室で声を上げる |
 | F7 | サウナ室で人を押し除ける |
+| F8 | 女湯の入口に大人か子どもで入ろうとする（2026-11-20の追加依頼。受付の人に注意される。アヒルは段差で入れない） |
 
 ## ユーザーが検討すると回答した方針
 
@@ -87,7 +88,7 @@ Kiroを主要な開発エージェントとして開発する、Kiroween 2026向
 
 ## 状態管理と検証の論点
 
-KiroのSpecで、クリアルートと7つの失敗条件を検証可能な受入条件へ落とし込む。
+KiroのSpecで、クリアルートと失敗条件（当初の7つと、2026-11-20追加のF8）を検証可能な受入条件へ落とし込む。
 
 - 操作中のキャラクター、3者それぞれの位置、持ち運ばれているアヒルの状態。
 - 人間のキャラクターごとの濡れ・乾燥、着衣・脱衣の状態。アヒルに人間の着衣条件をそのまま適用しない。
@@ -102,6 +103,8 @@ KiroのSpecで、クリアルートと7つの失敗条件を検証可能な受�
 初期の見た目はデフォルメを推奨。着衣状態は内部のゲーム判定として管理し、入浴キャラクターの表現方法は設計段階で決める。
 
 ## 決定した3Dモデルの制作方針
+
+**2026-11-21の追加承認：** ユーザーは新規の建物・背景・小物の直接Blender制作を了承し、品質向上のため可能な限り無料公開アセットも使うよう依頼した。この範囲では、配布条件を確認した公開モデル・テクスチャをBlenderで調整する方式と、参照に基づく直接制作を使う。既存6モデルとその派生の画像→3D生成の実績・原本は維持する。以下の2026-11-20の必須指定はこの新規環境・小物の範囲で更新される。出典・権利・元ファイル・Blender・GLB・形状検証・ゲーム組み込みの記録は引き続き必須。
 
 2026-11-20、ユーザーが次の制作順を了承し、「最終的には絶対画像→Image to 3D→blenderで調整をやりたい」と指定した。
 
@@ -157,10 +160,29 @@ KiroのSpecで、クリアルートと7つの失敗条件を検証可能な受�
 - Costume Contestは推奨候補であり、部門も不思議な演出も未決定。既存のクリアルートを守りながら、機能に役立つ演出案を提案する。
 - 実装・設計・検証はKiroを主体に進める。2026-11-20、ユーザーから確認の頻発が煩わしいという指摘があったため、要件から設計・タスクをまとめて作るQuick Specを優先する。既存Specは活用し、Analyze Requirementsなどで矛盾や抜けを点検する。
 - 通常の仕様・設計・実装上の判断は、推奨案を暫定採用して記録し、確認待ちにせず進める。ユーザーの決定事項と暫定判断を区別し、作品の確定事項を変える必要がある場合などに相談を絞る。詳細は[確認を減らす進行方針](.kiro/steering/project-autonomy.md)に従う。
-- 初期の仮モデル検証で作ったルート・状態管理を保ち、現在は冒頭の実モデル・肩越し視点の要求を優先する。更新後の見た目と入力で、3者の受け渡し、最後までのルート、7つの失敗条件、再開を検証する。
+- 初期の仮モデル検証で作ったルート・状態管理を保ち、現在は冒頭の実モデル・肩越し視点の要求を優先する。更新後の見た目と入力で、3者の受け渡し、最後までのルート、失敗条件F1〜F8、再開を検証する。
 - 3Dモデルは「決定した3Dモデルの制作方針」に従う。「画像 → Image to 3D → Blenderで調整」をSpecの必須作業に含め、仮モデルで動いた段階と最終モデルの完成を区別する。
 - Hooksで変更に応じた検査と関連テストを実行する。Correctness/PBTはアイテムの重複防止やリセット後の整合など、有用な性質に適用する。
 - MCP・Skills・Powers・Custom agentsは利用目的を決め、接続・機能の実在を確認して導入する。
 - 実際に使ったKiro機能、発見した問題、改善、関連コミットや画面を短く記録する。未実施の作業を実績として書かない。
 - 公開GitHubリポジトリ、OSSライセンス、ルートの`.kiro`、動くアプリURL、英語の説明、3分未満の公開YouTubeデモが提出準備に必要。3D素材の出典・ライセンス・同梱可否も確認する。
 - [Kiroween公式規約](https://kiroween.devpost.com/rules)
+
+
+## Environment refresh release handoff — 2026-11-21
+
+The method wait is resolved by the user's approval of free public sources and
+direct Blender authoring. The complete environment and props are registered in
+`modelEntry.ts` (18 GLBs, 8,746,400 bytes), with Kenney/Poly Haven/Quaternius
+provenance, independently reviewed world/small items, washing and NPC distance
+variants. `4ec94c28` contains the final asset batch and `3cdc0b38` adds the
+browser-confirmed reflection-light correction. The canonical six GLBs are
+unchanged. Full suite 276/26 and final affected 19/3 passed.
+
+Use `docs/environment-release-verification.md` for exact source, review,
+metadata, camera-grid and static GameScene evidence. Normal-input play remains
+deferred; do not treat these diagnostics as the final route or repeat the
+already completed material checks. This release is already authorized for
+main/Pages publication; determine its live status from public version.json
+and successful workflow/artifact comparison, not from older pending sections.
+Open PR #5 and the other worktrees were not changed.

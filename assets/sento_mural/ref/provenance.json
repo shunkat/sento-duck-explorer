@@ -1,0 +1,14 @@
+{
+  "asset_id": "sento_mural",
+  "created_date": "2026-11-21",
+  "method": "OpenAI built-in image generation through Codex; exact model version not exposed",
+  "prompt": "Use case: stylized-concept. Asset type: original panoramic wall mural texture for the Japanese public bath in the game Sento Duck Explorer. Create a finished flat, straight-on, very wide landscape mural, approximately 3:1 aspect ratio, filling the whole image edge to edge. A graceful snow-capped Japanese volcanic mountain sits beyond layers of indigo and muted teal hills, with a tranquil pale aqua lake, a few sweeping ivory clouds and restrained pine silhouettes. Warm ivory sky and a small soft apricot sun. Hand-painted gouache-like shapes, beautifully composed, calm and welcoming, crisp readable silhouettes and restrained fine painted texture. Palette: indigo blue, muted teal, pale aqua, warm cream, with a tiny coral accent. Designed to complement rounded matte toy-like yellow rubber duck characters and cedar/ivory/blue ceramic sento architecture. This is the mural artwork itself: no room, wall, border, frame, tile grid, perspective, floor, buildings, people, animals, typography, lettering, signature, logo or watermark. Do not copy a specific artwork or real bathhouse mural. Opaque background.",
+  "file": "assets/sento_mural/ref/sento_mural__v01.png",
+  "width": 2172,
+  "height": 724,
+  "bytes": 2151336,
+  "sha256": "c4eee5741685275bd4790320011c3c0cd81e8aeb694ff0657b9de58947b5c90a",
+  "input": "Original text prompt only; no third-party image inputs",
+  "rights": "Project output rights released under MIT to the extent permitted by law; separate from Meshy-derived geometry",
+  "status": "generated and visually inspected; integration pending"
+}

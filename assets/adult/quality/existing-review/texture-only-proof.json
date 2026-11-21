@@ -1,0 +1,28 @@
+{
+  "prior_sha256": "5d196bd94f32e5f1cfda7b73c34e273d06d02d251b1b9876271be29155e5ea62",
+  "final_sha256": "ce320d1466191b1c95cf9ce36f2725740b73af02ca6ca2cc6ca59b0dd50c0f8f",
+  "position_normal_uv_index_accessors_identical": true,
+  "accessor_hashes": {
+    "outfit_bath": [
+      {
+        "attributes": {
+          "POSITION": "38ee2b9950536b223d0697becd9f493396bbb56d60202961707277623a3bc5cb",
+          "NORMAL": "c7f0c3e14cc53710951637a9edbe4cdff9b7757f00fb611bbc26baabfa45ce6c",
+          "TEXCOORD_0": "021f54ede47957a12816500e9ecaaa3d4b3f9098276b4a050c6a7b077dcef23b"
+        },
+        "indices": "c19cf248b89ef0afc60f058fae20fa54469dc9b5b40250551f7eefdc6026ae7e"
+      }
+    ],
+    "outfit_clothed": [
+      {
+        "attributes": {
+          "POSITION": "b97cc64acde8c13451d878b559bb2bef76053a44796a81b4c9d63ef4746c2163",
+          "NORMAL": "e2fcb238742a5b924de7594ae9309a1d3cf885839d2d8715496da657b0302529",
+          "TEXCOORD_0": "7e1713ffa4d465bf73a2820d219e1d22d67cf120c6a9211ccb8c89196c0aece1"
+        },
+        "indices": "9cddaec78a1e055c71bceb89f37fa031933753435c38115d8905222a44ac0a90"
+      }
+    ]
+  },
+  "scope": "Texture-only change. Per-named-mesh POSITION/NORMAL/TEXCOORD_0 and indices verified byte-for-byte."
+}

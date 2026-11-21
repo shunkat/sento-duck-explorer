@@ -1,0 +1,21 @@
+Yellow wash basin
+Generated with Meshy (https://www.meshy.ai/), Meshy 6 Lite, 2026-11-21.
+License: Creative Commons Attribution 4.0 International (CC BY 4.0).
+https://creativecommons.org/licenses/by/4.0/
+
+Modified by the Sento Duck Explorer project through Codex and Blender 5.2.4 LTS:
+uniform scaling of the original, averaging 12 measured radial sections,
+restrained noise cleanup and floor transition, an editable subdivided master,
+curvature-adaptive low topology, custom normals transferred from the clean
+master, one yellow satin-plastic material, bottom-center origin and GLB export.
+The rolled rim, tapered wall, open interior and closed bottom are source-derived.
+The original download is unchanged. v02 corrects the prior non-uniform fitting;
+its project dimensions are not measurements of a physical basin. Inspection
+renders do not establish final in-game appearance or user visual acceptance.
+
+Source, provenance, measured limits and comparison records:
+https://github.com/shunkat/sento-duck-explorer/tree/main/assets/wash_basin
+
+Retain attribution and the license link, and indicate further changes.
+No endorsement by Meshy is implied. The model license is separate from the
+repository's MIT code license.

@@ -32,7 +32,9 @@ npm run check:publication # 公開候補ファイルとGit indexの機密情報�
 
 画面上部の「目的」に次にやることが、その下に今押せるキーが表示されます。
 
-アヒルは水の上（湯船・小さな穴へ続く水路・穴の中・池）だけを泳げます。湯船と水路は床で離れているので、最初は子どもがEでアヒルを抱え、「水路の入口」でEを押して水路に下ろします（操作はアヒルに切り替わります）。帽子を被せた後は大人が抱えて池へ運びます。下ろせるのは湯船か水路のそば（または池の入口で池へ）だけです。
+アヒルは水の上（湯船・小さな穴へ続く水路・穴の中・池）だけを泳げます。湯船と水路は床で離れているので、最初は子どもがEでアヒルを抱え、「水路の入口」でEを押して水路に下ろします（操作はアヒルに切り替わります）。帽子を被せた後は大人が抱えて池へ運びます。下ろせるのは湯船か水路のそば（または庭の池のほとりで池へ）だけです。
+
+仮の間取りは、玄関（下足箱）→ 受付・ロビー → ついたてのある更衣室 → 浴室（拭く場所・かけ湯・洗い場・奥の湯船と水路）、浴室の東にサウナと露天、その先の庭と池です。遊べるのは男湯です。ロビーには女湯の入口（のれんと段差）だけがあり、中はありません。大人や子どもで入ろうとすると受付の人に注意されてゲームオーバー（F8）、アヒルは段差を越えられません。実在の建物の図面ではなく、設備は仮形状です。
 
 ## この環境での注意：Chrome拡張 Vimium
 
@@ -43,7 +45,7 @@ ChromeのVimium拡張を有効にしていると、`D`・`J` などのキーをV
 
 ## 構成
 
-- `src/core/` 純粋なゲームロジック（`tick`、アクション、親子の同伴、F1〜F7、チェックポイント、不変条件、案内文）
+- `src/core/` 純粋なゲームロジック（`tick`、アクション、親子の同伴、F1〜F8、チェックポイント、不変条件、案内文）
 - `src/sim/`、`src/level/` 当たり判定・移動・池の流れ、仮のレベル配置（メートル単位）
 - `src/view/`、`src/input/`、`src/loop.ts`、`src/main.ts` 描画（Three.js）、カメラ、HUD、キーボード、60 Hz固定ステップ
 - 仕様：`.kiro/specs/prototype-core-gameplay/`（requirements / design / tasks / progress）
@@ -83,5 +85,7 @@ Use the npm commands above to run, test and build. See the [English submission d
 | Q / V / F | Conditional rule-break actions: a human dips a held towel in bath water, shouts in the sauna, or pushes a nearby person in the sauna. No microphone is used. |
 
 Duck swims only on water. Before the hat, Child carries it across the dry gap and places it at the coin-channel entrance; afterward Adult carries it to the pond. T and G have no action. If Vimium captures movement keys, enter its insert mode with I.
+
+The provisional floor plan runs genkan (shoe lockers) → reception and lobby → screened changing room → bath hall (drying spot, kakeyu, washing stations, rear tub and coin trough), with the sauna and open-air area to the east and a garden leading to the pond. The playable wing is the men's bath. The lobby has only the entrance to the women's bath (noren and a raised step); trying to walk in as Adult or Child gets a reprimand from the receptionist and a game over (F8), and Duck cannot climb the step. It is an original design, not a real building's plan, and its fixtures are provisional shapes.
 
 Code is [MIT](LICENSE). Meshy-generated and Blender-adjusted models are **CC BY 4.0**, with separate credits in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) and the [asset ledger](assets/ledger.csv).

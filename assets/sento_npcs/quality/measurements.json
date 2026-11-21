@@ -1,0 +1,149 @@
+{
+  "parent_asset": "adult",
+  "source_blend": "assets/adult/blend/adult__v02.blend",
+  "source_blend_sha256": "43418e26f3abe3951afa457d8c5daf5557fca6d9162815ab4cc150e211f9b78d",
+  "reference_file": "assets/adult/ref/adult__ref_threequarter_v01.png",
+  "reference_sha256": "6ff06f0fde49a99e27edb785dd6318354954ee9567a299e0f29b4cb3ad19b1d0",
+  "raw_file": "assets/adult/gen/adult__meshy6lite_raw_v01.glb",
+  "raw_sha256": "2ceaee97c85f3e7e50c74b59c295f7b38a315678afc7961cefb3c2730da5d231",
+  "raw_geometry_preserved": {
+    "vertices": 32024,
+    "faces": 64044,
+    "positions": "50652692b28537b5444dc12f620f1f4b6ea3c2247dfc04b721323fbc460b3bd9",
+    "indices": "5c87c21691b6acc535c98eab6fc1e7db55dea6e028294dfc9392badaa688405d"
+  },
+  "original_masters_unchanged": {
+    "MASTER_clothed_source_pose": {
+      "vertices": 32024,
+      "faces": 64044,
+      "positions": "cc7a3737e780880131182d0a1f628376744ef2158a2d5c179a683ad0233f072c",
+      "indices": "5c87c21691b6acc535c98eab6fc1e7db55dea6e028294dfc9392badaa688405d"
+    },
+    "MASTER_bath_featureless_toy": {
+      "vertices": 32024,
+      "faces": 64044,
+      "positions": "3fb1a883a59036c213c681cc66882cc60fe8c9a25f56a384112c446309a700a4",
+      "indices": "5c87c21691b6acc535c98eab6fc1e7db55dea6e028294dfc9392badaa688405d"
+    }
+  },
+  "blend_sha256": "f9a050d51e5fa90d9a2e7d93f8da48b6b885a6e60951cceec2028dae2b0db813",
+  "models": {
+    "npc_staff": {
+      "triangle_budget": 1200,
+      "triangles_before_export": 1200,
+      "texture_px": 512,
+      "origin_offset_blender_xyz": [
+        0.013331234455108643,
+        0.005225524306297302,
+        0.0012725410051643848
+      ],
+      "parent_asset": "adult",
+      "head_triangles": 584,
+      "sha256": "fb17617c79ab2fd81c79dd583b538e357726f15665e7bd213b7de63e23c57937",
+      "bytes": 135936,
+      "triangles": 1200,
+      "dimensions_gltf_m": [
+        0.7646564245223999,
+        1.6978439092636108,
+        0.5333839654922485
+      ],
+      "bounds_blender_zup_m": [
+        [
+          -0.38232821226119995,
+          -0.26669198274612427,
+          0.0
+        ],
+        [
+          0.38232821226119995,
+          0.26669198274612427,
+          1.6978439092636108
+        ]
+      ],
+      "nonmanifold_after_uv_weld": 0,
+      "degenerate_faces": 0,
+      "finite_vertices": true,
+      "materials": 1,
+      "textures": 1
+    },
+    "npc_seated": {
+      "triangle_budget": 1800,
+      "triangles_before_export": 1800,
+      "texture_px": 512,
+      "origin_offset_blender_xyz": [
+        -0.003996431827545166,
+        -0.16729924082756042,
+        -0.014754081144928932
+      ],
+      "parent_asset": "adult",
+      "head_triangles": 821,
+      "sha256": "a92cee73882b54df44a08d12bef55f0c462853ecaf5643961a32d39a3d7506c9",
+      "bytes": 144336,
+      "triangles": 1800,
+      "dimensions_gltf_m": [
+        0.6654052138328552,
+        1.4174082279205322,
+        0.6497056484222412
+      ],
+      "bounds_blender_zup_m": [
+        [
+          -0.3327026069164276,
+          -0.324852854013443,
+          0.0
+        ],
+        [
+          0.3327026069164276,
+          0.3248528242111206,
+          1.4174082279205322
+        ]
+      ],
+      "nonmanifold_after_uv_weld": 0,
+      "degenerate_faces": 0,
+      "finite_vertices": true,
+      "materials": 1,
+      "textures": 1,
+      "seat_anchor_gltf_m": [
+        0.0,
+        0.44999998807907104,
+        -0.18000000715255737
+      ]
+    },
+    "npc_bath_standing": {
+      "triangle_budget": 1200,
+      "triangles_before_export": 1200,
+      "texture_px": 512,
+      "origin_offset_blender_xyz": [
+        0.013468801975250244,
+        0.005225524306297302,
+        0.002640175400301814
+      ],
+      "parent_asset": "adult",
+      "head_triangles": 598,
+      "sha256": "0b541f3b9c1f62990c072a6b90ce1e69095a7899144d93ec4186359a94f9f084",
+      "bytes": 124552,
+      "triangles": 1200,
+      "dimensions_gltf_m": [
+        0.7607252597808838,
+        1.6964467763900757,
+        0.5333839654922485
+      ],
+      "bounds_blender_zup_m": [
+        [
+          -0.3803626298904419,
+          -0.26669198274612427,
+          0.0
+        ],
+        [
+          0.3803626298904419,
+          0.26669198274612427,
+          1.6964467763900757
+        ]
+      ],
+      "nonmanifold_after_uv_weld": 0,
+      "degenerate_faces": 0,
+      "finite_vertices": true,
+      "materials": 1,
+      "textures": 1
+    }
+  },
+  "scope": "Static source-derived NPCs; no skeleton, animation, gameplay or publication."
+}

@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { toCore } from "../src/core/initialState";
+import { LEVEL } from "../src/level/layout";
 import * as R from "./helpers/route";
+
+const W = LEVEL.waypoints;
 import { Sim } from "./helpers/sim";
 
 const restoreAndCheck = (sim: Sim) => {
@@ -32,9 +35,7 @@ describe("checkpoint restore (Req 5.4, 6.9, 10.3–10.8)", () => {
   it("hatEquipped: restore after F3, then finish the route from there", () => {
     const sim = new Sim();
     R.playUntilHatEquipped(sim);
-    sim.switchTo("adult");
-    sim.walk([{ x: 10.5, z: 5 }]);
-    sim.walk([{ x: 13.5, z: 5 }], { run: true, allowEnd: true });
+    R.adultRunsOverSoap(sim);
     expect(sim.state.outcome).toEqual({ kind: "gameOver", reason: "F3" });
     restoreAndCheck(sim);
 
@@ -63,12 +64,12 @@ describe("checkpoint restore (Req 5.4, 6.9, 10.3–10.8)", () => {
 
     // Walk the pair back to the bath and run onto the soap.
     sim.switchTo("adult");
-    sim.walk([{ x: 23, z: 4 }]);
+    sim.walk([W.gardenGateOut]);
     sim.switchTo("child");
-    sim.walk([{ x: 17.2, z: 4.5 }]);
+    sim.walk([W.openAirIn]);
     sim.switchTo("adult");
-    sim.walk([{ x: 17, z: 4 }, { x: 15, z: 4 }, { x: 11, z: 5 }]);
-    sim.walk([{ x: 13.5, z: 5 }], { run: true, allowEnd: true });
+    sim.walk([W.openAirIn, W.openAirDoorBath, W.eastAisle, W.tubNorth]);
+    R.adultRunsOverSoap(sim);
     expect(sim.state.outcome).toEqual({ kind: "gameOver", reason: "F3" });
     restoreAndCheck(sim);
 

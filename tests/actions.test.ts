@@ -6,6 +6,8 @@ import { MSG } from "../src/core/text";
 import { REACH } from "../src/core/tuning";
 import { LEVEL } from "../src/level/layout";
 import * as R from "./helpers/route";
+
+const W = LEVEL.waypoints;
 import { Sim } from "./helpers/sim";
 
 describe("transfer allowlist and hat equip (Req 3.3, 3.5, 3.9, 5.2, 5.8, 5.9)", () => {
@@ -19,8 +21,8 @@ describe("transfer allowlist and hat equip (Req 3.3, 3.5, 3.9, 5.2, 5.8, 5.9)", 
   it("Duck cannot give the coin to Child", () => {
     const sim = new Sim();
     R.duckGetsCoin(sim);
-    sim.walk([{ x: 0.95, z: 5.5 }]); // channel end, next to Child at the entrance
-    expect(Math.hypot(sim.pos().x - sim.pos("child").x, sim.pos().z - sim.pos("child").z)).toBeLessThan(0.6);
+    sim.walk([W.troughEnd]); // trough end, next to Child at the entrance
+    expect(Math.hypot(sim.pos().x - sim.pos("child").x, sim.pos().z - sim.pos("child").z)).toBeLessThan(REACH.give);
     expect(Math.hypot(sim.pos().x - sim.pos("adult").x, sim.pos().z - sim.pos("adult").z)).toBeGreaterThan(REACH.give);
     sim.press("interact");
     expect(sim.state.dialog).toBeNull();
@@ -30,9 +32,9 @@ describe("transfer allowlist and hat equip (Req 3.3, 3.5, 3.9, 5.2, 5.8, 5.9)", 
   it("cancelling the dialog keeps the owner", () => {
     const sim = new Sim();
     R.duckGetsCoin(sim);
-    sim.walk([{ x: 0.95, z: 5.5 }]);
+    sim.walk([W.troughEnd]);
     sim.switchTo("adult");
-    sim.walk([{ x: 3.4, z: 4.8 }, { x: LEVEL.channelEntrance.x, z: 4.9 }]);
+    sim.walk([W.troughGive]);
     sim.switchTo("duck");
     sim.press("interact");
     expect(sim.state.dialog).not.toBeNull();
@@ -74,16 +76,16 @@ describe("carrying Duck (Req 2.5, 2.6, 3.10)", () => {
     sim.approach(sim.pos("duck"), REACH.pickUpDuck);
     sim.press("interact");
     expect(sim.state.duck.carriedBy).toBe("adult");
-    sim.walk([{ x: 9, z: 6.5 }]);
+    sim.walk([W.tubWest, W.bathMid]);
     expect(sim.pos("duck")).toEqual(sim.pos("adult"));
 
-    // On the floor, 2 m from the water: E is refused and Duck stays held.
+    // On the floor of the aisle, far from the water: E is refused and Duck stays held.
     sim.press("interact");
     expect(sim.state.duck.carriedBy).toBe("adult");
     expect(sim.lastEvents).toContainEqual({ kind: "rejected", reason: MSG.cannotPutDuckHere });
 
     // Next to the tub: Duck goes onto the water, not the floor.
-    sim.walk([{ x: 7.6, z: 6.5 }]);
+    sim.walk([W.tubNorth]);
     sim.press("interact");
     expect(sim.state.duck.carriedBy).toBeNull();
     expect(sim.state.duck.zone).toBe("bathwater");
@@ -99,7 +101,7 @@ describe("carrying Duck (Req 2.5, 2.6, 3.10)", () => {
     sim.switchTo("adult");
     sim.approach(sim.pos("duck"), REACH.pickUpDuck);
     sim.press("interact");
-    sim.walk([{ x: 15, z: 4 }]);
+    sim.walk([W.tubWest, W.tubNorth, W.eastAisle, W.openAirDoorBath]);
     for (let i = 0; i < 40; i++) sim.step({ move: { x: 1, z: 0 } });
     expect(sim.state.adult.zone).toBe("bath");
     expect(sim.lastEvents).toContainEqual({ kind: "prompt", text: MSG.moveTogether("child") });
@@ -110,17 +112,17 @@ describe("drying with E (Req 6.4, 6.6, 6.7)", () => {
   it("not in the bathwater; at the exit E dries; Duck on the water is not dried (it stays wet)", () => {
     const sim = new Sim();
     sim.switchTo("child");
-    sim.walk([{ x: 4.6, z: 3.4 }]); // in the bathwater, away from Duck
+    sim.walk([{ x: 9.8, z: 6.2 }]); // in the bathwater, away from Duck
     sim.press("interact"); // towel toggle, not drying
     expect(sim.state.child.wet).toBe("wet");
     sim.switchTo("duck");
-    sim.walk([{ x: 2.3, z: 3.2 }]); // Duck stays on the water, at the tub's corner
+    sim.walk([{ x: 4.8, z: 5.6 }]); // Duck stays on the water, at the tub's corner
     sim.switchTo("child");
-    sim.walk([{ x: 3.6, z: 1.6 }]);
+    sim.walk([W.tubNorth, W.bathAisle, W.bathDoorDry]);
     sim.press("interact");
     expect(sim.state.child.wet).toBe("dry");
     expect(sim.state.child.clothing).toBe("unclothed");
-    sim.walk([{ x: 2.3, z: 2.5 }]); // on the floor beside the tub
+    sim.walk([{ x: 4.3, z: 5.2 }]); // on the floor beside the tub
     expect(interactHint(sim.state, LEVEL)).toBe("アヒルを抱える"); // no "dry the Duck" any more
     expect(sim.state.duck.wet).toBe("wet"); // Duck lives on the water
   });

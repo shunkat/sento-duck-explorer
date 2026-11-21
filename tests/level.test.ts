@@ -10,6 +10,7 @@ import {
   PAIR_DOORS,
   passWidthOf,
 } from "../src/level/layout";
+import { REACH } from "../src/core/tuning";
 import { moveCircle } from "../src/sim/collision";
 import { type AABB, circleOverlapsBox, distance, scale, sub } from "../src/sim/geometry";
 import { zoneAt } from "../src/sim/zones";
@@ -67,7 +68,7 @@ describe("Collision against narrow openings", () => {
   const holeTarget = LEVEL.nodes.narrow_hole_coin;
 
   it("Duck walks from the bath into the NarrowHole and reaches the coin", () => {
-    const trail = walk("duck", LEVEL.initialPositions.duck, [{ x: 1, z: 5.5 }, holeTarget], BATH_WALLS);
+    const trail = walk("duck", LEVEL.initialPositions.duck, [{ x: 1, z: holeTarget.z }, holeTarget], BATH_WALLS);
     const end = trail[trail.length - 1]!;
     expect(distance(end, holeTarget)).toBeLessThan(0.1);
     expect(zoneAt(LEVEL, end)).toBe("narrow_hole");
@@ -77,7 +78,7 @@ describe("Collision against narrow openings", () => {
     fc.assert(
       fc.property(
         fc.constantFrom<CharacterId>("child", "adult"),
-        fc.double({ min: 4.6, max: 6.4, noNaN: true }),
+        fc.double({ min: holeTarget.z - 1.8, max: holeTarget.z + 0.2, noNaN: true }),
         fc.double({ min: -0.4, max: 0.4, noNaN: true }),
         (id, startZ, aimOffset) => {
           const trail = walk(
@@ -94,21 +95,20 @@ describe("Collision against narrow openings", () => {
     );
   });
 
-  // Weaving path through the three gaps, starting in the sauna entry.
+  // Weaving path through the three seated rows' gaps, starting in the sauna entry.
   const saunaPath: Vec2[] = [
-    { x: 6.8, z: 10 },
-    { x: 8.5, z: 10 },
-    { x: 8.5, z: 9.2 },
-    { x: 10.5, z: 9.2 },
-    { x: 10.5, z: 10.8 },
-    { x: 12.5, z: 10.8 },
+    ...LEVEL.crowdGaps.flatMap((g) => {
+      const z = (g.box.minZ + g.box.maxZ) / 2;
+      return [{ x: g.box.minX - 0.4, z }, { x: (g.box.minX + g.box.maxX) / 2, z }, { x: g.box.maxX + 0.4, z }];
+    }),
     LEVEL.nodes.sauna_hat_shelf,
   ];
+  const W = LEVEL.waypoints;
 
   it("Child weaves through all three CrowdGaps to the hat shelf", () => {
-    const trail = walk("child", { x: 5, z: 10 }, saunaPath, SAUNA_WALLS);
+    const trail = walk("child", W.saunaIn, saunaPath, SAUNA_WALLS);
     const end = trail[trail.length - 1]!;
-    expect(distance(end, LEVEL.nodes.sauna_hat_shelf)).toBeLessThan(0.1);
+    expect(distance(end, LEVEL.nodes.sauna_hat_shelf)).toBeLessThanOrEqual(REACH.hat);
     expect(zoneAt(LEVEL, end)).toBe("sauna_crowd");
     // Child never overlaps an NPC body (incidental contact is resolved, not tunnelled).
     for (const p of trail) {
@@ -118,8 +118,9 @@ describe("Collision against narrow openings", () => {
 
   it("Adult never gets its center into sauna_crowd (any aim through the first gap)", () => {
     fc.assert(
-      fc.property(fc.double({ min: 8.5, max: 11.5, noNaN: true }), (aimZ) => {
-        const trail = walk("adult", { x: 5, z: 10 }, [{ x: 13, z: aimZ }], SAUNA_WALLS, 600);
+      fc.property(fc.double({ min: 0.3, max: 3.7, noNaN: true }), (aimZ) => {
+        const row = LEVEL.crowdGaps[0]!.box;
+        const trail = walk("adult", W.saunaIn, [{ x: row.maxX + 1.5, z: aimZ }], SAUNA_WALLS, 600);
         return trail.every((p) => zoneAt(LEVEL, p) !== "sauna_crowd");
       }),
       { numRuns: 100 },
@@ -127,16 +128,20 @@ describe("Collision against narrow openings", () => {
   });
 
   it("the locked sauna door blocks entry from the bath", () => {
-    const trail = walk("child", { x: 2.6, z: 7.4 }, [{ x: 2.6, z: 9.5 }], BATH_WALLS, 300);
+    const trail = walk("child", W.saunaDoorDry, [W.saunaIn], BATH_WALLS, 300);
     expect(trail.every((p) => zoneAt(LEVEL, p) === "bath")).toBe(true);
     // Without the blocker (door unlocked), the same walk reaches the sauna entry.
-    const open = walk("child", { x: 2.6, z: 7.4 }, [{ x: 2.6, z: 9.5 }], SAUNA_WALLS, 300);
+    const open = walk("child", W.saunaDoorDry, [W.saunaIn], SAUNA_WALLS, 300);
     expect(zoneAt(LEVEL, open[open.length - 1]!)).toBe("sauna_entry");
   });
 
-  it("the pond is walled off from the shore", () => {
-    const trail = walk("adult", { x: 25.5, z: 4 }, [{ x: 29, z: 4 }], BATH_WALLS, 300);
+  it("the low pond edge keeps people on the garden side (it is a fixture, not a full wall)", () => {
+    const pond = LEVEL.zones.find((z) => z.id === "pond")!.box;
+    const trail = walk("adult", W.gardenIn, [{ x: pond.minX + 2, z: W.gardenIn.z }], BATH_WALLS, 300);
     expect(trail.every((p) => zoneAt(LEVEL, p) === "pond_entrance")).toBe(true);
+    const edge = LEVEL.fixtures.filter((f) => f.kind === "pondEdge" && f.box.minX < pond.minX && f.box.maxX > pond.minX);
+    expect(edge.length).toBeGreaterThan(0);
+    for (const f of edge) expect(f.height).toBeLessThan(0.6);
   });
 });
 
@@ -151,8 +156,18 @@ describe("Level data sanity", () => {
     ...Object.entries(LEVEL.checkpointSpawns.duckInPondShore).map(([k, v]) => [`pond.${k}`, v] as [string, Vec2]),
   ];
 
-  it.each(points)("%s is inside a zone and clear of walls", (_name, p) => {
+  // Items resting on furniture sit on that fixture, not on the floor: the
+  // reception counter, and the hat on the sauna shelf's front edge.
+  const onFixture: Record<string, string> = { reception_desk: "desk", reception_register: "desk", sauna_hat_shelf: "shelf" };
+
+  it.each(points)("%s is inside a zone and clear of walls", (name, p) => {
     expect(zoneAt(LEVEL, p)).not.toBeNull();
+    const kind = onFixture[name];
+    if (kind) {
+      const b = LEVEL.fixtures.find((f) => f.kind === kind)!.box;
+      expect(p.x >= b.minX && p.x <= b.maxX && p.z >= b.minZ && p.z <= b.maxZ).toBe(true);
+      return;
+    }
     for (const w of [...LEVEL.walls, ...LEVEL.npcs]) expect(circleOverlapsBox(p, 0.1, w)).toBe(false);
   });
 

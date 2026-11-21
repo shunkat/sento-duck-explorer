@@ -1,0 +1,66 @@
+{
+  "asset": "bath_stool",
+  "blender": "5.2.4 LTS",
+  "resolution": 512,
+  "projection": "orthographic",
+  "view_transform": "AgX",
+  "exposure": 0,
+  "gamma": 1,
+  "framing": "fixed frame from unchanged LEVEL envelope",
+  "fit": "uniform containment; bottom aligned; proportions preserved",
+  "envelope_blender_xyz_m": [
+    0.36000001430511475,
+    0.36000001430511475,
+    0.30000001192092896
+  ],
+  "directions": {
+    "side": [
+      1,
+      0,
+      0.16
+    ],
+    "threequarter": [
+      0.48,
+      -1,
+      0.66
+    ]
+  },
+  "passes": [
+    "beauty",
+    "clay",
+    "reflection"
+  ],
+  "versions": {
+    "before": {
+      "file": "bath_stool.glb",
+      "sha256": "0f9c82e8e49d9982cffaf2dda4e6b0eeec3cedb01c370016bd783d7b8fbfdb21",
+      "authored_dimensions_blender_xyz_m": [
+        0.36000001430511475,
+        0.36000001430511475,
+        0.30000001192092896
+      ],
+      "uniform_scale": 1.0,
+      "placed_dimensions_blender_xyz_m": [
+        0.36000001430511475,
+        0.36000001430511475,
+        0.30000001192092896
+      ]
+    },
+    "after": {
+      "file": "bath_stool_archfix.glb",
+      "sha256": "1df13475185623882db1d63d99cc52f9ebff03cc40d62fb5136672a4f7515e55",
+      "authored_dimensions_blender_xyz_m": [
+        0.36000001430511475,
+        0.36000001430511475,
+        0.30000001192092896
+      ],
+      "uniform_scale": 1.0,
+      "placed_dimensions_blender_xyz_m": [
+        0.36000001430511475,
+        0.36000001430511475,
+        0.30000001192092896
+      ]
+    }
+  },
+  "limitation": "Diagnostic views, not gameplay validation or an automatic visual-quality verdict."
+}

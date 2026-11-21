@@ -40,7 +40,6 @@ export interface View {
 export const CARRY_CENTER_Y: Record<HumanId, number> = { adult: 1.05, child: 0.55 };
 
 export const BODY_HEIGHT: Record<CharacterId, number> = { duck: 0.3, child: 1.2, adult: 1.7 };
-const DESK_TOP = 0.9;
 
 function characterView(s: GameState, id: CharacterId): CharacterView {
   const c = s[id];
@@ -71,8 +70,9 @@ function topOf(v: CharacterView): number {
 function itemPos(level: Level, chars: Record<CharacterId, CharacterView>, item: ItemId, owner: Owner, equipped: boolean): Vec3 {
   if (owner.kind === "node") {
     const p = level.nodes[owner.id];
-    const onDesk = owner.id === "reception_desk" || owner.id === "reception_register";
-    return { x: p.x, y: onDesk ? DESK_TOP + 0.05 : 0.12, z: p.z };
+    // Resting items sit on the fixture under their node (desk, hat shelf), else on the floor.
+    const under = level.fixtures.find((f) => p.x >= f.box.minX && p.x <= f.box.maxX && p.z >= f.box.minZ && p.z <= f.box.maxZ);
+    return { x: p.x, y: under ? under.height + 0.05 : 0.12, z: p.z };
   }
   const c = chars[owner.id];
   if (item === "hat" && equipped) return { x: c.pos.x, y: topOf(c) + 0.06, z: c.pos.z };

@@ -115,15 +115,29 @@ export function clipSegment(from: Vec2, to: Vec2, boxes: readonly AABB[], margin
 }
 
 export interface Obstacles {
+  /** Full-height blockers (walls, seated rows, a locked door, tall fixtures). */
   boxes: readonly AABB[];
+  /** Low fixtures (stools, rims, hedge, pond edge, rocks): they block only an eye below their top. */
+  low: readonly { box: AABB; top: number }[];
   /** The NarrowHole corridor; inside it the eye stays under the lid. */
   hole: AABB;
 }
 
-export const obstaclesFor = (level: Level, saunaDoor: "locked" | "unlocked"): Obstacles => ({
-  boxes: wallsFor(level, saunaDoor),
-  hole: level.narrowHole.box,
-});
+export const obstaclesFor = (level: Level, saunaDoor: "locked" | "unlocked"): Obstacles => {
+  const lowFixtures = level.fixtures.filter((f) => f.height < WALL_HEIGHT - 0.4);
+  const lowSet = new Set<AABB>(lowFixtures.map((f) => f.box));
+  return {
+    boxes: wallsFor(level, saunaDoor).filter((b) => !lowSet.has(b)),
+    low: lowFixtures.map((f) => ({ box: f.box, top: f.height })),
+    hole: level.narrowHole.box,
+  };
+};
+
+/** Boxes that block a camera eye at height `eyeY`. */
+const blockingAt = (obs: Obstacles, eyeY: number): readonly AABB[] => [
+  ...obs.boxes,
+  ...obs.low.filter((l) => l.top > eyeY - CAMERA_MARGIN).map((l) => l.box),
+];
 
 const inBox = (b: AABB, p: Vec2) => p.x >= b.minX && p.x <= b.maxX && p.z >= b.minZ && p.z <= b.maxZ;
 
@@ -133,9 +147,10 @@ export function shoulderPose(id: CharacterId, focus: Vec3, yaw: number, obs: Obs
   const f = forwardOf(yaw);
   const r = rightOf(yaw);
   const base = { x: focus.x, z: focus.z };
-  const shoulder = clipSegment(base, { x: base.x + r.x * p.side, z: base.z + r.z * p.side }, obs.boxes);
-  const back = clipSegment(shoulder, { x: shoulder.x - f.x * p.dist, z: shoulder.z - f.z * p.dist }, obs.boxes);
   const footHeight = focus.y - BODY_HEIGHT[id] / 2;
+  const blocks = blockingAt(obs, p.eye + footHeight);
+  const shoulder = clipSegment(base, { x: base.x + r.x * p.side, z: base.z + r.z * p.side }, blocks);
+  const back = clipSegment(shoulder, { x: shoulder.x - f.x * p.dist, z: shoulder.z - f.z * p.dist }, blocks);
   const eye = safeEye(base, { x: back.x, y: p.eye + footHeight, z: back.z }, obs);
   const lookY = Math.min(p.look + footHeight, eye.y);
   return {
@@ -151,9 +166,15 @@ export function shoulderPose(id: CharacterId, focus: Vec3, yaw: number, obs: Obs
  * the camera returns, including blended ones.
  */
 export function safeEye(base: Vec2, eye: Vec3, obs: Obstacles): Vec3 {
-  const e2 = clipSegment(base, { x: eye.x, z: eye.z }, obs.boxes);
+  // Clip with the blockers for the height the eye will finally have: low
+  // fixtures (e.g. the hole's sides) block an eye that the lid pushes down.
   let y = Math.min(eye.y, CEILING_Y - 0.15);
-  if (inBox(obs.hole, e2) || inBox(obs.hole, base)) y = Math.min(y, HOLE_LID_Y - 0.1);
+  if (inBox(obs.hole, base)) y = Math.min(y, HOLE_LID_Y - 0.1);
+  let e2 = clipSegment(base, { x: eye.x, z: eye.z }, blockingAt(obs, y));
+  if (inBox(obs.hole, e2) && y > HOLE_LID_Y - 0.1) {
+    y = HOLE_LID_Y - 0.1;
+    e2 = clipSegment(base, { x: eye.x, z: eye.z }, blockingAt(obs, y));
+  }
   return { x: e2.x, y, z: e2.z };
 }
 
@@ -207,7 +228,7 @@ export class FacingTracker {
  */
 export const CHECKPOINT_VIEW_YAW: Record<CheckpointId, number> = {
   start: -Math.PI / 2,
-  paidReturned: Math.PI,
+  paidReturned: Math.PI / 2, // +X: along the bath hall toward the sauna door
   hatEquipped: Math.PI / 2,
   duckInPond: Math.PI / 2,
 };

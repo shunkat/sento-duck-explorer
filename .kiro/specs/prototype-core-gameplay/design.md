@@ -81,7 +81,7 @@ src/
     initialState.ts  # start state built from level data
     tick.ts          # top-level step: input -> actions -> movement -> rules -> outcome
     actions.ts       # interact/transfer/pay/unlock/equip/carry/place/dry/dress/shout/push
-    rules.ts         # F1–F7 detection, clear detection, priority
+    rules.ts         # F1–F8 detection, clear detection, priority
     pair.ts          # pair transition (Adult + Child at doors)
     checkpoints.ts   # snapshot, restore, checkpoint triggers
     invariants.ts    # checkInvariants(state): string[]
@@ -204,6 +204,7 @@ This keeps Child from being left alone in the bath during the payment trip and o
 | F5 | A human with `wet` enters `sauna_entry` or `sauna_crowd` | Dry human entering | 7.5 |
 | F6 | `shout` while the active character is in a sauna zone | Shouting outside the sauna (no effect). Safety calls are not modeled as actions in the prototype | 7.6 |
 | F7 | `push` by a human in a sauna zone with an NPC body within 0.8 m of the pusher's body edge | Walking through a CrowdGap; collisions with NPCs are resolved silently | 7.7, 7.8 |
+| F8 | The active Child or Adult (also while carrying Duck) gives move input into the women's entrance (`LEVEL.womensEntrance`) while at its doorway; see "Women's bath entrance" | Idling or standing near it; moving parallel or away; looking; switching; a companion; contact with the wall beside the doorway; a free Duck (blocked by the step, hint only) | 7.11–7.14 |
 
 Duck is exempt from F2, F4, and F5 because they target human characters. Duck cannot run, hold towels, shout, or push in the prototype.
 
@@ -217,7 +218,7 @@ Duck is exempt from F2, F4, and F5 because they target human characters. Duck ca
 
 ### Duck on water (2026-11-20, user correction)
 
-- `LEVEL.duckWater` (in `src/level/layout.ts`) is the one source for Duck's movement, drop points and rendering: the tub `(2,3)–(7,7)`, the coin channel `(-0.1,5.3)–(1.2,5.7)` (same 0.4 m width as the hole, joined to the hole) and the hole `(-3,5.3)–(0,5.7)`. *(Updated 2026-11-20 for the Child-carry request: the channel no longer touches the tub. A 0.8 m dry floor gap (x 1.2–2.0) separates them, so Duck cannot swim to the coin alone. The "水路の入口" sign marks `LEVEL.channelEntrance` (1.45, 5.5), where Child stands to put Duck onto the channel. Position and sizes: provisional design.)* Earlier text described a connected channel `(-0.1,5.3)–(2.2,5.7)`. The channel is a provisional layout choice. It is not a zone, but a human whose center is on any of these water rects becomes `wet` like in the tub, so crossing the channel on the way to the sauna means drying again with E at the sauna door (the objective names who is wet). Q with a held towel on any of these water rects (tub, channel, hole) is F1; with the towel on the head it only shows the hint (`inBathWater`).
+- `LEVEL.duckWater` (in `src/level/layout.ts`) is the one source for Duck's movement, drop points and rendering. *(Coordinates in this bullet are historical; the current tub, coin trough, hole and channel entrance are in "Realistic sento layout (2026-11-20, provisional)" below.)* Earlier layout: the tub `(2,3)–(7,7)`, the coin channel `(-0.1,5.3)–(1.2,5.7)` (same 0.4 m width as the hole, joined to the hole) and the hole `(-3,5.3)–(0,5.7)`. *(Updated 2026-11-20 for the Child-carry request: the channel no longer touches the tub. A 0.8 m dry floor gap (x 1.2–2.0) separates them, so Duck cannot swim to the coin alone. The "水路の入口" sign marks `LEVEL.channelEntrance` (1.45, 5.5), where Child stands to put Duck onto the channel. Position and sizes: provisional design.)* Earlier text described a connected channel `(-0.1,5.3)–(2.2,5.7)`. The channel is a provisional layout choice. It is not a zone, but a human whose center is on any of these water rects becomes `wet` like in the tub, so crossing the channel on the way to the sauna means drying again with E at the sauna door (the objective names who is wet). Q with a held towel on any of these water rects (tub, channel, hole) is F1; with the towel on the head it only shows the hint (`inBathWater`).
 - `shoreBoxes` turns the land around the union into blocking boxes (grid cut along every rect edge), so only the union's outer boundary blocks. `stepDuckWater` moves Duck's circle against walls + shore with the usual radius / sub-step collision, so Duck glides along edges and does not cross the shore (the discrete collision can leave sub-millimetre contact at concave corners). A start point off the water, or without clearance, does not move; a result off the water is discarded.
 - Carried Duck ignores its input. Checkpoint `hatEquipped` spawns Duck at `(6.6, 6)` on the tub, the humans beside it on the floor.
 
@@ -313,7 +314,7 @@ interface GameState {
   tickCount: number;
 }
 
-type ViolationId = "F1" | "F2" | "F3" | "F4" | "F5" | "F6" | "F7";
+type ViolationId = "F1" | "F2" | "F3" | "F4" | "F5" | "F6" | "F7" | "F8"; // F8 added 2026-11-20
 ```
 
 `checkpoints` stores snapshots without their own `checkpoints` field to avoid nesting.
@@ -368,6 +369,82 @@ Character PassWidth = 2 × collision radius. Openings are wall gaps.
 D = door (pair doors: bath/changing, changing/reception, bath/sauna_entry, bath/open_air, open_air/pond_entrance; sauna door is locked)
 NH = NarrowHole
 ```
+
+The diagram above is the original prototype map. It is replaced by the realistic layout below.
+
+### Realistic sento layout (2026-11-20, provisional)
+
+User request: 「その前に銭湯の間取りとして変な気がするのもっとリアリティのある間取りにできる？」. Design reasons: rooms follow the visitor order, and each room has one job. Reception cannot see into changing or bathing space (screen and offset doors). Drying happens on a dry threshold before the changing-room door. Washing and kakeyu come before the tub, which sits at the rear. Hot and wet extras (sauna, open air) open off the bath hall, not off dry rooms. The flow follows the Kyoto bathhouse association visitor guide (https://1010.kyoto/how_to_use/: entrance/shoe lockers → front desk → changing → washing/bath; dry before changing). The room arrangement and every dimension below are an original provisional design, not a real building and not an evacuation design. Fixtures are provisional primitive shapes, not final assets. One bathing wing is playable; the other wing is only a curtain sign in the lobby.
+
+All coordinates live in `src/level/layout.ts` (`LEVEL`): zones, walls, `fixtures` (solid shapes with a height, also in `walls` for collision), `decor` (non-blocking, flush or wall-mounted), nodes, spawns and `waypoints` (named floor points for scripted routes). View, core and tests read these instead of their own room/door/pond numbers.
+
+```
+ x:  0        4        8   11          12        18.9   20   23                 36
+z=-9 +--------+--------+----+
+     | lobby  |recept. |gen-|  street
+     | common |  desk  |kan |  (shoe lockers)
+z=-5 +--------+----D---+----+
+     | lockers     ‖ vesti-|   ‖ = privacy screen, D = changing↔reception door (x 6.2–7.4)
+     | changing    ‖ bule  |
+z=0  +-D------+--------------+----------+--------+
+     | mat  kakeyu  stools/mirrors/taps  | sauna  | heater, 3 seated rows,
+     |        soap by station 3      S   | entry  | 0.60 m gaps, hat shelf
+     |                     bench  plunge |        |
+z=4  |                                   +--------+---------+---+-------------------+
+     |        [ main tub 4.6–10.6 ]      D  terrace  bench   | g |  pond  rock      |
+     |                                   | open-air (outdoor) | a |       rock  goal |
+z=9  | trough ======        dry gap      |   [rotenburo rim]  | t |                  |
+NH)= +-----------------------------------+                    | e |                  |
+z=12                                     +--------------------+---+------------------+
+                                          fence           hedge  low pond edge (0.45 m)
+```
+
+| Element | Box / point (m) | Behaviour |
+| --- | --- | --- |
+| Lobby `common` | (0,−9)–(4,−5) | Women's bath entrance on its west wall (was a neutral sign; see "Women's bath entrance") |
+| Reception | (4,−9)–(8,−5); desk counter (4.4,−8.3)–(7.9,−7.8) h 0.9 with the receptionist behind it | `reception_desk` (5.8,−8.05) on the counter |
+| Genkan `exterior` (shoe lockers) | (8,−9)–(11,−5) | Street door is a closed wall; door `reception_exterior` (replaces `common_exterior`) joins it to reception |
+| Changing room | (0,−5)–(8,0) | Reception door x 6.2–7.4 on z −5; bath door x 0.8–2.0 on z 0 (offset); privacy screen (5.5,−4.9)–(5.7,−1.2) full height, making an entry vestibule (x 5.7–7.9) entered round its south end; lockers (0.1,−4.6)–(0.7,−1.4) h 1.8, `locker` (1.2,−3.0) |
+| Drying threshold | mat (0.2,0.15)–(2.6,1.4), flush | Drying E within 2.0 m of the bath door, bath side |
+| Kakeyu | basin (2.9,0.1)–(3.9,0.6) h 0.65 solid; `splash` (2.9,0.6)–(3.9,1.5) | Standing in the splash wets |
+| Washing stations ×5 | x 4.6, 5.8, 7.0, 8.2, 9.4 on the north wall; stools 0.36 m, h 0.3, solid | Mirror/tap/bucket decor; soap (7.6,0.75) between stations 3 and 4, off the aisle (F3 avoidable) |
+| Main tub | water (4.6,5.4)–(10.6,8.8) against the rear wall; flush tile border | Enterable water: wets, F1, Duck swims |
+| Coin trough | water (−0.1,8.3)–(3.8,8.7) along the rear wall, joined to the hole (−3,8.3)–(0,8.7) | 0.8 m dry gap to the tub (x 3.8–4.6). Channel entrance (3.9,8.0) |
+| Cold plunge | (10.4,2.8)–(11.8,4.2) h 0.6 rim, solid | Not enterable (rim + collision) |
+| Rest bench | (8.6,3.4)–(10.0,3.8) h 0.45 solid | |
+| Sauna | (12,0)–(18.9,4); entry (12,0)–(14.0,4) (the crowd zone starts at the first seated row); door x 12 at z 1.2–2.4 | Heater (12.2,3.0)–(13.3,3.8) h 1.0 solid. Seated rows x 14.0–14.6 / 15.4–16.0 / 16.8–17.4, gaps 0.60 at z 1.6 / 0.5 / 2.6. Hat shelf (18.4,1.5)–(18.8,2.5) h 0.9 solid, 1.0 m clear in front of it (review M-1: extended 0.5 m east); `sauna_hat_shelf` (18.4,2.0) on the shelf's front edge, so Child reaches it from a strip about 0.35 m deep; the resting hat is drawn on the shelf top |
+| Open air | (12,4)–(20,12); door x 12 at z 6.6–7.8 | Rotenburo rim (14.2,8.6)–(18.2,11.6) h 0.55 solid (not enterable); terrace deck decor, bench (12.4,4.3)–(14.6,4.7) solid; fence h 2.0 |
+| Garden `pond_entrance` | (20,4)–(23,12) | Hedge h 1.0 on x 20 with a gate z 7.4–8.6 (pair door); shrubs solid; low stone pond edge h 0.45 on x 23 |
+| Pond | (23,4)–(36,12); low rocky edges h 0.5; rocks (27,4)–(28,9), (31,7)–(32,12) h 1.0; goal (34.5,6.5)–(36,9.5); spawn (24,8) | Same shape as before, moved |
+
+Rules kept: 3 characters, 10-step route, F1–F7 (F8 added later, see "Women's bath entrance"), pair doors, Child carries Duck before the hat and Adult after it, checkpoints and their contents (spawn positions moved with the rooms; the `paidReturned` view yaw now faces +X toward the sauna). Water that can be entered (tub, trough, hole, pond) is one data source for wetting, F1, Duck movement and drop points. Fixtures that cannot be entered have a rim and collision. The dry route from each drying spot to its door crosses no water. Low fixtures (pond edge, rocks, hedge, stools, rims) block the camera only when their top is above the eye.
+
+Acceptance (provisional): reception has no straight sightline into the changing room or the bath (screen); the drying spots reach their doors over dry floor; Duck alone cannot reach the trough from the tub; Adult cannot pass a sauna gap; every spawn is clear of walls and fixtures and a free Duck is on water; the full route clears with move, Tab, E and confirm only.
+
+### Women's bath entrance and F8 (2026-11-20, provisional geometry)
+
+User request: 「入浴導線だけ一つ修正してほしくて、今回は男湯だけど女湯の入り口だけ作ってほしい。ただ、人の状態で入ろうとすると受付の人に怒られてゲームオーバー。アヒルの状態だと段差を乗り越えられないので入れないような形にしたい」. This replaces the neutral other-wing sign. The playable wing is 男湯.
+
+| Element | Box / point (m) | Behaviour |
+| --- | --- | --- |
+| 男湯 noren | over the changing-room door (x 6.2–7.4, z −5), reception side, from 1.5 m up (above head height) | Decor; does not block |
+| 女湯 doorway | lobby west wall x 0, z −7.6 to −6.4 (one door width) | Opening in the wall |
+| Vestibule | x −1.0 to 0, same z span; full-height side and back walls | Opaque and shallow; no interior is modeled |
+| 女湯 noren and sign | in the doorway from 1.5 m up (above head height) | Decor; label 「女湯」 |
+| Raised threshold | step (−1.0, −7.6)–(0.15, −6.4), h 0.25, solid | Fills the vestibule floor, so no body (human, carried or free Duck) gets past x 0.15 |
+| Reception desk | (4.4, −8.3)–(7.9, −7.8) h 0.9 (moved 0.5 m from the wall and closed to the east wall) | Key node (5.8, −8.05), register (6.6, −8.05) on the desk |
+| Receptionist | (4.6, −8.85)–(5.2, −8.4) solid, drawn as a standing person, label 「受付の人」 | Behind the desk at the counter window. Eye line (about 1.5 m) to the 女湯 doorway passes the window and crosses only low fixtures (counter, desk, lobby bench), so reception supervises the entrance (review R-1) |
+| Counter window | opening in the reception–lobby wall x 4, z −8.8 to −7.8, filled by a low counter (3.9, −8.8)–(4.1, −7.8) h 0.9, solid | View open, nobody passes. The lobby door (z −7.6 to −6.4), payment point and route are unchanged. The men's changing room stays hidden from the lobby and reception (privacy screen and wall z −5) |
+
+F8 trigger (`pushesIntoWomensEntrance` in `src/core/rules.ts`), checked in the movement stage for the active human before and after its move:
+- the move input (clamped) points into the vestibule: dot with the inward normal (−x) ≥ 0.5, so straight and diagonal approaches count and parallel or away moves do not;
+- the body centre is inside the doorway span (z −7.6 to −6.4), so pushing the wall beside the doorway does not count;
+- the body's front edge is within 0.15 m (the footprint margin) of the step face, so the step collision stopping the body does not hide the attempt.
+No E press is needed. A run moves 0.075 m per tick, less than the margin, and the solid step and walls leave no side or diagonal way past. The doorway has no pair door, so escort never moves a companion into it. A carrier is a human: Child or Adult carrying Duck gets the same F8. Active Duck while carried still ignores its input.
+
+A free Duck never gets F8 or the reprimand. With move input into the entrance and its front edge at the step, the HUD shows 「段差が高くて、アヒルでは越えられない」. The normal route cannot put a free Duck on the lobby floor (Duck moves only on water and cannot be put down on the floor), so this is covered by direct collision and rule tests, not by normal input.
+
+F8 is appended after F7 in the game-over order. The game-over screen adds the attributed line 受付の人「こら、そちらは女湯です！男湯はあちらですよ！」. Restart uses the existing checkpoints; none is in the lobby, so a held key cannot repeat F8 right away.
 
 ## Correctness Properties
 

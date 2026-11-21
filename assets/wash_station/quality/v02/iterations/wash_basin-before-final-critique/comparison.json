@@ -1,0 +1,82 @@
+{
+  "asset": "wash_basin",
+  "blender": "5.2.4 LTS",
+  "resolution": 512,
+  "projection": "orthographic",
+  "view_transform": "AgX",
+  "exposure": 0,
+  "gamma": 1,
+  "framing": "fixed frame from unchanged LEVEL envelope",
+  "fit": "uniform containment; bottom aligned; proportions preserved",
+  "envelope_blender_xyz_m": [
+    0.20000000298023224,
+    0.18000000715255737,
+    0.14000000059604645
+  ],
+  "directions": {
+    "front": [
+      0,
+      -1,
+      0.16
+    ],
+    "side": [
+      1,
+      0,
+      0.16
+    ],
+    "threequarter": [
+      0.48,
+      -1,
+      0.66
+    ],
+    "top": [
+      0.02,
+      -0.28,
+      1
+    ],
+    "underside": [
+      0.48,
+      -1,
+      -0.65
+    ]
+  },
+  "passes": [
+    "beauty",
+    "clay",
+    "silhouette",
+    "reflection"
+  ],
+  "versions": {
+    "before": {
+      "file": "wash_basin__v01.glb",
+      "sha256": "354e136b96fc55c6a58bbdf7b92a2da3682893eaaabc9718d9bd54f269a8075c",
+      "authored_dimensions_blender_xyz_m": [
+        0.20000000298023224,
+        0.18000000715255737,
+        0.14000000059604645
+      ],
+      "uniform_scale": 1.0,
+      "placed_dimensions_blender_xyz_m": [
+        0.20000000298023224,
+        0.18000000715255737,
+        0.14000000059604645
+      ]
+    },
+    "after": {
+      "file": "wash_basin.glb",
+      "sha256": "1e4b6a1abac3e8f22ceaafe1f9d82f36b5d91a2b667555ce2ac0d5ed78104980",
+      "authored_dimensions_blender_xyz_m": [
+        0.19999998807907104,
+        0.19999998807907104,
+        0.09051680564880371
+      ],
+      "uniform_scale": 0.9000000894069725,
+      "placed_dimensions_blender_xyz_m": [
+        0.18000000715255737,
+        0.18000000715255737,
+        0.08146513253450394
+      ]
+    }
+  },
+  "limitation": "Diagnostic views, not gameplay validation or an automatic visual-quality verdict."
+}

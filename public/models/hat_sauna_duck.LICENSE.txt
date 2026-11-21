@@ -8,6 +8,10 @@ original-mesh polygon reduction, smooth shading, pale aqua material assignment,
 metric scale, inner-base-centered origin, and GLB export.
 The generated crown, brim, loop, and hollow inner shell were retained.
 
+Revision v02, 2026-11-21: uniform source scaling; retopology from measured
+inner/outer profiles and a fitted source-loop contour; 2,064 triangles,
+one matte material and no textures. Hollow underside retained.
+
 Source and provenance:
 https://github.com/shunkat/sento-duck-explorer/tree/main/assets/hat_sauna_duck
 

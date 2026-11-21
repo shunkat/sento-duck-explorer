@@ -1,0 +1,184 @@
+{
+  "revision": "v04",
+  "method": "Local source-derived leg removal and rounded lower-body closure; upper v03 runtime surface retained",
+  "previous_blend_sha256": "ae7d94e53e3c731ef3d84a037a1e7f6f5a2a9ea11ce188d3d0d813450cdef1bc",
+  "source_sha256": "ea745e2c7d06b64610fc8791124c0e325b92007637d627da372b9aa7a9f3b727",
+  "body_edit": {
+    "cut_height_m": 0.077,
+    "seam_vertices": 113,
+    "cap_rings": 6,
+    "lower_belly_fairing_top_m": 0.13,
+    "faired_band_vertices": 925,
+    "max_fairing_vertex_displacement_m": 0.02375932583577991,
+    "source_seam_center_xy_m": [
+      -0.000172540545463562,
+      -0.009063180536031723
+    ],
+    "source_seam_radii_xy_m": [
+      0.0768604427576065,
+      0.08839386329054832
+    ],
+    "original_triangles": 6400,
+    "triangles": 6318,
+    "preserved_upper_triangles": 3013,
+    "upper_positions_exact": true,
+    "max_upper_uv_error": 0,
+    "max_upper_corner_normal_error": 0.0002652406692504883,
+    "max_head_corner_normal_error": 0.0002652406692504883,
+    "normal_reencoding_tolerance": 0.001,
+    "faired_target_radii_xy_m": [
+      0.087,
+      0.112
+    ],
+    "preserved_surface_min_z_m": 0.13
+  },
+  "detailed_master_edit": {
+    "cut_height_m": 0.077,
+    "seam_vertices": 521,
+    "cap_rings": 12,
+    "lower_belly_fairing_top_m": 0.13,
+    "faired_band_vertices": 11540,
+    "max_fairing_vertex_displacement_m": 0.02376881381146989,
+    "source_seam_center_xy_m": [
+      -0.00017418339848518372,
+      -0.009067382663488388
+    ],
+    "source_seam_radii_xy_m": [
+      0.076883215457201,
+      0.08846436068415642
+    ],
+    "original_triangles": 90266,
+    "triangles": 81522,
+    "faired_target_radii_xy_m": [
+      0.087,
+      0.112
+    ]
+  },
+  "eyes_geometry_unchanged": true,
+  "sockets_unchanged": true,
+  "raw_geometry": {
+    "vertices_sha256": "8f963ddd2813d62e7850fb8a8e9386391997b99d26361955412f7012e2f4ba37",
+    "face_indices_sha256": "faaa8c08f15e45077e4f515ecace8b97d51f9b5b75947cd6f7ad57d5013bd7ad",
+    "vertices": 45135,
+    "polygons": 90266
+  },
+  "source_geometry_unchanged": true,
+  "sockets_blender_matrices": {
+    "socket_hat": [
+      [
+        1.0,
+        0.0,
+        0.0,
+        -0.002285670256242156
+      ],
+      [
+        0.0,
+        1.0,
+        0.0,
+        -0.04379032179713249
+      ],
+      [
+        0.0,
+        0.0,
+        1.0,
+        0.27000001072883606
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "socket_label": [
+      [
+        1.0,
+        0.0,
+        0.0,
+        -0.002285670256242156
+      ],
+      [
+        0.0,
+        1.0,
+        0.0,
+        -0.04379032179713249
+      ],
+      [
+        0.0,
+        0.0,
+        1.0,
+        0.46000000834465027
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ]
+  },
+  "unchanged_texture_pixel_sha256": "726825d66cff43cd754792857368ddb42621439de648ec7003a7dd68f8e9b7d5",
+  "cap_uv_in_existing_yellow_patch": [
+    0.03173828125,
+    0.28173828125
+  ],
+  "cap_patch_rgb": [
+    1.0,
+    0.7686200737953186,
+    0.05097987875342369
+  ],
+  "glb_sha256": "43d385d81d6f2e1f520972db33426ddaf64b33250ca89b9f50d33a14fa17b779",
+  "glb_bytes": 337204,
+  "blend_sha256": "7c187ea3351a72ad2a4ad1a22128f4639353da5a62bbb9ec70a40aa216b7280e",
+  "reimported_meshes": {
+    "duck_body": {
+      "welded_vertices": 3161,
+      "nonmanifold_edges_after_uv_weld": 0,
+      "degenerate_faces": 0,
+      "triangles": 6318,
+      "dimensions_gltf_m": [
+        0.1918867826461792,
+        0.2985098659992218,
+        0.3024212121963501
+      ],
+      "bounds_blender_zup_m": [
+        [
+          -0.09589888155460358,
+          -0.15113013982772827,
+          0.0
+        ],
+        [
+          0.09598790109157562,
+          0.15129108726978302,
+          0.2985098659992218
+        ]
+      ]
+    },
+    "duck_eyes": {
+      "welded_vertices": 452,
+      "nonmanifold_edges_after_uv_weld": 0,
+      "degenerate_faces": 0,
+      "triangles": 896,
+      "dimensions_gltf_m": [
+        0.09966371953487396,
+        0.02799999713897705,
+        0.01034630835056305
+      ],
+      "bounds_blender_zup_m": [
+        [
+          -0.04983185604214668,
+          -0.10649321973323822,
+          0.2240000069141388
+        ],
+        [
+          0.04983186349272728,
+          -0.09614691138267517,
+          0.25200000405311584
+        ]
+      ]
+    }
+  },
+  "triangles": 7214,
+  "material_count": 2,
+  "texture_count": 1
+}

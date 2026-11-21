@@ -3,9 +3,11 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it, vi } from "vitest";
 import * as THREE from "three";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import fc from "fast-check";
 import { GameScene } from "../src/view/scene";
 import { placeAtSocket } from "../src/view/shoulder";
+import { EnvironmentModels } from "../src/view/environmentModels";
 import { type GltfSource, type ManifestLimits, ModelLibrary, SOCKET_NAMES, checkBounds, measureModel } from "../src/view/models";
 
 function fixtureBytes(): ArrayBuffer {
@@ -25,7 +27,8 @@ function sceneHarness() {
   const items = { coin: new THREE.Group(), key: new THREE.Group(), hat: new THREE.Group() };
   const hatPrimitive = new THREE.Mesh(new THREE.ConeGeometry(), new THREE.MeshBasicMaterial());
   items.hat.add(hatPrimitive);
-  Object.assign(scene, { chars, primitives, items, models: {}, itemModels: {},
+  Object.assign(scene, { chars, primitives, items, models: {}, itemModels: {}, fixtureWater: [],
+    environmentModels: new EnvironmentModels(new THREE.Group()),
     humanBody: {}, towels: {}, clothing: { child: "unclothed", adult: "unclothed" } });
   return { scene, chars, primitives, items, hatPrimitive };
 }
@@ -144,7 +147,11 @@ describe("manifest bounds check", () => {
   for (const id of ["duck", "hat_sauna_duck"]) {
     it(`parses public/models/${id}.glb and matches the manifest height`, async () => {
       const b = readFileSync(new URL(`../public/models/${id}.glb`, import.meta.url));
-      const lib = new ModelLibrary();
+      // Preserve actual geometry while avoiding browser-only image decoding.
+      const loader = new GLTFLoader().register(() => ({
+        name: "model_bounds_skip_image_decode", loadTexture: async () => new THREE.Texture(),
+      }));
+      const lib = new ModelLibrary(loader);
       await lib.parse(id, b.buffer.slice(b.byteOffset, b.byteOffset + b.byteLength) as ArrayBuffer);
       const measured = measureModel(lib.get(id)!.root);
       expect(Math.abs(measured.height - manifest.assets[id].measured.height)).toBeLessThan(1e-3);

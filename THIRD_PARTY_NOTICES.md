@@ -1,6 +1,6 @@
 # Third-party notices
 
-This file records runtime dependencies and generated 3D assets.
+This file records runtime dependencies, generated 3D assets and free public source assets.
 The Vite build includes this file as `dist/THIRD_PARTY_NOTICES.md`; retain it
 when distributing the built application. This notice does not choose a license
 for the project's own code.
@@ -26,6 +26,25 @@ and +Z front/+Y up, and add hat and label sockets. The original reconstructed
 shape was retained. Keep this attribution, license link, and modification notice
 with redistributed copies. Meshy does not endorse this project.
 
+Revision v02 (2026-11-21): localized smoothing of the original eye patches,
+removal of irregular dark eye colors, and two matched smooth eye inserts.
+The original body remains; the revised export has 7,720 triangles, one material,
+no textures and unchanged overall bounds and sockets. The modified mesh and
+its Blender-rendered previews remain CC BY 4.0.
+
+Revision v03 (2026-11-21): measured source-head regularization, local torso
+fairing with protected wing outlines, a clean baked body palette, and paired
+glossy eyes. The runtime export has 7,296 triangles and two materials.
+Original raw data and socket transforms are preserved. The new Blender scene,
+textures and comparison renders also remain CC BY 4.0.
+
+Revision v04 (2026-11-21): user-requested footless rubber duck. Legs and feet
+are removed; the lower belly is faired into a rounded yellow underside with
+a small flat contact area. Head, eyes, beak, upper wing detail, texture and
+exact sockets are retained. The export has 7,214 triangles, two materials and
+one embedded texture. Original raw data and earlier revisions are preserved;
+the new Blender scene, GLB and derived previews remain CC BY 4.0.
+
 The input reference was separately AI-generated with OpenAI through Codex;
 the project releases its rights to that reference under MIT, to the extent
 permitted by law. See `assets/duck/ref/README.md` and `assets/ledger.csv` for
@@ -50,6 +69,11 @@ Meshy does not endorse this project. Reference-image rights and exact output
 checksums are recorded separately in `assets/hat_sauna_duck/ref/README.md`
 and `assets/ledger.csv`.
 
+Hat revision v02 (2026-11-21): uniform source scaling, retopology from measured
+inner/outer profiles, and a hanging loop fitted to the source contour. The
+2,064-triangle export has one matte material, no textures, and an open underside.
+The natural source height replaces the earlier vertically compressed fit.
+
 ## Child and adult characters — Meshy, CC BY 4.0
 
 The source meshes in `assets/child/gen/` and `assets/adult/gen/` were generated
@@ -69,10 +93,123 @@ generated meshes; no skeletal animation is included. See each asset's README
 for exact changes, measurements, and limitations, and `assets/ledger.csv` for
 the source-to-export checksums.
 
+Human revisions v02 (2026-11-21): smooth source-based shoulder and arm/carry
+pose corrections with protected legs, local facial-relief cleanup, continuous
+facial/clothing color baking after source-coordinate reprojection, and balanced
+reduction with detailed-source normals. Both opaque toy variants retain their
+authored sockets. The new scenes, textures and diagnostic renders remain
+CC BY 4.0. Earlier exports are preserved for reproducible comparison.
+
 Keep this attribution, license link, and modification notice with redistributed
 copies. Meshy does not endorse this project. The project releases its rights to
 the separate input references under MIT, to the extent permitted by law; that
 does not replace the CC BY 4.0 license on the generated and adjusted models.
+
+## Bath stool and wash basin — Meshy, CC BY 4.0
+
+The separate source meshes in `assets/bath_stool/gen/` and
+`assets/wash_basin/gen/` were generated with **Meshy 6 Lite** on 2026-11-21,
+from the project's original single-object references, with textures off.
+Attribution: **Meshy** — [service](https://www.meshy.ai/),
+[applicable terms](https://www.meshy.ai/terms-of-use).
+The generated meshes, adjusted Blender sources, derived render previews and
+`public/models/bath_stool.glb` / `public/models/wash_basin.glb` are distributed
+under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+
+Codex used Blender 5.2.4 to measure the stool's generated surface, rebuild
+supported quad contours, remove unwanted seat rings, regularize leg and arch
+curvature, retain the drain and underside, and add one ivory material. The
+basin was retopologized along measured cross-sections, preserving its natural
+round proportions, rim, hollow interior and solid floor, with one yellow
+material. Detailed editable masters are retained; runtime meshes concentrate
+vertices at important curves and transfer normals from those clean masters.
+Both exports use metric dimensions,
+bottom-centered origins, +Y up, and no textures. Original generated meshes
+are retained; see each asset's README and `assets/ledger.csv` for the exact
+modifications and source-to-export checksums.
+
+Keep this attribution, license link and modification notice with redistributed
+copies. Meshy does not endorse this project. The separate reference images
+have their own OpenAI-generation provenance and project MIT rights records;
+those rights do not replace the CC BY 4.0 license on the generated models.
+
+The four `bath_stool_lod_*` and `wash_basin_lod_*` exports and their editable
+LOD scenes/render previews are source-derived modifications of those same
+models and remain CC BY 4.0. They reduce geometry for distance rendering while
+preserving the source dimensions, openings and materials; the original high
+models are unchanged. See `assets/wash_station/quality/lod/README.md` for
+the method, inspection conditions and exact source/output checksums.
+
+## Background NPCs — Meshy, CC BY 4.0
+
+The static background NPC exports `npc_staff`, `npc_seated` and
+`npc_bath_standing` are also CC BY 4.0 modifications of the Meshy-derived Adult
+model. Their new seated/compact standing poses, protected facial UVs and reduced
+background geometry do not change the source license. Retain the Meshy credit,
+license link and modification notice in `assets/sento_npcs/ATTRIBUTION.md` and
+the individual `public/models/npc_*.LICENSE.txt` files with redistributed copies.
+
+The three `npc_*_lod_far` models and their editable Blender scenes/render
+previews are further CC BY 4.0 modifications of those accepted NPC sources.
+They preserve the authored coordinate frame and source texture UVs, with
+600 triangles each for distant rendering. See
+`assets/sento_npcs/quality/distance-lod/README.md` for actual checks and limits.
+
+## Free public environment sources — CC0
+
+The refreshed environment uses selected geometry from **Kenney Furniture Kit
+2.0** and **Nature Kit 2.1**. Source pages:
+[constituent furniture](https://kenney.nl/assets/furniture-kit),
+[nature](https://kenney.nl/assets/nature-kit).
+The original author licenses these packs under
+[CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/).
+Selected originals, author license texts and exact checksums are retained in
+`assets/public_sources/kenney_furniture/` and `kenney_nature/`.
+The downloaded archives came from the explicitly identified CC0 redistribution
+[WaviestSun/atelier-packs](https://github.com/WaviestSun/atelier-packs);
+archive checksums match that redistributor's published manifest. This is not a
+claim of byte comparison against a current author download. Selection is not
+the same as use: the environment quality record lists actual geometry uses.
+Instances are fitted to the existing map, given coherent matte materials,
+and combined into material batches. Original source files are unchanged.
+
+**Poly Haven**, creator **Charlotte Baglioni**, supplies the CC0
+[Hinoki Planks](https://polyhaven.com/a/hinoki_planks) texture used by the wood
+surfaces. The separate [Rounded Square Tiled Wall](https://polyhaven.com/a/rounded_square_tiled_wall)
+source was retained for material exploration; retention does not imply runtime
+use. Original diffuse, OpenGL normal and roughness JPEGs, API checksums and
+[license terms](https://polyhaven.com/license) are recorded under
+`assets/public_sources/polyhaven/`. Source texture files are unchanged;
+Blender material scale and appearance adjustments are documented separately.
+
+The mural and environment art-direction reference were separately generated
+from original project prompts through OpenAI. Project-held output rights are
+released under MIT to the extent permitted by law. See `assets/sento_mural/ref/`
+and `assets/sento_environment/ref/`; original PNGs and provenance are retained.
+The art-direction image is a reference, not a screenshot or a map.
+
+The assembled `sento_environment.glb` is distributed as a CC BY 4.0 composite.
+Its source-derived NPCs retain the Meshy credit and modification notice above;
+independent CC0 and project MIT components retain their original licenses.
+See `public/models/sento_environment.LICENSE.txt` and the per-placement source
+record in `assets/sento_environment/quality/measurements.json`.
+
+## Small items — original work and Quaternius CC0 sources
+
+`soap.glb` and `towel.glb` were authored in Blender for this project. The rounded
+soap, folded cotton form, materials and project-held rights are MIT licensed.
+
+`coin_500.glb` and `sauna_key.glb` use actual **Quaternius** Coin and Key1 sources
+from the [Ultimate RPG Pack](https://quaternius.com/packs/ultimaterpg.html),
+licensed [CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/).
+Original OBJ, MTL and bundled license files are retained in
+`assets/sento_small_items/source/`. The coin profile was resampled and fitted,
+with a generic raised leaf decoration and two satin metal materials. The key
+was fitted to the game's dimensions, its two-tooth notch cleaned, and its bow
+chamfered. Project-held rights in these modifications are MIT; the unchanged
+public sources remain CC0. Full records, checksums and inspections are in
+`assets/sento_small_items/README.md`, `provenance.json` and `quality/`.
+Keep the per-model license files when distributing the exports.
 
 ## three.js
 

@@ -1,0 +1,136 @@
+{
+  "revision": "v02",
+  "blender_version": "5.2.4 LTS",
+  "source_sha256": "bec685cdace5e895485a3391c5fa114088014659dc54c22cd1fa988d9f4d0cf5",
+  "comparison_high_sha256": "1a21972970ac33bf55b2c37219e9264a8ba2176fadbae4aeaffd628e21751420",
+  "comparison_high_triangles": 22464,
+  "planar_dissolve_max_angle_degrees": 7.1,
+  "sha256": "0f9c82e8e49d9982cffaf2dda4e6b0eeec3cedb01c370016bd783d7b8fbfdb21",
+  "triangles": 4662,
+  "vertices": 2331,
+  "dimensions_gltf_m": [
+    0.36000001430511475,
+    0.30000001192092896,
+    0.36000001430511475
+  ],
+  "bounds_blender_zup_m": [
+    [
+      -0.18000000715255737,
+      -0.18000000715255737,
+      0.0
+    ],
+    [
+      0.18000000715255737,
+      0.18000000715255737,
+      0.30000001192092896
+    ]
+  ],
+  "nonmanifold_edges": 0,
+  "degenerate_faces": 0,
+  "connected_components": 1,
+  "separate_legs_below_14cm": 4,
+  "finite_vertices": true,
+  "center_drain_clear": true,
+  "signed_volume_m3": 0.009265136856965943,
+  "glb_bytes": 85612,
+  "material_count": 1,
+  "texture_count": 0,
+  "foot_contact_heights_m": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "blend_sha256": "ffecd95c51579870e643934d89e0c97e504dd1e3031e644235175753b6178428",
+  "raw_mesh_and_transform_preserved_exactly": true,
+  "reimport_has_custom_normals": true,
+  "drain_rays": [
+    {
+      "xy_m": [
+        -0.025,
+        0
+      ],
+      "clear_down": true,
+      "clear_up": true
+    },
+    {
+      "xy_m": [
+        0,
+        0
+      ],
+      "clear_down": true,
+      "clear_up": true
+    },
+    {
+      "xy_m": [
+        0.025,
+        0
+      ],
+      "clear_down": true,
+      "clear_up": true
+    },
+    {
+      "xy_m": [
+        0,
+        -0.008
+      ],
+      "clear_down": true,
+      "clear_up": true
+    },
+    {
+      "xy_m": [
+        0,
+        0.008
+      ],
+      "clear_down": true,
+      "clear_up": true
+    }
+  ],
+  "comparison_high_deviation": {
+    "method": "Bidirectional vertices and triangle-centroid nearest-surface samples; not a continuous Hausdorff bound or reference-image fidelity score",
+    "high_to_runtime": {
+      "sample_count": 33696,
+      "mean_m": 0.000404774479396519,
+      "p95_m": 0.0015377559466287494,
+      "max_m": 0.003305362304672599
+    },
+    "runtime_to_high": {
+      "sample_count": 6993,
+      "mean_m": 0.00011503695873047825,
+      "p95_m": 0.0005739000043831766,
+      "max_m": 0.0030708261765539646
+    }
+  },
+  "candidate_trials": [
+    {
+      "triangles": 19968,
+      "decision": "rejected",
+      "reason": "Fixed polar columns undersampled steep arch flanks; visible pinching at foot and arch"
+    },
+    {
+      "triangles": 19968,
+      "decision": "comparison only",
+      "reason": "Arc-length lower-outline columns improved shape, but too dense for repeated runtime use"
+    },
+    {
+      "triangles": 9728,
+      "decision": "rejected",
+      "reason": "Reduced structured cage lost useful foot/arch curvature while remaining above scene budget"
+    },
+    {
+      "triangles": 4658,
+      "decision": "rejected",
+      "reason": "Unprotected planar merging damaged feature contours and caused broad triangular seat shading"
+    },
+    {
+      "triangles": 4724,
+      "decision": "rejected for scene budget",
+      "reason": "Feature-loop protection improved shape but total scene with the selected basin exceeded 60000 by 146 triangles"
+    },
+    {
+      "triangles": 4662,
+      "decision": "candidate for independent review",
+      "reason": "Feature loops retained; planar merging adjusted in 0.1 degree increments to fit the shared scene budget"
+    }
+  ]
+}

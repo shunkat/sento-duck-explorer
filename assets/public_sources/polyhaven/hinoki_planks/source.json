@@ -1,0 +1,48 @@
+{
+  "asset_id": "hinoki_planks",
+  "title": "Hinoki Planks",
+  "authors": {
+    "Charlotte Baglioni": "All"
+  },
+  "source_url": "https://polyhaven.com/a/hinoki_planks",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "files": [
+    {
+      "role": "Diffuse",
+      "original_filename": "hinoki_planks_diff_1k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/hinoki_planks/hinoki_planks_diff_1k.jpg",
+      "bytes": 527974,
+      "sha256": "a0166cad69a255971bf25f336c9947d2853b4dae5707c84a86f25f79aec347a5",
+      "md5_matches_api": true
+    },
+    {
+      "role": "nor_gl",
+      "original_filename": "hinoki_planks_nor_gl_1k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/hinoki_planks/hinoki_planks_nor_gl_1k.jpg",
+      "bytes": 456865,
+      "sha256": "90c97139c4a6e086c67b9e2c23c138c92df59070de0414763bcd3e7fc3c878a1",
+      "md5_matches_api": true
+    },
+    {
+      "role": "Rough",
+      "original_filename": "hinoki_planks_rough_1k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/hinoki_planks/hinoki_planks_rough_1k.jpg",
+      "bytes": 155781,
+      "sha256": "20d2dc9fdbd2b76b267d68617836efb4af74397716f7ad9b5dff3752bdb097f5",
+      "md5_matches_api": true
+    }
+  ],
+  "native_surface_dimensions_mm": [
+    1889.9999856948853,
+    1889.9999856948853
+  ],
+  "download_date_utc": "2026-11-21",
+  "pixel_dimensions": [
+    1024,
+    1024
+  ],
+  "license_copy": "assets/public_sources/polyhaven/LICENSE-CC0-1.0.txt",
+  "original_bytes_preserved": true,
+  "visual_review": "Actual albedo inspected. Hinoki matches warm wood styling; rounded tile has visible aged grout and is best limited to secondary wet surfaces."
+}

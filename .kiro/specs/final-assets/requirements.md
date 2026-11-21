@@ -6,7 +6,7 @@ This spec covers the final 3D assets of Sento Duck Explorer and their integratio
 
 **reference image → Image to 3D → Blender adjustment → glTF (GLB) export → game integration**
 
-The pipeline is confirmed by the user and must not be skipped. Placeholder primitives or Blender scripts alone do not complete this spec.
+The original pipeline remains the recorded provenance for the existing six models and their genuine derivatives. **User update, 2026-11-21:** for the new building, environment, facilities and small props, the user explicitly approved direct Blender production and requested reuse of free public assets wherever it improves quality. These assets may instead use licensed public source → Blender adjustment → GLB, or art reference → authored Blender model → GLB. Source provenance, rights, measurable shape quality and game integration remain mandatory; placeholder primitives alone do not complete the spec.
 
 ### Status at creation (2026-11-20)
 
@@ -20,7 +20,7 @@ The pipeline is confirmed by the user and must not be skipped. Placeholder primi
 
 - **[User-confirmed game content]**, decided by the user in `KIRO_HANDOFF.md`:
   - the three characters, the 10-step route, the goal, and F1–F7;
-  - the mandatory pipeline for final models (image → Image to 3D → Blender adjustment → game integration), which must not be skipped;
+  - the original image → Image to 3D → Blender pipeline, with the 2026-11-21 confirmed environment/small-prop exception and preference for quality free public assets described above;
   - the production order: prototype → Duck, hat, and one bath section to fix the art style → humans and facilities in the same style.
 - **[User chose to consider]**: Adult accompanies Child, and Child alone passes the crowd gaps (`KIRO_HANDOFF.md`, 2026-11-20). The user said they would consider this. They did not confirm the mechanism.
 - **[Provisional, from existing steering and specs]**: implementation designs that Kiro adopted per `.kiro/steering/project-autonomy.md` and the `prototype-core-gameplay` spec. They are not user decisions and can change:
@@ -53,10 +53,10 @@ The pipeline is confirmed by the user and must not be skipped. Placeholder primi
 
 #### Acceptance Criteria
 
-1. THE Project SHALL produce each FinalGLB in this spec by the pipeline ReferenceImage → GeneratedModel → BlendFile → FinalGLB → game integration. *(User-confirmed)*
+1. THE Project SHALL record the actual production route for each FinalGLB. Existing generated models retain ReferenceImage → GeneratedModel → BlendFile → FinalGLB; the user-approved new environment/facility/small-prop route may use licensed free public sources or direct Blender authoring with an art reference, followed by Blender → GLB → game integration. *(User-confirmed update, 2026-11-21)*
 2. IF an asset is derived from another asset instead of its own generation (for example, bath wall variants cut from one generated wall), THEN THE AssetLedger SHALL name the parent AssetID and SHALL trace the derived asset to the parent's existing `done` rows for the ReferenceImage, the GeneratedModel, and the BlendFile, by file and SHA-256. The derived asset inherits those stages. It SHALL have its own BlendFile (or a named object in the parent's BlendFile, recorded by name) and its own FinalGLB. *(Provisional: derivation is allowed; the user has not specified the scope.)*
-3. THE Project SHALL NOT mark an asset `final` unless every pipeline stage is covered by a `done` ledger row that points to an existing file: its own ReferenceImage, GeneratedModel, BlendFile, and FinalGLB, or, for a derived asset, the inherited parent rows from criterion 2 plus its own BlendFile and FinalGLB rows.
-4. THE AssetLedger SHALL NOT use "not applicable" or a similar note to skip the ReferenceImage, GeneratedModel, or BlendFile stage of a final asset. The only rows that may record "not applicable" are placeholder (`prototype`) rows, which are never final assets.
+3. THE Project SHALL NOT mark an asset `final` unless its actual approved route has existing source/reference evidence, an editable BlendFile, a FinalGLB, checksums and completed rights records. Generated derivatives inherit genuine parent rows per criterion 2; public-source assets retain the downloaded original files, source URLs and license copies, and directly authored assets retain their reference and editable construction evidence.
+4. THE AssetLedger SHALL distinguish `generated`, `source` (downloaded public material) and direct `blend` authoring honestly. It SHALL NOT invent an Image-to-3D stage or treat an unrelated source as a parent. The 2026-11-21 approved alternative route does not require a fictitious `generated` row; all required stages of the chosen route must be real.
 5. THE Project SHALL keep placeholder primitives in the game until the matching FinalGLB passes Requirement 9, and SHALL NOT describe the placeholder build as the finished work.
 
 ### Requirement 2: Production order
@@ -78,6 +78,7 @@ The pipeline is confirmed by the user and must not be skipped. Placeholder primi
 
 1. THE Project SHALL keep the logic colliders unchanged when models are replaced: Duck 0.15 m, Child 0.25 m, Adult 0.35 m radius, NarrowHole 0.40 m, CrowdGap 0.60 m, door 1.20 m.
 2. THE Duck FinalGLB SHALL have a height of 0.28–0.32 m and a maximum horizontal width (wings and tail included) of at most 0.36 m, so that it visibly fits the 0.40 m NarrowHole.
+   - User-confirmed appearance, 2026-11-21: Duck is a footless rubber duck. Its underside is a continuous rounded body with no legs, feet or orange toes. Preserve the current corrected eye treatment, beak, wings and hat fit while making this Blender correction to the existing source-derived asset.
 3. THE Child FinalGLB SHALL have a height of 1.15–1.25 m and a shoulder width of 0.44–0.56 m, so that it visibly fits a 0.60 m CrowdGap and visibly does not fit the 0.40 m NarrowHole.
 4. THE Adult FinalGLB SHALL have a height of 1.65–1.75 m and a shoulder width of 0.64–0.80 m, so that it visibly does not fit a 0.60 m CrowdGap.
 5. THE Project SHALL export every FinalGLB in meters, +Y up, front facing +Z (glTF convention), with the origin at the bottom center of the footprint.
@@ -139,7 +140,7 @@ The pipeline is confirmed by the user and must not be skipped. Placeholder primi
 
 1. WHILE the DuckView is active at the NarrowHole approach, THE NarrowHole entrance SHALL be visible on screen and distinguishable from the wall (contrast of the opening rim against the wall).
 2. WHILE the Overview is active at 1280 × 720, THE three characters SHALL be distinguishable from each other by silhouette and color without reading their labels.
-3. THE Duck and hat SHALL contrast with the bathwater and the pond (Duck saturated yellow, hat red, water desaturated blue-green). *(Provisional palette rule)*
+3. THE Duck and hat SHALL contrast with the bathwater and the pond (Duck saturated yellow, hat pale aqua, water desaturated blue-green; verify the hat silhouette under the game lighting as well as color). *(Provisional palette rule)*
 4. THE soap, coin, key, and hat SHALL each be distinguishable from the floor in both cameras.
 5. THE existing label sizing (12–22 px, active character's label hidden) SHALL stay in force after the models are replaced.
 

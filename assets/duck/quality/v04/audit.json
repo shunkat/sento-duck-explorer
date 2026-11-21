@@ -1,0 +1,75 @@
+{
+  "revision": "v04",
+  "blender": "5.2.4 LTS",
+  "glb_sha256": "43d385d81d6f2e1f520972db33426ddaf64b33250ca89b9f50d33a14fa17b779",
+  "blend_sha256": "7c187ea3351a72ad2a4ad1a22128f4639353da5a62bbb9ec70a40aa216b7280e",
+  "scope": "Reopened Blend; fresh raw import; actual exported GLB; static attachment images. No gameplay or GPU benchmark.",
+  "raw_geometry_exactly_matches_fresh_import": true,
+  "eyes_geometry_and_base_color_unchanged": true,
+  "body_texture_pixels_unchanged": true,
+  "root_matrix_unchanged": true,
+  "blend_socket_matrices_exact": true,
+  "runtime_socket_matrices_exact": true,
+  "bottom_center_rays": [
+    {
+      "gltf_x_m": -0.02,
+      "gltf_z_m": 0,
+      "hit_gltf_y_m": 0.0
+    },
+    {
+      "gltf_x_m": 0,
+      "gltf_z_m": 0,
+      "hit_gltf_y_m": -1.862645149230957e-09
+    },
+    {
+      "gltf_x_m": 0.02,
+      "gltf_z_m": 0,
+      "hit_gltf_y_m": 3.725290298461914e-09
+    }
+  ],
+  "packed_images": [
+    {
+      "name": "Duck v03 clean body palette",
+      "packed": true,
+      "relative_path": true
+    }
+  ],
+  "metadata": {
+    "png_files_checked": 14,
+    "png_text_exif_chunks_found": 0,
+    "embedded_glb_png_chunks": [
+      [
+        "IHDR",
+        "sRGB",
+        "gAMA",
+        "cHRM",
+        "oFFs",
+        "pHYs",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IEND"
+      ]
+    ],
+    "private_path_markers_in_decompressed_blend": 0,
+    "all_glb_images_embedded": true,
+    "all_glb_buffers_embedded": true,
+    "glb_has_no_camera_or_lights": true
+  },
+  "attachment_measurements": "attachments/measurements.json",
+  "hat_label_clearance_m": 0.024840176105499268
+}

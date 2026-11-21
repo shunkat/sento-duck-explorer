@@ -1,5 +1,9 @@
 # Duck: Blender adjustment and export
 
+**Current revision:** [v03 surface and facial refinement](duck__v03.md), 2026-11-21. It corrects source-derived head and torso surfaces, keeps identifiable wings, adds glossy paired eyes and a clean body-color texture, and preserves the attachment sockets. See the [fixed comparison](../../quality/existing-models/duck/index.html). Current counts and checksums are in the manifest/ledger. The earlier [v02 eye-only correction](duck__v02.md) and its GLB are retained.
+
+## Archived v01 production record
+
 Codex adjusted the actual Meshy output in **Blender 5.2.4 LTS** on **2026-11-20**. `duck__v01.blend` is the editable scene; `../../../public/models/duck.glb` is the game export. SHA-256 values for the exact files are in `../../ledger.csv`.
 
 ## Actual modifications

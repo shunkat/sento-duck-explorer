@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ja">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>椅子と湯桶 — 修正前後の比較</title>
+<style>
+  body{max-width:1080px;margin:40px auto;padding:0 20px;background:#191b1d;color:#f0ede5;font:16px/1.7 system-ui,sans-serif}
+  h1{font-size:clamp(26px,4vw,40px);line-height:1.3}h2{margin-top:48px;font-size:25px}
+  p{max-width:800px;color:#c6c8c9}a{color:#a8d4e3}.pair{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  figure{margin:0}figure img{display:block;width:100%;border-radius:12px}figcaption{padding:8px 0}
+  .before{color:#b6b6b6}.after{color:#cce6c1}details{margin-top:18px}summary{cursor:pointer}
+  .reference{max-width:360px;margin:16px 0;background:#303236;border-radius:12px}footer{border-top:1px solid #444;margin-top:40px;padding-top:20px;font-size:13px;color:#aab0b3}
+</style>
+<h1>形を守って、見比べて直す</h1>
+<p>椅子と湯桶の修正前後です。書き出したモデルを読み戻し、カメラ・照明・露出・配置枠をそろえて比較しています。</p>
+
+<h2>椅子：座面と脚のつながり</h2>
+<div class="pair">
+  <figure><img src="bath_stool/before_beauty_threequarter.png" alt="修正前の椅子"><figcaption class="before">修正前 v01</figcaption></figure>
+  <figure><img src="bath_stool/after_beauty_threequarter.png" alt="修正後の椅子"><figcaption class="after">修正後 v02</figcaption></figure>
+</div>
+<p>座面の三角形の陰影、側面アーチの折れ、足先の輪郭を個別に確認。穴と脚の縁を保ち、平らな部分から面を減らしています。</p>
+<a href="bath_stool/index.html">椅子を5方向・4種類の材質で比較 →</a>
+<details><summary>椅子の参照画像を見る</summary><img class="reference" src="../../../bath_stool/ref/bath_stool__ref_threequarter_v01.png" alt="椅子の制作参照"><p>参照はカメラ・照明が異なるため、画像差をそのまま形状誤差とは扱っていません。</p></details>
+
+<h2>湯桶：自然な比率と丸い開口</h2>
+<div class="pair">
+  <figure><img src="wash_basin/before_beauty_threequarter.png" alt="修正前の縦長の湯桶"><figcaption class="before">修正前 v01</figcaption></figure>
+  <figure><img src="wash_basin/after_beauty_threequarter.png" alt="修正後の浅い湯桶"><figcaption class="after">修正後 v02</figcaption></figure>
+</div>
+<p>縦横別々の拡大をやめ、生成元の自然な比率へ戻しました。丸い縁に頂点を配分し、形を固定して黄色の明度も比較調整しています。配置時の縮小も含む比較です。</p>
+<a href="wash_basin/index.html">湯桶を5方向・4種類の材質で比較 →</a>
+<details><summary>湯桶の参照画像を見る</summary><img class="reference" src="../../../wash_basin/ref/wash_basin__ref_threequarter_v01.png" alt="湯桶の制作参照"><p>色の完全一致や、参照から見えない裏面の正解は保証していません。</p></details>
+
+<h2>今回から残す確認の仕組み</h2>
+<p>編集用の詳細モデルとゲーム用モデルを分け、修正 → 書き出し → 再読込 → 同条件比較 → 別担当の素材確認を繰り返します。形状や面数の検査に通っても、目立つ歪みがあれば差し戻します。</p>
+<p><a href="../../../../reports/Blender%20素材品質%20改善実験.md">調査・実行結果の記録</a> · <a href="../../README.md">制作記録と検証範囲</a></p>
+<footer>素材単体の診断用レンダーです。実プレイの確認は別途保留中です。生成元は Meshy 6 Lite、Blenderで修正。モデルと派生画像は <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>。参照画像の権利は各素材の記録を参照してください。</footer>
+</html>

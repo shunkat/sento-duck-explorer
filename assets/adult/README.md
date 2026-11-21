@@ -1,5 +1,9 @@
 # Adult character model
 
+**Current revision: [v02](blend/adult__v02.md), 2026-11-21.** The detailed generated source is used again to correct the face, shoulders, arm pose and clothing boundaries. Limb weights exclude the legs, and the authored hand/carry/label socket contract is preserved. See [clothed comparison](../quality/existing-models/adult-clothed/index.html) and [bath comparison](../quality/existing-models/adult-bath/index.html). This remains a static model. Current measurements are in the ledger/manifest; the following v01 record is historical.
+
+## Archived v01 production record
+
 Created on **2026-11-20** through the required **reference image → Image to 3D → Blender adjustment → GLB** pipeline. Codex operated the image, Meshy, and Blender steps. The bathing variant is a Blender derivative of the same generated clothed-reference geometry; no replacement primitive character was substituted.
 
 | Stage | File |

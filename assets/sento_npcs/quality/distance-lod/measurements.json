@@ -1,0 +1,148 @@
+{
+  "date": "2026-11-21",
+  "blender": "5.2.4 LTS",
+  "distance_rule": "Far only beyond 6m or Overview; near source retained exactly",
+  "models": {
+    "npc_staff": {
+      "source_file": "public/models/npc_staff.glb",
+      "source_sha256": "3b953cbbad8fb11e1279e76f5067c82c477112cf54e2cbb502c8f92890a2e90d",
+      "source": {
+        "triangles": 1600,
+        "vertices": 1675,
+        "bounds_blender_z_up": [
+          [
+            -0.27775484323501587,
+            -0.1620754897594452,
+            0.0
+          ],
+          [
+            0.27775484323501587,
+            0.162075474858284,
+            1.600000023841858
+          ]
+        ],
+        "nonmanifold_after_uv_weld": 0,
+        "degenerate_faces": 0,
+        "finite": true
+      },
+      "blend_file": "assets/sento_npcs/blend/npc_staff__lod_far_v01.blend",
+      "blend_sha256": "734b1f328fb7c076720c0104aa45b245aa486f5b83b35ed2aab8975e9e1fadb7",
+      "candidate_file": "npc_staff_lod_far.glb",
+      "sha256": "08f8e62f7e2930afeae5cce40c0db3a4f5882ed36fb19b6b3e25cb51a7705977",
+      "bytes": 112248,
+      "measured": {
+        "triangles": 600,
+        "vertices": 759,
+        "bounds_blender_z_up": [
+          [
+            -0.2769838273525238,
+            -0.1620754897594452,
+            0.0
+          ],
+          [
+            0.27775484323501587,
+            0.15645603835582733,
+            1.5977282524108887
+          ]
+        ],
+        "nonmanifold_after_uv_weld": 0,
+        "degenerate_faces": 0,
+        "finite": true
+      }
+    },
+    "npc_bath_standing": {
+      "source_file": "public/models/npc_bath_standing.glb",
+      "source_sha256": "994ae0ce22b4e49528b7221929c5c82345c71340f84af10f4e4645c02f791614",
+      "source": {
+        "triangles": 1600,
+        "vertices": 1694,
+        "bounds_blender_z_up": [
+          [
+            -0.27758678793907166,
+            -0.16243527829647064,
+            0.0
+          ],
+          [
+            0.27758678793907166,
+            0.16243529319763184,
+            1.5999999046325684
+          ]
+        ],
+        "nonmanifold_after_uv_weld": 0,
+        "degenerate_faces": 0,
+        "finite": true
+      },
+      "blend_file": "assets/sento_npcs/blend/npc_bath_standing__lod_far_v01.blend",
+      "blend_sha256": "c6ae822ebbd4afbfcfffc6bf7f075c4d2b4a49da04f44ff525770314f33046c5",
+      "candidate_file": "npc_bath_standing_lod_far.glb",
+      "sha256": "02b12e2815c7f5304cd13d2214aca05def733af298e691fd801b768a8899d154",
+      "bytes": 100748,
+      "measured": {
+        "triangles": 600,
+        "vertices": 749,
+        "bounds_blender_z_up": [
+          [
+            -0.27758678793907166,
+            -0.16243527829647064,
+            0.0
+          ],
+          [
+            0.27198296785354614,
+            0.15681715309619904,
+            1.5999999046325684
+          ]
+        ],
+        "nonmanifold_after_uv_weld": 0,
+        "degenerate_faces": 0,
+        "finite": true
+      }
+    },
+    "npc_seated": {
+      "source_file": "public/models/npc_seated.glb",
+      "source_sha256": "a92cee73882b54df44a08d12bef55f0c462853ecaf5643961a32d39a3d7506c9",
+      "source": {
+        "triangles": 1800,
+        "vertices": 1861,
+        "bounds_blender_z_up": [
+          [
+            -0.3327026069164276,
+            -0.324852854013443,
+            0.0
+          ],
+          [
+            0.3327026069164276,
+            0.3248528242111206,
+            1.4174082279205322
+          ]
+        ],
+        "nonmanifold_after_uv_weld": 0,
+        "degenerate_faces": 0,
+        "finite": true
+      },
+      "blend_file": "assets/sento_npcs/blend/npc_seated__lod_far_v01.blend",
+      "blend_sha256": "e49211e9ecf3af0256531273c4c11a4a86614b57e9a935f572a720c6ecfb1823",
+      "candidate_file": "npc_seated_lod_far.glb",
+      "sha256": "9ada2f668214e57a256d96971b471ed5997e15fb24713e5443e9d2e85ef6164c",
+      "bytes": 100492,
+      "measured": {
+        "triangles": 600,
+        "vertices": 742,
+        "bounds_blender_z_up": [
+          [
+            -0.32925355434417725,
+            -0.324852854013443,
+            0.0
+          ],
+          [
+            0.3327026069164276,
+            0.31600284576416016,
+            1.4174082279205322
+          ]
+        ],
+        "nonmanifold_after_uv_weld": 0,
+        "degenerate_faces": 0,
+        "finite": true
+      }
+    }
+  }
+}

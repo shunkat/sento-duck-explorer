@@ -1,0 +1,165 @@
+{
+  "revision": "v02-archfix",
+  "blender_version": "5.2.4 LTS",
+  "source_sha256": "bec685cdace5e895485a3391c5fa114088014659dc54c22cd1fa988d9f4d0cf5",
+  "comparison_high_sha256": "759a3e4d55b336e7dbf24d68dbfdc9b671e978e1630ee9f7c36e9c07b9ce28bd",
+  "comparison_high_triangles": 22464,
+  "planar_dissolve_max_angle_degrees": 7.5,
+  "sha256": "1df13475185623882db1d63d99cc52f9ebff03cc40d62fb5136672a4f7515e55",
+  "triangles": 4610,
+  "vertices": 2305,
+  "dimensions_gltf_m": [
+    0.36000001430511475,
+    0.30000001192092896,
+    0.36000001430511475
+  ],
+  "bounds_blender_zup_m": [
+    [
+      -0.18000000715255737,
+      -0.18000000715255737,
+      0.0
+    ],
+    [
+      0.18000000715255737,
+      0.18000000715255737,
+      0.30000001192092896
+    ]
+  ],
+  "nonmanifold_edges": 0,
+  "degenerate_faces": 0,
+  "connected_components": 1,
+  "separate_legs_below_14cm": 4,
+  "finite_vertices": true,
+  "center_drain_clear": true,
+  "signed_volume_m3": 0.009329073337631324,
+  "glb_bytes": 84676,
+  "material_count": 1,
+  "texture_count": 0,
+  "foot_contact_heights_m": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "blend_sha256": "8eaf2e470f5b545e3b1989e02dd6acd6faeccd117ce3459a0525c0027afb860f",
+  "raw_mesh_and_transform_preserved_exactly": true,
+  "reimport_has_custom_normals": true,
+  "drain_rays": [
+    {
+      "xy_m": [
+        -0.025,
+        0
+      ],
+      "clear_down": true,
+      "clear_up": true
+    },
+    {
+      "xy_m": [
+        0,
+        0
+      ],
+      "clear_down": true,
+      "clear_up": true
+    },
+    {
+      "xy_m": [
+        0.025,
+        0
+      ],
+      "clear_down": true,
+      "clear_up": true
+    },
+    {
+      "xy_m": [
+        0,
+        -0.008
+      ],
+      "clear_down": true,
+      "clear_up": true
+    },
+    {
+      "xy_m": [
+        0,
+        0.008
+      ],
+      "clear_down": true,
+      "clear_up": true
+    }
+  ],
+  "comparison_high_deviation": {
+    "method": "Bidirectional vertices and triangle-centroid nearest-surface samples; not a continuous Hausdorff bound or reference-image fidelity score",
+    "high_to_runtime": {
+      "sample_count": 33696,
+      "mean_m": 0.0004085920451999691,
+      "p95_m": 0.0015956235583871603,
+      "max_m": 0.00328894448466599
+    },
+    "runtime_to_high": {
+      "sample_count": 6915,
+      "mean_m": 0.00012001752487438908,
+      "p95_m": 0.0005793596501462162,
+      "max_m": 0.003075124230235815
+    }
+  },
+  "candidate_trials": [
+    {
+      "triangles": 19968,
+      "decision": "rejected",
+      "reason": "Fixed polar columns undersampled steep arch flanks; visible pinching at foot and arch"
+    },
+    {
+      "triangles": 19968,
+      "decision": "comparison only",
+      "reason": "Arc-length lower-outline columns improved shape, but too dense for repeated runtime use"
+    },
+    {
+      "triangles": 9728,
+      "decision": "rejected",
+      "reason": "Reduced structured cage lost useful foot/arch curvature while remaining above scene budget"
+    },
+    {
+      "triangles": 4658,
+      "decision": "rejected",
+      "reason": "Unprotected planar merging damaged feature contours and caused broad triangular seat shading"
+    },
+    {
+      "triangles": 4724,
+      "decision": "rejected for scene budget",
+      "reason": "Feature-loop protection improved shape but total scene with the selected basin exceeded 60000 by 146 triangles"
+    },
+    {
+      "triangles": 4662,
+      "decision": "rejected after fixed-lighting review",
+      "reason": "Side-arch shoulder crease remained in the detailed source-derived mesh"
+    },
+    {
+      "triangles": 4596,
+      "decision": "rejected after independent visual review",
+      "reason": "Extending the arch wall fit down the whole leg changed the previously rounded feet"
+    },
+    {
+      "triangles": 4610,
+      "decision": "selected local finishing candidate; final game view pending",
+      "reason": "Local side-arch correction preserves the lower feet; feature loops retained and planar regions simplified within the shared scene budget"
+    }
+  ],
+  "local_arch_correction": {
+    "baseline_runtime_sha256": "0f9c82e8e49d9982cffaf2dda4e6b0eeec3cedb01c370016bd783d7b8fbfdb21",
+    "diagnosis": "Side-arch shoulder crease also appears in the detailed source-derived mesh before simplification",
+    "method": "Fit outer taper from raw sections at z=.245 and .270; use measured arch/foot wall thickness; blend only side-arch shoulder corrections over z=.12 to .18 and angles 25 to 45 degrees",
+    "rejected_trial": "Extending the wall fit down all legs changed the feet; rejected after independent visual review",
+    "detailed_feet_under_8cm_to_baseline": {
+      "sample_count": 1128,
+      "mean_m": 7.787044228971783e-06,
+      "p95_m": 2.5451192414038815e-05,
+      "max_m": 0.0006466267514042556
+    },
+    "detailed_lower_legs_under_12cm_to_baseline": {
+      "sample_count": 1592,
+      "mean_m": 5.041988066858305e-05,
+      "p95_m": 0.0002084906882373616,
+      "max_m": 0.0026995656080543995
+    },
+    "limitation": "Local corrections are reference-informed shape decisions, not recovered manufacturing geometry"
+  }
+}

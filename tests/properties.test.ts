@@ -2,7 +2,7 @@
 // design.md; Property 5 is in level.test.ts and Property 15 in view.test.ts.
 // Every property runs at least 100 times. Random inputs start from reachable
 // stages built by the scripted route (tests/helpers/props.ts), so they cover
-// the late route, F2-F7, pair doors, the pond and checkpoint restore.
+// the late route, F2-F8, pair doors, the pond and checkpoint restore.
 import fc from "fast-check";
 import { describe, expect, it } from "vitest";
 import { checkInvariants } from "../src/core/invariants";
@@ -31,7 +31,7 @@ import { frameArb, PLAYING_STAGES, run, seqArb, stageArb, stages } from "./helpe
 
 const OPTS = { numRuns: 100 };
 const NEXT: Record<CharacterId, CharacterId> = { duck: "child", child: "adult", adult: "duck" };
-const VIOLATIONS: ViolationId[] = ["F1", "F2", "F3", "F4", "F5", "F6", "F7"];
+const VIOLATIONS: ViolationId[] = ["F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8"];
 const playingStageArb = fc.constantFrom(...PLAYING_STAGES);
 const humanArb = fc.constantFrom<HumanId>("child", "adult");
 const frameOf = (f: Partial<InputFrame>): InputFrame => ({ ...EMPTY_INPUT, ...f });
@@ -56,6 +56,13 @@ function drive(start: GameState, id: HumanId, waypoints: Vec2[], maxTicks = 600)
   }
   return s;
 }
+
+
+/** x of the bath ↔ changing door's center (from the level data). */
+const BATH_DOOR_X = (() => {
+  const d = LEVEL.doors.find((x) => x.id === "bath_changing")!.box;
+  return (d.minX + d.maxX) / 2;
+})();
 
 describe("Property tests (fast-check, >= 100 runs each)", () => {
   it("stages are reachable and valid (7.1)", () => {
@@ -246,7 +253,7 @@ describe("Property tests (fast-check, >= 100 runs each)", () => {
   });
 
   it("Property 8 (negative): Duck in the goal without the hat, or a human in the goal, never clears", () => {
-    const goal = { x: 39.2, z: 4 };
+    const goal = R.POND_PATH.at(-1)!;
     fc.assert(
       fc.property(fc.boolean(), seqArb({ allow: ["interact", "dipTowel", "shout", "push"], maxSegments: 20 }), (duckBare, frames) => {
         const base = stages().hatEquipped;
@@ -277,8 +284,8 @@ describe("Property tests (fast-check, >= 100 runs each)", () => {
     );
     // A whole tick: the clear condition holds, and Child dips the towel in the same tick.
     const clearing = mutate(stages().hatEquipped, (c) => {
-      c.duck = { ...c.duck, inPond: true, pos: { x: 39.2, z: 4 }, zone: "pond_goal", carriedBy: null };
-      c.child.pos = { x: 4, z: 5 };
+      c.duck = { ...c.duck, inPond: true, pos: { ...R.POND_PATH.at(-1)! }, zone: "pond_goal", carriedBy: null };
+      c.child.pos = { ...LEVEL.initialPositions.child };
       c.child.zone = "bathwater";
       c.child.towel = "held";
       c.active = "child";
@@ -304,7 +311,7 @@ describe("Property tests (fast-check, >= 100 runs each)", () => {
             c[id].wet = activeWet ? "wet" : "dry";
             c[comp].wet = compWet ? "wet" : "dry";
           });
-          const r = drive(s, id, [{ x: 2.6, z: 1.5 }, { x: 2.6, z: 0.5 }, { x: 2.6, z: -1 }]);
+          const r = drive(s, id, [{ x: BATH_DOOR_X, z: 1.5 }, { x: BATH_DOOR_X, z: 0.5 }, LEVEL.waypoints.changingIn]);
           if (activeWet) expect(r.outcome).toEqual({ kind: "gameOver", reason: "F2" });
           else if (compWet) {
             expect(r.outcome.kind).toBe("playing");
@@ -328,7 +335,7 @@ describe("Property tests (fast-check, >= 100 runs each)", () => {
             c[id].wet = activeWet ? "wet" : "dry";
             c[comp].wet = compWet ? "wet" : "dry";
           });
-          const r = drive(s, id, [{ x: 2.6, z: 7.6 }, { x: 2.6, z: 9.0 }]);
+          const r = drive(s, id, [LEVEL.waypoints.saunaDoorDry, LEVEL.waypoints.saunaIn]);
           if (activeWet) expect(r.outcome).toEqual({ kind: "gameOver", reason: "F5" });
           else if (compWet) {
             expect(r.outcome.kind).toBe("playing");
@@ -353,8 +360,8 @@ describe("Property tests (fast-check, >= 100 runs each)", () => {
             c[comp].clothing = compBare ? "unclothed" : "clothed";
           });
           // The companion first moves up to the reception door so the pair is within the join radius.
-          const near = drive(s, comp, [{ x: 2.6, z: -2.6 }]);
-          const r = drive(near, id, [{ x: 2.6, z: -3.2 }, { x: 2.6, z: -5 }]);
+          const near = drive(s, comp, [LEVEL.waypoints.lockerAisle, LEVEL.waypoints.screenPassage, LEVEL.waypoints.screenWait]);
+          const r = drive(near, id, [LEVEL.waypoints.lockerAisle, LEVEL.waypoints.screenPassage, LEVEL.waypoints.receptionDoorIn, LEVEL.waypoints.receptionIn]);
           if (activeBare) expect(r.outcome).toEqual({ kind: "gameOver", reason: "F4" });
           else if (compBare) {
             expect(r.outcome.kind).toBe("playing");
@@ -427,7 +434,7 @@ describe("Property tests (fast-check, >= 100 runs each)", () => {
     fc.assert(fc.property(humanArb, fc.boolean(), fc.boolean(), (id, clothed, wet) => {
       const drying = mutate(stages().keyGiven, (c) => {
         c.active = id;
-        c[id].pos = { x: 2.6, z: 1.6 };
+        c[id].pos = { ...LEVEL.waypoints.bathDoorDry };
         c[id].zone = "bath";
         c[id].wet = "wet";
         c[id].clothing = clothed ? "clothed" : "unclothed";

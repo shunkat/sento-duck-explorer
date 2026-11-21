@@ -1,0 +1,530 @@
+{
+  "scope": "Task-owned v02 Blender, candidates, retained iteration GLBs and PNGs; scoped heuristic, not a complete privacy audit",
+  "classification": "Email-shaped byte patterns inside compressed PNG IDAT are recorded as incidental binary matches, not textual metadata. Pixel data is not altered.",
+  "files": [
+    {
+      "file": "assets/wash_basin/blend/wash_basin__v02.blend",
+      "sha256": "11dea22f4048b8d1f55ad8b21b2225af6d79f55a3cac3f931f990276c709fabe",
+      "private_path_marker_counts": {
+        "mac_user_path": 0,
+        "linux_home_path": 0,
+        "mac_temp_path": 0
+      },
+      "email_pattern_count_raw": 0,
+      "incidental_compressed_pixel_matches": 0,
+      "email_matches_outside_compressed_pixels": 0,
+      "email_pattern_chunk_classification": [],
+      "png_text_or_exif_chunks": []
+    },
+    {
+      "file": ".local/quality-v02/candidates/wash_basin.glb",
+      "sha256": "29196b8bc4b62edec5f81a4831b183472f34f86cc2477ae1cd7653386be80111",
+      "private_path_marker_counts": {
+        "mac_user_path": 0,
+        "linux_home_path": 0,
+        "mac_temp_path": 0
+      },
+      "email_pattern_count_raw": 0,
+      "incidental_compressed_pixel_matches": 0,
+      "email_matches_outside_compressed_pixels": 0,
+      "email_pattern_chunk_classification": [],
+      "png_text_or_exif_chunks": []
+    },
+    {
+      "file": ".local/quality-v02/candidates/wash_basin_colorfix.glb",
+      "sha256": "29196b8bc4b62edec5f81a4831b183472f34f86cc2477ae1cd7653386be80111",
+      "private_path_marker_counts": {
+        "mac_user_path": 0,
+        "linux_home_path": 0,
+        "mac_temp_path": 0
+      },
+      "email_pattern_count_raw": 0,
+      "incidental_compressed_pixel_matches": 0,
+      "email_matches_outside_compressed_pixels": 0,
+      "email_pattern_chunk_classification": [],
+      "png_text_or_exif_chunks": []
+    },
+    {
+      "file": "assets/wash_basin/quality/v02/interior.png",
+      "sha256": "f4164ed213c58cddba49b8d76958e7a7e5457be986ea438b2d86f76761d82bb7",
+      "private_path_marker_counts": {
+        "mac_user_path": 0,
+        "linux_home_path": 0,
+        "mac_temp_path": 0
+      },
+      "email_pattern_count_raw": 0,
+      "incidental_compressed_pixel_matches": 0,
+      "email_matches_outside_compressed_pixels": 0,
+      "email_pattern_chunk_classification": [],
+      "png_text_or_exif_chunks": []
+    },
+    {
+      "file": "assets/wash_basin/quality/v02/master_threequarter.png",
+      "sha256": "3ea947c0153005107216ada7102d86665d35ae3dc9edb098ae27d06fc78d3d2d",
+      "private_path_marker_counts": {
+        "mac_user_path": 0,
+        "linux_home_path": 0,
+        "mac_temp_path": 0
+      },
+      "email_pattern_count_raw": 0,
+      "incidental_compressed_pixel_matches": 0,
+      "email_matches_outside_compressed_pixels": 0,
+      "email_pattern_chunk_classification": [],
+      "png_text_or_exif_chunks": []
+    },
+    {
+      "file": "assets/wash_basin/quality/v02/yellow_C.png",
+      "sha256": "0ba3ec27491292d63cbf859ed747aa5ab586a8be049945e5b3de2f286efd9bb8",
+      "private_path_marker_counts": {
+        "mac_user_path": 0,
+        "linux_home_path": 0,
+        "mac_temp_path": 0
+      },
+      "email_pattern_count_raw": 0,
+      "incidental_compressed_pixel_matches": 0,
+      "email_matches_outside_compressed_pixels": 0,
+      "email_pattern_chunk_classification": [],
+      "png_text_or_exif_chunks": []
+    },
+    {
+      "file": "assets/wash_basin/quality/v02/yellow_B.png",
+      "sha256": "050a31215e4f9ea3f922ece421e560bb26febfd4cf1945f50623d15d5ea77dee",
+      "private_path_marker_counts": {
+        "mac_user_path": 0,
+        "linux_home_path": 0,
+        "mac_temp_path": 0
+      },
+      "email_pattern_count_raw": 0,
+      "incidental_compressed_pixel_matches": 0,
+      "email_matches_outside_compressed_pixels": 0,
+      "email_pattern_chunk_classification": [],
+      "png_text_or_exif_chunks": []
+    },
+    {
+      "file": "assets/wash_basin/quality/v02/yellow_A.png",
+      "sha256": "df6935051e4bfe3186a2af3d33f44e102725bcd8a1e757587ca13fb3c29a60c1",
+      "private_path_marker_counts": {
+        "mac_user_path": 0,
+        "linux_home_path": 0,
+        "mac_temp_path": 0
+      },
+      "email_pattern_count_raw": 0,
+      "incidental_compressed_pixel_matches": 0,
+      "email_matches_outside_compressed_pixels": 0,
+      "email_pattern_chunk_classification": [],
+      "png_text_or_exif_chunks": []
+    },
+    {
+      "file": "assets/wash_basin/quality/v02/threequarter.png",
+      "sha256": "e103ecfdfec36c0fb7959ef52592d973d228b49b157b73e1cf5ab6ad0901d20e",
+      "private_path_marker_counts": {
+        "mac_user_path": 0,
+        "linux_home_path": 0,
+        "mac_temp_path": 0
+      },
+      "email_pattern_count_raw": 0,
+      "incidental_compressed_pixel_matches": 0,
+      "email_matches_outside_compressed_pixels": 0,
+      "email_pattern_chunk_classification": [],
+      "png_text_or_exif_chunks": []
+    },
+    {
+      "file": "assets/wash_basin/quality/v02/raw_uniform_same_material.png",
+      "sha256": "5dee14cb9bde7fb081d55d244bb79b70524965a445cbf645aa8660af25ae9f5b",
+      "private_path_marker_counts": {
+        "mac_user_path": 0,
+        "linux_home_path": 0,
+        "mac_temp_path": 0
+      },
+      "email_pattern_count_raw": 0,
+      "incidental_compressed_pixel_matches": 0,
+      "email_matches_outside_compressed_pixels": 0,
+      "email_pattern_chunk_classification": [],
+      "png_text_or_exif_chunks": []
+    },
+    {
+      "file": "assets/wash_basin/quality/v02/front.png",
+      "sha256": "83b6e116b1d703efcc3f619971ccd56fd1752becede341f97126b5c4c8e5e767",
+      "private_path_marker_counts": {
+        "mac_user_path": 0,
+        "linux_home_path": 0,
+        "mac_temp_path": 0
+      },
+      "email_pattern_count_raw": 0,
+      "incidental_compressed_pixel_matches": 0,
+      "email_matches_outside_compressed_pixels": 0,
+      "email_pattern_chunk_classification": [],
+      "png_text_or_exif_chunks": []
+    },
+    {
+      "file": "assets/wash_basin/quality/v02/underside.png",
+      "sha256": "7de8ed87a5f53a2c3ffdb8246befeb7aa52a14460e5e38199d7aa3edaeddeef3",
+      "private_path_marker_counts": {
+        "mac_user_path": 0,
+        "linux_home_path": 0,
+        "mac_temp_path": 0
+      },
+      "email_pattern_count_raw": 0,
+      "incidental_compressed_pixel_matches": 0,
+      "email_matches_outside_compressed_pixels": 0,
+      "email_pattern_chunk_classification": [],
+      "png_text_or_exif_chunks": []
+    },
+    {
+      "file": "assets/wash_basin/quality/v02/color-ab/after_beauty_threequarter.png",
+      "sha256": "13952c2005c3833f31efe253a59ff6313ac5090258440e069eb6a4f074d9b4c3",
+      "private_path_marker_counts": {
+        "mac_user_path": 0,
+        "linux_home_path": 0,
+        "mac_temp_path": 0
+      },
+      "email_pattern_count_raw": 0,
+      "incidental_compressed_pixel_matches": 0,
+      "email_matches_outside_compressed_pixels": 0,
+      "email_pattern_chunk_classification": [],
+      "png_text_or_exif_chunks": []
+    },
+    {
+      "file": "assets/wash_basin/quality/v02/color-ab/before_beauty_threequarter.png",
+      "sha256": "306758208acd46c751a3baa3ca224112345eca9ca50d970ae1ce6595a7e1ab1e",
+      "private_path_marker_counts": {
+        "mac_user_path": 0,
+        "linux_home_path": 0,
+        "mac_temp_path": 0
+      },
+      "email_pattern_count_raw": 0,
+      "incidental_compressed_pixel_matches": 0,
+      "email_matches_outside_compressed_pixels": 0,
+      "email_pattern_chunk_classification": [],
+      "png_text_or_exif_chunks": []
+    },
+    {
+      "file": "assets/wash_basin/quality/v02/color-ab/after_beauty_front.png",
+      "sha256": "56d75635ab45b0d2c640d7bc157c7ef82cb86add590d41f2df96fa588c6bf95e",
+      "private_path_marker_counts": {
+        "mac_user_path": 0,
+        "linux_home_path": 0,
+        "mac_temp_path": 0
+      },
+      "email_pattern_count_raw": 0,
+      "incidental_compressed_pixel_matches": 0,
+      "email_matches_outside_compressed_pixels": 0,
+      "email_pattern_chunk_classification": [],
+      "png_text_or_exif_chunks": []
+    },
+    {
+      "file": "assets/wash_basin/quality/v02/color-ab/before_beauty_front.png",
+      "sha256": "6740e7db9d5367468e5289bc75407521bfd662e7813a8c0ac1013cd03e053ddf",
+      "private_path_marker_counts": {
+        "mac_user_path": 0,
+        "linux_home_path": 0,
+        "mac_temp_path": 0
+      },
+      "email_pattern_count_raw": 0,
+      "incidental_compressed_pixel_matches": 0,
+      "email_matches_outside_compressed_pixels": 0,
+      "email_pattern_chunk_classification": [],
+      "png_text_or_exif_chunks": []
+    },
+    {
+      "file": "assets/wash_basin/quality/v02/iterations/subdiv-5856/interior.png",
+      "sha256": "e23a8c57c7fcd91f38d807ab5c41db992185600b231769968251331ec1c8799f",
+      "private_path_marker_counts": {
+        "mac_user_path": 0,
+        "linux_home_path": 0,
+        "mac_temp_path": 0
+      },
+      "email_pattern_count_raw": 0,
+      "incidental_compressed_pixel_matches": 0,
+      "email_matches_outside_compressed_pixels": 0,
+      "email_pattern_chunk_classification": [],
+      "png_text_or_exif_chunks": []
+    },
+    {
+      "file": "assets/wash_basin/quality/v02/iterations/subdiv-5856/yellow_C.png",
+      "sha256": "0ba3ec27491292d63cbf859ed747aa5ab586a8be049945e5b3de2f286efd9bb8",
+      "private_path_marker_counts": {
+        "mac_user_path": 0,
+        "linux_home_path": 0,
+        "mac_temp_path": 0
+      },
+      "email_pattern_count_raw": 0,
+      "incidental_compressed_pixel_matches": 0,
+      "email_matches_outside_compressed_pixels": 0,
+      "email_pattern_chunk_classification": [],
+      "png_text_or_exif_chunks": []
+    },
+    {
+      "file": "assets/wash_basin/quality/v02/iterations/subdiv-5856/yellow_B.png",
+      "sha256": "050a31215e4f9ea3f922ece421e560bb26febfd4cf1945f50623d15d5ea77dee",
+      "private_path_marker_counts": {
+        "mac_user_path": 0,
+        "linux_home_path": 0,
+        "mac_temp_path": 0
+      },
+      "email_pattern_count_raw": 0,
+      "incidental_compressed_pixel_matches": 0,
+      "email_matches_outside_compressed_pixels": 0,
+      "email_pattern_chunk_classification": [],
+      "png_text_or_exif_chunks": []
+    },
+    {
+      "file": "assets/wash_basin/quality/v02/iterations/subdiv-5856/yellow_A.png",
+      "sha256": "df6935051e4bfe3186a2af3d33f44e102725bcd8a1e757587ca13fb3c29a60c1",
+      "private_path_marker_counts": {
+        "mac_user_path": 0,
+        "linux_home_path": 0,
+        "mac_temp_path": 0
+      },
+      "email_pattern_count_raw": 0,
+      "incidental_compressed_pixel_matches": 0,
+      "email_matches_outside_compressed_pixels": 0,
+      "email_pattern_chunk_classification": [],
+      "png_text_or_exif_chunks": []
+    },
+    {
+      "file": "assets/wash_basin/quality/v02/iterations/subdiv-5856/threequarter.png",
+      "sha256": "283547ed3d5f1159a9614d4083b1018a021b6efb2f7a9169a030f54ce849dbec",
+      "private_path_marker_counts": {
+        "mac_user_path": 0,
+        "linux_home_path": 0,
+        "mac_temp_path": 0
+      },
+      "email_pattern_count_raw": 0,
+      "incidental_compressed_pixel_matches": 0,
+      "email_matches_outside_compressed_pixels": 0,
+      "email_pattern_chunk_classification": [],
+      "png_text_or_exif_chunks": []
+    },
+    {
+      "file": "assets/wash_basin/quality/v02/iterations/subdiv-5856/raw_uniform_same_material.png",
+      "sha256": "71ca33e7fa650f398cb15b63bb85b493ff8d50cd82b6610e756f4ad31b3b6d37",
+      "private_path_marker_counts": {
+        "mac_user_path": 0,
+        "linux_home_path": 0,
+        "mac_temp_path": 0
+      },
+      "email_pattern_count_raw": 0,
+      "incidental_compressed_pixel_matches": 0,
+      "email_matches_outside_compressed_pixels": 0,
+      "email_pattern_chunk_classification": [],
+      "png_text_or_exif_chunks": []
+    },
+    {
+      "file": "assets/wash_basin/quality/v02/iterations/subdiv-5856/front.png",
+      "sha256": "26c712e34035064afe99bff285323779f6c6dcfe7d9009e4a8b76a625f373161",
+      "private_path_marker_counts": {
+        "mac_user_path": 0,
+        "linux_home_path": 0,
+        "mac_temp_path": 0
+      },
+      "email_pattern_count_raw": 0,
+      "incidental_compressed_pixel_matches": 0,
+      "email_matches_outside_compressed_pixels": 0,
+      "email_pattern_chunk_classification": [],
+      "png_text_or_exif_chunks": []
+    },
+    {
+      "file": "assets/wash_basin/quality/v02/iterations/subdiv-5856/underside.png",
+      "sha256": "670512004ffacb0570c718cc814ce6012e611e1658b97a5b7160be99067d1395",
+      "private_path_marker_counts": {
+        "mac_user_path": 0,
+        "linux_home_path": 0,
+        "mac_temp_path": 0
+      },
+      "email_pattern_count_raw": 0,
+      "incidental_compressed_pixel_matches": 0,
+      "email_matches_outside_compressed_pixels": 0,
+      "email_pattern_chunk_classification": [],
+      "png_text_or_exif_chunks": []
+    },
+    {
+      "file": "assets/wash_basin/quality/v02/iterations/material-before/threequarter.png",
+      "sha256": "53f127cf0e1a8d3587f6f1f23461b4797aec6389bb8b62282f8a0bbff1f1d1a7",
+      "private_path_marker_counts": {
+        "mac_user_path": 0,
+        "linux_home_path": 0,
+        "mac_temp_path": 0
+      },
+      "email_pattern_count_raw": 0,
+      "incidental_compressed_pixel_matches": 0,
+      "email_matches_outside_compressed_pixels": 0,
+      "email_pattern_chunk_classification": [],
+      "png_text_or_exif_chunks": []
+    },
+    {
+      "file": "assets/wash_basin/quality/v02/iterations/material-before/front.png",
+      "sha256": "5b8f977ab03a6668879e11e885271e7c8b4ab815740eeb53c4a7919383f6967c",
+      "private_path_marker_counts": {
+        "mac_user_path": 0,
+        "linux_home_path": 0,
+        "mac_temp_path": 0
+      },
+      "email_pattern_count_raw": 0,
+      "incidental_compressed_pixel_matches": 0,
+      "email_matches_outside_compressed_pixels": 0,
+      "email_pattern_chunk_classification": [],
+      "png_text_or_exif_chunks": []
+    },
+    {
+      "file": "assets/wash_basin/quality/v02/iterations/adaptive-2816-unweighted/interior.png",
+      "sha256": "4378dcd5d8592bcc292181537d905835e95cdcec5c6af103a6663dfff4e1be23",
+      "private_path_marker_counts": {
+        "mac_user_path": 0,
+        "linux_home_path": 0,
+        "mac_temp_path": 0
+      },
+      "email_pattern_count_raw": 1,
+      "incidental_compressed_pixel_matches": 1,
+      "email_matches_outside_compressed_pixels": 0,
+      "email_pattern_chunk_classification": [
+        {
+          "png_chunk": "IDAT",
+          "count": 1
+        }
+      ],
+      "png_text_or_exif_chunks": []
+    },
+    {
+      "file": "assets/wash_basin/quality/v02/iterations/adaptive-2816-unweighted/threequarter.png",
+      "sha256": "53f127cf0e1a8d3587f6f1f23461b4797aec6389bb8b62282f8a0bbff1f1d1a7",
+      "private_path_marker_counts": {
+        "mac_user_path": 0,
+        "linux_home_path": 0,
+        "mac_temp_path": 0
+      },
+      "email_pattern_count_raw": 0,
+      "incidental_compressed_pixel_matches": 0,
+      "email_matches_outside_compressed_pixels": 0,
+      "email_pattern_chunk_classification": [],
+      "png_text_or_exif_chunks": []
+    },
+    {
+      "file": "assets/wash_basin/quality/v02/iterations/adaptive-2816-unweighted/front.png",
+      "sha256": "5b8f977ab03a6668879e11e885271e7c8b4ab815740eeb53c4a7919383f6967c",
+      "private_path_marker_counts": {
+        "mac_user_path": 0,
+        "linux_home_path": 0,
+        "mac_temp_path": 0
+      },
+      "email_pattern_count_raw": 0,
+      "incidental_compressed_pixel_matches": 0,
+      "email_matches_outside_compressed_pixels": 0,
+      "email_pattern_chunk_classification": [],
+      "png_text_or_exif_chunks": []
+    },
+    {
+      "file": "assets/wash_basin/quality/v02/iterations/adaptive-2560/interior.png",
+      "sha256": "1893d90f15504010495a4e6636361286f648bfe4567657adbb896397eb88e55f",
+      "private_path_marker_counts": {
+        "mac_user_path": 0,
+        "linux_home_path": 0,
+        "mac_temp_path": 0
+      },
+      "email_pattern_count_raw": 0,
+      "incidental_compressed_pixel_matches": 0,
+      "email_matches_outside_compressed_pixels": 0,
+      "email_pattern_chunk_classification": [],
+      "png_text_or_exif_chunks": []
+    },
+    {
+      "file": "assets/wash_basin/quality/v02/iterations/adaptive-2560/threequarter.png",
+      "sha256": "68dcd91a4947d384657c86dab99618dde61f708403f8b6e899765e8116b9ef8b",
+      "private_path_marker_counts": {
+        "mac_user_path": 0,
+        "linux_home_path": 0,
+        "mac_temp_path": 0
+      },
+      "email_pattern_count_raw": 0,
+      "incidental_compressed_pixel_matches": 0,
+      "email_matches_outside_compressed_pixels": 0,
+      "email_pattern_chunk_classification": [],
+      "png_text_or_exif_chunks": []
+    },
+    {
+      "file": "assets/wash_basin/quality/v02/iterations/adaptive-2560/front.png",
+      "sha256": "4aeb735b14d1460b577cbf34feb5f967b940dd86f54f49917853156cdc7c088d",
+      "private_path_marker_counts": {
+        "mac_user_path": 0,
+        "linux_home_path": 0,
+        "mac_temp_path": 0
+      },
+      "email_pattern_count_raw": 0,
+      "incidental_compressed_pixel_matches": 0,
+      "email_matches_outside_compressed_pixels": 0,
+      "email_pattern_chunk_classification": [],
+      "png_text_or_exif_chunks": []
+    },
+    {
+      "file": "assets/wash_basin/quality/v02/iterations/adaptive-2560/underside.png",
+      "sha256": "8ba68a8cda6a155d7fbb22dd9c53872c2796ddbdcdc488a99c0678ec57aab0da",
+      "private_path_marker_counts": {
+        "mac_user_path": 0,
+        "linux_home_path": 0,
+        "mac_temp_path": 0
+      },
+      "email_pattern_count_raw": 0,
+      "incidental_compressed_pixel_matches": 0,
+      "email_matches_outside_compressed_pixels": 0,
+      "email_pattern_chunk_classification": [],
+      "png_text_or_exif_chunks": []
+    },
+    {
+      "file": "assets/wash_basin/quality/v02/iterations/subdiv-5856/candidate.glb",
+      "sha256": "9d32b5b2bcd32541118a49f7729fb27012a1d15e14dc0e2d982bb04a80b6a82a",
+      "private_path_marker_counts": {
+        "mac_user_path": 0,
+        "linux_home_path": 0,
+        "mac_temp_path": 0
+      },
+      "email_pattern_count_raw": 0,
+      "incidental_compressed_pixel_matches": 0,
+      "email_matches_outside_compressed_pixels": 0,
+      "email_pattern_chunk_classification": [],
+      "png_text_or_exif_chunks": []
+    },
+    {
+      "file": "assets/wash_basin/quality/v02/iterations/material-before/candidate.glb",
+      "sha256": "1e4b6a1abac3e8f22ceaafe1f9d82f36b5d91a2b667555ce2ac0d5ed78104980",
+      "private_path_marker_counts": {
+        "mac_user_path": 0,
+        "linux_home_path": 0,
+        "mac_temp_path": 0
+      },
+      "email_pattern_count_raw": 0,
+      "incidental_compressed_pixel_matches": 0,
+      "email_matches_outside_compressed_pixels": 0,
+      "email_pattern_chunk_classification": [],
+      "png_text_or_exif_chunks": []
+    },
+    {
+      "file": "assets/wash_basin/quality/v02/iterations/adaptive-2816-unweighted/candidate.glb",
+      "sha256": "1e4b6a1abac3e8f22ceaafe1f9d82f36b5d91a2b667555ce2ac0d5ed78104980",
+      "private_path_marker_counts": {
+        "mac_user_path": 0,
+        "linux_home_path": 0,
+        "mac_temp_path": 0
+      },
+      "email_pattern_count_raw": 0,
+      "incidental_compressed_pixel_matches": 0,
+      "email_matches_outside_compressed_pixels": 0,
+      "email_pattern_chunk_classification": [],
+      "png_text_or_exif_chunks": []
+    },
+    {
+      "file": "assets/wash_basin/quality/v02/iterations/adaptive-2560/candidate.glb",
+      "sha256": "357af5d67c7645cca01c619ba622ad73ac5a8fbacefa80888fa35a8cf8a390ff",
+      "private_path_marker_counts": {
+        "mac_user_path": 0,
+        "linux_home_path": 0,
+        "mac_temp_path": 0
+      },
+      "email_pattern_count_raw": 0,
+      "incidental_compressed_pixel_matches": 0,
+      "email_matches_outside_compressed_pixels": 0,
+      "email_pattern_chunk_classification": [],
+      "png_text_or_exif_chunks": []
+    }
+  ],
+  "result": "PASS"
+}

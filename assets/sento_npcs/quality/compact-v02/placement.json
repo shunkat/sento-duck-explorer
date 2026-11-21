@@ -1,0 +1,40 @@
+{
+  "revision": "compact-v02",
+  "scope": "Model bounds preflight; independent quality acceptance and actual scene placement are separate.",
+  "models": {
+    "npc_staff": {
+      "sha256": "3b953cbbad8fb11e1279e76f5067c82c477112cf54e2cbb502c8f92890a2e90d",
+      "height_m": 1.600000023841858,
+      "world_footprint_xz_m": [
+        0.5555096864700317,
+        0.3241509795188904
+      ],
+      "uniform_scene_scale": 1,
+      "root_min_y_m": 0.0,
+      "required_footprint_xz_m": [
+        0.6,
+        0.45
+      ],
+      "fits_required_footprint": true
+    },
+    "npc_bath_standing": {
+      "sha256": "994ae0ce22b4e49528b7221929c5c82345c71340f84af10f4e4645c02f791614",
+      "height_m": 1.5999999046325684,
+      "world_footprint_xz_m": [
+        0.5551735758781433,
+        0.32487058639526367
+      ],
+      "uniform_scene_scale": 1,
+      "root_min_y_m": 0.0,
+      "required_footprint_xz_m": [
+        0.6,
+        0.4
+      ],
+      "fits_required_footprint": true
+    }
+  },
+  "fixed_seated_sha256": "a92cee73882b54df44a08d12bef55f0c462853ecaf5643961a32d39a3d7506c9",
+  "collision_geometry_changed": false,
+  "whole_model_nonuniform_scaling": false,
+  "ground_contact_note": "Overall mesh minimum Y is zero. Independent inspection measured the other sole up to 0.172 mm (staff) / 1.631 mm (bath) above that plane; exact simultaneous contact of both soles is not claimed."
+}

@@ -1,0 +1,15 @@
+wash_basin_lod_far — Sento Duck Explorer
+
+Derived by the project in Blender 5.2.4 LTS from wash_basin v02,
+originally generated with Meshy 6 Lite from the project reference image.
+Source: https://www.meshy.ai/
+Terms: https://www.meshy.ai/terms-of-use/
+License: Creative Commons Attribution 4.0 International (CC BY 4.0)
+https://creativecommons.org/licenses/by/4.0/
+
+Modifications: distance-specific geometry reduction, preserved openings and
+feature contours, transferred source normals; original high model unchanged.
+See assets/wash_station/quality/lod/README.md and assets/ledger.csv.
+Far detail is accepted only beyond 4.5 m or in Overview.
+Keep this attribution, license link and modification notice with copies.
+No endorsement by Meshy is implied.

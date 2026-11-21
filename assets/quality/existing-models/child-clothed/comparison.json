@@ -1,0 +1,245 @@
+{
+  "asset": "child",
+  "blender": "5.2.4 LTS",
+  "resolution": 512,
+  "projection": "orthographic",
+  "view_transform": "AgX",
+  "exposure": 0,
+  "gamma": 1,
+  "framing": "fixed metric frame; no candidate autofit",
+  "fit": "authored metric geometry and origin preserved",
+  "outfit": "clothed",
+  "envelope_blender_xyz_m": [
+    0.6000000238418579,
+    0.6000000238418579,
+    1.2000000476837158
+  ],
+  "directions": {
+    "front": [
+      0,
+      -1,
+      0.16
+    ],
+    "side": [
+      1,
+      0,
+      0.16
+    ],
+    "back": [
+      0,
+      1,
+      0.16
+    ],
+    "threequarter": [
+      0.48,
+      -1,
+      0.18
+    ],
+    "threequarter_left": [
+      -0.48,
+      -1,
+      0.18
+    ],
+    "face_front": [
+      0,
+      -1,
+      0.04
+    ],
+    "face_threequarter": [
+      0.48,
+      -1,
+      0.06
+    ]
+  },
+  "passes": [
+    "beauty",
+    "clay"
+  ],
+  "versions": {
+    "before": {
+      "file": "child.glb",
+      "sha256": "9d15324acce1d81b932628a7139c03a73cf36943be996d8db5b14c712bd9edca",
+      "authored_dimensions_blender_xyz_m": [
+        0.5283557176589966,
+        0.415083110332489,
+        1.2000000476837158
+      ],
+      "uniform_scale": 1,
+      "placed_dimensions_blender_xyz_m": [
+        0.5283557176589966,
+        0.415083110332489,
+        1.2000000476837158
+      ]
+    },
+    "after": {
+      "file": "child.glb",
+      "sha256": "31d2ea528cd03e9314e184a75ee1e2c85956254a8f82290eaa09687fd539d172",
+      "authored_dimensions_blender_xyz_m": [
+        0.6183794736862183,
+        0.4132547378540039,
+        1.1999963521957397
+      ],
+      "uniform_scale": 1,
+      "placed_dimensions_blender_xyz_m": [
+        0.6183794736862183,
+        0.4132547378540039,
+        1.1999963521957397
+      ],
+      "runtime_sha256": "e69c7427abf6104526ac34072c57d8775adb27da4435ab53dd0a5c5ed29ef141",
+      "metadata_only_sanitization_proof": "../embedded-png-sanitization.json",
+      "runtime_equivalence": "Rendered hash retained above. Runtime differs only by removed embedded PNG metadata; geometry/materials/transforms and every retained PNG chunk are byte-identical."
+    }
+  },
+  "limitation": "Diagnostic views, not gameplay validation or an automatic visual-quality verdict.",
+  "renderer": {
+    "engine": "CYCLES",
+    "samples": 32,
+    "denoising": true
+  },
+  "camera": {
+    "focus_blender_xyz_m": [
+      0.0,
+      0.0,
+      0.6000000238418579
+    ],
+    "distance_m": 4.800000190734863,
+    "ortho_scale_m": 1.824000072479248
+  },
+  "view_cameras": {
+    "front": {
+      "focus_blender_xyz_m": [
+        0.0,
+        0.0,
+        0.6000000238418579
+      ],
+      "ortho_scale_m": 1.824000072479248
+    },
+    "side": {
+      "focus_blender_xyz_m": [
+        0.0,
+        0.0,
+        0.6000000238418579
+      ],
+      "ortho_scale_m": 1.824000072479248
+    },
+    "back": {
+      "focus_blender_xyz_m": [
+        0.0,
+        0.0,
+        0.6000000238418579
+      ],
+      "ortho_scale_m": 1.824000072479248
+    },
+    "threequarter": {
+      "focus_blender_xyz_m": [
+        0.0,
+        0.0,
+        0.6000000238418579
+      ],
+      "ortho_scale_m": 1.824000072479248
+    },
+    "threequarter_left": {
+      "focus_blender_xyz_m": [
+        0.0,
+        0.0,
+        0.6000000238418579
+      ],
+      "ortho_scale_m": 1.824000072479248
+    },
+    "face_front": {
+      "focus_blender_xyz_m": [
+        0,
+        0,
+        1.02
+      ],
+      "ortho_scale_m": 0.48
+    },
+    "face_threequarter": {
+      "focus_blender_xyz_m": [
+        0,
+        0,
+        1.02
+      ],
+      "ortho_scale_m": 0.48
+    }
+  },
+  "lights": [
+    {
+      "name": "key",
+      "offset_from_focus_m": [
+        2.1600000858306885,
+        -3.120000123977661,
+        3.6000001430511475
+      ],
+      "energy_w": 432.0000343322761,
+      "rectangle_size_m": [
+        2.5200001001358032,
+        2.5200001001358032
+      ]
+    },
+    {
+      "name": "fill",
+      "offset_from_focus_m": [
+        -3.0000001192092896,
+        -1.2000000476837158,
+        1.9200000762939453
+      ],
+      "energy_w": 158.40001258850123,
+      "rectangle_size_m": [
+        2.640000104904175,
+        2.640000104904175
+      ]
+    },
+    {
+      "name": "rim",
+      "offset_from_focus_m": [
+        0.6000000238418579,
+        2.640000104904175,
+        2.880000114440918
+      ],
+      "energy_w": 316.80002517700245,
+      "rectangle_size_m": [
+        1.8000000715255737,
+        1.8000000715255737
+      ]
+    },
+    {
+      "name": "reflection-strip",
+      "offset_from_focus_m": [
+        1.440000057220459,
+        -2.4000000953674316,
+        2.1600000858306885
+      ],
+      "energy_w": 230.40001831054724,
+      "rectangle_size_m": [
+        3.3600001335144043,
+        0.12000000476837158
+      ]
+    }
+  ],
+  "lighting_passes": {
+    "beauty_and_clay": [
+      "key",
+      "fill",
+      "rim"
+    ],
+    "reflection": [
+      "reflection-strip"
+    ],
+    "silhouette": []
+  },
+  "world": {
+    "color_linear_rgb": [
+      0.095,
+      0.095,
+      0.095
+    ],
+    "strength": 0.45,
+    "silhouette_color_linear_rgb": [
+      1,
+      1,
+      1
+    ],
+    "silhouette_strength": 1
+  }
+}

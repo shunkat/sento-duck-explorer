@@ -1,0 +1,70 @@
+{
+  "revision": "v01",
+  "blender_version": "5.2.4 LTS",
+  "source_triangles": 87590,
+  "source_sha256": "bec685cdace5e895485a3391c5fa114088014659dc54c22cd1fa988d9f4d0cf5",
+  "blend_sha256": "d826b746d19d4bf8b3d3293427469b9a5474e67a73e160dc987df3b33e570370",
+  "triangles": 3000,
+  "vertices": 1500,
+  "dimensions_gltf_m": [
+    0.36000001430511475,
+    0.30000001192092896,
+    0.36000001430511475
+  ],
+  "bounds_blender_zup_m": [
+    [
+      -0.18000000715255737,
+      -0.18000000715255737,
+      0.0
+    ],
+    [
+      0.18000000715255737,
+      0.18000000715255737,
+      0.30000001192092896
+    ]
+  ],
+  "bounds_gltf_yup_m": [
+    [
+      -0.18000000715255737,
+      0.0,
+      -0.18000000715255737
+    ],
+    [
+      0.18000000715255737,
+      0.30000001192092896,
+      0.18000000715255737
+    ]
+  ],
+  "material_count": 1,
+  "texture_count": 0,
+  "nonmanifold_edges": 0,
+  "degenerate_faces": 0,
+  "connected_components": 1,
+  "separate_legs_below_14cm": 4,
+  "foot_contact_heights_m": [
+    7.253927469719201e-05,
+    0.0,
+    8.651022653793916e-05,
+    9.378851245855913e-05
+  ],
+  "signed_volume_m3": 0.009101407748850598,
+  "finite_vertices": true,
+  "center_drain_clear": true,
+  "glb_bytes": 55568,
+  "sha256": "235fd70ad4cefaadbf311f804afb0ab57e13a31a0404222a0fa5ef1a00a24910",
+  "blend_bytes": 17811541,
+  "raw_path": "assets/bath_stool/gen/bath_stool__meshy6lite_raw_v01.glb",
+  "blend_path": "assets/bath_stool/blend/bath_stool__v01.blend",
+  "final_path": "public/models/bath_stool.glb",
+  "scoped_private_metadata_matches": 0,
+  "scoped_metadata_audit": "Raw GLB, final GLB and uncompressed data read back from the compressed blend; path/mail/token markers only",
+  "exporter": "Khronos glTF Blender I/O v5.2.41",
+  "reference_sha256": "c4b0e57b4c692d8d5b5475df52459898d03aa8a427d3839b0b8e869f3aca9346",
+  "source_preserved_in_blend": {
+    "vertices": 43795,
+    "polygons": 87590,
+    "positions_identical_to_fresh_import": true,
+    "topology_identical_to_fresh_import": true,
+    "transform_identical_to_fresh_import": true
+  }
+}

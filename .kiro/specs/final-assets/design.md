@@ -13,6 +13,8 @@ This design defines how final assets are produced and how they replace the place
 
 ## Pipeline
 
+**User-confirmed update, 2026-11-21:** new architecture, environment, facilities and small props may be authored directly in Blender, with a preference for free public assets that improve quality. The original generated-model flow below remains the provenance of the six existing models and their source-derived LOD/NPC variants. Alternative final routes are (a) verified free public model/texture → preserved source and license → Blender adaptation → GLB, and (b) art reference → authored editable Blender scene → GLB. Public geometry is reused only where it fits the sento style and exact LEVEL envelopes; original construction covers the gaps. Source names, creator, URLs, redistribution terms, modifications and SHA-256 stay in the ledger. Do not relabel these routes as Image-to-3D generation.
+
 ```mermaid
 flowchart LR
   A[Original reference image<br/>three-quarter view] --> B[Image to 3D<br/>Meshy Free / 6 Lite]
@@ -46,7 +48,7 @@ Derivation: an asset may be cut or edited from another asset's generated model o
 | `blend` row | The derived asset's own `.blend`, or the named object inside the parent's `.blend` (object name in `notes`), with its own checksum |
 | `final` row | The derived asset's own GLB |
 
-A row may not say "not applicable" to skip a stage of a final asset. Only `prototype` rows, which are never final, may use it. An asset whose inherited rows point to a missing file or a parent stage that is not `done` cannot be marked `final`.
+Every stage of the chosen user-approved route needs real evidence. A public input uses a `source` row with its original downloaded file and license; a directly authored environment/prop uses a reference and editable Blend evidence without fabricating a `generated` row. Generated derivatives still require the parent stages above. Missing inherited files or non-completed parent stages cannot support a `final` claim.
 
 ### Production order
 
@@ -138,24 +140,97 @@ Hat GLB origin: center of the inner base, so attaching it to `socket_hat` needs 
 
 ## Budgets
 
+### Washing-station finishing batch (2026-11-21)
+
+At the user's request, normal-input play is deferred while finishing work proceeds. The first environment batch is the five washing stations' stools and basins. The original paired reference is retained as provenance, but production now uses separate single-object references for the ivory stool and yellow open basin. Initial Meshy 6 Lite generations were started separately. The production workflow requires Blender adjustment of each actual generated model for its own export. Each asset retains its own reference, unmodified generated file and checksums. This supersedes the plan to generate a combined kit and separate it in Blender. This is a partial bath-section kit, not completion of all facilities.
+
+Both separate Meshy 6 Lite generations completed and their untextured GLBs were downloaded. The stool preview reported 87,590 triangles / 43,795 vertices; the basin reported 97,848 triangles / 48,926 vertices. Each cost 10 free credits under CC BY 4.0. The user chose free Blender correction after the higher-quality model's subscription requirement was explained. No higher-model generation or paid subscription was purchased. Blender correction, export, reimported measurements and multi-angle asset checks are complete for these two assets. Their runtime URLs are registered in the local finishing branch; independent review and the deferred game-view checks remain pending.
+
+Visual replacement uses the existing `LEVEL.fixtures` stool boxes (0.36 × 0.36 m footprint, 0.30 m height) and `LEVEL.decor` bucket boxes (0.20 × 0.18 m footprint, 0.14 m height, bottom at 0.50 m). Colliders, routes, camera obstacles, gameplay state and placement coordinates remain authoritative in LEVEL. Roots are bottom-centered with +Y up, and five instances share each asset's geometry/material. Missing or invalid models keep the primitive. Per-instance transforms fit the existing envelopes; assets must not cover labels or change movement.
+
+The first v01 exports used 3,000 stool triangles and 1,920 basin triangles, one material each and no textures. Five pairs totaled 24,600 triangles; the two GLBs totaled 91,744 bytes. The user subsequently rejected their visual quality. These counts and successful topology checks did not establish acceptable shape quality. The v01 GLBs remain archived beside their Blender scenes for reproducible comparison.
+
+### Shape-quality gate (2026-11-21 user feedback)
+
+The user reported poor Duck eye geometry. A clean reference image or successful mesh export is insufficient. Inspect the reimported export at front, both three-quarter views, side/back and a close-up of important features before registering a model for runtime use. Check silhouette, intended bilateral alignment, smooth contour and shading, floating/intersecting parts, and preservation of holes and hollow interiors. For stools inspect all feet, seat and clearance underneath; for basins inspect the entire rim, inner wall, bottom thickness and underside. Keep a reference/raw/adjusted comparison. Repair a bad reconstruction in Blender or regenerate it; do not mark it done merely because it meets size or triangle limits.
+
+The historical Duck v02 correction retained the generated body and corrected only the eyes. The user also rejected the existing models' general quality, so v03 may correct source-derived head and torso curvature within the original metric limits. Exact hat/label socket transforms stay unchanged; preserving every old body extent or eye vertex count is not a quality requirement. The provisional 8,000-triangle allowance remains, with up to two materials so the eyes can have a separate glossy response and the body can use a 1024² base-color bake. These are Blender modifications of the existing Image-to-3D asset, not new generations. Asset renders do not constitute normal-input gameplay or user acceptance.
+
+On 2026-11-21 the user explicitly requested a footless rubber duck. Revision v04 removes the generated legs and feet, fairs the lower belly and closes it with a rounded, yellow underside. The existing reference and raw Meshy output remain unchanged as provenance; this is a subsequent user-directed Blender edit, not a claim that the original reference or generation already had the corrected silhouette. The head, eyes, beak, upper wing detail, exact attachment sockets, bottom-center origin and metric limits are retained. The prior v03 export is archived for comparison.
+
+### Repeatable correction and visual comparison
+
+The user's second quality report exposed two process defects: preserving the generated source too literally retained bad surface features, while forcing an arbitrary bounding box distorted the basin. Its measured source height/diameter ratio is about 0.452; stretching it to 0.14 m high at 0.20 m wide changed that ratio to 0.70. Runtime placement now uses one uniform scale inside the existing LEVEL envelope and aligns the bottom. The envelope is a containment boundary, not a shape target. Collision and gameplay data remain unchanged.
+
+For each revision:
+
+1. Preserve the unmodified generated input and the previous GLB. Name the visible defects before editing: silhouette, important openings, local curvature and material response.
+2. Build a source-derived editable control mesh. Place loops around the drain, rim, arch and foot contacts; use subdivision for continuous curves. Keep an evaluated high-detail master separate from the export. Do not repeatedly smooth the entire object or force a triangle count with unreviewed collapse.
+3. Reduce low-curvature regions first, retaining samples at silhouette and curvature changes. Compare the export with the clean master; source-distance measurements describe geometry changes, not reference-image accuracy.
+4. Reimport the actual exported GLB. Use `scripts/compare-asset-quality.py` for before/after beauty, neutral clay, silhouette and grazing-reflection views. Select views that expose the named defect: characters also need back and close facial views, and humans need an explicit outfit selection. The camera, lights, framing and exposure stay identical for both versions. Characters retain authored scale and origin; environment props use uniform containment. Save hashes, conditions, images and comparison HTML. PNG text/EXIF metadata is removed without changing pixels.
+5. Inspect the views and receive a separate material critique. Correct visible dents, pinching, broken highlight flow or missing openings even when numeric checks pass. Record retained limitations. A diagnostic metal-like reflection pass is deliberately harsher than the intended satin plastic.
+6. Check actual GLB bounds, openings, finite geometry, provenance and total scene geometry before promotion. The scene-budget test constructs the real GameScene and counts all visible geometry without frustum culling, including five repeated pairs and the active human outfits. This is an offline geometry bound; it does not measure FPS, actual GPU draw calls or normal-input gameplay.
+
+The reusable method follows Blender's reference/result comparison practice and feature-preserving surface modeling; sources and limitations are collected in `reports/Blender 素材品質 改善実験.md`. A plugin installation itself is not a quality improvement. The existing Blender Python and render tools can perform this loop without a paid service. Final in-game appearance and Crew B's code review remain separate checks.
+
+For character revisions, inspect the detailed source, posed master and runtime mesh separately. Pose weights must follow the intended limb: spatial proximity alone can accidentally pull a thigh into an arm correction. Protect the whole wing outline, not only feather tips, when fairing the Duck's torso. Check the actual hand surface against its socket after deformation, plus the fitted Duck/hat/carry assembly through `scripts/inspect-character-attachments.py`.
+
+Weighted reduction must be verified with regional triangle counts and plain/clay renders. A rejected trial left only 350 head triangles because the weight direction was assumed incorrectly. Blender's [Decimate Geometry documentation](https://docs.blender.org/manual/en/5.0/modeling/meshes/editing/mesh/cleanup.html#decimate-geometry) explains that larger weights prioritize collapse, and excessive influence can override better geometric candidates. Start with an unweighted baseline, verify direction, then tune a small influence. More head faces alone is insufficient if the torso collapses instead. Continuous facial and clothing color boundaries are baked per texel; source-position attributes are reprojected from the dense master after reduction to avoid boundary drift. Neither smoother paint nor a passing manifold/count check excuses a damaged silhouette.
+
+The selected washing-station v02 exports contain 4,610 stool triangles and 2,816 basin triangles, one material and no texture each, totaling 136,996 bytes. Five pairs contain 37,130 triangles. The scene at that revision contained 59,576 triangles. The subsequent Duck v03 / hat v02 / human v02 revisions bring the actual all-visible scene to **59,776 triangles** for every human-outfit combination. Duck/hat total 9,360; the two visible human variants total 11,400. The partial bath-kit allocation remains 37,500 and the required whole-scene limit remains 60,000. New facilities cannot simply consume another allocation; reduction or LOD work must keep the same global limit. Close-up low-poly contour differences and reference-lighting differences are documented, not hidden by successful topology checks.
+
 The game is a browser demo that judges open from a URL on unknown machines. Image to 3D output is often much denser than a game needs, so Blender reduction is planned for every asset. All values are provisional starting points, not measurements.
 
 | Asset | Triangles | Materials | Textures | GLB size |
 | --- | --- | --- | --- | --- |
-| `duck` | ≤ 6,000 | 1 | base color 1024², optional normal 1024² | ≤ 1.5 MB |
-| `hat_sauna_duck` | ≤ 1,500 | 1 | base color 512² | ≤ 0.3 MB |
+| `duck` | ≤ 8,000 | ≤ 2 | base color 1024², optional normal 1024² | ≤ 1.5 MB |
+| `hat_sauna_duck` | ≤ 2,100 (source-profile retopology) | 1 | base color 512² | ≤ 0.3 MB |
 | small items (`coin_500`, `sauna_key`, `soap`, `towel`) | ≤ 500 each | share 1 | shared 512² atlas | ≤ 0.2 MB each |
-| bath section kit (all pieces) | ≤ 25,000 drawn | ≤ 4 | ≤ 4 × 1024² | ≤ 5 MB total |
+| bath section kit (all pieces) | ≤ 37,500 drawn (reallocated after v02 count) | ≤ 4 | ≤ 4 × 1024² | ≤ 5 MB total |
 | `child`, `adult` (both outfits) | ≤ 12,000 each | ≤ 2 | 1024² per outfit | ≤ 3 MB each |
 | each later facility kit | ≤ 25,000 drawn | ≤ 4 | ≤ 4 × 1024² | ≤ 5 MB |
 
 Reasons:
 
 - Duck is close to the camera in the low view, so it needs a smooth silhouette. 6,000 triangles is enough for a toy-like duck, and it is small next to the scene budget.
-- Scene: 60,000 triangles and 120 draw calls. The stage-2 total is about 35,000 triangles (Duck 6k, hat 1.5k, items 2k, bath kit 25k, placeholder humans). That leaves room for the stage-3 humans (24k), which brings the total to about 59k.
+- Scene: 60,000 triangles and 120 draw calls. The latest offline all-visible count is 59,776 triangles, including the refined characters, actual exclusive human outfits and five washing stations. Real GPU draw calls and frame time still require final verification.
 - Download: stage 2 is about 7.6 MB against a 12 MB limit. The full set is limited to 30 MB, so the first load stays short on ordinary connections.
 - No mesh or texture compression at first, so no extra decoder is needed. If the size limits are exceeded, consider meshopt or KTX2 through a tool such as glTF-Transform. Record that tool and its license before using it.
 - Frame rate: target 60 fps at 1280 × 720 on a reference machine. **No reference machine has been chosen yet.** The progress record will name it at the first measurement.
+
+### Whole-environment production allocation (2026-11-21)
+
+The approved free-source/direct-authoring refresh consolidates the room kits into
+one world-space GLB. The implementation adopts this explicit allocation in place
+of the provisional per-kit rows above: architecture up to 8,000 triangles plus
+12,200 source-derived near NPC triangles, up to 18 materials, 11 embedded images
+and 7 MB for the combined world. The panoramic mural retains its 2172 × 724
+pixels (1.57 megapixels); wood maps are 1024² and ceramic/NPC maps are 512².
+This exception preserves the mural and readable separate surface materials;
+it does not raise the whole-scene 60,000 triangles, 120 calls or 12 MB first-load
+limits. Those require actual integrated measurements before publication.
+
+Small-item allocations are soap 300, towel 350, coin 650 and key 500 triangles,
+up to two materials and 0.05 MB each. Their selected exports use 236 / 296 /
+608 / 468 triangles, 51,760 bytes total and no textures. With two towels the
+visible allocation is 1,904 triangles. The coin's extra profile/relief vertices
+are retained for shape quality rather than forcing the old provisional 500.
+
+Washing stations preserve the existing detailed exports within 1.6 m (at most
+two close instances per type), medium detail through 4.5 m and far detail beyond
+that distance or in Overview. Background NPCs retain near detail through 6 m
+camera-to-center and use separately inspected 600-triangle derivatives farther
+away or in Overview. All variants preserve their placement frames. Numerical
+budgets do not replace silhouette review at those actual viewing distances.
+
+The shared style uses cream and muted teal ceramics with broad tile rhythm,
+warm Hinoki wood at a consistent physical scale, satin toy characters, matte
+foliage/stone and restrained metal trim. Bevels are concentrated on silhouettes
+and exposed rims. Source normal/roughness maps support the wood; generated tile
+maps use 512² repeated material-space coordinates rather than per-object large
+textures. The mural sits above the bathing area and the water remains a separate
+shared lit material with gentle ripples. Original collision and interaction
+coordinates remain authoritative.
 
 ## File layout and ledger
 
@@ -181,7 +256,7 @@ Ledger columns (`assets/ledger.csv`):
 
 `asset_id, stage, file, status, creator, method, tool_or_service, tool_version, source_type, terms_url, input_rights, output_license, redistributable, commercial_use, attribution, parent_asset, sha256, created_date, notes`
 
-- `stage`: `prototype`, `reference`, `generated`, `blend`, `final`.
+- `stage`: `prototype`, `source`, `reference`, `generated`, `blend`, `final`.
 - `status`: `planned`, `in_progress`, `done`, `rejected`.
 - `redistributable`: `yes`, `no`, `unknown`. Only `yes` may enter `public/models/` (Requirement 7.2).
 
@@ -247,3 +322,13 @@ Why it fits: each effect makes an existing rule or route step easier to notice. 
 - Existing suites unchanged: route, F1–F7, pair doors, checkpoints, input, view, labels (Requirement 9.2).
 - A browser playthrough per stage, recording who performed it (Requirement 9.5).
 - Publication check before and after each change. Before release, also review the ledger rights columns, `THIRD_PARTY_NOTICES.md`, and the GLB metadata. The scanner does not inspect binaries.
+
+
+The final runtime supplies a generated neutral reflection-light cube because
+hemisphere/directional lighting alone left high-metalness surfaces dark. It
+uses [Three.js Scene.environment](https://threejs.org/docs/pages/Scene.html)
+and [CubeTexture](https://threejs.org/docs/pages/CubeTexture.html), with linear
+RGBA faces and cached PMREM. It adds no asset download or scene triangles;
+its 32 px input faces are expanded by the renderer's prefilter internally.
+The final measured environment release is documented in
+`docs/environment-release-verification.md`; the scene limits are unchanged.

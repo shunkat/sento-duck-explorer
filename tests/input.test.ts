@@ -107,7 +107,7 @@ describe("attached keyboard events", () => {
     };
     const sim = new Sim();
     sim.switchTo("child");
-    sim.walk([{ x: 2.6, z: 1.0 }]); // wet, at the changing-room exit
+    sim.walk([LEVEL.waypoints.tubWest, LEVEL.waypoints.bathAisle, { x: 1.4, z: 1.0 }]); // wet, at the changing-room exit
     let s = sim.state;
     const before = structuredClone(s.child);
     s = tap(s, "KeyT");
@@ -125,9 +125,9 @@ describe("attached keyboard events", () => {
     // Dialog: E opens the coin handoff, the next E confirms it.
     const d = new Sim();
     R.duckGetsCoin(d);
-    d.walk([{ x: 0.95, z: 5.5 }]);
+    d.walk([LEVEL.waypoints.troughEnd]);
     d.switchTo("adult");
-    d.walk([{ x: 3.4, z: 4.8 }, { x: LEVEL.channelEntrance.x, z: 4.9 }]);
+    d.walk([LEVEL.waypoints.troughGive]);
     d.switchTo("duck");
     let g = tap(d.state, "KeyE");
     expect(g.dialog).toEqual({ item: "coin", from: "duck", to: "adult" });
@@ -199,9 +199,10 @@ describe("attached keyboard events", () => {
   it.each([true, false])("feeds attached movement through fixed-step soap rules (Shift modifier = %s)", (shiftKey) => {
     const sim = new Sim();
     sim.switchTo("adult");
-    sim.walk([{ x: 11, z: 5 }]); // Setup only; the crossing uses actual attached keyboard frames.
+    const soap = LEVEL.soaps[0]!.pos;
+    sim.walk([LEVEL.waypoints.bathMid, { x: soap.x, z: soap.z + 1.4 }]); // Setup only; the approach uses actual attached keyboard frames.
     const { kb, key } = attached();
-    key("keydown", "KeyD", shiftKey);
+    key("keydown", "KeyW", shiftKey);
     let state = sim.state;
     let accumulator = 0;
     for (let i = 0; i < 60 && state.outcome.kind === "playing"; i++) {
@@ -212,7 +213,7 @@ describe("attached keyboard events", () => {
     if (shiftKey) expect(state.outcome).toEqual({ kind: "gameOver", reason: "F3" });
     else {
       expect(state.outcome).toEqual({ kind: "playing" });
-      expect(state.adult.pos.x).toBeGreaterThan(13);
+      expect(state.adult.pos.z).toBeLessThan(soap.z + 0.5); // walked over the soap
     }
   });
 });

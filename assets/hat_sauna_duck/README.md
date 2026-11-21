@@ -1,5 +1,9 @@
 # Duck sauna hat model
 
+**Current revision: [v02](blend/hat_sauna_duck__v02.md), 2026-11-21.** Uniform source scaling restores the natural profile. Measured inner/outer sections and the hanging-loop contour drive the new topology, preserving the open underside. See the [fixed comparison](../quality/existing-models/hat/index.html). The matte material remains a simplified felt approximation; the tested fine normal textures were not selected. Current measurements and hashes are in the ledger/manifest; the following v01 record is historical.
+
+## Archived v01 production record
+
 Created on 2026-11-20 through the required **image → Image to 3D → Blender adjustment → GLB** pipeline. This is an exported game asset; browser integration, hat transfer, and gameplay verification are separate tasks.
 
 | Stage | File | State |

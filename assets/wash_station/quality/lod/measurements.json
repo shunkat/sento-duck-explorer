@@ -1,0 +1,742 @@
+{
+  "revision": "lod_v01",
+  "date": "2026-11-21",
+  "runtime_contract": "Four independent GLBs; select exactly one LOD per slot. Existing canonical v02 is unchanged high detail. All levels use the same authored metric frame; size slots from high bounds only.",
+  "distance_guidance_m": {
+    "high_through": 1.6,
+    "medium_through": 4.5
+  },
+  "scope": "Local source-derived geometry and material inspections; no game rendering, FPS benchmark or normal-input play.",
+  "assets": {
+    "bath_stool": {
+      "source_glb_sha256": "1df13475185623882db1d63d99cc52f9ebff03cc40d62fb5136672a4f7515e55",
+      "source_blend_sha256": "8eaf2e470f5b545e3b1989e02dd6acd6faeccd117ce3459a0525c0027afb860f",
+      "blend": "assets/bath_stool/blend/bath_stool__lod_v01.blend",
+      "blend_sha256": "df1b7a47134c539dc3496daf3f9daa44c52658edf9e0f9cfcdc55b185ca4a2c4",
+      "source_runtime_geometry_exactly_preserved": true,
+      "inherited_raw_geometry_exactly_preserved": true,
+      "metadata_private_markers": 0,
+      "levels": {
+        "medium": {
+          "method": {
+            "method": "Feature-weighted collapse of actual v02; drain bevel vertices fixed exactly; supported contours and foot-contact band prioritized; original custom normals transferred",
+            "fixed_slot_vertices": 126,
+            "fixed_slot_vertices_exactly_preserved": true,
+            "protected_source_vertices": 245,
+            "collapse_group_factor": 0.15,
+            "envelope_overshoot_vertices_clamped": 8,
+            "max_envelope_clamp_m": 0.0007213801205575617
+          },
+          "candidate_file": "bath_stool_lod_medium.glb",
+          "sha256": "9ad24bbe57e5596fd4f46177fbd6192833d9e6e1e93eb4b0e3191b2a846cd247",
+          "bytes": 30648,
+          "reimport": {
+            "triangles": 1600,
+            "vertices": 800,
+            "dimensions_gltf_m": [
+              0.36000001430511475,
+              0.30000001192092896,
+              0.36000001430511475
+            ],
+            "bounds_gltf_m": [
+              [
+                -0.18000000715255737,
+                0.0,
+                -0.18000000715255737
+              ],
+              [
+                0.18000000715255737,
+                0.30000001192092896,
+                0.18000000715255737
+              ]
+            ],
+            "nonmanifold_edges_after_export_seam_weld": 0,
+            "degenerate_faces": 0,
+            "connected_components": 1,
+            "has_custom_normals": true,
+            "finite": true,
+            "legs_below_140mm": [
+              {
+                "vertices": 74,
+                "min_height_m": 0.0
+              },
+              {
+                "vertices": 74,
+                "min_height_m": 0.0
+              },
+              {
+                "vertices": 74,
+                "min_height_m": 0.0
+              },
+              {
+                "vertices": 74,
+                "min_height_m": 0.0
+              }
+            ],
+            "drain_rays": [
+              {
+                "xy_m": [
+                  -0.025,
+                  0
+                ],
+                "clear_down": true,
+                "clear_up": true
+              },
+              {
+                "xy_m": [
+                  0,
+                  0
+                ],
+                "clear_down": true,
+                "clear_up": true
+              },
+              {
+                "xy_m": [
+                  0.025,
+                  0
+                ],
+                "clear_down": true,
+                "clear_up": true
+              },
+              {
+                "xy_m": [
+                  0,
+                  -0.008
+                ],
+                "clear_down": true,
+                "clear_up": true
+              },
+              {
+                "xy_m": [
+                  0,
+                  0.008
+                ],
+                "clear_down": true,
+                "clear_up": true
+              }
+            ],
+            "deviation_from_canonical": {
+              "method": "Bidirectional sampled vertices and triangle centroids; not a continuous Hausdorff bound.",
+              "canonical_to_lod": {
+                "samples": 6915,
+                "mean_m": 0.0002505795323197335,
+                "p95_m": 0.00084509706357494,
+                "max_m": 0.0016040109330788255
+              },
+              "lod_to_canonical": {
+                "samples": 2400,
+                "mean_m": 0.00017084431287721634,
+                "p95_m": 0.0007051060092635453,
+                "max_m": 0.002255510538816452
+              }
+            },
+            "materials": 1,
+            "textures": 0,
+            "material_definition_identical_to_canonical": true,
+            "embedded_buffers": true
+          }
+        },
+        "far": {
+          "method": {
+            "method": "Feature-weighted collapse of actual v02; drain bevel vertices fixed exactly; supported contours and foot-contact band prioritized; original custom normals transferred",
+            "fixed_slot_vertices": 126,
+            "fixed_slot_vertices_exactly_preserved": true,
+            "protected_source_vertices": 245,
+            "collapse_group_factor": 0.15,
+            "envelope_overshoot_vertices_clamped": 11,
+            "max_envelope_clamp_m": 0.001301750551564777
+          },
+          "candidate_file": "bath_stool_lod_far.glb",
+          "sha256": "a1a03c2b128fd4405bc97ce12551acc6892681f93a16b80356fd762684acbff1",
+          "bytes": 19844,
+          "reimport": {
+            "triangles": 1000,
+            "vertices": 500,
+            "dimensions_gltf_m": [
+              0.36000001430511475,
+              0.30000001192092896,
+              0.36000001430511475
+            ],
+            "bounds_gltf_m": [
+              [
+                -0.18000000715255737,
+                0.0,
+                -0.18000000715255737
+              ],
+              [
+                0.18000000715255737,
+                0.30000001192092896,
+                0.18000000715255737
+              ]
+            ],
+            "nonmanifold_edges_after_export_seam_weld": 0,
+            "degenerate_faces": 0,
+            "connected_components": 1,
+            "has_custom_normals": true,
+            "finite": true,
+            "legs_below_140mm": [
+              {
+                "vertices": 47,
+                "min_height_m": 0.0
+              },
+              {
+                "vertices": 47,
+                "min_height_m": 0.0
+              },
+              {
+                "vertices": 47,
+                "min_height_m": 0.0
+              },
+              {
+                "vertices": 46,
+                "min_height_m": 0.0
+              }
+            ],
+            "drain_rays": [
+              {
+                "xy_m": [
+                  -0.025,
+                  0
+                ],
+                "clear_down": true,
+                "clear_up": true
+              },
+              {
+                "xy_m": [
+                  0,
+                  0
+                ],
+                "clear_down": true,
+                "clear_up": true
+              },
+              {
+                "xy_m": [
+                  0.025,
+                  0
+                ],
+                "clear_down": true,
+                "clear_up": true
+              },
+              {
+                "xy_m": [
+                  0,
+                  -0.008
+                ],
+                "clear_down": true,
+                "clear_up": true
+              },
+              {
+                "xy_m": [
+                  0,
+                  0.008
+                ],
+                "clear_down": true,
+                "clear_up": true
+              }
+            ],
+            "deviation_from_canonical": {
+              "method": "Bidirectional sampled vertices and triangle centroids; not a continuous Hausdorff bound.",
+              "canonical_to_lod": {
+                "samples": 6915,
+                "mean_m": 0.000765227139312469,
+                "p95_m": 0.0023284058552235365,
+                "max_m": 0.005037317518144846
+              },
+              "lod_to_canonical": {
+                "samples": 1500,
+                "mean_m": 0.00042204155405753136,
+                "p95_m": 0.0020383221562951803,
+                "max_m": 0.004672742914408445
+              }
+            },
+            "materials": 1,
+            "textures": 0,
+            "material_definition_identical_to_canonical": true,
+            "embedded_buffers": true
+          }
+        }
+      },
+      "high": {
+        "triangles": 4610,
+        "vertices": 2305,
+        "dimensions_gltf_m": [
+          0.36000001430511475,
+          0.30000001192092896,
+          0.36000001430511475
+        ],
+        "bounds_gltf_m": [
+          [
+            -0.18000000715255737,
+            0.0,
+            -0.18000000715255737
+          ],
+          [
+            0.18000000715255737,
+            0.30000001192092896,
+            0.18000000715255737
+          ]
+        ],
+        "nonmanifold_edges_after_export_seam_weld": 0,
+        "degenerate_faces": 0,
+        "connected_components": 1,
+        "has_custom_normals": true,
+        "finite": true,
+        "legs_below_140mm": [
+          {
+            "vertices": 158,
+            "min_height_m": 0.0
+          },
+          {
+            "vertices": 158,
+            "min_height_m": 0.0
+          },
+          {
+            "vertices": 158,
+            "min_height_m": 0.0
+          },
+          {
+            "vertices": 158,
+            "min_height_m": 0.0
+          }
+        ],
+        "drain_rays": [
+          {
+            "xy_m": [
+              -0.025,
+              0
+            ],
+            "clear_down": true,
+            "clear_up": true
+          },
+          {
+            "xy_m": [
+              0,
+              0
+            ],
+            "clear_down": true,
+            "clear_up": true
+          },
+          {
+            "xy_m": [
+              0.025,
+              0
+            ],
+            "clear_down": true,
+            "clear_up": true
+          },
+          {
+            "xy_m": [
+              0,
+              -0.008
+            ],
+            "clear_down": true,
+            "clear_up": true
+          },
+          {
+            "xy_m": [
+              0,
+              0.008
+            ],
+            "clear_down": true,
+            "clear_up": true
+          }
+        ]
+      }
+    },
+    "wash_basin": {
+      "source_glb_sha256": "29196b8bc4b62edec5f81a4831b183472f34f86cc2477ae1cd7653386be80111",
+      "source_blend_sha256": "11dea22f4048b8d1f55ad8b21b2225af6d79f55a3cac3f931f990276c709fabe",
+      "blend": "assets/wash_basin/blend/wash_basin__lod_v01.blend",
+      "blend_sha256": "d27084f19f0e0361abbf978a7bb8751725602c0c4830700862369da280707c86",
+      "source_runtime_geometry_exactly_preserved": true,
+      "inherited_raw_geometry_exactly_preserved": true,
+      "metadata_private_markers": 0,
+      "levels": {
+        "medium": {
+          "method": {
+            "method": "Adaptive subset of the actual v02 radial profile with evenly spaced original angular samples; rim/height/radius extrema and both floor endpoints retained; v02 normals transferred",
+            "source_profile_points": 24,
+            "retained_profile_indices": [
+              0,
+              1,
+              2,
+              3,
+              5,
+              6,
+              8,
+              10,
+              12,
+              13,
+              15,
+              17,
+              18,
+              20,
+              22,
+              23
+            ],
+            "sectors": 32,
+            "profile_points": 16,
+            "source_profile_m": [
+              [
+                0.0,
+                0.0
+              ],
+              [
+                0.07085509598255157,
+                0.0003300627286080271
+              ],
+              [
+                0.07796148210763931,
+                0.0010308473138138652
+              ],
+              [
+                0.08200527727603912,
+                0.003251785645261407
+              ],
+              [
+                0.08386819064617157,
+                0.0062680537812411785
+              ],
+              [
+                0.08501599729061127,
+                0.011501044034957886
+              ],
+              [
+                0.0922628715634346,
+                0.08234260231256485
+              ],
+              [
+                0.09284321218729019,
+                0.08439017087221146
+              ],
+              [
+                0.09415194392204285,
+                0.08455612510442734
+              ],
+              [
+                0.0969865471124649,
+                0.0784330666065216
+              ],
+              [
+                0.09783914685249329,
+                0.07782600820064545
+              ],
+              [
+                0.09914624691009521,
+                0.07822567224502563
+              ],
+              [
+                0.09999999403953552,
+                0.08338069915771484
+              ],
+              [
+                0.09827270358800888,
+                0.08801165223121643
+              ],
+              [
+                0.0951111763715744,
+                0.09028548002243042
+              ],
+              [
+                0.09229355305433273,
+                0.09051680564880371
+              ],
+              [
+                0.08880133181810379,
+                0.08879602700471878
+              ],
+              [
+                0.08725327998399734,
+                0.0860290676355362
+              ],
+              [
+                0.08151939511299133,
+                0.020810293033719063
+              ],
+              [
+                0.08006317913532257,
+                0.01126235630363226
+              ],
+              [
+                0.07802993804216385,
+                0.007574398536235094
+              ],
+              [
+                0.07513129711151123,
+                0.0062433574348688126
+              ],
+              [
+                0.06870938092470169,
+                0.0058538527227938175
+              ],
+              [
+                0.0,
+                0.005684640258550644
+              ]
+            ]
+          },
+          "candidate_file": "wash_basin_lod_medium.glb",
+          "sha256": "7e56897fb6acbf2d736e68da15335d72f966dcdc4b292a9a42262ee5edcf260a",
+          "bytes": 17580,
+          "reimport": {
+            "triangles": 896,
+            "vertices": 450,
+            "dimensions_gltf_m": [
+              0.19999998807907104,
+              0.09051680564880371,
+              0.19999998807907104
+            ],
+            "bounds_gltf_m": [
+              [
+                -0.09999999403953552,
+                0.0,
+                -0.09999999403953552
+              ],
+              [
+                0.09999999403953552,
+                0.09051680564880371,
+                0.09999999403953552
+              ]
+            ],
+            "nonmanifold_edges_after_export_seam_weld": 0,
+            "degenerate_faces": 0,
+            "connected_components": 1,
+            "has_custom_normals": true,
+            "finite": true,
+            "cavity_depth_m": 0.08483216166496277,
+            "floor_thickness_m": 0.005684651434421539,
+            "deviation_from_canonical": {
+              "method": "Bidirectional sampled vertices and triangle centroids; not a continuous Hausdorff bound.",
+              "canonical_to_lod": {
+                "samples": 4226,
+                "mean_m": 0.0003846917552052416,
+                "p95_m": 0.0010259054834023118,
+                "max_m": 0.0015140075702220201
+              },
+              "lod_to_canonical": {
+                "samples": 1346,
+                "mean_m": 0.0002752347949903545,
+                "p95_m": 0.0008143525919876993,
+                "max_m": 0.0012155009899288416
+              }
+            },
+            "materials": 1,
+            "textures": 0,
+            "material_definition_identical_to_canonical": true,
+            "embedded_buffers": true
+          }
+        },
+        "far": {
+          "method": {
+            "method": "Adaptive subset of the actual v02 radial profile with evenly spaced original angular samples; rim/height/radius extrema and both floor endpoints retained; v02 normals transferred",
+            "source_profile_points": 24,
+            "retained_profile_indices": [
+              0,
+              1,
+              3,
+              5,
+              6,
+              8,
+              10,
+              12,
+              13,
+              15,
+              17,
+              18,
+              20,
+              23
+            ],
+            "sectors": 16,
+            "profile_points": 14,
+            "source_profile_m": [
+              [
+                0.0,
+                0.0
+              ],
+              [
+                0.07085509598255157,
+                0.0003300627286080271
+              ],
+              [
+                0.07796148210763931,
+                0.0010308473138138652
+              ],
+              [
+                0.08200527727603912,
+                0.003251785645261407
+              ],
+              [
+                0.08386819064617157,
+                0.0062680537812411785
+              ],
+              [
+                0.08501599729061127,
+                0.011501044034957886
+              ],
+              [
+                0.0922628715634346,
+                0.08234260231256485
+              ],
+              [
+                0.09284321218729019,
+                0.08439017087221146
+              ],
+              [
+                0.09415194392204285,
+                0.08455612510442734
+              ],
+              [
+                0.0969865471124649,
+                0.0784330666065216
+              ],
+              [
+                0.09783914685249329,
+                0.07782600820064545
+              ],
+              [
+                0.09914624691009521,
+                0.07822567224502563
+              ],
+              [
+                0.09999999403953552,
+                0.08338069915771484
+              ],
+              [
+                0.09827270358800888,
+                0.08801165223121643
+              ],
+              [
+                0.0951111763715744,
+                0.09028548002243042
+              ],
+              [
+                0.09229355305433273,
+                0.09051680564880371
+              ],
+              [
+                0.08880133181810379,
+                0.08879602700471878
+              ],
+              [
+                0.08725327998399734,
+                0.0860290676355362
+              ],
+              [
+                0.08151939511299133,
+                0.020810293033719063
+              ],
+              [
+                0.08006317913532257,
+                0.01126235630363226
+              ],
+              [
+                0.07802993804216385,
+                0.007574398536235094
+              ],
+              [
+                0.07513129711151123,
+                0.0062433574348688126
+              ],
+              [
+                0.06870938092470169,
+                0.0058538527227938175
+              ],
+              [
+                0.0,
+                0.005684640258550644
+              ]
+            ]
+          },
+          "candidate_file": "wash_basin_lod_far.glb",
+          "sha256": "5640740cb9f79996b1443e994c16e3533a3c012bcef679d932e04e2efbd53468",
+          "bytes": 8352,
+          "reimport": {
+            "triangles": 384,
+            "vertices": 194,
+            "dimensions_gltf_m": [
+              0.19999998807907104,
+              0.09051680564880371,
+              0.19999998807907104
+            ],
+            "bounds_gltf_m": [
+              [
+                -0.09999999403953552,
+                0.0,
+                -0.09999999403953552
+              ],
+              [
+                0.09999999403953552,
+                0.09051680564880371,
+                0.09999999403953552
+              ]
+            ],
+            "nonmanifold_edges_after_export_seam_weld": 0,
+            "degenerate_faces": 0,
+            "connected_components": 1,
+            "has_custom_normals": true,
+            "finite": true,
+            "cavity_depth_m": 0.08483213186264038,
+            "floor_thickness_m": 0.00568467378616333,
+            "deviation_from_canonical": {
+              "method": "Bidirectional sampled vertices and triangle centroids; not a continuous Hausdorff bound.",
+              "canonical_to_lod": {
+                "samples": 4226,
+                "mean_m": 0.0009734768600716226,
+                "p95_m": 0.0019919450860470533,
+                "max_m": 0.0028352136723697186
+              },
+              "lod_to_canonical": {
+                "samples": 578,
+                "mean_m": 0.0007803254746706757,
+                "p95_m": 0.0019322679145261645,
+                "max_m": 0.002213516039773822
+              }
+            },
+            "materials": 1,
+            "textures": 0,
+            "material_definition_identical_to_canonical": true,
+            "embedded_buffers": true
+          }
+        }
+      },
+      "high": {
+        "triangles": 2816,
+        "vertices": 1410,
+        "dimensions_gltf_m": [
+          0.19999998807907104,
+          0.09051680564880371,
+          0.19999998807907104
+        ],
+        "bounds_gltf_m": [
+          [
+            -0.09999999403953552,
+            0.0,
+            -0.09999999403953552
+          ],
+          [
+            0.09999999403953552,
+            0.09051680564880371,
+            0.09999999403953552
+          ]
+        ],
+        "nonmanifold_edges_after_export_seam_weld": 0,
+        "degenerate_faces": 0,
+        "connected_components": 1,
+        "has_custom_normals": true,
+        "finite": true,
+        "cavity_depth_m": 0.08483213186264038,
+        "floor_thickness_m": 0.00568467378616333
+      }
+    }
+  },
+  "per_kind_limits": {
+    "high": 2
+  },
+  "far_assignment_note": "With all detail sources available, all remaining props through 4.5 m use medium without a quantity cap. Far is used only beyond 4.5 m or in overview. A pending medium source prefers high before far.",
+  "runtime_policy_review": {
+    "previous_medium_limit": 1,
+    "previous_far_minimum_m": 1.6,
+    "decision": "Independent asset QA rejected the medium quantity cap because far stool arches and the 16-sided basin rim were visibly angular nearby. The cap was removed; geometry files are unchanged.",
+    "five_pair_conservative_triangles": 22340
+  }
+}

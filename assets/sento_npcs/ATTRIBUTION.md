@@ -1,0 +1,11 @@
+# Sento NPC derivatives attribution
+
+These static reception and sauna NPCs derive from the project's [Adult / Glow Boy](../adult/ATTRIBUTION.md), generated with [Meshy](https://www.meshy.ai/), Meshy 6 Lite, on 2026-11-20. The generated mesh, textures, Blender scene and derived previews retain **[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/)**. No endorsement by Meshy is implied.
+
+The original image → Meshy → Blender chain is inherited by reference. No new Meshy generation, paid download, new external model, or copied raw/reference file is claimed. Exact parent paths and SHA-256 values are in [measurements.json](quality/measurements.json). The original reference image retains its separate [MIT release of project rights and OpenAI generation provenance](../adult/ref/README.md); this does not replace the generated model's CC BY 4.0 license.
+
+**Further modifications by the Sento Duck Explorer project, performed by Codex in Blender 5.2.4 LTS, 2026-11-21:** static seated hip/knee/arm deformation, a standing clothed reception derivative, a standing bathing derivative, region-weighted polygon reduction, detailed-surface reprojection, inherited UV and facial texture retention, 512-pixel texture derivation, source-normal transfer, bottom-center origin, seat anchor and GLB export. Original raw mesh and detailed parent masters remain unchanged inside the saved scene. Bathing variants remain the existing opaque featureless toy surface, with no anatomical detail added.
+
+When redistributing, retain the Adult credit, this modification record and the license link. The repository's MIT code license does not replace the NPC assets' CC BY 4.0 terms.
+
+Compact revision v02 additionally lowers both inherited arms, relaxes the exaggerated source shoulder spread locally, and applies uniform metric normalization to 1.600 meters. It preserves the head/face, lower-body proportions and baked texture; no whole-model nonuniform scaling or new anatomical features are introduced. The seated v01 source and candidate remain unchanged. A controlled lighting experiment identifies the former green jaw as indirect teal-shirt reflection; no texture recoloring was needed.
