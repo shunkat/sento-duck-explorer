@@ -167,3 +167,22 @@ KiroのSpecで、クリアルートと失敗条件（当初の7つと、2026-11-
 - 実際に使ったKiro機能、発見した問題、改善、関連コミットや画面を短く記録する。未実施の作業を実績として書かない。
 - 公開GitHubリポジトリ、OSSライセンス、ルートの`.kiro`、動くアプリURL、英語の説明、3分未満の公開YouTubeデモが提出準備に必要。3D素材の出典・ライセンス・同梱可否も確認する。
 - [Kiroween公式規約](https://kiroween.devpost.com/rules)
+
+
+## Environment refresh release handoff — 2026-11-21
+
+The method wait is resolved by the user's approval of free public sources and
+direct Blender authoring. The complete environment and props are registered in
+`modelEntry.ts` (18 GLBs, 8,746,400 bytes), with Kenney/Poly Haven/Quaternius
+provenance, independently reviewed world/small items, washing and NPC distance
+variants. `4ec94c28` contains the final asset batch and `3cdc0b38` adds the
+browser-confirmed reflection-light correction. The canonical six GLBs are
+unchanged. Full suite 276/26 and final affected 19/3 passed.
+
+Use `docs/environment-release-verification.md` for exact source, review,
+metadata, camera-grid and static GameScene evidence. Normal-input play remains
+deferred; do not treat these diagnostics as the final route or repeat the
+already completed material checks. This release is already authorized for
+main/Pages publication; determine its live status from public version.json
+and successful workflow/artifact comparison, not from older pending sections.
+Open PR #5 and the other worktrees were not changed.

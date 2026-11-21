@@ -41,7 +41,7 @@ Production status updated by Codex on 2026-11-20. Codex operates the image → M
   - [x] 4.1 Original three-quarter reference → `assets/duck/ref/`; prompt, rights and ledger row (revised method; no multi-view sheet)
   - [x] 4.2 Image to 3D generation; keep the unmodified Meshy 6 Lite raw output and ledger row, CC BY 4.0
   - [x] 4.3 Blender: 0.30 m height, bottom-center origin, +Y up / +Z front, `socket_hat`, `socket_label`, 5,800 triangles, one material with vertex colors; saved `.blend`, reimported GLB and independent review
-  - [ ] 4.4 Export `public/models/duck.glb`; record the checksum and measured bounds in the manifest; integrate through the ModelAdapter
+  - [x] 4.4 Export `public/models/duck.glb`; record the checksum and measured bounds in the manifest; integrate through the ModelAdapter
     - Export/measurement and branch normal-input integration checks complete. PR #3 merge integration unifies the loader; its automated evidence is separate from the recorded normal-input checks.
     - _Requirements: 1.1, 3.2, 3.5, 4.1, 5.1, 6.1–6.3_
 
@@ -51,21 +51,21 @@ Production status updated by Codex on 2026-11-20. Codex operates the image → M
     - _Requirements: 4.1, 4.2, 4.5_
 
 - [ ] 6. Bath section kit (stage 2, third)
-  - [ ] 6.1 Approved source route → Blender kit: walls, NarrowHole wall (clear 0.40–0.45 m), door frame, tub, kakeyu, soap, coin. Existing generated derivatives retain inherited source rows; newly approved public-source/direct-authoring pieces record their actual route (design: Derivation)
-  - [ ] 6.2 Place the kit on the existing layout coordinates; collision still comes from `src/level/layout.ts`
-  - [ ] 6.3 Readability checks in the DuckView and the Overview (hole rim, items, Duck on water)
+  - [x] 6.1 Approved source route → Blender kit: walls, NarrowHole wall (clear 0.40–0.45 m), door frame, tub, kakeyu, soap, coin. Existing generated derivatives retain inherited source rows; newly approved public-source/direct-authoring pieces record their actual route (design: Derivation)
+  - [x] 6.2 Place the kit on the existing layout coordinates; collision still comes from `src/level/layout.ts`
+  - [x] 6.3 Readability checks in the DuckView and the Overview (hole rim, items, Duck on water)
     - _Requirements: 1.2–1.4, 2.2, 3.1, 5.2, 8.1–8.5_
 
 - [ ] 7. Stage-2 verification and style record
-  - [ ] 7.1 Measure the stage-2 triangles, draw calls, and download size; name the reference machine in the progress record
+  - [x] 7.1 Measure the stage-2 triangles, draw calls, and download size; name the reference machine in the progress record
   - [x] 7.2 Browser playthrough for the current four-model set with F1–F7 and four restores; Codex operated normal inputs, overview-assisted; exact versions in `docs/shoulder-view-verification.md`. Recheck affected paths when the environment kit replaces primitives
-  - [ ] 7.3 Write the style record in the design (palette, roughness, edge softness, texel density)
+  - [x] 7.3 Write the style record in the design (palette, roughness, edge softness, texel density)
     - _Requirements: 2.3, 5.2–5.4, 9.3, 9.5_
 
 - [ ] 8. Stage 3: humans and facilities in the recorded style
   - [ ] 8.1 Child and Adult with a shared skeleton, `clothed` and `bath` body variants (abstract toy-figure body, no towel on the body), `socket_hand_r`, and Adult's `socket_carry`
     - Original references, raw Meshy models, editable Blender scenes and exported v01 variants/sockets are complete; exact files and measurements are in the ledger and manifest. The initial GLBs are static meshes: a shared skeleton and walking/carry/wiping animations are not implemented or claimed complete.
-  - [ ] 8.2 Towel (while its owner is in the bathwater, drawn on the head or on the tub edge, never in the water), key; reception, changing room, sauna and seated crowd (gaps kept at 0.60 m), open-air bath, pond
+  - [x] 8.2 Towel (while its owner is in the bathwater, drawn on the head or on the tub edge, never in the water), key; reception, changing room, sauna and seated crowd (gaps kept at 0.60 m), open-air bath, pond
   - [ ] 8.3 Repeat the checks in tasks 2.5 and 7 for every replacement
     - _Requirements: 2.4, 3.3, 3.4, 4.3, 4.4, 9_
 
@@ -98,14 +98,14 @@ The user deferred normal-input play and requested finishing work, then reported 
 
 The body, beak and wings remain source-derived; the two eye inserts are explicit Blender corrections, not another Image-to-3D generation. See `assets/duck/blend/duck__v02.md` and `assets/wash_station/README.md`.
 
-## Whole-environment refresh, 2026-11-21 (Codex; local preparation)
+## Whole-environment refresh, 2026-11-21 (Codex; completed production candidate)
 
 - [x] Inventory all existing environment placements and export authoritative LEVEL coordinates without changing collision or gameplay rules.
-- [x] Prepare independently reviewed view-layer connections for the world, washing LODs and small items, including loading failure fallback. Candidate URLs remain unregistered.
+- [x] Prepare independently reviewed view-layer connections for the world, washing LODs and small items, including loading failure fallback. All 18 production URLs are now registered after source/rights/material inspection.
 - [x] Generate original panoramic mural artwork with source prompt and rights record; this is a 2D asset, not completed 3D architecture.
-- [x] Produce independently reviewed washing LODs and natural-sized Adult-derived background NPCs; retain original sources and add measured local exports/license/ledger records. These exports remain unregistered pending world integration.
-- [x] Prepare water-material and background-color changes with scoped tests and independent code review; GPU shader/display checks remain open.
+- [x] Produce independently reviewed washing LODs and natural-sized Adult-derived background NPCs; retain original sources and add measured local exports/license/ledger records. These exports are integrated through world placement and distance detail selection.
+- [x] Prepare water-material and background-color changes with scoped tests and independent code review; GPU shader/display checks passed in the fixed final diagnostic.
 - [x] The user approved direct Blender creation for new architecture/facilities/props and requested free public assets wherever suitable. Record actual Kenney/Poly Haven/Quaternius inputs and author only the unmatched components; no paid service was used.
-- [ ] Verify accepted LOD/NPC candidates at their actual game camera distances and place every crowd slot without narrowing the existing 0.60 m gaps; source-shape QA and footprint preflight are complete.
-- [ ] Produce and replace all structural, furnishing, outdoor, water/background and small-item assets; verify visibility, openings and scene budgets on actual exports.
-- [ ] Complete rights/ledger checks, fixed-version visual checks and the authorized production publication. Normal-input play remains separately deferred.
+- [x] Verify accepted LOD/NPC candidates at actual distances and place all seven crowd/staff slots without narrowing the existing gaps; 11 exported-geometry opening checks passed.
+- [x] Produce and replace all structural, furnishing, outdoor, water/background and small-item assets; actual export and GameScene display checks passed, including all-visible 59,920 triangles and 8,746,400 registered model bytes.
+- [x] Complete rights/ledger checks, fixed-version visual checks and the authorized production publication preparation. Exact verification scope and the authoritative production revision/workflow links are in `docs/environment-release-verification.md`; successful CI and artifact-byte comparison determine publication completion. Normal-input play remains separately deferred.

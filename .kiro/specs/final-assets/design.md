@@ -322,3 +322,13 @@ Why it fits: each effect makes an existing rule or route step easier to notice. 
 - Existing suites unchanged: route, F1–F7, pair doors, checkpoints, input, view, labels (Requirement 9.2).
 - A browser playthrough per stage, recording who performed it (Requirement 9.5).
 - Publication check before and after each change. Before release, also review the ledger rights columns, `THIRD_PARTY_NOTICES.md`, and the GLB metadata. The scanner does not inspect binaries.
+
+
+The final runtime supplies a generated neutral reflection-light cube because
+hemisphere/directional lighting alone left high-metalness surfaces dark. It
+uses [Three.js Scene.environment](https://threejs.org/docs/pages/Scene.html)
+and [CubeTexture](https://threejs.org/docs/pages/CubeTexture.html), with linear
+RGBA faces and cached PMREM. It adds no asset download or scene triangles;
+its 32 px input faces are expanded by the renderer's prefilter internally.
+The final measured environment release is documented in
+`docs/environment-release-verification.md`; the scene limits are unchanged.

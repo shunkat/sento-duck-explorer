@@ -42,3 +42,10 @@ Every final asset needs records matching its actual approved route. Existing gen
 The planned limits (size, triangles, textures, file size, sockets) for each asset. After exporting, record the measured bounding box, triangle count, and file size under `measured`. A planned test will compare them with the limits.
 
 Do not put account details, private links, or credentials in any asset file, file name, or metadata.
+
+
+2026-11-21 whole-environment update: all 18 runtime GLBs are connected, including
+free-source/direct-authored world and small props plus source-derived washing
+and NPC distance variants. See [environment release verification](../docs/environment-release-verification.md)
+for fixed revisions, rights/metadata checks, actual rendering and limits.
+Earlier uncompleted-environment statements above describe historical snapshots.

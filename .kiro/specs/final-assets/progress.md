@@ -188,3 +188,34 @@ The new [environment art-direction image](../../../assets/sento_environment/ref/
 The preparation's full automated baseline passed **269 tests / 23 files** before the water-only addition. The later affected water/scene tests and final TypeScript/production build passed; the existing large-chunk warning remains. All **71** completed SHA-bearing ledger rows match. No normal-input play, new production publication or submission is claimed by this local preparation.
 
 Final local source/index preflight passed with **1,818 inspected / zero findings**, then **1,926 inspected / zero findings** with the new files staged; the final local dist scan passed with **31 inspected / zero findings**. All 13 model files and their individual licenses match dist byte for byte. The six previously published canonical GLB hashes remain unchanged, and no new asset file exceeds 50 MiB. The scanner does not substitute for the separate rights/source/binary audits. Main and the published release remain at `3456e43`; this work is a local preparation checkpoint until the architecture/small-prop method decision and actual environment production are complete.
+
+
+## Whole-environment release candidate, 2026-11-21
+
+This supersedes the earlier method-decision wait and unregistered-candidate
+notes. The user approved direct creation and requested free public sources.
+Kenney, Poly Haven and Quaternius source files were actually inspected and used;
+unmatched architecture, soap and towels were authored in Blender. Original
+source files and license records are preserved. No subscription was purchased.
+
+All 18 runtime models are connected. The source/integration revision is
+`4ec94c28`, followed by the actual-browser finding's reflection-light correction
+in `3cdc0b38`. The six original runtime GLBs, including footless Duck, are
+unchanged. World coverage is 111 original placements plus five additions, with
+zero exported-triangle intrusion into 11 checked openings.
+
+Full integration: 276 tests / 26 files passed. The subsequent reflection-light
+and connection guard passed 19 affected tests, typecheck and Pages-base build.
+The 59,590-point camera sample and outfit/fade/restore cases peak at 59,920
+submitted triangles; total registered GLB download is 8,746,400 bytes. Final
+static browser scenes use the actual game rendering and observed about 60 FPS
+at 1280 × 720 / DPR 1 on Apple M4, 32 GiB. The final overview uses 90 calls and
+39,964 triangles. No warning/error logs were captured. These are sampled rAF
+observations, not every-device performance guarantees.
+
+Independent source, material and code reviews have no required findings left.
+125 completed SHA-bearing ledger rows match. The prepared final publication
+uses the existing authorized Pages path, public commit identity and deadline
+checks; see [the complete release record](../../../docs/environment-release-verification.md)
+for evidence and authoritative production version/workflow links. Normal-input
+play, animation and competition submission remain separate and unclaimed.
