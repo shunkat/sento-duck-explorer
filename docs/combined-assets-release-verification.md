@@ -51,3 +51,34 @@ historical; no earlier playthrough is claimed to validate this combined revision
 - Independent integration review: Required 0; growth semantics, visible-stage motion, both-parent geometry/payload preservation and final shared records reviewed. No duplicate gameplay or suite run.
 - Ledger: 211 rows, including 206 SHA-bearing rows; all 206 actual files match. Source and distribution publication inspections passed with zero findings.
 - Diff whitespace check passed except the deliberately byte-preserved upstream Quaternius license (CRLF/trailing spaces); its author license is unmodified.
+
+## Normal-input verification boundary
+
+Supervisor checked fixed merge `b4d4f16ea27c4f6bbc2d4e35869594eebd401930`
+using the production build and repository URL base, on 2026-11-22. The source,
+models and HEAD remained fixed throughout. Initial preview base-path setup was
+corrected before gameplay began; no application code changed.
+
+Observed through normal keys: model loading and overview; Duck swimming from
+the tub through the narrow water connection into the shallow pool; E collecting
+milk1 and becoming Child; 1/2 milk and the Child checkpoint displayed; a towel
+on the head staying out of the water, then a hand-held towel triggering the F1
+message. No application-state injection was used.
+
+The first native R input was followed by a return to the initial Duck screen
+and shoulder camera, rather than the displayed Child checkpoint. A browser
+reload or a game restoration fault was not independently established. After
+returning to the Child pickup for local investigation, the browser control
+reported a detached command. Rebinding recovered observations, but subsequent
+key inputs through both documented input paths did not visibly change the
+page. The captured console log API returned no entries. This is an incomplete
+interactive check, not a passed playthrough or proof of a game defect.
+
+The remaining route (Child passage, Adult growth, drying/dressing, both doors,
+street-only clear), normal-input checkpoint recovery and remaining local
+failure cases are **not verified in this session**. Their automated coverage
+and independent review passed; those are separate evidence. Close-up runtime
+walking, corrected face, Fuji and tattoo visibility also remain interactive
+follow-ups; actual-export offline renders and geometry/UV checks passed.
+The user authorized production integration; publication proceeds with this
+boundary disclosed. No second complete route is claimed.
