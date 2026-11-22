@@ -1,0 +1,1204 @@
+{
+  "convention": "meters; game X right, Y up, Z down the map; world-space placement",
+  "layout_sha256": "8bee95aa4ad7e753f521c4327e7586d3df4717e6c1aa9072790a0c40ecc52ab5",
+  "source_files": {
+    "src/level/layout.ts": "2e912c8a96849c9ee5fa5bb9d9c1a9cf71e5047b56b85af37797ec462247123d",
+    "src/sim/geometry.ts": "add41da0b418a3445439e18f9ff3a91174023b8cbc263ce0c971ec45bec58d6c"
+  },
+  "zones": [
+    {
+      "id": "narrow_hole",
+      "box": {
+        "minX": -3,
+        "minZ": 8.3,
+        "maxX": 0,
+        "maxZ": 8.700000000000001
+      }
+    },
+    {
+      "id": "bathwater",
+      "box": {
+        "minX": 4.6,
+        "minZ": 5.4,
+        "maxX": 10.6,
+        "maxZ": 8.8
+      }
+    },
+    {
+      "id": "splash",
+      "box": {
+        "minX": 2.9,
+        "minZ": 0.6,
+        "maxX": 3.9,
+        "maxZ": 1.5
+      }
+    },
+    {
+      "id": "bath",
+      "box": {
+        "minX": 0,
+        "minZ": 0,
+        "maxX": 12,
+        "maxZ": 9
+      }
+    },
+    {
+      "id": "changing",
+      "box": {
+        "minX": 0,
+        "minZ": -5,
+        "maxX": 8,
+        "maxZ": 0
+      }
+    },
+    {
+      "id": "reception",
+      "box": {
+        "minX": 4,
+        "minZ": -9,
+        "maxX": 8,
+        "maxZ": -5
+      }
+    },
+    {
+      "id": "common",
+      "box": {
+        "minX": 0,
+        "minZ": -9,
+        "maxX": 4,
+        "maxZ": -5
+      }
+    },
+    {
+      "id": "exterior",
+      "box": {
+        "minX": 8,
+        "minZ": -9,
+        "maxX": 11,
+        "maxZ": -5
+      }
+    },
+    {
+      "id": "sauna_crowd",
+      "box": {
+        "minX": 14,
+        "minZ": 0,
+        "maxX": 18.9,
+        "maxZ": 4
+      }
+    },
+    {
+      "id": "sauna_entry",
+      "box": {
+        "minX": 12,
+        "minZ": 0,
+        "maxX": 14,
+        "maxZ": 4
+      }
+    },
+    {
+      "id": "open_air",
+      "box": {
+        "minX": 12,
+        "minZ": 4,
+        "maxX": 20,
+        "maxZ": 12
+      }
+    },
+    {
+      "id": "pond_entrance",
+      "box": {
+        "minX": 20,
+        "minZ": 4,
+        "maxX": 23,
+        "maxZ": 12
+      }
+    },
+    {
+      "id": "pond_goal",
+      "box": {
+        "minX": 34.5,
+        "minZ": 6.5,
+        "maxX": 36,
+        "maxZ": 9.5
+      }
+    },
+    {
+      "id": "pond",
+      "box": {
+        "minX": 23,
+        "minZ": 4,
+        "maxX": 36,
+        "maxZ": 12
+      }
+    }
+  ],
+  "structural_walls": [
+    {
+      "minX": 0,
+      "minZ": -9.1,
+      "maxX": 11,
+      "maxZ": -8.9
+    },
+    {
+      "minX": -0.1,
+      "minZ": -9,
+      "maxX": 0.1,
+      "maxZ": -7.6
+    },
+    {
+      "minX": -0.1,
+      "minZ": -6.3999999999999995,
+      "maxX": 0.1,
+      "maxZ": -5
+    },
+    {
+      "minX": -1.2,
+      "minZ": -7.8,
+      "maxX": -0.1,
+      "maxZ": -7.6
+    },
+    {
+      "minX": -1.2,
+      "minZ": -6.3999999999999995,
+      "maxX": -0.1,
+      "maxZ": -6.199999999999999
+    },
+    {
+      "minX": -1.2,
+      "minZ": -7.6,
+      "maxX": -1,
+      "maxZ": -6.3999999999999995
+    },
+    {
+      "minX": 3.9,
+      "minZ": -9,
+      "maxX": 4.1,
+      "maxZ": -8.8
+    },
+    {
+      "minX": 3.9,
+      "minZ": -7.8,
+      "maxX": 4.1,
+      "maxZ": -7.6
+    },
+    {
+      "minX": 3.9,
+      "minZ": -6.3999999999999995,
+      "maxX": 4.1,
+      "maxZ": -5
+    },
+    {
+      "minX": 7.9,
+      "minZ": -9,
+      "maxX": 8.1,
+      "maxZ": -7.6
+    },
+    {
+      "minX": 7.9,
+      "minZ": -6.3999999999999995,
+      "maxX": 8.1,
+      "maxZ": -5
+    },
+    {
+      "minX": 10.9,
+      "minZ": -9,
+      "maxX": 11.1,
+      "maxZ": -5
+    },
+    {
+      "minX": 0,
+      "minZ": -5.1,
+      "maxX": 6.2,
+      "maxZ": -4.9
+    },
+    {
+      "minX": 7.4,
+      "minZ": -5.1,
+      "maxX": 11,
+      "maxZ": -4.9
+    },
+    {
+      "minX": -0.1,
+      "minZ": -5,
+      "maxX": 0.1,
+      "maxZ": 0
+    },
+    {
+      "minX": 7.9,
+      "minZ": -5,
+      "maxX": 8.1,
+      "maxZ": 0
+    },
+    {
+      "minX": 0,
+      "minZ": -0.1,
+      "maxX": 0.8,
+      "maxZ": 0.1
+    },
+    {
+      "minX": 2,
+      "minZ": -0.1,
+      "maxX": 18.9,
+      "maxZ": 0.1
+    },
+    {
+      "minX": -0.1,
+      "minZ": 0,
+      "maxX": 0.1,
+      "maxZ": 8.3
+    },
+    {
+      "minX": -0.1,
+      "minZ": 8.700000000000001,
+      "maxX": 0.1,
+      "maxZ": 9
+    },
+    {
+      "minX": 0,
+      "minZ": 8.9,
+      "maxX": 12,
+      "maxZ": 9.1
+    },
+    {
+      "minX": 11.9,
+      "minZ": 0,
+      "maxX": 12.1,
+      "maxZ": 1.2
+    },
+    {
+      "minX": 11.9,
+      "minZ": 2.4,
+      "maxX": 12.1,
+      "maxZ": 6.6
+    },
+    {
+      "minX": 11.9,
+      "minZ": 7.8,
+      "maxX": 12.1,
+      "maxZ": 12
+    },
+    {
+      "minX": 18.799999999999997,
+      "minZ": 0,
+      "maxX": 19,
+      "maxZ": 4
+    },
+    {
+      "minX": 12,
+      "minZ": 3.9,
+      "maxX": 18.9,
+      "maxZ": 4.1
+    }
+  ],
+  "fixtures": [
+    {
+      "kind": "shoeLocker",
+      "box": {
+        "minX": 8.3,
+        "minZ": -8.9,
+        "maxX": 10.7,
+        "maxZ": -8.4
+      },
+      "height": 1.2,
+      "label": "下足箱"
+    },
+    {
+      "kind": "desk",
+      "box": {
+        "minX": 4.4,
+        "minZ": -8.3,
+        "maxX": 7.9,
+        "maxZ": -7.8
+      },
+      "height": 0.9,
+      "label": "受付台"
+    },
+    {
+      "kind": "staff",
+      "box": {
+        "minX": 4.6,
+        "minZ": -8.85,
+        "maxX": 5.2,
+        "maxZ": -8.4
+      },
+      "height": 1.6,
+      "label": "受付の人"
+    },
+    {
+      "kind": "desk",
+      "box": {
+        "minX": 3.9,
+        "minZ": -8.8,
+        "maxX": 4.1,
+        "maxZ": -7.8
+      },
+      "height": 0.9
+    },
+    {
+      "kind": "bench",
+      "box": {
+        "minX": 0.3,
+        "minZ": -8.8,
+        "maxX": 2.5,
+        "maxZ": -8.4
+      },
+      "height": 0.45,
+      "label": "休憩所のベンチ"
+    },
+    {
+      "kind": "step",
+      "box": {
+        "minX": -1,
+        "minZ": -7.6,
+        "maxX": 0.15,
+        "maxZ": -6.3999999999999995
+      },
+      "height": 0.25,
+      "label": "段差"
+    },
+    {
+      "kind": "screen",
+      "box": {
+        "minX": 5.5,
+        "minZ": -4.9,
+        "maxX": 5.7,
+        "maxZ": -1.2
+      },
+      "height": 2.2,
+      "label": "目隠しの衝立"
+    },
+    {
+      "kind": "locker",
+      "box": {
+        "minX": 0.1,
+        "minZ": -4.6,
+        "maxX": 0.7,
+        "maxZ": -1.4
+      },
+      "height": 1.8,
+      "label": "ロッカー（E）"
+    },
+    {
+      "kind": "bench",
+      "box": {
+        "minX": 3,
+        "minZ": -2.2,
+        "maxX": 5,
+        "maxZ": -1.8
+      },
+      "height": 0.45
+    },
+    {
+      "kind": "basin",
+      "box": {
+        "minX": 2.9,
+        "minZ": 0.1,
+        "maxX": 3.9,
+        "maxZ": 0.6
+      },
+      "height": 0.65,
+      "label": "かけ湯"
+    },
+    {
+      "kind": "stool",
+      "box": {
+        "minX": 4.42,
+        "minZ": 0.55,
+        "maxX": 4.779999999999999,
+        "maxZ": 0.91
+      },
+      "height": 0.3
+    },
+    {
+      "kind": "stool",
+      "box": {
+        "minX": 5.62,
+        "minZ": 0.55,
+        "maxX": 5.9799999999999995,
+        "maxZ": 0.91
+      },
+      "height": 0.3
+    },
+    {
+      "kind": "stool",
+      "box": {
+        "minX": 6.82,
+        "minZ": 0.55,
+        "maxX": 7.18,
+        "maxZ": 0.91
+      },
+      "height": 0.3,
+      "label": "洗い場"
+    },
+    {
+      "kind": "stool",
+      "box": {
+        "minX": 8.02,
+        "minZ": 0.55,
+        "maxX": 8.379999999999999,
+        "maxZ": 0.91
+      },
+      "height": 0.3
+    },
+    {
+      "kind": "stool",
+      "box": {
+        "minX": 9.22,
+        "minZ": 0.55,
+        "maxX": 9.58,
+        "maxZ": 0.91
+      },
+      "height": 0.3
+    },
+    {
+      "kind": "plunge",
+      "box": {
+        "minX": 10.4,
+        "minZ": 2.8,
+        "maxX": 11.8,
+        "maxZ": 4.2
+      },
+      "height": 0.6,
+      "label": "水風呂（縁があり入れません）"
+    },
+    {
+      "kind": "bench",
+      "box": {
+        "minX": 8.6,
+        "minZ": 3.4,
+        "maxX": 10,
+        "maxZ": 3.8
+      },
+      "height": 0.45,
+      "label": "休憩ベンチ"
+    },
+    {
+      "kind": "holeSide",
+      "box": {
+        "minX": -3,
+        "minZ": 8.100000000000001,
+        "maxX": -0.1,
+        "maxZ": 8.3
+      },
+      "height": 0.55
+    },
+    {
+      "kind": "holeSide",
+      "box": {
+        "minX": -3,
+        "minZ": 8.700000000000001,
+        "maxX": -0.1,
+        "maxZ": 8.9
+      },
+      "height": 0.55
+    },
+    {
+      "kind": "holeSide",
+      "box": {
+        "minX": -3.2,
+        "minZ": 8.100000000000001,
+        "maxX": -3,
+        "maxZ": 8.9
+      },
+      "height": 0.55
+    },
+    {
+      "kind": "heater",
+      "box": {
+        "minX": 12.2,
+        "minZ": 3,
+        "maxX": 13.3,
+        "maxZ": 3.8
+      },
+      "height": 1,
+      "label": "ストーブ（近づかない）"
+    },
+    {
+      "kind": "shelf",
+      "box": {
+        "minX": 18.4,
+        "minZ": 1.5,
+        "maxX": 18.799999999999997,
+        "maxZ": 2.5
+      },
+      "height": 0.9
+    },
+    {
+      "kind": "outdoorBath",
+      "box": {
+        "minX": 14.2,
+        "minZ": 8.6,
+        "maxX": 18.2,
+        "maxZ": 11.6
+      },
+      "height": 0.55,
+      "label": "露天風呂（岩の縁があり入れません）"
+    },
+    {
+      "kind": "bench",
+      "box": {
+        "minX": 12.4,
+        "minZ": 4.3,
+        "maxX": 14.6,
+        "maxZ": 4.7
+      },
+      "height": 0.45
+    },
+    {
+      "kind": "shrub",
+      "box": {
+        "minX": 20.4,
+        "minZ": 4.4,
+        "maxX": 21.2,
+        "maxZ": 5.2
+      },
+      "height": 0.8
+    },
+    {
+      "kind": "shrub",
+      "box": {
+        "minX": 20.4,
+        "minZ": 10.8,
+        "maxX": 21.2,
+        "maxZ": 11.6
+      },
+      "height": 0.8
+    },
+    {
+      "kind": "rock",
+      "box": {
+        "minX": 27,
+        "minZ": 4,
+        "maxX": 28,
+        "maxZ": 9
+      },
+      "height": 1
+    },
+    {
+      "kind": "rock",
+      "box": {
+        "minX": 31,
+        "minZ": 7,
+        "maxX": 32,
+        "maxZ": 12
+      },
+      "height": 1
+    },
+    {
+      "kind": "fence",
+      "box": {
+        "minX": 18.9,
+        "minZ": 3.9,
+        "maxX": 23,
+        "maxZ": 4.1
+      },
+      "height": 2
+    },
+    {
+      "kind": "fence",
+      "box": {
+        "minX": 12,
+        "minZ": 11.9,
+        "maxX": 23,
+        "maxZ": 12.1
+      },
+      "height": 2
+    },
+    {
+      "kind": "hedge",
+      "box": {
+        "minX": 19.9,
+        "minZ": 4,
+        "maxX": 20.1,
+        "maxZ": 7.4
+      },
+      "height": 1
+    },
+    {
+      "kind": "hedge",
+      "box": {
+        "minX": 19.9,
+        "minZ": 8.6,
+        "maxX": 20.1,
+        "maxZ": 12
+      },
+      "height": 1
+    },
+    {
+      "kind": "pondEdge",
+      "box": {
+        "minX": 22.9,
+        "minZ": 4,
+        "maxX": 23.1,
+        "maxZ": 12
+      },
+      "height": 0.45
+    },
+    {
+      "kind": "pondEdge",
+      "box": {
+        "minX": 23,
+        "minZ": 3.9,
+        "maxX": 36,
+        "maxZ": 4.1
+      },
+      "height": 0.5
+    },
+    {
+      "kind": "pondEdge",
+      "box": {
+        "minX": 23,
+        "minZ": 11.9,
+        "maxX": 36,
+        "maxZ": 12.1
+      },
+      "height": 0.5
+    },
+    {
+      "kind": "pondEdge",
+      "box": {
+        "minX": 35.9,
+        "minZ": 4,
+        "maxX": 36.1,
+        "maxZ": 12
+      },
+      "height": 0.5
+    }
+  ],
+  "decor": [
+    {
+      "kind": "norenWomen",
+      "box": {
+        "minX": -0.05,
+        "minZ": -7.6,
+        "maxX": 0.05,
+        "maxZ": -6.3999999999999995
+      },
+      "y0": 1.5,
+      "height": 0.5,
+      "label": "女湯"
+    },
+    {
+      "kind": "norenMen",
+      "box": {
+        "minX": 6.2,
+        "minZ": -5.159999999999999,
+        "maxX": 7.4,
+        "maxZ": -5.1
+      },
+      "y0": 1.5,
+      "height": 0.5,
+      "label": "男湯"
+    },
+    {
+      "kind": "curtain",
+      "box": {
+        "minX": 10.8,
+        "minZ": -7.6,
+        "maxX": 10.9,
+        "maxZ": -6.4
+      },
+      "y0": 1,
+      "height": 1,
+      "label": "入口ののれん"
+    },
+    {
+      "kind": "mirror",
+      "box": {
+        "minX": 2,
+        "minZ": -4.9,
+        "maxX": 3.6,
+        "maxZ": -4.86
+      },
+      "y0": 0.8,
+      "height": 0.9
+    },
+    {
+      "kind": "mat",
+      "box": {
+        "minX": 0.2,
+        "minZ": 0.15,
+        "maxX": 2.6,
+        "maxZ": 1.4
+      },
+      "y0": 0,
+      "height": 0.012,
+      "label": "体を拭く場所（E）"
+    },
+    {
+      "kind": "shower",
+      "box": {
+        "minX": 0.1,
+        "minZ": 1.7999999999999998,
+        "maxX": 0.2,
+        "maxZ": 2
+      },
+      "y0": 1.6,
+      "height": 0.4,
+      "label": "シャワー"
+    },
+    {
+      "kind": "shower",
+      "box": {
+        "minX": 0.1,
+        "minZ": 2.6,
+        "maxX": 0.2,
+        "maxZ": 2.8000000000000003
+      },
+      "y0": 1.6,
+      "height": 0.4
+    },
+    {
+      "kind": "shelf",
+      "box": {
+        "minX": 4.2,
+        "minZ": 0.1,
+        "maxX": 9.8,
+        "maxZ": 0.3
+      },
+      "y0": 0.45,
+      "height": 0.05
+    },
+    {
+      "kind": "mirror",
+      "box": {
+        "minX": 4.3,
+        "minZ": 0.1,
+        "maxX": 4.8999999999999995,
+        "maxZ": 0.14
+      },
+      "y0": 0.75,
+      "height": 0.55
+    },
+    {
+      "kind": "tap",
+      "box": {
+        "minX": 4.54,
+        "minZ": 0.1,
+        "maxX": 4.659999999999999,
+        "maxZ": 0.22
+      },
+      "y0": 0.5,
+      "height": 0.06
+    },
+    {
+      "kind": "bucket",
+      "box": {
+        "minX": 4.72,
+        "minZ": 0.12,
+        "maxX": 4.92,
+        "maxZ": 0.3
+      },
+      "y0": 0.5,
+      "height": 0.14
+    },
+    {
+      "kind": "mirror",
+      "box": {
+        "minX": 5.5,
+        "minZ": 0.1,
+        "maxX": 6.1,
+        "maxZ": 0.14
+      },
+      "y0": 0.75,
+      "height": 0.55
+    },
+    {
+      "kind": "tap",
+      "box": {
+        "minX": 5.74,
+        "minZ": 0.1,
+        "maxX": 5.859999999999999,
+        "maxZ": 0.22
+      },
+      "y0": 0.5,
+      "height": 0.06
+    },
+    {
+      "kind": "bucket",
+      "box": {
+        "minX": 5.92,
+        "minZ": 0.12,
+        "maxX": 6.12,
+        "maxZ": 0.3
+      },
+      "y0": 0.5,
+      "height": 0.14
+    },
+    {
+      "kind": "mirror",
+      "box": {
+        "minX": 6.7,
+        "minZ": 0.1,
+        "maxX": 7.3,
+        "maxZ": 0.14
+      },
+      "y0": 0.75,
+      "height": 0.55
+    },
+    {
+      "kind": "tap",
+      "box": {
+        "minX": 6.94,
+        "minZ": 0.1,
+        "maxX": 7.06,
+        "maxZ": 0.22
+      },
+      "y0": 0.5,
+      "height": 0.06
+    },
+    {
+      "kind": "bucket",
+      "box": {
+        "minX": 7.12,
+        "minZ": 0.12,
+        "maxX": 7.32,
+        "maxZ": 0.3
+      },
+      "y0": 0.5,
+      "height": 0.14
+    },
+    {
+      "kind": "mirror",
+      "box": {
+        "minX": 7.8999999999999995,
+        "minZ": 0.1,
+        "maxX": 8.5,
+        "maxZ": 0.14
+      },
+      "y0": 0.75,
+      "height": 0.55
+    },
+    {
+      "kind": "tap",
+      "box": {
+        "minX": 8.139999999999999,
+        "minZ": 0.1,
+        "maxX": 8.26,
+        "maxZ": 0.22
+      },
+      "y0": 0.5,
+      "height": 0.06
+    },
+    {
+      "kind": "bucket",
+      "box": {
+        "minX": 8.319999999999999,
+        "minZ": 0.12,
+        "maxX": 8.52,
+        "maxZ": 0.3
+      },
+      "y0": 0.5,
+      "height": 0.14
+    },
+    {
+      "kind": "mirror",
+      "box": {
+        "minX": 9.1,
+        "minZ": 0.1,
+        "maxX": 9.700000000000001,
+        "maxZ": 0.14
+      },
+      "y0": 0.75,
+      "height": 0.55
+    },
+    {
+      "kind": "tap",
+      "box": {
+        "minX": 9.34,
+        "minZ": 0.1,
+        "maxX": 9.46,
+        "maxZ": 0.22
+      },
+      "y0": 0.5,
+      "height": 0.06
+    },
+    {
+      "kind": "bucket",
+      "box": {
+        "minX": 9.52,
+        "minZ": 0.12,
+        "maxX": 9.72,
+        "maxZ": 0.3
+      },
+      "y0": 0.5,
+      "height": 0.14
+    },
+    {
+      "kind": "border",
+      "box": {
+        "minX": 4.449999999999999,
+        "minZ": 5.25,
+        "maxX": 10.75,
+        "maxZ": 8.8
+      },
+      "y0": 0,
+      "height": 0.01
+    },
+    {
+      "kind": "border",
+      "box": {
+        "minX": -0.1,
+        "minZ": 8.180000000000001,
+        "maxX": 3.92,
+        "maxZ": 8.82
+      },
+      "y0": 0,
+      "height": 0.01,
+      "label": "アヒルの水路（おもちゃの水遊び場）"
+    },
+    {
+      "kind": "shower",
+      "box": {
+        "minX": 11.8,
+        "minZ": 0.4,
+        "maxX": 11.9,
+        "maxZ": 0.6
+      },
+      "y0": 1.6,
+      "height": 0.4,
+      "label": "サウナ前のシャワー"
+    },
+    {
+      "kind": "deck",
+      "box": {
+        "minX": 12.2,
+        "minZ": 4.2,
+        "maxX": 15.6,
+        "maxZ": 6.2
+      },
+      "y0": 0,
+      "height": 0.05,
+      "label": "休憩テラス"
+    },
+    {
+      "kind": "stone",
+      "box": {
+        "minX": 21.2,
+        "minZ": 6.1000000000000005,
+        "maxX": 21.8,
+        "maxZ": 6.7
+      },
+      "y0": 0,
+      "height": 0.03
+    },
+    {
+      "kind": "stone",
+      "box": {
+        "minX": 21.2,
+        "minZ": 9.299999999999999,
+        "maxX": 21.8,
+        "maxZ": 9.9
+      },
+      "y0": 0,
+      "height": 0.03
+    }
+  ],
+  "npcs": [
+    {
+      "minX": 14,
+      "minZ": 0.1,
+      "maxX": 14.6,
+      "maxZ": 1.6
+    },
+    {
+      "minX": 14,
+      "minZ": 2.2,
+      "maxX": 14.6,
+      "maxZ": 3.9
+    },
+    {
+      "minX": 15.4,
+      "minZ": 0.1,
+      "maxX": 16,
+      "maxZ": 0.5
+    },
+    {
+      "minX": 15.4,
+      "minZ": 1.1,
+      "maxX": 16,
+      "maxZ": 3.9
+    },
+    {
+      "minX": 16.8,
+      "minZ": 0.1,
+      "maxX": 17.4,
+      "maxZ": 2.6
+    },
+    {
+      "minX": 16.8,
+      "minZ": 3.2,
+      "maxX": 17.4,
+      "maxZ": 3.9
+    }
+  ],
+  "crowdGaps": [
+    {
+      "box": {
+        "minX": 14,
+        "minZ": 1.6,
+        "maxX": 14.6,
+        "maxZ": 2.2
+      },
+      "width": 0.6
+    },
+    {
+      "box": {
+        "minX": 15.4,
+        "minZ": 0.5,
+        "maxX": 16,
+        "maxZ": 1.1
+      },
+      "width": 0.6
+    },
+    {
+      "box": {
+        "minX": 16.8,
+        "minZ": 2.6,
+        "maxX": 17.4,
+        "maxZ": 3.2
+      },
+      "width": 0.6
+    }
+  ],
+  "narrowHole": {
+    "box": {
+      "minX": -3,
+      "minZ": 8.3,
+      "maxX": 0,
+      "maxZ": 8.700000000000001
+    },
+    "width": 0.4
+  },
+  "duckWater": [
+    {
+      "minX": 4.6,
+      "minZ": 5.4,
+      "maxX": 10.6,
+      "maxZ": 8.8
+    },
+    {
+      "minX": -0.1,
+      "minZ": 8.3,
+      "maxX": 3.8,
+      "maxZ": 8.700000000000001
+    },
+    {
+      "minX": -3,
+      "minZ": 8.3,
+      "maxX": 0,
+      "maxZ": 8.700000000000001
+    }
+  ],
+  "saunaDoorBlocker": {
+    "minX": 11.9,
+    "minZ": 1.2,
+    "maxX": 12.1,
+    "maxZ": 2.4
+  },
+  "doors": [
+    {
+      "id": "changing_reception",
+      "a": "changing",
+      "b": "reception",
+      "box": {
+        "minX": 6.2,
+        "minZ": -5.1,
+        "maxX": 7.4,
+        "maxZ": -4.9
+      },
+      "pair": true
+    },
+    {
+      "id": "bath_changing",
+      "a": "bath",
+      "b": "changing",
+      "box": {
+        "minX": 0.8,
+        "minZ": -0.1,
+        "maxX": 2,
+        "maxZ": 0.1
+      },
+      "pair": true
+    },
+    {
+      "id": "bath_sauna",
+      "a": "bath",
+      "b": "sauna_entry",
+      "box": {
+        "minX": 11.9,
+        "minZ": 1.2,
+        "maxX": 12.1,
+        "maxZ": 2.4
+      },
+      "pair": true
+    },
+    {
+      "id": "bath_open_air",
+      "a": "bath",
+      "b": "open_air",
+      "box": {
+        "minX": 11.9,
+        "minZ": 6.6,
+        "maxX": 12.1,
+        "maxZ": 7.8
+      },
+      "pair": true
+    },
+    {
+      "id": "open_air_pond_entrance",
+      "a": "open_air",
+      "b": "pond_entrance",
+      "box": {
+        "minX": 19.9,
+        "minZ": 7.4,
+        "maxX": 20.1,
+        "maxZ": 8.6
+      },
+      "pair": true
+    },
+    {
+      "id": "reception_common",
+      "a": "reception",
+      "b": "common",
+      "box": {
+        "minX": 3.9,
+        "minZ": -7.6,
+        "maxX": 4.1,
+        "maxZ": -6.3999999999999995
+      },
+      "pair": false
+    },
+    {
+      "id": "reception_exterior",
+      "a": "reception",
+      "b": "exterior",
+      "box": {
+        "minX": 7.9,
+        "minZ": -7.6,
+        "maxX": 8.1,
+        "maxZ": -6.3999999999999995
+      },
+      "pair": false
+    }
+  ],
+  "nodes": {
+    "narrow_hole_coin": {
+      "x": -2.7,
+      "z": 8.5
+    },
+    "reception_desk": {
+      "x": 5.8,
+      "z": -8.05
+    },
+    "reception_register": {
+      "x": 6.6,
+      "z": -8.05
+    },
+    "sauna_hat_shelf": {
+      "x": 18.4,
+      "z": 2
+    }
+  }
+}

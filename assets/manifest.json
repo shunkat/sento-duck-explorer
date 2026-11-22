@@ -1090,11 +1090,11 @@
     "sento_environment": {
       "stage": 3,
       "status": "exported",
-      "revision": "v01",
+      "revision": "growth_v02",
       "origin": "Identity root; authored world coordinates from LEVEL, not normalized",
       "limits": {
-        "triangles": 20200,
-        "architecture_triangles": 8000,
+        "triangles": 22200,
+        "architecture_triangles": 10000,
         "materials": 18,
         "textures": 11,
         "texture_px": 2172,
@@ -1105,15 +1105,15 @@
         "width": 39.29999852180481,
         "depth": 21.200000762939453,
         "max_width": 39.29999852180481,
-        "triangles": 20196,
-        "architecture_triangles": 7996,
+        "triangles": 22107,
+        "architecture_triangles": 9907,
         "npc_triangles": 12200,
-        "vertices": 26210,
+        "vertices": 35954,
         "materials": 17,
         "textures": 11,
         "texture_px": 2172,
-        "glb_bytes": 6328656,
-        "glb_mb": 6.328656,
+        "glb_bytes": 6931636,
+        "glb_mb": 6.931636,
         "bounds": {
           "min": [
             -3.200000047683716,
@@ -1126,11 +1126,11 @@
             12.100000381469727
           ]
         },
-        "sha256": "29f7ad1219bb6a6fef625c76d091bd34b73600d691de5c00e967c5ccceb7df61",
-        "measured_date": "2026-11-21",
+        "sha256": "3c37930e66a6d27f2a32cc174b64cb54b6a713bfafd6322ef4959cbb7ec6eb00",
+        "measured_date": "2026-11-22",
         "tool": "Blender 5.2.4 actual GLB reimport"
       },
-      "layout_sha256": "8bee95aa4ad7e753f521c4327e7586d3df4717e6c1aa9072790a0c40ecc52ab5",
+      "layout_sha256": "01d4ef0eda8966fe87ec3ac4551bcce129bd697040ae6dd201a0cff50e9ceba8",
       "quality_record": "assets/sento_environment/quality/measurements.json"
     },
     "milk_bottle": {
