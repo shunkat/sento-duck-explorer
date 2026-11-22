@@ -142,5 +142,6 @@ Integrated validation: 219 tests passed across 16 files; the production build pa
   - [x] 16.4 View: one visible body per stage, milk placeholder, guardian, doors and handles, HUD, camera blend, growth cue
   - [x] 16.5 Tests: new route by normal inputs, milk rules, clearances, growth state, checkpoints, exit, F1–F8 regressions, view/HUD/camera
   - [x] 16.6 Final milk asset (`public/models/milk_bottle.glb`) by the asset role (cherry-picked 2026-11-22), connected in `ITEM_MODEL_URLS` with the primitive as load-failure fallback
-  - [ ] 16.7 Final normal-input check (Codex), after B's review
+  - [ ] 16.7 Environment re-export (asset side) integrated in the loader (door contract), architecture budget ≤ 10,000 triangles set to the measured value; then one full suite, tsc, build and source + dist scans; then one combined B review
+  - [ ] 16.8 Final normal-input check (Codex), after B's review
 

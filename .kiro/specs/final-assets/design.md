@@ -210,6 +210,16 @@ This exception preserves the mural and readable separate surface materials;
 it does not raise the whole-scene 60,000 triangles, 120 calls or 12 MB first-load
 limits. Those require actual integrated measurements before publication.
 
+**Growth extension (2026-11-22, provisional budget).** The existing building uses
+7,996 of the 8,000 architecture triangles. The growth route adds the kids'
+partitions and storage shelf, the curb, two dynamic doors (`growth_kids_gate`,
+`growth_front_exit`) and the street stub with its threshold. The architecture
+allocation for the re-exported world is raised to **at most 10,000 triangles**;
+once the environment asset lands it is set to the final measured value (the
+minimum needed). The near NPC, material, image and size allocations above are
+unchanged, and the whole-scene limits still apply. This round does not rebuild
+existing assets or produce other old provisional items.
+
 Small-item allocations are soap 300, towel 350, coin 650 and key 500 triangles,
 up to two materials and 0.05 MB each. Their selected exports use 236 / 296 /
 608 / 468 triangles, 51,760 bytes total and no textures. With two towels the
