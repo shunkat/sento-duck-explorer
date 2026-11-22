@@ -23,8 +23,8 @@ export function objective(s: GameState): string {
     if (p.wet === "wet") return "浴室の出口（更衣室の扉）の前のマットでEを押して体を拭こう";
     return "体を拭いたら、浴室の左上の扉から更衣室へ入ろう";
   }
-  if (s.doors.frontExit === "closed") return "ついたての奥の扉から受付へ。受付の右の玄関の戸の高い取っ手をEで開けよう";
-  return "玄関の戸を通って外へ出よう（クリア）";
+  if (s.doors.frontExit === "closed") return "ついたての奥の扉から受付を通って玄関（下足箱）へ。外へ出る戸の高い取っ手をEで開けよう";
+  return "開いた玄関の戸を通って外へ出よう（クリア）";
 }
 
 /** Keys that currently do something for the player, e.g. "E: 牛乳びんを飲む". */

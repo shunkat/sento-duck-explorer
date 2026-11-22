@@ -185,14 +185,18 @@ export function safeEye(base: Vec2, eye: Vec3, obs: Obstacles): Vec3 {
 export class FacingTracker {
   private yawNow = 0;
   private last: Vec2 | null = null;
+  private lastStage: CharacterId | null = null;
   private movedNow = false;
 
   update(view: View): void {
     const c = view.characters[view.active];
     const prev = this.last;
+    const grew = this.lastStage !== null && this.lastStage !== view.active;
     this.last = { x: c.pos.x, z: c.pos.z };
+    this.lastStage = view.active;
     this.movedNow = false;
-    if (!prev) return;
+    // A growth tick keeps the facing, even when the player was moved to its safe spot (review L-1).
+    if (!prev || grew) return;
     const d = { x: c.pos.x - prev.x, z: c.pos.z - prev.z };
     const len = Math.hypot(d.x, d.z);
     // A growth that moved the player to a safe spot is not read as movement (len ≥ 0.5).
@@ -211,6 +215,7 @@ export class FacingTracker {
   lookAlong(yaw: number): void {
     this.yawNow = yaw;
     this.last = null;
+    this.lastStage = null;
     this.movedNow = false;
   }
 

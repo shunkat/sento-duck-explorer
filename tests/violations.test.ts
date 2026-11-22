@@ -109,14 +109,14 @@ describe("priority and restart", () => {
     expect(decideOutcome([], true)).toEqual({ kind: "cleared" });
   });
 
-  it("running onto a soap placed on the front-exit boundary: F3 wins over the clear in the same tick", () => {
-    const level = { ...LEVEL, soaps: [{ pos: { x: 8.15, z: -7.0 }, radius: 0.15 }] };
+  it("running onto a soap placed on the street-door boundary: F3 wins over the clear in the same tick", () => {
+    const level = { ...LEVEL, soaps: [{ pos: { x: 11.15, z: -7.0 }, radius: 0.15 }] };
     const sim = new Sim();
     R.duckDrinksMilk1(sim);
     R.childDrinksMilk2(sim);
     R.adultDriesAndDresses(sim);
     R.adultOpensFrontExit(sim);
-    sim.walk([{ x: 7.6, z: -7.0 }]);
+    sim.walk([{ x: 10.6, z: -7.0 }]);
     let s = sim.state;
     for (let i = 0; i < 60 && s.outcome.kind === "playing"; i++) s = tick(s, { ...EMPTY_INPUT, move: { x: 1, z: 0 }, run: true }, level).state;
     expect(s.outcome).toEqual({ kind: "gameOver", reason: "F3" });

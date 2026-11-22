@@ -45,7 +45,7 @@ describe("properties", () => {
             const prev = s;
             s = tick(s, frame, LEVEL).state;
             expect([...checkInvariants(s), ...duckOnWater(s), ...playerClear(s)]).toEqual([]);
-            if (s.outcome.kind === "cleared") expect([s.player.stage, s.player.zone]).toEqual(["adult", "exterior"]);
+            if (s.outcome.kind === "cleared") expect([s.player.stage, s.player.zone]).toEqual(["adult", "street"]);
             // Growth never reverses, except a restart back to an earlier snapshot of the same run.
             if (!frame.restart) expect(STAGES.indexOf(s.player.stage)).toBeGreaterThanOrEqual(STAGES.indexOf(prev.player.stage));
           }

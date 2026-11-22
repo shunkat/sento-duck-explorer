@@ -167,8 +167,8 @@ describe("Level data sanity", () => {
     expect(zoneAt(LEVEL, LEVEL.growthSpots.milk2)).toBe("kids_room");
   });
 
-  it("the front exit door is the reception ↔ genkan opening", () => {
-    const d = LEVEL.doors.find((x) => x.id === "reception_exterior")!.box;
+  it("the front exit door is the genkan ↔ street opening (the street door, review R-1)", () => {
+    const d = LEVEL.doors.find((x) => x.id === "genkan_street")!.box;
     const b = LEVEL.highDoors.frontExit.blocker;
     expect([b.minX, b.maxX, b.minZ, b.maxZ]).toEqual([d.minX, d.maxX, d.minZ, d.maxZ]);
     expect(LEVEL.highDoors.frontExit.handleY).toBeGreaterThan(1.2 + 0.2); // above the Child's height

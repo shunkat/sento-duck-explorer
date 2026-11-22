@@ -30,7 +30,7 @@ npm run check:publication # 公開候補ファイルとGit indexの機密情報�
 
 画面上部の「目的」に次にやることが、その下に今押せるキーが表示されます。
 
-流れ（2026-11-21〜、配置は仮）：アヒルは水の上だけを泳げます。湯船から奥の水路を泳いで浅い湯だまりへ行き、牛乳びん（1本目）を飲むと子どもになります。子どもは子ども用のせまい通り道を通って広い休憩所の牛乳びん（2本目）を飲み、大人になります。大人は高い掛け金の戸を開け、体を拭いて更衣室で服を着て、受付の先の玄関の戸（取っ手が高い）を開けて外へ出るとクリアです。子どものあいだは見守りの大人がそばにいます。サウナ・露天風呂・庭と池は寄り道で、クリアには関係しません。再開地点は開始時・子どもに育った時・大人に育った時です。
+流れ（2026-11-21〜、配置は仮）：アヒルは水の上だけを泳げます。湯船から奥の水路を泳いで浅い湯だまりへ行き、牛乳びん（1本目）を飲むと子どもになります。子どもは子ども用のせまい通り道を通って広い休憩所の牛乳びん（2本目）を飲み、大人になります。大人は高い掛け金の戸を開け、体を拭いて更衣室で服を着て、受付と玄関（下足箱）を通り、外へ出る戸（取っ手が高い）を開けて外へ出るとクリアです。子どものあいだは見守りの大人がそばにいます。サウナ・露天風呂・庭と池は寄り道で、クリアには関係しません。再開地点は開始時・子どもに育った時・大人に育った時です。
 
 仮の間取りは、玄関（下足箱）→ 受付・ロビー → ついたてのある更衣室 → 浴室（拭く場所・かけ湯・洗い場・奥の湯船と水路）、浴室の東にサウナと露天、その先の庭と池です。遊べるのは男湯です。ロビーには女湯の入口（のれんと段差）だけがあり、中はありません。大人や子どもで入ろうとすると受付の人に注意されてゲームオーバー（F8）、アヒルは段差を越えられません。実在の建物の図面ではなく、設備は仮形状です。
 
@@ -80,7 +80,7 @@ Use the npm commands above to run, test and build. See the [English submission d
 | R | Resume the last checkpoint after failure; start again after clearing |
 | Q / V / F | Conditional rule-break actions: a human dips a held towel in bath water, shouts in the sauna, or pushes a nearby person in the sauna. No microphone is used. |
 
-Duck swims only on water: from the tub along the trough into a shallow pool with the first milk bottle. The child walks a child-sized passage to a wider room with the second bottle. The adult opens a high-latch gate, dries off, dresses in the changing room and opens the front door (high handle) to leave. A non-player adult watches over the child. The sauna, open-air bath, garden and pond are optional. Checkpoints: start, after growing into the child, after growing into the adult. If Vimium captures movement keys, enter its insert mode with I.
+Duck swims only on water: from the tub along the trough into a shallow pool with the first milk bottle. The child walks a child-sized passage to a wider room with the second bottle. The adult opens a high-latch gate, dries off, dresses in the changing room, walks through reception and the shoe-locker entrance, and opens the street door (high handle) to step outside. A non-player adult watches over the child. The sauna, open-air bath, garden and pond are optional. Checkpoints: start, after growing into the child, after growing into the adult. If Vimium captures movement keys, enter its insert mode with I.
 
 The provisional floor plan runs genkan (shoe lockers) → reception and lobby → screened changing room → bath hall (drying spot, kakeyu, washing stations, rear tub and coin trough), with the sauna and open-air area to the east and a garden leading to the pond. The playable wing is the men's bath. The lobby has only the entrance to the women's bath (noren and a raised step); trying to walk in as Adult or Child gets a reprimand from the receptionist and a game over (F8), and Duck cannot climb the step. It is an original design, not a real building's plan, and its fixtures are provisional shapes.
 

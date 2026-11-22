@@ -39,7 +39,8 @@ const VIEW_BLOCKERS = LEVEL.walls.filter((w) => tallFixtures.has(w) || !lowFixtu
 describe("realistic layout: privacy and order of rooms", () => {
   it("rooms follow genkan → reception → changing → bath, with offset doors", () => {
     const door = (id: string) => LEVEL.doors.find((d) => d.id === id)!;
-    expect([door("reception_exterior").a, door("reception_exterior").b]).toEqual(["reception", "exterior"]);
+    expect([door("reception_genkan").a, door("reception_genkan").b]).toEqual(["reception", "genkan"]);
+    expect([door("genkan_street").a, door("genkan_street").b]).toEqual(["genkan", "street"]);
     expect([door("changing_reception").a, door("changing_reception").b]).toEqual(["changing", "reception"]);
     const rc = door("changing_reception").box;
     const bc = door("bath_changing").box;

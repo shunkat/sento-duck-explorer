@@ -63,6 +63,12 @@ export type FixtureKind =
   // Growth route (2026-11-21): provisional shapes drawn over the authored environment.
   | "partition" | "storage" | "curb";
 
+/** Growth-route additions the 3f57ed2 environment export does not contain (drawn by the game until re-export). */
+export const GROWTH_FIXTURE_KINDS: ReadonlySet<FixtureKind> = new Set(["partition", "storage", "curb"]);
+export const GROWTH_DECOR_KINDS: ReadonlySet<DecorKind> = new Set(["poolEdge", "threshold"]);
+/** The street stub (x ≥ 10.9 on the genkan side) is new as well: its fences are growth additions. */
+export const isStreetFixture = (f: { kind: FixtureKind; box: AABB }): boolean => f.kind === "fence" && f.box.minX >= 10.9 && f.box.maxZ <= -4.8;
+
 export interface Fixture {
   kind: FixtureKind;
   box: AABB;
@@ -74,7 +80,9 @@ export interface Fixture {
 /** Non-blocking details: flush on the floor (mats, borders) or on a wall face (mirrors, taps). */
 export type DecorKind =
   | "mat" | "border" | "mirror" | "tap" | "bucket" | "shelf" | "shower" | "curtain" | "deck" | "stone"
-  | "norenMen" | "norenWomen";
+  | "norenMen" | "norenWomen"
+  // Growth route (2026-11-21/22): kids' pool edge and the street-door threshold.
+  | "poolEdge" | "threshold";
 
 export interface Decor {
   kind: DecorKind;
@@ -196,7 +204,12 @@ const TROUGH_BOX = box(-0.1, NH_Z0, 4.7, NH_Z1);
 const KIDS_X1 = 2.3; // inner east face (partition x 2.3–2.5)
 const KIDS_POOL = box(0.3, 7.3, 2.1, NH_Z1);
 const KIDS_GATE: [number, number] = [0.6, 1.6]; // in the room's north partition (z 2.8–3.0)
-const FRONT_EXIT_BLOCKER = box(8 - H, LOBBY_DOOR[0], 8 + H, LOBBY_DOOR[1]);
+// Street door (review R-1, 2026-11-22): the real way out is the genkan's street
+// door on x=11. The high-handle door sits there; reception ↔ genkan (x=8) is an
+// ordinary open doorway. Outside is a short street stub (x 11–13).
+const STREET_DOOR: [number, number] = [-7.6, -7.6 + DOOR_WIDTH]; // on x=11
+const STREET_X1 = 13;
+const FRONT_EXIT_BLOCKER = box(11 - H, STREET_DOOR[0], 11 + H, STREET_DOOR[1]);
 
 // Sauna: compact seated room. Each seated row is a line of bathers with one clear gap.
 const SAUNA_X1 = 18.9; // 0.5 m longer than first drafted: 1.0 m in front of the hat shelf (review M-1)
@@ -241,7 +254,9 @@ fix("bench", box(0.3, -8.8, 2.5, -8.4), 0.45, "休憩所のベンチ");
 fix("step", WOMENS_STEP, WOMENS_STEP_HEIGHT, "段差");
 deco("norenWomen", box(-0.05, WOMENS_DOOR[0], 0.05, WOMENS_DOOR[1]), 1.5, 0.5, "女湯"); // short noren above head height (non-blocking)
 deco("norenMen", box(RECEPTION_DOOR[0], -5 - H - 0.06, RECEPTION_DOOR[1], -5 - H), 1.5, 0.5, "男湯");
-deco("curtain", box(10.8, -7.6, 10.9, -6.4), 1.0, 1.0, "入口ののれん");
+deco("curtain", box(10.8, STREET_DOOR[0], 10.9, STREET_DOOR[1]), 1.5, 0.5, "入口ののれん"); // above head height
+// Street side: a flush stone threshold under the street door and a low fence round the stub.
+deco("threshold", box(11 - H, STREET_DOOR[0], 11.6, STREET_DOOR[1]), 0, 0.04, "敷居（ここから外）");
 
 // Changing room (z -5..0).
 // Privacy screen: a full-height partition west of the reception door makes an entry vestibule
@@ -283,7 +298,7 @@ fix("curb", box(KIDS_X1, NH_Z1, KIDS_X1 + T, 9 - H), 0.2);
 fix("storage", box(0.7, 4.5, KIDS_X1, 6.7), 1.2, "用具置き場");
 fix("partition", box(H, 2.8, KIDS_GATE[0], 3.0), 1.2);
 fix("partition", box(KIDS_GATE[1], 2.8, KIDS_X1, 3.0), 1.2);
-deco("border", box(KIDS_POOL.minX - 0.1, KIDS_POOL.minZ - 0.1, KIDS_POOL.maxX + 0.1, KIDS_POOL.minZ), 0, 0.01, "浅い湯だまり");
+deco("poolEdge", box(KIDS_POOL.minX - 0.1, KIDS_POOL.minZ - 0.1, KIDS_POOL.maxX + 0.1, KIDS_POOL.minZ), 0, 0.01, "浅い湯だまり");
 
 // Sauna.
 fix("heater", box(12.2, 3.0, 13.3, 3.8), 1.0, "ストーブ（近づかない）");
@@ -302,7 +317,7 @@ fix("rock", box(27, 4, 28, 9), 1.0);
 fix("rock", box(31, 7, 32, 12), 1.0);
 
 const walls: AABB[] = [
-  // Lobby / reception / genkan (z -9..-5). The street door on x=11 is closed.
+  // Lobby / reception / genkan (z -9..-5). The street door on x=11 is the exit (high handle).
   ...hWall(-9, 0, 11),
   ...vWall(0, -9, -5, [WOMENS_DOOR]),
   // 女湯 vestibule: full-height side and back walls (opaque; no interior).
@@ -311,7 +326,11 @@ const walls: AABB[] = [
   box(WOMENS_VESTIBULE_X0 - T, WOMENS_DOOR[0], WOMENS_VESTIBULE_X0, WOMENS_DOOR[1]),
   ...vWall(4, -9, -5, [COUNTER_WINDOW, LOBBY_DOOR]),
   ...vWall(8, -9, -5, [LOBBY_DOOR]),
-  ...vWall(11, -9, -5),
+  ...vWall(11, -9, -5, [STREET_DOOR]),
+  // Street stub outside the street door (low fence, outdoors).
+  ...lowH("fence", -9, 11, STREET_X1, FENCE_HEIGHT),
+  ...lowH("fence", -5, 11, STREET_X1, FENCE_HEIGHT),
+  ...lowV("fence", STREET_X1, -9, -5, FENCE_HEIGHT),
   ...hWall(-5, 0, 11, [RECEPTION_DOOR]),
   // Changing room (z -5..0)
   ...vWall(0, -5, 0),
@@ -355,8 +374,9 @@ const WAYPOINTS = {
   screenPassage: { x: 6.2, z: -0.6 },
   receptionDoorIn: { x: 6.8, z: -4.2 },
   receptionIn: { x: 6.8, z: -6.0 },
-  frontExitIn: { x: 7.4, z: -7.0 },
   genkanIn: { x: 9.0, z: -7.0 },
+  frontExitIn: { x: 10.4, z: -7.0 }, // genkan side of the street door, within reach of the handle
+  streetIn: { x: 12.0, z: -7.0 },
   // Optional areas and checks.
   tubNorth: { x: 7.0, z: 4.8 },
   bathAisle: { x: 4.2, z: 3.0 },
@@ -382,7 +402,8 @@ export const LEVEL: Level = {
     { id: "changing", box: box(0, -5, 8, 0) },
     { id: "reception", box: box(4, -9, 8, -5) },
     { id: "common", box: box(0, -9, 4, -5) },
-    { id: "exterior", box: box(8, -9, 11, -5) },
+    { id: "genkan", box: box(8, -9, 11, -5) },
+    { id: "street", box: box(11, -9, STREET_X1, -5) },
     { id: "sauna_crowd", box: box(CROWD_ROWS[0]!.x0, 0, SAUNA_X1, 4) },
     { id: "sauna_entry", box: box(12, 0, CROWD_ROWS[0]!.x0, 4) },
     { id: "open_air", box: box(12, 4, 20, 12) },
@@ -402,7 +423,8 @@ export const LEVEL: Level = {
     { id: "bath_open_air", a: "bath", b: "open_air", box: box(12 - H, OPEN_AIR_DOOR[0], 12 + H, OPEN_AIR_DOOR[1]) },
     { id: "open_air_pond_entrance", a: "open_air", b: "pond_entrance", box: box(20 - H, GARDEN_GATE[0], 20 + H, GARDEN_GATE[1]) },
     { id: "reception_common", a: "reception", b: "common", box: box(4 - H, LOBBY_DOOR[0], 4 + H, LOBBY_DOOR[1]) },
-    { id: "reception_exterior", a: "reception", b: "exterior", box: box(8 - H, LOBBY_DOOR[0], 8 + H, LOBBY_DOOR[1]) },
+    { id: "reception_genkan", a: "reception", b: "genkan", box: box(8 - H, LOBBY_DOOR[0], 8 + H, LOBBY_DOOR[1]) },
+    { id: "genkan_street", a: "genkan", b: "street", box: FRONT_EXIT_BLOCKER },
   ],
   nodes: {
     milk1: { x: 1.2, z: 7.05 }, // dry floor at the pool's north edge
@@ -430,7 +452,7 @@ export const LEVEL: Level = {
   ],
   highDoors: {
     kidsGate: { blocker: box(KIDS_GATE[0], 2.8, KIDS_GATE[1], 3.0), handle: { x: 1.1, z: 2.9 }, handleY: 1.5, label: "高い掛け金の戸（大人なら開く）" },
-    frontExit: { blocker: FRONT_EXIT_BLOCKER, handle: { x: 8 - H, z: -7.0 }, handleY: 1.6, label: "玄関の戸（取っ手が高い）" },
+    frontExit: { blocker: FRONT_EXIT_BLOCKER, handle: { x: 11 - H, z: -7.0 }, handleY: 1.6, label: "玄関の戸（取っ手が高い）" },
   },
   waypoints: WAYPOINTS,
 };

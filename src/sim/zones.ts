@@ -24,7 +24,7 @@ const WET_SOURCES: ReadonlySet<ZoneId> = new Set(["bathwater", "splash", "pond"]
  * not raw zones.
  */
 export type AreaId =
-  | "bath" | "changing" | "reception" | "common" | "exterior"
+  | "bath" | "changing" | "reception" | "common" | "genkan" | "street"
   | "sauna_entry" | "sauna_crowd" | "open_air" | "pond_entrance" | "pond";
 
 export function areaOf(z: ZoneId): AreaId {

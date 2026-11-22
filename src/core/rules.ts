@@ -4,7 +4,7 @@ import { type AreaId, isSauna } from "../sim/zones";
 import { REACH } from "./tuning";
 import type { HumanId, Outcome, PlayerState, Vec2, ViolationId, ZoneId } from "./types";
 
-const OUTSIDE_CHANGING: ReadonlySet<AreaId> = new Set(["reception", "common", "exterior"]);
+const OUTSIDE_CHANGING: ReadonlySet<AreaId> = new Set(["reception", "common", "genkan", "street"]);
 const SAUNA_AREAS: ReadonlySet<AreaId> = new Set(["sauna_entry", "sauna_crowd"]);
 
 /**
@@ -32,11 +32,11 @@ export function npcWithinPushReach(level: Level, id: HumanId, pos: Vec2, zone: Z
 }
 
 /**
- * Clear (2026-11-21): the Adult player crosses the front-exit boundary from
- * reception into the genkan (`exterior`) in this tick. Nowhere else clears.
+ * Clear (2026-11-21; boundary moved 2026-11-22): the Adult player crosses from
+ * the genkan through the street door to the street in this tick (review R-1). Nowhere else clears.
  */
 export function crossesFrontExit(stage: PlayerState["stage"], from: AreaId, to: AreaId): boolean {
-  return stage === "adult" && from === "reception" && to === "exterior";
+  return stage === "adult" && from === "genkan" && to === "street";
 }
 
 const ORDER: readonly ViolationId[] = ["F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8"];

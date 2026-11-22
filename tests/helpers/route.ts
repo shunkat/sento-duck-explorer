@@ -44,17 +44,17 @@ export function adultDriesAndDresses(sim: Sim): void {
   expect(sim.state.player.clothing).toBe("clothed");
 }
 
-/** 4: Adult goes round the screen to reception and opens the front exit door. */
+/** 4: Adult goes round the screen through reception into the genkan and opens the street door. */
 export function adultOpensFrontExit(sim: Sim): void {
-  sim.walk([W.lockerAisle, W.screenPassage, W.receptionDoorIn, W.receptionIn, W.frontExitIn]);
-  expect(sim.state.player.zone).toBe("reception");
+  sim.walk([W.lockerAisle, W.screenPassage, W.receptionDoorIn, W.receptionIn, W.genkanIn, W.frontExitIn]);
+  expect(sim.state.player.zone).toBe("genkan");
   sim.press("interact");
   expect(sim.state.doors.frontExit).toBe("open");
 }
 
-/** 5: Adult crosses into the genkan: clear. */
+/** 5: Adult steps through the street door to the street: clear. */
 export function adultLeaves(sim: Sim): void {
-  sim.walk([W.genkanIn], { allowEnd: true });
+  sim.walk([W.streetIn], { allowEnd: true });
   expect(sim.state.outcome).toEqual({ kind: "cleared" });
 }
 

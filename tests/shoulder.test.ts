@@ -194,6 +194,18 @@ describe("facing and orbit (Req 2, 3.4)", () => {
     expect(f.yaw("adult")).toBeCloseTo(0, 9); // one shared facing (−Z)
   });
 
+  it("a growth keeps the facing, even when the player is moved to the safe spot (review L-1)", () => {
+    const f = new FacingTracker();
+    f.update(view("child", 2.0, 3.5));
+    f.update(view("child", 2.02, 3.5));
+    expect(f.yaw("child")).toBeCloseTo(Math.PI / 2, 9);
+    f.update(view("adult", 1.2, 3.75)); // grew and moved 0.85 m to the growth spot
+    expect(f.yaw("adult")).toBeCloseTo(Math.PI / 2, 9);
+    expect(f.moving("adult")).toBe(false);
+    f.update(view("adult", 1.2, 3.73));
+    expect(f.yaw("adult")).toBeCloseTo(0, 9);
+  });
+
   it("J / L held turn the camera; the overview freezes the yaw", () => {
     const kb = new KeyboardState();
     kb.keyDown("KeyJ");

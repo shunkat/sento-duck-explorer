@@ -18,6 +18,6 @@ export function checkInvariants(s: GameState | CoreState): string[] {
   for (const d of ["kidsGate", "frontExit"] as const) {
     if (s.doors[d] === "open" && p.stage !== "adult") out.push(`${d} open before Adult`);
   }
-  if (s.outcome.kind === "cleared" && (p.stage !== "adult" || p.zone !== "exterior")) out.push("cleared outside the genkan or not Adult");
+  if (s.outcome.kind === "cleared" && (p.stage !== "adult" || p.zone !== "street")) out.push("cleared outside the street or not Adult");
   return out;
 }

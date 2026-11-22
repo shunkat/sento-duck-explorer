@@ -107,18 +107,18 @@ describe("Adult: room fits, passage does not, the gate is the exit", () => {
     expect(reaches(cells, LEVEL.highDoors.kidsGate.handle, REACH.handle)).toBe(true);
   });
 
-  it("with the gate open the Adult reaches the drying mat, the locker, reception and the front-exit handle, not the genkan", () => {
+  it("with the gate open the Adult reaches the drying mat, the locker, reception, the genkan and the street-door handle, not the street", () => {
     const cells = flood(LEVEL.growthSpots.milk2, walker(CHARACTER_RADIUS.adult, doors("open", "closed")));
     const z = zonesOf(cells);
-    for (const id of ["bath", "changing", "reception", "common"] as const) expect(z.has(id), id).toBe(true);
-    expect(z.has("exterior")).toBe(false);
+    for (const id of ["bath", "changing", "reception", "common", "genkan"] as const) expect(z.has(id), id).toBe(true);
+    expect(z.has("street")).toBe(false);
     expect(z.has("kids_passage")).toBe(false);
     expect(reaches(cells, LEVEL.locker, REACH.locker)).toBe(true);
     expect(reaches(cells, LEVEL.highDoors.frontExit.handle, REACH.handle)).toBe(true);
   });
 
-  it("with both doors open the Adult reaches the genkan", () => {
+  it("with both doors open the Adult reaches the street", () => {
     const cells = flood(LEVEL.growthSpots.milk2, walker(CHARACTER_RADIUS.adult, doors("open", "open")));
-    expect(zonesOf(cells).has("exterior")).toBe(true);
+    expect(zonesOf(cells).has("street")).toBe(true);
   });
 });

@@ -23,7 +23,7 @@ describe("growth route by normal inputs", () => {
   it("Duck → milk1 → Child → passage → milk2 → Adult → dry → dress → front exit: clear", () => {
     const sim = new Sim();
     R.fullRoute(sim);
-    expect(sim.state.player).toMatchObject({ stage: "adult", zone: "exterior", wet: "dry", clothing: "clothed" });
+    expect(sim.state.player).toMatchObject({ stage: "adult", zone: "street", wet: "dry", clothing: "clothed" });
     expect(sim.log.filter((e) => e.kind === "grew").map((e) => e.kind === "grew" && e.to)).toEqual(["child", "adult"]);
     expect(sim.log.filter((e) => e.kind === "checkpointSaved").map((e) => e.kind === "checkpointSaved" && e.id)).toEqual(["childGrown", "adultGrown"]);
     expect(sim.log.some((e) => e.kind === "gameOver")).toBe(false);
@@ -38,17 +38,34 @@ describe("growth route by normal inputs", () => {
     expect(r.events).toEqual([]);
   });
 
-  it("standing in reception with the door open does not clear; only crossing into the genkan does", () => {
+  it("reception and the genkan never clear, even with the street door open; crossing x = 11 clears once (review R-1)", () => {
     const sim = new Sim();
     R.duckDrinksMilk1(sim);
     R.childDrinksMilk2(sim);
     R.adultDriesAndDresses(sim);
     R.adultOpensFrontExit(sim);
+    // Walk all over reception and the genkan with the door open.
+    const doorway = { x: 7.4, z: -7.0 }; // reception side of the open x = 8 doorway
+    const tour = [W.genkanIn, doorway, W.receptionIn, { x: 5.0, z: -7.2 }, doorway, W.genkanIn, { x: 9.5, z: -6.0 }, { x: 10.3, z: -7.8 }, { x: 10.6, z: -7.0 }];
+    sim.walk(tour);
     sim.idle(60);
     sim.expectPlaying();
-    sim.walk([{ x: 7.75, z: -7.0 }]); // right at the boundary, still reception
-    sim.expectPlaying();
     R.adultLeaves(sim);
+    expect(sim.log.filter((e) => e.kind === "cleared")).toHaveLength(1);
+  });
+
+  it("the drawn street door, the zone edge and the clear line are the same line", () => {
+    const b = LEVEL.highDoors.frontExit.blocker;
+    const genkan = LEVEL.zones.find((z) => z.id === "genkan")!.box;
+    const street = LEVEL.zones.find((z) => z.id === "street")!.box;
+    const line = (b.minX + b.maxX) / 2;
+    expect(line).toBe(genkan.maxX);
+    expect(line).toBe(street.minX);
+    const door = LEVEL.doors.find((d) => d.id === "genkan_street")!.box;
+    expect(door).toEqual(b);
+    const threshold = LEVEL.decor.find((d) => d.kind === "threshold")!.box;
+    expect(threshold.minX).toBe(b.minX);
+    expect([threshold.minZ, threshold.maxZ]).toEqual([b.minZ, b.maxZ]);
   });
 });
 
@@ -59,12 +76,12 @@ describe("early exit is blocked by the high handle", () => {
     const sim = new Sim();
     const p = sim.state.player;
     sim.state.milk.milk1 = "collected";
-    Object.assign(p, { stage: "child", wet: "dry", clothing: "clothed", towel: "head", pos: { ...W.frontExitIn }, zone: "reception" });
+    Object.assign(p, { stage: "child", wet: "dry", clothing: "clothed", towel: "head", pos: { ...W.frontExitIn }, zone: "genkan" });
     const ev = sim.press("interact");
     expect(sim.state.doors.frontExit).toBe("closed");
     expect(ev).toContainEqual({ kind: "rejected", reason: "取っ手が高くて届かない（大人になったら開けられる）" });
     sim.hold({ x: 1, z: 0 }, 120);
-    expect(sim.state.player.zone).toBe("reception");
+    expect(sim.state.player.zone).toBe("genkan");
     sim.expectPlaying();
   });
 

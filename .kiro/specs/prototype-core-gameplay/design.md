@@ -37,15 +37,15 @@ z=8.9 +-----------+curb              Duck-only gap 0.4 between partition end and
 | 1 | Duck | Start in the tub (6.0, 6.8). Swim west along the trough (0.40 m wide, now joined to the tub) through the 0.40 m gap between the partition end and the curb into the shallow pool of the 湯だまり. E at milk1 |
 | 2 | Child | 湯だまり (2.2 × 2.2 m) fits the 0.50 m Child. Its only exit for Child is the child passage (0.60 m clear, 2.2 m long) to the 広い休憩所; the trough gap (0.40 m) and the hole (0.40 m) do not fit Child. E at milk2 |
 | 3 | Adult | 広い休憩所 (2.2 × 1.5 m) fits the 0.70 m Adult; the passage (0.60 m) does not, so Adult leaves by the separate 1.0 m gate with a high latch (E, Adult only). Then dry on the mat (E), enter the changing room, dress at the locker (E), go round the privacy screen to reception |
-| 4 | Adult | The front exit door between reception and the genkan (x 8, z −7.6 to −6.4) has a high handle at 1.6 m (`LEVEL.highDoors.frontExit`). E opens it for Adult only; Duck/Child get the hint 「取っ手が高くて届かない（大人になったら開けられる）」. Clear when the player crosses from `reception` into `exterior` (the genkan) |
+| 4 | Adult | Reception → genkan through the ordinary open doorway (x 8). The street door of the genkan (x 11, z −7.6 to −6.4; review R-1, 2026-11-22) has a high handle at 1.6 m (`LEVEL.highDoors.frontExit`, handle (10.9, −7.0)). E opens it for Adult only; Duck/Child get the hint 「取っ手が高くて届かない（大人になったら開けられる）」. A flush threshold stone marks the line. Clear when the player crosses from `genkan` into `street` (zone (11, −9)–(13, −5), 「外」, a 2 m street stub with a low fence) |
 
-- Clear needs the Adult stage and that boundary crossing. Reception, the sauna, open air, garden and pond never clear. A failure on the same tick wins over clear. The cleared state is frozen; R (view layer) starts a new game.
+- Clear needs the Adult stage and that boundary crossing (the drawn street door, the zone edge and the clear line are the same line x = 11). Reception, the genkan, the sauna, open air, garden and pond never clear. The zone formerly called `exterior` is `genkan`. A failure on the same tick wins over clear. The cleared state is frozen; R (view layer) starts a new game.
 - Retired from required progress: coin, payment, key, hat, carrying, transfer dialogs, the pond goal and Duck's pond physics. The coin hole, hat shelf and pond remain as scenery; humans may explore the sauna, open air and garden. The sauna door is never locked: in this fictional facility the sauna is included in the bath admission (not a claim about real sento).
-- New fixtures (partition, storage block, curb, gate, front door, handles) are provisional shapes drawn over the authored environment; they are not final assets.
+- New fixtures (partition, storage block, curb, gate, street door, handles, street fences, threshold) are provisional shapes drawn over the authored environment; they are not final assets. The environment re-export follows the dynamic door contract: optional root children `growth_kids_gate` / `growth_front_exit` (identity transform, world coordinates, hidden while open) with `_upper` children hidden in the Overview; fixed frames and growth fixtures in `environment_static` / `environment_upper`. The loader accepts both door nodes or neither; with them it hides the game's own growth primitives. Until that export lands the layout hash check stays open.
 
 ### Guardian (non-player)
 
-A scripted adult NPC 「見守りの大人」 watches the Child from the bath hall, outside the kids' corner. It walks (Adult speed and radius, wall collision) along a fixed chain of checked dry-floor spots and never enters water, the kids' corner, the passage or the women's entrance. It does not block the player and has no inventory, switching, drying or distance rule.
+A scripted adult NPC 「見守りの大人」 watches the Child from the bath hall, outside the kids' corner. It is drawn with the existing standing-bather model `npc_bath_standing.glb` (reused unchanged, bottom-center origin, 1.6 m); the capsule remains the fallback. It walks (Adult speed and radius, wall collision) along a fixed chain of checked dry-floor spots and never enters water, the kids' corner, the passage or the women's entrance. It does not block the player and has no inventory, switching, drying or distance rule.
 
 | Player | Guardian target |
 | --- | --- |
@@ -59,7 +59,7 @@ A scripted adult NPC 「見守りの大人」 watches the Child from the bath ha
 
 ### HUD and camera
 
-The HUD shows the stage, the next objective and the contextual E action; Tab, transfers and pond guidance are removed. On growth a toast and a short ring pulse mark the change. The camera blends height and distance to the new stage's profile over the existing switch blend (0.4 s), keeps the facing and the shoulder controls and the overview.
+The HUD shows the stage, the next objective and the contextual E action; Tab, transfers and pond guidance are removed. On growth a toast and a short ring pulse mark the change. The camera blends height and distance to the new stage's profile over the existing switch blend (0.4 s), keeps the facing (also when growth moved the player to its safe spot) and the shoulder controls and the overview.
 
 ### F1–F8
 
@@ -276,7 +276,7 @@ This keeps Child from being left alone in the bath during the payment trip and o
 | F1 | `dipTowel` while the active human stands on the bath water (`LEVEL.duckWater`: tub, channel, hole) with the towel in the hand (`towel: "held"`) | Walking through water with the towel in hand; Q with the towel on the head (HUD: "タオルは頭の上にあります") | 7.1 |
 | F2 | A human with `wet` enters `changing` (active human only, see pair rules) | Dry human entering | 4.2, 7.2 |
 | F3 | Active character moves with `run: true` and its circle overlaps a soap circle | Walking over soap | 7.3 |
-| F4 | A human with `unclothed` moves from `changing` into `reception`, `common`, or `exterior` | `changing → bath` | 7.4 |
+| F4 | A human with `unclothed` moves from `changing` into `reception`, `common`, or `exterior` (since 2026-11-22: `genkan`, `street`) | `changing → bath` | 7.4 |
 | F5 | A human with `wet` enters `sauna_entry` or `sauna_crowd` | Dry human entering | 7.5 |
 | F6 | `shout` while the active character is in a sauna zone | Shouting outside the sauna (no effect). Safety calls are not modeled as actions in the prototype | 7.6 |
 | F7 | `push` by a human in a sauna zone with an NPC body within 0.8 m of the pusher's body edge | Walking through a CrowdGap; collisions with NPCs are resolved silently | 7.7, 7.8 |

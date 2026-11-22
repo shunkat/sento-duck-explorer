@@ -41,4 +41,9 @@ export const ENVIRONMENT_MODEL_URLS: Partial<Record<EnvironmentModelId, string>>
   npc_staff_lod_far: "models/npc_staff_lod_far.glb",
   npc_seated_lod_far: "models/npc_seated_lod_far.glb",
   npc_bath_standing_lod_far: "models/npc_bath_standing_lod_far.glb",
+  // The guardian 「見守りの大人」 (2026-11-22): the existing standing bather, reused unchanged.
+  npc_bath_standing: "models/npc_bath_standing.glb",
 };
+
+/** Model drawn for the guardian; origin at the bottom center, 1.6 m tall (manifest). */
+export const GUARDIAN_MODEL_ID = "npc_bath_standing";

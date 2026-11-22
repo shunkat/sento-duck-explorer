@@ -201,3 +201,19 @@ describe("growth view in the scene (2026-11-21)", () => {
     expect(g.rings.adult!.scale.x).toBe(1);
   });
 });
+
+describe("guardian model (2026-11-22)", () => {
+  it("uses the existing npc_bath_standing model once loaded, bottom at the floor, capsule hidden", async () => {
+    const game = new GameScene({ appendChild() {} } as unknown as HTMLElement, LEVEL);
+    const g = game as unknown as { guardian: THREE.Group; guardianCapsule: THREE.Mesh };
+    expect(g.guardianCapsule.visible).toBe(true);
+    const lib = new ModelLibrary({ loadAsync: async () => ({ scene: boxModel() }), parseAsync: async () => ({ scene: boxModel() }) });
+    await lib.load("npc_bath_standing", "guardian-fixture");
+    game.useModels(lib);
+    game.useModels(lib);
+    const models = g.guardian.children.filter((o) => o.userData.source === lib.get("npc_bath_standing")!.root);
+    expect(models).toHaveLength(1);
+    expect(models[0]!.position.y).toBeCloseTo(-1.7 / 2);
+    expect(g.guardianCapsule.visible).toBe(false);
+  });
+});

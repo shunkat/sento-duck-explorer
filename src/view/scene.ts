@@ -3,11 +3,12 @@
 import * as THREE from "three";
 import { CHARACTER_NAME, ZONE_NAME } from "../core/text";
 import type { CharacterId, HighDoorId, HumanId, MilkId } from "../core/types";
-import { CHARACTER_RADIUS, type DecorKind, type FixtureKind, type Level } from "../level/layout";
+import { CHARACTER_RADIUS, type DecorKind, type FixtureKind, GROWTH_DECOR_KINDS, GROWTH_FIXTURE_KINDS, isStreetFixture, type Level } from "../level/layout";
 import type { AABB } from "../sim/geometry";
 import type { Pose } from "./camera";
 import { BODY_HEIGHT, type Vec3, type View } from "./deriveView";
 import type { ModelLibrary } from "./models";
+import { GUARDIAN_MODEL_ID } from "./modelEntry";
 import { EnvironmentModels } from "./environmentModels";
 import { createEnvironmentLight } from "./environmentLight";
 import { WorldEnvironment } from "./worldEnvironment";
@@ -33,16 +34,16 @@ import {
 
 const ZONE_COLORS: Record<string, number> = {
   bath: 0x6fa8dc, bathwater: 0x2f6fb3, splash: 0x9fc5e8, narrow_hole: 0x8e7cc3,
-  changing: 0xf6b26b, reception: 0xe06666, common: 0xcc7755, exterior: 0x888888,
+  changing: 0xf6b26b, reception: 0xe06666, common: 0xcc7755, genkan: 0x888888, street: 0x9a9a8a,
   sauna_entry: 0xb45f06, sauna_crowd: 0x8a4a12, open_air: 0x93c47d,
   pond_entrance: 0x6aa84f, pond: 0x2f7f8f,
   kids_pool: 0x7fb7e0, kids_passage: 0x9fc5e8, kids_room: 0xb7d7f0,
 };
 /** Rooms on the clear route: their names rank with fixtures, above other rooms (review N-5). */
-const ROUTE_ZONES = new Set(["reception", "changing", "bath", "kids_pool", "kids_passage", "kids_room", "exterior"]);
+const ROUTE_ZONES = new Set(["reception", "changing", "bath", "kids_pool", "kids_passage", "kids_room", "genkan", "street"]);
 
 /** Zones with a ceiling in the shoulder view (hidden in the overview). */
-const INDOOR = new Set(["reception", "common", "exterior", "changing", "bath", "sauna_entry", "sauna_crowd"]);
+const INDOOR = new Set(["reception", "common", "genkan", "changing", "bath", "sauna_entry", "sauna_crowd"]);
 
 /** Provisional fixture colours (placeholders, not final assets). */
 const FIXTURE_COLORS: Record<FixtureKind, number> = {
@@ -51,11 +52,10 @@ const FIXTURE_COLORS: Record<FixtureKind, number> = {
   holeSide: 0xd8d0e8, hedge: 0x3f7a3a, fence: 0x9c7b55, pondEdge: 0x8a8f86, rock: 0x8a8f86, shrub: 0x4f8a45,
   step: 0xc9a46a, staff: 0x2f4f6f, partition: 0xd9c9a8, storage: 0xb08850, curb: 0xc9c2b0,
 };
-/** Growth-route fixtures (2026-11-21): not in the authored world, so always drawn (provisional shapes). */
-const ROUTE_FIXTURES: ReadonlySet<FixtureKind> = new Set(["partition", "storage", "curb"]);
 const DECOR_COLORS: Record<DecorKind, number> = {
   mat: 0x6b8fb8, border: 0xdfe6ea, mirror: 0xcfe3f0, tap: 0xb0b0b0, bucket: 0xe8c547, shelf: 0xdfe6ea,
   shower: 0xb0b0b0, curtain: 0x2a3f7a, deck: 0xa07850, stone: 0xb0aca0, norenMen: 0x2c5aa0, norenWomen: 0xc0392b,
+  poolEdge: 0xdfe6ea, threshold: 0xb0aca0,
 };
 /** Wall height while the overview shows the map as a cutaway. */
 const OVERVIEW_WALL_HEIGHT = 1.0;
@@ -159,6 +159,10 @@ export class GameScene {
   /** High-handle doors (closed: drawn), provisional shapes. */
   private highDoors = {} as Record<HighDoorId, THREE.Object3D>;
   private guardian = new THREE.Group();
+  private guardianCapsule!: THREE.Mesh;
+  private guardianModel: THREE.Object3D | null = null;
+  /** Growth-route primitives (partitions, storage, curb, doors); hidden when the export draws them. */
+  private growthFallback = new THREE.Group();
   private growthCueUntil = -Infinity;
   private labels: Label[] = [];
   /** Full-height walls, cut down in the overview. */
@@ -296,7 +300,8 @@ export class GameScene {
     for (const f of level.fixtures) {
       const fm = boxMesh(f.box, f.height, 0, FIXTURE_COLORS[f.kind]);
       if (f.height > OVERVIEW_WALL_HEIGHT) this.tallWalls.push({ mesh: fm, height: f.height });
-      if (f.kind === "stool" || ROUTE_FIXTURES.has(f.kind)) this.scene.add(fm);
+      if (GROWTH_FIXTURE_KINDS.has(f.kind) || isStreetFixture(f)) this.growthFallback.add(fm);
+      else if (f.kind === "stool") this.scene.add(fm);
       else if (f.height > OVERVIEW_WALL_HEIGHT) this.environmentFallback.add(fm);
       else staticSurfaces.push(fm);
       if (f.kind === "stool") this.environmentModels.register("bath_stool", fm, f.box, 0, f.height);
@@ -319,7 +324,8 @@ export class GameScene {
     }
     for (const d of level.decor) {
       const dm = boxMesh(d.box, d.height, d.y0, DECOR_COLORS[d.kind], d.kind === "mirror" ? 0.85 : 1);
-      if (d.kind === "bucket") this.scene.add(dm);
+      if (GROWTH_DECOR_KINDS.has(d.kind)) this.growthFallback.add(dm);
+      else if (d.kind === "bucket") this.scene.add(dm);
       else if (d.kind === "mirror") this.environmentFallback.add(dm);
       else staticSurfaces.push(dm);
       if (d.kind === "bucket") this.environmentModels.register("wash_basin", dm, d.box, d.y0, d.height);
@@ -357,15 +363,19 @@ export class GameScene {
       const handle = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.06, 0.14), new THREE.MeshStandardMaterial({ color: 0xd4af37, metalness: 0.6, roughness: 0.3 }));
       handle.position.set(d.handle.x, d.handleY, d.handle.z);
       g.add(handle);
-      this.scene.add(g);
+      this.growthFallback.add(g);
       this.highDoors[id] = g;
       this.fixtureLabel(d.label, d.blocker, leafH + 0.3, "#fda");
     }
+
+    this.growthFallback.name = "growth_fallback";
+    this.scene.add(this.growthFallback);
 
     // Guardian (non-player adult who watches the Child): provisional primitive.
     const gBody = new THREE.Mesh(new THREE.CapsuleGeometry(CHARACTER_RADIUS.adult, BODY_HEIGHT.adult - 2 * CHARACTER_RADIUS.adult, 8, 16),
       new THREE.MeshStandardMaterial({ color: 0x8e6fd8 }));
     this.guardian.add(gBody);
+    this.guardianCapsule = gBody;
     const gLabel = this.label("見守りの大人", "character", "#e8dcff");
     gLabel.position.set(0, BODY_HEIGHT.adult / 2 + CHARACTER_LABEL_GAP, 0);
     this.guardian.add(gLabel);
@@ -472,6 +482,7 @@ export class GameScene {
         console.warn(`Model for ${id} failed its display contract; keeping the current model.`, error);
       }
     }
+    this.useGuardianModel(lib);
     const milk = lib.get("milk_bottle");
     if (milk) {
       for (const id of ["milk1", "milk2"] as const) {
@@ -566,6 +577,23 @@ export class GameScene {
     }
   }
 
+  /**
+   * The guardian uses the existing standing-bather NPC (bottom-center origin).
+   * The group sits at the body center, so the clone is lowered by half the
+   * Adult body height; the capsule stays as the fallback.
+   */
+  private useGuardianModel(lib: ModelLibrary): void {
+    const source = lib.get(GUARDIAN_MODEL_ID)?.root;
+    if (!source || this.guardianModel?.userData.source === source) return;
+    const root = source.clone(true);
+    root.userData.source = source;
+    root.position.set(0, -BODY_HEIGHT.adult / 2, 0);
+    this.guardianModel?.removeFromParent();
+    this.guardian.add(root);
+    this.guardianModel = root;
+    this.guardianCapsule.visible = false;
+  }
+
   /** Show a loaded milk bottle model instead of the primitive (origin at the base center, like the group). */
   setItemModel(id: MilkId, root: THREE.Object3D): void {
     const g = this.items[id];
@@ -647,7 +675,8 @@ export class GameScene {
     }
     for (const id of ["kidsGate", "frontExit"] as const) this.highDoors[id].visible = !view.doorsOpen[id];
     // The sauna is never locked in the growth version: hide the authored closed door.
-    this.worldEnvironment.setView(overview, false);
+    this.worldEnvironment.setView(overview, false, view.doorsOpen);
+    this.growthFallback.visible = !this.worldEnvironment.hasGrowthDoors;
     this.camera.position.set(pose.eye.x, pose.eye.y, pose.eye.z);
     this.camera.lookAt(pose.target.x, pose.target.y, pose.target.z);
     this.environmentModels.updateDetail(this.camera.position, overview);
