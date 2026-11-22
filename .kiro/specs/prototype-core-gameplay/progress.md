@@ -76,3 +76,15 @@ Findings from that check:
 ## English draft merge update (2026-11-20)
 
 Codex reconciled PR #1 with the current gameplay and asset records: real models and their separate CC BY 4.0 license, shoulder controls, contextual E, Child carrying to the coin channel, and version-specific normal-input evidence. Earlier cloud failures/successes above remain historical. This documentation update reuses the 219-test/build result from the integrated ModelLibrary/property-test code; no source or asset changed and no browser run was repeated.
+
+## Mobile camera framing — 2026-11-23
+
+The user approved Codex implementation and verification of the mobile camera
+batch after a fresh actual Kiro request was stopped by the monthly usage limit.
+The earlier narrow Escape exception did not authorize this batch; the new
+explicit exception does. Codex owns the camera/profile changes, main/renderer
+integration, regression tests and documentation. No billing/account settings,
+models, licenses, dependencies or gameplay rules changed. The existing independent
+reviewer and designated final-play supervisor retain their verification roles.
+See the shoulder-view Spec for scope and pending verification; this is not a
+hackathon submission or a claim of organizer approval for another AI tool.

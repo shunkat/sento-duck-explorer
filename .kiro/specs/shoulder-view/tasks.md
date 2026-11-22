@@ -116,3 +116,13 @@ The separate outdoor-bath WIP is not included in this branch. Its unfinished bat
 - [x] The designated supervisor completed one combined normal-input clear on `2ac57ea` and the Esc-only follow-up on `9697b71`; see `docs/controls-verification.md` for version boundaries and the Codex-authored, user-approved Esc repair.
 - [ ] Real-device checks (iPhone Safari, Android Chrome) remain unverified. Chrome touch-UI emulation is not physical multitouch; the frame-rate target (about 30 fps) is unmeasured.
 - Deferred: persistent save, key rebinding, gamepad, PWA/offline, auto-centering.
+
+## Mobile camera framing — 2026-11-23 (user-approved Codex implementation)
+- [x] Separate centered mobile profiles; distance and aspect-aware FOV for duck, child and adult.
+- [x] Coarse startup, late touch and actual canvas resize integration, preserving manual yaw/pitch and growth blending.
+- [x] Safe wall contraction, eased recovery and temporary active-body opacity with full restoration; rings remain opaque.
+- [x] Regression coverage for production model bounds, projection consumers, entry-point mode changes, safety and desktop invariance.
+- [ ] Unified automated validation and independent review of the fixed batch.
+- [ ] Designated supervisor's single combined normal-input route and local four-size camera checks.
+- [ ] Publish the checked camera revision through the existing main/Pages workflow.
+- [ ] Physical iPhone Safari/Android Chrome multitouch and performance remain unverified.

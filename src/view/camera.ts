@@ -3,13 +3,18 @@
 import type { CharacterId } from "../core/types";
 import { LEVEL, type Level } from "../level/layout";
 import type { Vec3 } from "./deriveView";
-import { clampPitch, type Obstacles, safeEye, shoulderPose } from "./shoulder";
+import { CAMERA_PROFILE, clampPitch, type Obstacles, safeEye, shoulderPose } from "./shoulder";
+import { compressedBodyOpacity, MobileCameraFraming } from "./mobileCamera";
 
 export const SWITCH_SECONDS = 0.4;
 
 export interface Pose {
   eye: Vec3;
   target: Vec3;
+  /** Omitted on desktop, whose projection remains 55 degrees. */
+  fov?: number;
+  /** Touch-only active-body fade; the renderer defaults to fully opaque. */
+  activeBodyOpacity?: number;
 }
 
 /**
@@ -47,10 +52,25 @@ export class FollowCamera {
   private elapsed = SWITCH_SECONDS;
   private lastId: CharacterId | null = null;
   private overview = false;
+  private touch = false;
+  private readonly framing = new MobileCameraFraming();
+  private opacity = 1;
+  private preferredDistance = 0;
+  private fromDistance = 0;
+  private lastTouchDistance: number | null = null;
   /** Horizontal view angle; 0 looks toward −Z. Movement input is rotated by it. */
   yaw = 0;
   /** Vertical look angle (rad, up is positive), bounded by `clampPitch`. View only. */
   pitch = 0;
+  /** Actual canvas size, including late touch activation and orientation changes. */
+  setViewport(width: number, height: number, touch: boolean): void {
+    this.framing.setViewport(width, height, touch, !this.current || !touch);
+    this.touch = touch;
+    if (!touch) {
+      this.opacity = 1;
+      this.lastTouchDistance = null;
+    }
+  }
   /**
    * C cuts straight to or from the overview (no blend). The overview eye is
    * far above the roof, so any in-between pose would show the ceiling or a
@@ -59,6 +79,9 @@ export class FollowCamera {
   toggleOverview(): void {
     this.from = null;
     this.elapsed = SWITCH_SECONDS;
+    this.opacity = 1;
+    this.preferredDistance = 0;
+    this.lastTouchDistance = null;
     this.overview = !this.overview;
   }
 
@@ -83,6 +106,9 @@ export class FollowCamera {
     this.current = null;
     this.lastId = null;
     this.elapsed = SWITCH_SECONDS;
+    this.opacity = 1;
+    this.preferredDistance = 0;
+    this.lastTouchDistance = null;
   }
   /** Turn the view left/right; ignored in the overview so the move mapping stays put. */
   orbit(delta: number): void {
@@ -102,6 +128,7 @@ export class FollowCamera {
   }
   private startBlend(): void {
     this.from = this.current;
+    this.fromDistance = this.preferredDistance;
     this.elapsed = 0;
   }
 
@@ -111,6 +138,7 @@ export class FollowCamera {
    * the view angles: only the body profile (distance, height, shoulder) blends.
    */
   update(id: CharacterId, focus: Vec3, dt: number, obstacles: Obstacles): Pose {
+    const elapsed = Number.isFinite(dt) ? Math.max(0, dt) : 0;
     if (this.lastId !== null && this.lastId !== id) this.startBlend();
     this.lastId = id;
     if (this.overview) {
@@ -118,16 +146,45 @@ export class FollowCamera {
       this.current = OVERVIEW;
       return this.current;
     }
-    const goal = shoulderPose(id, focus, this.yaw, obstacles, this.pitch);
-    this.elapsed += dt;
+    this.framing.update(elapsed);
+    const profile = this.touch ? this.framing.profile(id) : undefined;
+    const goal = shoulderPose(id, focus, this.yaw, obstacles, this.pitch, profile);
+    this.elapsed += elapsed;
+    this.preferredDistance = (profile ?? CAMERA_PROFILE[id]).dist;
     if (!this.from || this.elapsed >= SWITCH_SECONDS) {
       this.current = goal;
-      return goal;
+    } else {
+      // Every in-between eye is made safe for the new character, including a
+      // simultaneous resize. Resize does not restart this growth interpolation.
+      const b = blendPose(this.from, goal, this.elapsed);
+      this.current = { eye: safeEye({ x: focus.x, z: focus.z }, b.eye, obstacles), target: b.target };
+      const u = this.elapsed / SWITCH_SECONDS;
+      this.preferredDistance = lerp(this.fromDistance, this.preferredDistance, u * u * (3 - 2 * u));
     }
-    // Switch blend: every in-between eye is made safe for the new character
-    // (clear line to it, below the ceiling), so no frame looks through a wall.
-    const b = blendPose(this.from, goal, this.elapsed);
-    this.current = { eye: safeEye({ x: focus.x, z: focus.z }, b.eye, obstacles), target: b.target };
+    if (this.touch) {
+      let distance = Math.hypot(this.current.eye.x - focus.x, this.current.eye.z - focus.z);
+      // Obstacle entry contracts immediately for safety; only recovery eases
+      // outward. Work in focus-relative distance so walking and manual yaw do
+      // not acquire an unwanted camera lag.
+      if (this.lastTouchDistance !== null && distance > this.lastTouchDistance) {
+        const recovered = Math.min(distance, this.lastTouchDistance + elapsed * this.preferredDistance / 0.3);
+        const ratio = recovered / distance;
+        this.current.eye = safeEye({ x: focus.x, z: focus.z }, {
+          x: focus.x + (this.current.eye.x - focus.x) * ratio,
+          y: this.current.eye.y,
+          z: focus.z + (this.current.eye.z - focus.z) * ratio,
+        }, obstacles);
+        distance = Math.hypot(this.current.eye.x - focus.x, this.current.eye.z - focus.z);
+      }
+      this.lastTouchDistance = distance;
+      const wanted = compressedBodyOpacity(distance, this.preferredDistance);
+      // Linear bounded slew is continuous and returns to exactly one, avoiding
+      // a permanently transparent material after leaving a wall or growing.
+      const step = elapsed * 5;
+      this.opacity += Math.sign(wanted - this.opacity) * Math.min(Math.abs(wanted - this.opacity), step);
+      this.current.fov = this.framing.fov;
+      this.current.activeBodyOpacity = this.opacity;
+    }
     return this.current;
   }
 }

@@ -146,8 +146,7 @@ export const blockingAt = (obs: Obstacles, eyeY: number): readonly AABB[] => [
 const inBox = (b: AABB, p: Vec2) => p.x >= b.minX && p.x <= b.maxX && p.z >= b.minZ && p.z <= b.maxZ;
 
 /** Camera pose behind and right of the character at `focus`, clipped by obstacles. */
-export function shoulderPose(id: CharacterId, focus: Vec3, yaw: number, obs: Obstacles, pitch = 0): Pose {
-  const p = CAMERA_PROFILE[id];
+export function shoulderPose(id: CharacterId, focus: Vec3, yaw: number, obs: Obstacles, pitch = 0, p = CAMERA_PROFILE[id]): Pose {
   const f = forwardOf(yaw);
   const r = rightOf(yaw);
   const base = { x: focus.x, z: focus.z };

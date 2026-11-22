@@ -229,6 +229,7 @@ function resize(): void {
     clearInputs();
   }
   scene.resize(w, h);
+  camera.setViewport(w, h, touchMode);
 }
 window.addEventListener("resize", resize);
 window.visualViewport?.addEventListener("resize", resize);

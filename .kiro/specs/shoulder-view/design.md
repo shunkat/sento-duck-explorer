@@ -170,3 +170,33 @@ Implemented by Kiro in this branch from the existing code. Decisions are provisi
 - **Rendering** (`view/renderQuality.ts`): pixel ratio caps 2 / 1.5 / 1.25. `scene.resize` uses the container's actual size and recomputes the pixel ratio. The renderer keeps `antialias: true`; no shadows are enabled in the scene (no shadow map is configured), so no shadow claim is made. All 18 registered GLBs (9,979,044 bytes) are still requested at startup, now with a progress line; load prioritization is deferred until a device measurement shows a need.
 - **Layout** (`index.html`): `#app` uses `100vh` with a `100dvh` override; the touch layer and safe-area insets use `env(safe-area-inset-*)` plus 12 px. Dialogs use `touch-action: pan-y`; the game surface uses `touch-action: none`.
 - **Open verification** (real devices, supervisor's single final pass): multi-touch, safe areas and dynamic bars, pointercancel/capture loss, background and rotation, WebGL context loss and the actual frame rate (target about 30 fps in normal scenes). Desktop emulation covers geometry only.
+
+## Mobile camera framing (2026-11-23)
+
+The user approved Codex for this camera batch after the actual Kiro retry stopped
+at its monthly usage limit. This is separate from the earlier Kiro controls work.
+
+- `FollowCamera.setViewport(width, height, touch)` receives actual canvas dimensions
+  in `main.resize`, including coarse startup and the first later touch. Rendering
+  updates aspect immediately. `MobileCameraFraming` interpolates mobile framing
+  over 0.3 seconds, independently from the 0.4-second growth transition, retaining
+  manual yaw/pitch and avoiding a reset on same-orientation browser-bar resizes.
+- Mobile distance / lateral offset in metres: duck 1.7 / 0.03, child 2.9 / 0.04,
+  adult 3.6 / 0.05. Eye heights remain 0.42 / 1.5 / 2; look heights are
+  0.22 / 0.4 / 0.65. Vertical FOV interpolates continuously from 55 degrees in
+  landscape to 65 at aspect <= 0.5. Desktop retains its original profiles and FOV.
+- `shoulderPose` accepts the optional presentation profile. The existing
+  `safeEye` checks apply to the desired eye and every intermediate growth pose.
+  Wall contraction is immediate for safety; mobile distance recovery eases out
+  over at most about 0.3 seconds without adding lag to movement or manual yaw.
+- Compression opacity uses actual horizontal eye distance relative to the
+  current preferred distance, with a smooth response between ratios 0.35 and
+  0.85. The active body reaches a minimum opacity of 0.25; opacity changes at
+  at most 5 units per second and restores exactly to 1 in free space. `Pose`
+  carries the FOV and active-body opacity to `GameScene.render` before feedback
+  projection. Overview resets both; desktop defaults are 55 and 1. Non-active
+  body fading and the separate position rings retain their existing behavior.
+- No world model size, mesh asset, collider, speed, water, growth or F1–F8 rule
+  changes. Automated production-geometry projections and renderer/entry-point
+  integration are complemented by the designated supervisor's final fixed-version
+  check; physical phone multitouch and performance remain separate, unverified work.

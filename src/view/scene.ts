@@ -559,7 +559,8 @@ export class GameScene {
     const act = this.chars[view.active].position;
     for (const id of ["duck", "child", "adult"] as const) {
       const c = view.characters[id];
-      const fade = overview || c.active ? 1 : bodyOpacity(pose.eye, act, this.chars[id].position, c.radius);
+      const fade = overview ? 1 : c.active ? (pose.activeBodyOpacity ?? 1)
+        : bodyOpacity(pose.eye, act, this.chars[id].position, c.radius);
       setBodyOpacity(this.chars[id], fade);
     }
     for (const id of ["milk1", "milk2"] as const) {
@@ -571,6 +572,11 @@ export class GameScene {
     // The sauna is never locked in the growth version: hide the authored closed door.
     this.worldEnvironment.setView(overview, false, view.doorsOpen);
     this.growthFallback.visible = !this.worldEnvironment.hasGrowthDoors;
+    const fov = overview ? 55 : (pose.fov ?? 55);
+    if (this.camera.fov !== fov) {
+      this.camera.fov = fov;
+      this.camera.updateProjectionMatrix();
+    }
     this.camera.position.set(pose.eye.x, pose.eye.y, pose.eye.z);
     this.camera.lookAt(pose.target.x, pose.target.y, pose.target.z);
     this.environmentModels.updateDetail(this.camera.position, overview);
