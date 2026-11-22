@@ -53,12 +53,13 @@ export class TargetFeedback {
     c.width = w;
     c.height = h;
     ctx.font = `700 ${FONT_PX}px system-ui, "Hiragino Sans", sans-serif`;
-    ctx.fillStyle = "rgba(10,25,28,0.82)";
-    ctx.beginPath();
-    ctx.roundRect(0, 0, w, h, 12);
-    ctx.fill();
-    ctx.fillStyle = "#fff6c8";
+    // An outlined caption stays readable without suggesting a clickable button.
+    ctx.strokeStyle = "#071719";
+    ctx.lineWidth = 6;
+    ctx.lineJoin = "round";
     ctx.textBaseline = "middle";
+    ctx.strokeText(label, PAD_PX, h / 2 + 1);
+    ctx.fillStyle = "#fff6c8";
     ctx.fillText(label, PAD_PX, h / 2 + 1);
     this.aspect = w / h;
     this.texture!.needsUpdate = true;

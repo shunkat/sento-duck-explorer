@@ -47,7 +47,9 @@
       }
 
       /* Prompt, load status and pause overlay */
-      .hud-prompt { bottom: max(64px, calc(env(safe-area-inset-bottom) + 12px)); left: 50%; transform: translateX(-50%); width: max-content; max-width: calc(100% - 24px); text-align: center; color: #fff6c8; border: 1px solid #ffe27a; }
+      .hud-prompt { bottom: max(64px, calc(env(safe-area-inset-bottom) + 12px)); left: 50%; transform: translateX(-50%); width: max-content; max-width: calc(100% - 24px); text-align: center; color: #fff6c8; }
+      /* Read-only help is caption text; filled, framed surfaces belong to controls. */
+      #hud > .hud-hints, #hud > .hud-prompt { background: none; border: 0; border-radius: 0; padding: 0; font-weight: 600; text-shadow: -1px -1px 0 #071719, 1px -1px 0 #071719, -1px 1px 0 #071719, 1px 1px 0 #071719, 0 1px 4px #000; }
       .hud-prompt[hidden], .hud-load[hidden] { display: none; }
       .hud-load { top: max(44px, calc(env(safe-area-inset-top) + 32px)); left: 50%; transform: translateX(-50%); width: max-content; max-width: calc(100% - 24px); font-size: 12px; text-align: center; }
       .hud-load:empty { display: none; }

@@ -86,7 +86,7 @@ describe("connected scene geometry budget", () => {
   it("keeps the final GLB scene within 60k across camera LODs, growth bodies, outfits and fade/restore", async () => {
     vi.stubGlobal("window", { devicePixelRatio: 1 });
     vi.stubGlobal("document", { createElement: () => ({
-      getContext: () => ({ measureText: () => ({ width: 100 }), fillRect() {}, fillText() {}, beginPath() {}, roundRect() {}, fill() {} }),
+      getContext: () => ({ measureText: () => ({ width: 100 }), fillRect() {}, fillText() {}, strokeText() {}, beginPath() {}, roundRect() {}, fill() {} }),
     }) });
     const manifest = JSON.parse(readFileSync(new URL("../assets/manifest.json", import.meta.url), "utf8"));
     expect(manifest.scene_limits.stage2_triangles_drawn).toBe(LIMIT);
