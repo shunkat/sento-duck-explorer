@@ -33,6 +33,8 @@ export class TouchUi {
   private menuList: HTMLElement;
   private menuOpenFlag = false;
   private root: HTMLElement;
+  private enabled = true;
+  private runShown: boolean | null = null;
   constructor(root: HTMLElement, private deps: TouchUiDeps) {
     this.root = root;
     root.innerHTML = "";
@@ -62,13 +64,14 @@ export class TouchUi {
     close.textContent = "閉じる";
     this.bindPad();
     // Activation is a single click; the press is queued for the next fixed tick.
-    this.primary.addEventListener("click", () => deps.press("interact"));
-    recenter.addEventListener("click", () => deps.press("recenter"));
-    this.runButton.addEventListener("click", () => this.setRunPressed(deps.touch.toggleRun()));
+    this.primary.addEventListener("click", () => { if (this.enabled) deps.press("interact"); });
+    recenter.addEventListener("click", () => { if (this.enabled) deps.press("recenter"); });
+    this.runButton.addEventListener("click", () => { if (this.enabled) this.setRunPressed(deps.touch.toggleRun()); });
     this.menuButton.addEventListener("click", () => this.openMenu());
     close.addEventListener("click", () => this.closeMenu());
     this.menu.addEventListener("cancel", (e) => { e.preventDefault(); this.closeMenu(); });
-    this.menu.addEventListener("close", () => this.afterClose());
+    // The native close event arrives later; a menu opened again since then stays open.
+    this.menu.addEventListener("close", () => { if (!this.menu.open) this.afterClose(); });
     this.setStage("duck");
   }
   get menuOpen(): boolean { return this.menuOpenFlag; }
@@ -83,7 +86,7 @@ export class TouchUi {
       this.knob.style.transform = `translate(${v.x * STICK_RADIUS * 0.7}px, ${v.z * STICK_RADIUS * 0.7}px)`;
     };
     this.pad.addEventListener("pointerdown", (e) => {
-      if (this.menuOpenFlag) return;
+      if (this.menuOpenFlag || !this.enabled) return;
       const c = centre();
       if (!touch.stickDown(e.pointerId, c.x, c.y, e.clientX, e.clientY)) return;
       try { this.pad.setPointerCapture(e.pointerId); } catch { /* A stale id: ownership is still tracked. */ }
@@ -105,11 +108,30 @@ export class TouchUi {
   /** After any clear: the stick and run indicators match the input state. */
   syncFromInput(): void {
     this.knob.style.transform = "translate(0px, 0px)";
+    this.syncRun();
+  }
+  /** The run button shows the real state (it turns itself off when the walk stops); the stick knob is untouched. */
+  syncRun(): void {
     this.setRunPressed(this.deps.touch.run);
   }
   private setRunPressed(on: boolean): void {
+    if (this.runShown === on) return;
+    this.runShown = on;
     this.runButton.setAttribute("aria-pressed", String(on));
     this.runButton.textContent = on ? "走る（入）" : "走る";
+  }
+  /** False while paused, or after the game ended: the controls ignore taps and leave the tab order. */
+  setEnabled(enabled: boolean): void {
+    this.enabled = enabled;
+    if (!enabled && this.menuOpenFlag) this.closeMenu();
+    for (const b of [this.primary, this.runButton, this.menuButton]) b.disabled = !enabled;
+    if (enabled) {
+      this.root.removeAttribute?.("inert");
+      this.root.removeAttribute?.("aria-hidden");
+    } else {
+      this.root.setAttribute("aria-hidden", "true");
+      this.root.setAttribute("inert", "");
+    }
   }
   /** Action name of the current E target (Japanese, no key); a neutral label when there is none. */
   setLabel(label: string | null): void {
@@ -126,7 +148,7 @@ export class TouchUi {
     this.root.hidden = !visible;
   }
   private openMenu(): void {
-    if (this.menuOpenFlag) return;
+    if (this.menuOpenFlag || !this.enabled) return;
     this.menuList.innerHTML = "";
     for (const m of MENU_ACTIONS) {
       const b = el("button", "touch-btn touch-menu-item", this.menuList);

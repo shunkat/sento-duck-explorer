@@ -19,6 +19,7 @@ export interface LoopResult {
  * Advance the game by the elapsed real time. `takeFrame` is called once per
  * logic tick, so single presses reach exactly one tick. Leftover time beyond
  * MAX_TICKS_PER_FRAME is dropped so movement never jumps through walls.
+ * A tick that restores a checkpoint ends the update and drops the remaining time.
  */
 export function advance(
   state: GameState,
@@ -37,6 +38,12 @@ export function advance(
     events.push(...r.events);
     acc -= DT;
     ticks++;
+    // A restored checkpoint is a new input boundary: the rest of this update
+    // would run the old held input on the restored state, so it is dropped.
+    if (r.events.some((e) => e.kind === "restored")) {
+      acc = 0;
+      break;
+    }
   }
   if (ticks === MAX_TICKS_PER_FRAME && acc >= DT) acc = 0;
   return { state: s, accumulator: acc, events, ticks };

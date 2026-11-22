@@ -21,7 +21,6 @@ import { effectivePixelRatio, DESKTOP_PIXEL_RATIO_CAP } from "./renderQuality";
 import { TargetFeedback } from "./targetFeedback";
 import type { InteractTarget } from "../core/actions";
 import type { Margin, PromptPlace } from "./targetPlacement";
-import type { Obstacles } from "./shoulder";
 
 const ZONE_COLORS: Record<string, number> = {
   bath: 0x6fa8dc, bathwater: 0x2f6fb3, splash: 0x9fc5e8, narrow_hole: 0x8e7cc3,
@@ -555,7 +554,7 @@ export class GameScene {
    * obstacles used to decide whether its text is visible; it returns where the
    * prompt should be shown ("world", compact "hud", or "none").
    */
-  render(view: View, pose: Pose, overview: boolean, feedback?: { target: InteractTarget | null; enabled: boolean; margin: Margin; obstacles: Obstacles }): PromptPlace {
+  render(view: View, pose: Pose, overview: boolean, feedback?: { target: InteractTarget | null; enabled: boolean; margin: Margin }): PromptPlace {
     this.setOverview(overview);
     const act = this.chars[view.active].position;
     for (const id of ["duck", "child", "adult"] as const) {
@@ -580,7 +579,7 @@ export class GameScene {
     let place: PromptPlace = "none";
     if (feedback && !overview) {
       const size = this.renderer.getSize(this.size);
-      place = this.feedback.update(feedback.target, feedback.enabled, this.camera, { w: size.x, h: size.y }, feedback.margin, feedback.obstacles);
+      place = this.feedback.update(feedback.target, feedback.enabled, this.camera, { w: size.x, h: size.y }, feedback.margin);
     } else this.feedback.hide();
     this.renderer.render(this.scene, this.camera);
     return place;

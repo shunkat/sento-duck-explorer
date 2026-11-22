@@ -13,20 +13,65 @@ export interface LookSink {
 /** A deliberate click: the pointer barely moved and was released quickly. */
 export const CLICK_MAX_MOVE_PX = 6;
 export const CLICK_MAX_MS = 400;
+/** What the caller does after a pointer-lock change. */
+export type LockOutcome = "keep" | "release" | "pause" | "none";
 export class MouseLook {
-  /** False while a modal is open, the window is blurred or the lock is unwanted. */
+  /** False while a modal is open, the page is blurred, the game ended or the lock is unwanted. */
   private captureAllowed = true;
-  /** One request at a time; a failed or delayed request is never retried by itself. */
-  private requesting = false;
+  /**
+   * Increments whenever the input boundary changes (modal, blur, outcome, reset).
+   * A request remembers its epoch; a grant from an older epoch is always given back.
+   */
+  private epoch = 0;
+  /** Epoch of the request still waiting for its grant or error (void and Promise APIs alike). */
+  private pending: number | null = null;
+  private wasLocked = false;
+  private weReleased = false;
   private drag: { id: number; x: number; y: number; startX: number; startY: number; startT: number; moved: number; button: number } | null = null;
   constructor(private sink: LookSink, private settings: () => ControlValues, private lockTarget: LockTarget,
     private isLocked: () => boolean = () => false) {}
-  /** Allow or forbid capture. A grant that arrives later is released by the caller (see main). */
+  /** Allow or forbid capture. Forbidding invalidates a request in flight and drops the drag. */
   setCaptureAllowed(allowed: boolean): void {
+    if (this.captureAllowed && !allowed) this.invalidate();
     this.captureAllowed = allowed;
-    if (!allowed) this.drag = null;
   }
+  /** Boundary reset (modal, blur, rotation, outcome, restart): no drag, no pending grant survives. */
+  invalidate(): void {
+    this.epoch++;
+    this.pending = null;
+    this.drag = null;
+  }
+  /** The pointer id of a drag in progress (so the caller can release its DOM capture). */
+  get dragPointer(): number | null { return this.drag?.id ?? null; }
   get locked(): boolean { return this.isLocked(); }
+  /** The caller is about to leave the lock itself; the resulting change is not an Escape. */
+  noteReleasing(): void { this.weReleased = true; }
+  /** `pointerlockchange`. The caller exits the lock on "release" and opens settings on "pause". */
+  onLockChange(locked: boolean): LockOutcome {
+    if (locked) {
+      const fresh = this.pending !== null && this.pending === this.epoch && this.captureAllowed;
+      this.pending = null;
+      if (!fresh) {
+        this.weReleased = true; // the give-back below is ours, not an Escape
+        this.wasLocked = true;
+        return "release";
+      }
+      this.wasLocked = true;
+      return "keep";
+    }
+    const was = this.wasLocked;
+    this.wasLocked = false;
+    if (this.weReleased) {
+      this.weReleased = false;
+      return "none";
+    }
+    return was && this.captureAllowed ? "pause" : "none";
+  }
+  /** `pointerlockerror`: the request ended; nothing is retried by itself. */
+  onLockError(): void {
+    this.pending = null;
+    this.weReleased = false;
+  }
   private apply(dx: number, dy: number): void {
     const s = this.settings();
     const k = ORBIT_DRAG_RATE * s.sensitivity;
@@ -65,20 +110,22 @@ export class MouseLook {
   pointerEnd(id: number): void {
     if (this.drag?.id === id) this.drag = null;
   }
-  /** Ask for Pointer Lock once. Never throws; never loops; ignores a late result after a modal/blur. */
+  /**
+   * Ask for Pointer Lock once per input boundary. Never throws; never loops.
+   * The request stays pending until the grant or the error, whatever the API returns.
+   */
   requestLock(): boolean {
-    if (!this.captureAllowed || this.requesting || this.isLocked() || this.settings().dragOnly) return false;
-    this.requesting = true;
-    const done = () => { this.requesting = false; };
+    if (!this.captureAllowed || this.pending === this.epoch || this.isLocked() || this.settings().dragOnly) return false;
+    const mine = this.epoch;
+    this.pending = mine;
     try {
       const r = this.lockTarget.requestPointerLock();
       if (r && typeof (r as Promise<void>).then === "function") {
-        (r as Promise<void>).then(done, done);
-      } else {
-        done();
+        // A rejection ends the request; a grant is confirmed by pointerlockchange.
+        (r as Promise<void>).then(undefined, () => { if (this.pending === mine) this.pending = null; });
       }
     } catch {
-      done();
+      if (this.pending === mine) this.pending = null;
       return false;
     }
     return true;

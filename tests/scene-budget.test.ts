@@ -22,6 +22,7 @@ vi.mock("three", async () => {
   return { ...actual, WebGLRenderer: class {
     domElement = {};
     setPixelRatio() {}
+    getSize(v: { set(x: number, y: number): unknown }) { return v.set(390, 844); }
     render() {}
   } };
 });
@@ -85,7 +86,7 @@ describe("connected scene geometry budget", () => {
   it("keeps the final GLB scene within 60k across camera LODs, growth bodies, outfits and fade/restore", async () => {
     vi.stubGlobal("window", { devicePixelRatio: 1 });
     vi.stubGlobal("document", { createElement: () => ({
-      getContext: () => ({ measureText: () => ({ width: 100 }), fillRect() {}, fillText() {} }),
+      getContext: () => ({ measureText: () => ({ width: 100 }), fillRect() {}, fillText() {}, beginPath() {}, roundRect() {}, fill() {} }),
     }) });
     const manifest = JSON.parse(readFileSync(new URL("../assets/manifest.json", import.meta.url), "utf8"));
     expect(manifest.scene_limits.stage2_triangles_drawn).toBe(LIMIT);
@@ -255,6 +256,21 @@ describe("connected scene geometry budget", () => {
       expect(summary.restore).toBe(summary.opaque);
       totals[`${stage}/${clothing}`] = summary;
     }
+    // The target ring and text sprite are created lazily, so count the state in which they exist.
+    const before = triangleCounter(scene)();
+    for (const id of CHARACTERS) setBodyOpacity(internal.chars[id], 1);
+    game.render(view, cameraPose(candidates[0]!), false, { target: { kind: "highDoor", id: "frontExit", label: "玄関の戸を開ける", pos: { x: 10.6, z: -7 }, y: 1.6 },
+      enabled: true, margin: { top: 0, right: 0, bottom: 0, left: 0 } });
+    for (const id of CHARACTERS) setBodyOpacity(internal.chars[id], 1);
+    showPotentialOverlays(internal);
+    const sprites: THREE.Sprite[] = [];
+    scene.traverse(o => { if (o instanceof THREE.Sprite) sprites.push(o); });
+    const rings = scene.children.filter((o): o is THREE.Mesh => o instanceof THREE.Mesh && o.geometry instanceof THREE.RingGeometry && o.geometry.parameters.innerRadius === 0.26);
+    expect(rings, "the target ring exists in this measurement").toHaveLength(1);
+    expect(sprites.length, "the target text sprite exists in this measurement").toBeGreaterThanOrEqual(1);
+    const withTarget = triangleCounter(scene)() + 2 * sprites.length; // a sprite is one quad
+    expect(withTarget - before).toBeGreaterThan(0);
+    expect(withTarget, "worst camera + target ring and sprite").toBeLessThanOrEqual(LIMIT);
     console.info("All-visible submitted triangles (material passes; no frustum culling):",
       JSON.stringify({ gridSamples, bounds, nearSamples, nearBounds, nearMaxima, candidates, totals }));
   }, 30_000);

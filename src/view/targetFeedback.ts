@@ -4,8 +4,8 @@ import * as THREE from "three";
 import type { InteractTarget } from "../core/actions";
 import type { Vec3 } from "./deriveView";
 import { labelWorldHeight } from "./labels";
-import type { Obstacles } from "./shoulder";
-import { choosePromptPlace, labelRect, lineOfSightClear, type Margin, ndcToScreen, type PromptPlace } from "./targetPlacement";
+import { lineBlocked, occluders } from "./occlusion";
+import { choosePromptPlace, labelRect, type Margin, ndcToScreen, type PromptPlace } from "./targetPlacement";
 const TEXT_PX = 17;
 const FONT_PX = 40;
 const PAD_PX = 14;
@@ -20,6 +20,10 @@ export class TargetFeedback {
   private shownLabel = "";
   private aspect = 4;
   private ndc = new THREE.Vector3();
+  private blockers: THREE.Mesh[] = [];
+  private frames = 0;
+  private lastTarget = "";
+  private lastBlocked = false;
   constructor(private scene: THREE.Scene) {}
   private ensure(): { ring: THREE.Mesh; sprite: THREE.Sprite } {
     if (!this.ring || !this.sprite) {
@@ -69,7 +73,7 @@ export class TargetFeedback {
    * current. Returns where the prompt should live this frame.
    */
   update(target: InteractTarget | null, enabled: boolean, camera: THREE.PerspectiveCamera, viewport: { w: number; h: number },
-    margin: Margin, obstacles: Obstacles): PromptPlace {
+    margin: Margin): PromptPlace {
     if (!enabled || !target) {
       this.hide();
       return "none";
@@ -93,7 +97,14 @@ export class TargetFeedback {
     const wPx = TEXT_PX * this.aspect;
     const rect = hWorld === null ? null : labelRect(s, wPx, TEXT_PX, 0);
     const eye = { x: camera.position.x, y: camera.position.y, z: camera.position.z };
-    const place = choosePromptPlace({ enabled, hasTarget: true, inFront: hWorld !== null && s.inFront, sight: lineOfSightClear(eye, at, obstacles), rect, viewport, margin });
+    // The scene walk is repeated every third frame (and at once for a new target); the ray is cheap.
+    const key = `${target.kind}:${target.id}`;
+    if (key !== this.lastTarget || this.frames++ % 3 === 0) {
+      this.lastTarget = key;
+      this.blockers = occluders(this.scene, [ring, sprite]);
+    }
+    this.lastBlocked = lineBlocked(this.blockers, eye, at);
+    const place = choosePromptPlace({ enabled, hasTarget: true, inFront: hWorld !== null && s.inFront, sight: !this.lastBlocked, rect, viewport, margin });
     sprite.visible = place === "world";
     if (hWorld !== null) {
       sprite.scale.set(hWorld * this.aspect, hWorld, 1);

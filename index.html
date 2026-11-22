@@ -9,7 +9,7 @@
       html, body { margin: 0; height: 100%; overflow: hidden; background: #1d2330; font-family: system-ui, "Hiragino Sans", sans-serif; }
       #app { position: fixed; inset: 0; width: 100vw; height: 100vh; height: 100dvh; touch-action: none; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
       #app canvas { display: block; touch-action: none; }
-      #hud { position: fixed; inset: 0; pointer-events: none; color: #fff; font-size: 13px; line-height: 1.55; }
+      #hud { position: fixed; inset: 0; z-index: 4; pointer-events: none; color: #fff; font-size: 13px; line-height: 1.55; }
       #hud > div { position: absolute; box-sizing: border-box; background: rgba(0,0,0,0.62); border-radius: 6px; padding: 8px 12px; white-space: pre-wrap; }
       .hud-status { top: max(10px, env(safe-area-inset-top)); left: max(10px, env(safe-area-inset-left)); font-size: 12px; }
       .hud-hints { bottom: max(16px, env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%); width: max-content; max-width: calc(100% - 190px); text-align: center; color: #e9fbef; }
@@ -17,7 +17,10 @@
       .hud-toast { bottom: max(140px, env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%); max-width: calc(100% - 40px); font-size: 14px; text-align: center; transition: opacity 0.3s; }
       .hud-dev { bottom: 70px; left: 10px; color: #f88; font-size: 11px; }
       .hud-dev:empty { display: none; }
-      #hud > .hud-overlay { inset: 0; display: none; align-items: center; justify-content: center; flex-direction: column; text-align: center; background: rgba(10,15,25,0.72); border-radius: 0; font-size: 16px; }
+      #hud > .hud-overlay { inset: 0; display: none; align-items: center; flex-direction: column; text-align: center; background: rgba(10,15,25,0.72); border-radius: 0; font-size: 16px; z-index: 4; overflow-y: auto; overscroll-behavior: contain; touch-action: pan-y; padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left)); }
+      /* Safe centring: centred when it fits, scrollable from the top when it does not. */
+      #hud > .hud-overlay > :first-child, #hud > .hud-pause > :first-child { margin-top: auto; }
+      #hud > .hud-overlay > :last-child, #hud > .hud-pause > :last-child { margin-bottom: auto; }
       .hud-overlay.dialog { background: rgba(10,15,25,0.45); }
       .hud-overlay h2 { margin: 0 0 12px; font-size: 26px; }
       .hud-overlay .reason { font-size: 20px; color: #ffb4a8; }
@@ -48,7 +51,7 @@
       .hud-prompt[hidden], .hud-load[hidden] { display: none; }
       .hud-load { top: max(44px, calc(env(safe-area-inset-top) + 32px)); left: 50%; transform: translateX(-50%); width: max-content; max-width: calc(100% - 24px); font-size: 12px; text-align: center; }
       .hud-load:empty { display: none; }
-      #hud > .hud-pause { inset: 0; display: none; align-items: center; justify-content: center; flex-direction: column; text-align: center; background: rgba(10,15,25,0.82); border-radius: 0; font-size: 16px; padding: 24px; pointer-events: auto; z-index: 5; }
+      #hud > .hud-pause { inset: 0; display: none; align-items: center; flex-direction: column; overflow-y: auto; overscroll-behavior: contain; touch-action: pan-y; text-align: center; background: rgba(10,15,25,0.82); border-radius: 0; font-size: 16px; padding: 24px; pointer-events: auto; z-index: 5; }
       .hud-pause h2 { margin: 0 0 12px; font-size: 24px; }
       .hud-pause p { max-width: 28em; margin: 6px 0 16px; }
       .hud-big-button { min-width: 160px; min-height: 56px; padding: 12px 24px; margin-top: 12px; border: 2px solid #ffe27a; border-radius: 12px; background: #183b36; color: #fff; font: inherit; font-size: 18px; font-weight: 700; cursor: pointer; pointer-events: auto; touch-action: manipulation; }
@@ -136,6 +139,14 @@
         .minimap-dialog[open] { gap: 10px; }
         .minimap-legend { font-size: 11px; }
         .minimap-label { font-size: 1.2px; }
+      }
+      @media (max-height: 450px) {
+        .hud-overlay h2, .hud-pause h2 { margin: 0 0 6px; font-size: 20px; }
+        .hud-overlay, .hud-pause { font-size: 14px; }
+        .hud-overlay p, .hud-pause p { margin: 4px 0; }
+        .hud-overlay .reason { font-size: 16px; }
+        .hud-overlay .speech { font-size: 15px; }
+        .hud-big-button { margin-top: 8px; }
       }
     </style>
   </head>

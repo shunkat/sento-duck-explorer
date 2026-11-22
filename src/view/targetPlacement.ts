@@ -2,7 +2,6 @@
 // when its whole rectangle is on screen and nothing blocks the view of it;
 // otherwise a compact HUD prompt is used instead.
 import type { Vec3 } from "./deriveView";
-import { blockingAt, clipSegment, type Obstacles } from "./shoulder";
 export interface Rect { x0: number; y0: number; x1: number; y1: number }
 export interface Margin { top: number; right: number; bottom: number; left: number }
 /** Text rectangle centred horizontally above a screen anchor. */
@@ -16,15 +15,6 @@ export function rectInside(r: Rect, viewport: { w: number; h: number }, m: Margi
 /** NDC (−1..1, y up) → CSS px (y down). `z` outside (−1,1) means behind the camera or beyond far. */
 export function ndcToScreen(ndc: Vec3, viewport: { w: number; h: number }): { x: number; y: number; inFront: boolean } {
   return { x: ((ndc.x + 1) / 2) * viewport.w, y: ((1 - ndc.y) / 2) * viewport.h, inFront: ndc.z > -1 && ndc.z < 1 };
-}
-/**
- * Clear line from the eye to the text anchor: no wall, closed door or tall
- * fixture between them (low fixtures count only when the line is below their top).
- */
-export function lineOfSightClear(eye: Vec3, point: Vec3, obs: Obstacles): boolean {
-  const y = (eye.y + point.y) / 2;
-  const hit = clipSegment({ x: eye.x, z: eye.z }, { x: point.x, z: point.z }, blockingAt(obs, y), 0);
-  return Math.hypot(hit.x - point.x, hit.z - point.z) < 1e-6;
 }
 /** Where the prompt goes this frame. */
 export type PromptPlace = "world" | "hud" | "none";

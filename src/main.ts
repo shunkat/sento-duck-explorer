@@ -5,6 +5,7 @@ import { checkInvariants } from "./core/invariants";
 import type { CharacterId, CheckpointId, GameState } from "./core/types";
 import { ControlSettings } from "./input/controlSettings";
 import { attachKeyboard, KeyboardState } from "./input/keyboard";
+import { gateRestartFrame, InputSession } from "./input/session";
 import { MouseLook } from "./input/look";
 import { regionAt, TouchInput } from "./input/touch";
 import { LEVEL } from "./level/layout";
@@ -43,31 +44,45 @@ const lookSink = {
 };
 const mouse = new MouseLook(lookSink, () => controls.values, canvas, () => document.pointerLockElement === canvas);
 const paused = () => hud.isSettingsOpen || minimap.expanded || touchUi.menuOpen;
-let releasingLock = false;
-let wasLocked = false;
-function releaseLock(): void {
-  if (document.pointerLockElement === canvas) {
-    releasingLock = true;
-    try { document.exitPointerLock(); } catch { releasingLock = false; }
-  }
-}
-/** Capture is only wanted while playing: never during a modal, a pause or a blur. */
+const session = new InputSession({
+  isLocked: () => document.pointerLockElement === canvas,
+  exitLock: () => { try { document.exitPointerLock(); } catch { /* Already unlocked. */ } },
+  releaseCapture: (id) => { try { canvas.releasePointerCapture(id); } catch { /* Already released. */ } },
+  openSettings: () => hud.openSettings(),
+}, kb, touch, mouse);
+const sessionState = () => ({ modal: paused(), blocked: life.blocked, playing: state.outcome.kind === "playing" });
+/** Capture is only wanted while playing: never during a modal, a pause, a blur or after the game ended. */
 function updateCapture(): void {
-  const allowed = !paused() && !life.blocked;
-  mouse.setCaptureAllowed(allowed);
-  if (!allowed) releaseLock();
+  session.setState(sessionState());
+  syncUi();
 }
 /** Drop every held input and stale timing (modal, blur, hide, rotation, outcome, restart). */
 function clearInputs(): void {
-  kb.blur();
-  touch.clear();
+  session.clearInputs();
   touchUi.syncFromInput();
   accumulator = 0;
   last = performance.now();
 }
+/** Controls and the map are inert behind a pause, a result or the context-loss screen. */
+let uiPlayable = true;
+function syncUi(): void {
+  const playable = !life.blocked && state.outcome.kind === "playing";
+  if (playable === uiPlayable) return;
+  uiPlayable = playable;
+  touchUi.setEnabled(playable);
+  hud.setBackgroundInert(!playable);
+  const map = document.getElementById("map")!;
+  if (playable) { map.removeAttribute("inert"); map.removeAttribute("aria-hidden"); }
+  else { map.setAttribute("inert", ""); map.setAttribute("aria-hidden", "true"); }
+}
 function onPauseChange(): void {
   clearInputs();
   updateCapture();
+  // A modal removes the target outline and prompt at once (the frame loop is paused).
+  if (paused()) {
+    hud.setPrompt(null);
+    scene.hideFeedback();
+  }
 }
 const hud = new Hud(hudRoot, onPauseChange, help, {
   controls,
@@ -103,18 +118,22 @@ document.addEventListener("gesturestart", (e) => e.preventDefault());
 window.addEventListener("pointerdown", (e) => { if (e.pointerType === "touch") enableTouch(); }, { capture: true });
 const sens = () => controls.values.sensitivity * (controls.values.invertY ? -1 : 1);
 canvas.addEventListener("pointerdown", (e) => {
-  if (paused() || life.blocked) return;
+  if (!session.active) return;
   if (e.pointerType === "touch") {
     // Only the right-hand area looks; the left area belongs to the stick pad.
     if (regionAt(e.clientX, canvas.clientWidth) !== "look") return;
-    if (touch.lookDown(e.pointerId, e.clientX, e.clientY)) canvas.setPointerCapture(e.pointerId);
+    if (touch.lookDown(e.pointerId, e.clientX, e.clientY)) {
+      canvas.setPointerCapture(e.pointerId);
+      session.trackCapture(e.pointerId);
+    }
     return;
   }
   mouse.pointerDown(e.pointerId, e.button, e.clientX, e.clientY, e.timeStamp);
   canvas.setPointerCapture(e.pointerId);
+  session.trackCapture(e.pointerId);
 });
 canvas.addEventListener("pointermove", (e) => {
-  if (paused() || life.blocked) return;
+  if (!session.active) return;
   if (e.pointerType === "touch") {
     const d = touch.lookMove(e.pointerId, e.clientX, e.clientY);
     if (d) {
@@ -127,32 +146,23 @@ canvas.addEventListener("pointermove", (e) => {
   else mouse.pointerMove(e.pointerId, e.clientX, e.clientY);
 });
 canvas.addEventListener("pointerup", (e) => {
+  session.untrackCapture(e.pointerId);
   if (e.pointerType === "touch") touch.release(e.pointerId);
   else mouse.pointerUp(e.pointerId, e.timeStamp);
 });
 // Cancel and lost capture release only what this pointer owns.
 const endPointer = (e: PointerEvent) => {
+  session.untrackCapture(e.pointerId);
   touch.release(e.pointerId);
   mouse.pointerEnd(e.pointerId);
 };
 canvas.addEventListener("pointercancel", endPointer);
 canvas.addEventListener("lostpointercapture", endPointer);
-document.addEventListener("pointerlockchange", () => {
-  const locked = document.pointerLockElement === canvas;
-  // A grant that arrives after a modal or blur is given back at once.
-  if (locked && (paused() || life.blocked)) {
-    releaseLock();
-    wasLocked = true;
-    return;
-  }
-  if (!locked && wasLocked) {
-    if (releasingLock) releasingLock = false;
-    else hud.openSettings(); // Escape (or the browser) released the pointer: pause.
-  }
-  wasLocked = locked;
-});
+document.addEventListener("pointerlockchange", () => session.onLockChange());
 // Pointer lock may fail (not allowed, no gesture): play on, never retry by itself.
-document.addEventListener("pointerlockerror", () => { releasingLock = false; });
+document.addEventListener("pointerlockerror", () => session.onLockError());
+// Escape in ordinary play (nothing captured) pauses into settings too.
+window.addEventListener("keydown", (e) => { session.onEscape(e); });
 // Page leave: stop, clear every input including run, and wait for 「続ける」.
 function goAway(): void {
   life.away();
@@ -225,8 +235,11 @@ window.visualViewport?.addEventListener("resize", resize);
 applyQuality();
 landscape = app.clientWidth > app.clientHeight;
 /** WASD, arrows and the stick map against the manually controlled view yaw. */
-const takeFrame = () => {
+const takeFrame = (s: GameState) => {
   const f = kb.takeFrame();
+  // The restart press is the whole frame: no held move, run or action goes with it (R and the button alike).
+  const gated = gateRestartFrame(s, f);
+  if (gated !== f) return gated;
   const t = touch.sample();
   const keyMove = f.move.x !== 0 || f.move.z !== 0;
   const move = keyMove ? f.move : t.move;
@@ -241,6 +254,7 @@ viewAlong("start");
 let lastOutcome = state.outcome.kind;
 const MARGIN = { desktop: { top: 48, right: 12, bottom: 64, left: 12 }, touch: { top: 100, right: 12, bottom: 120, left: 12 } };
 function frame(nowMs: number): void {
+  syncUi();
   const frameSeconds = (nowMs - last) / 1000;
   last = nowMs;
   const now = nowMs / 1000;
@@ -292,7 +306,9 @@ function frame(nowMs: number): void {
   if (state.outcome.kind !== lastOutcome) {
     lastOutcome = state.outcome.kind;
     clearInputs();
+    updateCapture();
   }
+  touchUi.syncRun();
   if (import.meta.env.DEV) hud.setDevWarnings(checkInvariants(state));
   const view = deriveView(state, LEVEL);
   facing.update(view);
@@ -301,7 +317,7 @@ function frame(nowMs: number): void {
   const pose = camera.update(view.active, focus, dt, obstacles);
   const target = interactTarget(state, LEVEL);
   const shown = target ? { ...target, label: touchMode ? target.label : `E：${target.label}` } : null;
-  const place = scene.render(view, pose, false, { target: shown, enabled: help.enabled, margin: touchMode ? MARGIN.touch : MARGIN.desktop, obstacles });
+  const place = scene.render(view, pose, false, { target: shown, enabled: help.enabled, margin: touchMode ? MARGIN.touch : MARGIN.desktop });
   hud.setPrompt(place === "hud" && shown ? shown.label : null);
   touchUi.setLabel(target?.label ?? null);
   touchUi.setStage(state.player.stage);

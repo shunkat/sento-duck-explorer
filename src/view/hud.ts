@@ -165,6 +165,10 @@ export class Hud {
   }
 
   get isSettingsOpen(): boolean { return this.settingsOpen; }
+  /** The settings button is unreachable behind a result or pause screen. */
+  setBackgroundInert(inert: boolean): void {
+    this.settingsButton.disabled = inert;
+  }
   /** Pause and open settings (Escape released the pointer). */
   openSettings(): void {
     if (this.settingsOpen) return;
@@ -226,6 +230,7 @@ export class Hud {
     this.pause.style.display = "flex";
     this.pause.innerHTML = `<h2>${x.title}</h2><p>${x.body}</p>` +
       (x.button ? `<button type="button" class="hud-big-button" data-action="continue">${x.button}</button>` : "");
+    this.pause.querySelector?.("button")?.focus();
   }
 
   /** Show growth, rejected actions and prompts briefly. */
@@ -284,5 +289,6 @@ export class Hud {
     this.overlay.style.display = html ? "flex" : "none";
     this.overlay.className = `hud-overlay ${key.split(":")[0]}`;
     this.overlay.setAttribute("aria-live", html ? "assertive" : "off");
+    this.overlay.querySelector?.("button")?.focus();
   }
 }

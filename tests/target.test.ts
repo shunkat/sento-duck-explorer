@@ -7,8 +7,7 @@ import { EMPTY_INPUT, type GameState, type Vec2 } from "../src/core/types";
 import { LEVEL } from "../src/level/layout";
 import { distance } from "../src/sim/geometry";
 import { zoneAt } from "../src/sim/zones";
-import { choosePromptPlace, labelRect, lineOfSightClear, ndcToScreen, rectInside } from "../src/view/targetPlacement";
-import { obstaclesFor } from "../src/view/shoulder";
+import { choosePromptPlace, labelRect, ndcToScreen, rectInside } from "../src/view/targetPlacement";
 import * as R from "./helpers/route";
 import { Sim } from "./helpers/sim";
 const W = LEVEL.waypoints;
@@ -115,16 +114,6 @@ describe("target text placement", () => {
   it("projects NDC to CSS px and flags points behind the camera", () => {
     expect(ndcToScreen({ x: 0, y: 0, z: 0.5 }, viewport)).toEqual({ x: 195, y: 422, inFront: true });
     expect(ndcToScreen({ x: 0, y: 0, z: 1.2 }, viewport).inFront).toBe(false);
-  });
-  it("a wall between the eye and the text blocks the line of sight", () => {
-    const obs = obstaclesFor(LEVEL, { kidsGate: "closed", frontExit: "closed" });
-    const g = LEVEL.highDoors.frontExit;
-    const near = { x: g.handle.x - 1.5, y: 1.6, z: g.handle.z };
-    // The text sits on the genkan side of the panel; the street side eye sees it only through the closed panel.
-    const text = { x: g.handle.x - 0.3, y: g.handleY, z: g.handle.z };
-    expect(lineOfSightClear(near, text, obs)).toBe(true);
-    const outside = { x: g.handle.x + 2, y: 1.6, z: g.handle.z };
-    expect(lineOfSightClear(outside, text, obs)).toBe(false);
   });
 });
 describe("door text sits on the visible side", () => {

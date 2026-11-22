@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { createInitialState } from "../src/core/initialState";
 import { DT } from "../src/core/tuning";
 import { KeyboardState } from "../src/input/keyboard";
-import { TouchInput } from "../src/input/touch";
+import { STICK_RADIUS, TouchInput } from "../src/input/touch";
 import { LEVEL } from "../src/level/layout";
 import { advance } from "../src/loop";
 import { Hud } from "../src/view/hud";
@@ -18,11 +18,13 @@ class Stub extends EventTarget {
   innerHTML = "";
   style: Record<string, string> = {};
   hidden = false;
+  disabled = false;
   open = false;
   checked = false;
   attributes = new Map<string, string>();
   appendChild(c: Stub) { this.children.push(c); return c; }
   setAttribute(n: string, v: string) { this.attributes.set(n, v); }
+  removeAttribute(n: string) { this.attributes.delete(n); }
   focus() {}
   getBoundingClientRect() { return { left: 0, top: 0, width: 112, height: 112 }; }
   showModal() { this.open = true; }
@@ -198,5 +200,98 @@ describe("single presses survive any display refresh until a fixed tick takes th
     kb.keyDown("KeyT");
     expect(kb.takeFrame().toggleTowel).toBe(true);
     expect(kb.takeFrame().toggleTowel).toBe(false);
+  });
+});
+describe("review fixes in the touch UI", () => {
+  /** A dialog whose close event is delivered later, like the browser's queued task. */
+  class AsyncDialog extends Stub {
+    queued = 0;
+    override close() { this.open = false; this.queued++; }
+    flush() { while (this.queued-- > 0) this.dispatchEvent(new Event("close")); this.queued = 0; }
+  }
+  function build(asyncClose = false) {
+    let n = 0;
+    vi.stubGlobal("document", { createElement: (tag: string) => (asyncClose && tag === "dialog" && n++ === 0 ? new AsyncDialog() : new Stub()) });
+    const root = new Stub();
+    const order: string[] = [];
+    const touch = new TouchInput();
+    const ui = new TouchUi(root as unknown as HTMLElement, {
+      touch,
+      press: (a) => order.push(`press:${a}`),
+      onModalChange: (open) => order.push(open ? "modal-open" : "modal-closed"),
+    });
+    ui.setStage("adult");
+    return { root, order, touch, ui };
+  }
+  it("R5: when the run turns itself off the button shows OFF, and the next tap turns it ON, not OFF again", () => {
+    const { root, touch, ui } = build();
+    const run = root.find("touch-run")!;
+    touch.stickDown(1, 60, 500, 60, 500);
+    touch.stickMove(1, 60 + STICK_RADIUS, 500);
+    run.dispatchEvent(new Event("click"));
+    expect(run.attributes.get("aria-pressed")).toBe("true");
+    touch.sample(); // moving: stays on
+    ui.syncRun();
+    expect(run.textContent).toBe("走る（入）");
+    touch.release(1); // the finger lifts, the walk stops
+    touch.sample(); // run turns itself off here
+    ui.syncRun();
+    expect(touch.run).toBe(false);
+    expect(run.attributes.get("aria-pressed")).toBe("false");
+    expect(run.textContent).toBe("走る");
+    run.dispatchEvent(new Event("click"));
+    expect(touch.run).toBe(true);
+    expect(run.attributes.get("aria-pressed")).toBe("true");
+  });
+  it("R5: syncing the run button leaves the stick knob where it is", () => {
+    const { root, touch, ui } = build();
+    const pad = root.find("touch-pad")!;
+    pad.dispatchEvent(pointer("pointerdown", 5, 56 + 52, 56));
+    const before = root.find("touch-knob")!.style.transform;
+    expect(before).not.toBe("");
+    ui.syncRun();
+    expect(root.find("touch-knob")!.style.transform).toBe(before);
+    expect(touch.stickOwner).toBe(5);
+  });
+  it("R6: a late close event after the menu was opened again does not unpause it", () => {
+    const { root, order, ui } = build(true);
+    const open = root.find("touch-menu-button")!;
+    const dialog = root.find("touch-menu")! as AsyncDialog;
+    open.dispatchEvent(new Event("click"));
+    root.find("touch-menu-close")!.dispatchEvent(new Event("click")); // closed; the event is queued
+    expect(ui.menuOpen).toBe(false);
+    open.dispatchEvent(new Event("click")); // opened again before the event arrived
+    expect(ui.menuOpen).toBe(true);
+    dialog.open = true; // showModal() already ran for the reopen
+    dialog.flush(); // the old close event is delivered now
+    expect(ui.menuOpen).toBe(true);
+    expect(order).toEqual(["modal-open", "modal-closed", "modal-open"]);
+  });
+  it("R6: a normal choice still queues exactly one press with a late close event", () => {
+    const { root, order, ui } = build(true);
+    root.find("touch-menu-button")!.dispatchEvent(new Event("click"));
+    root.find("touch-menu-list")!.children[3]!.dispatchEvent(new Event("click"));
+    (root.find("touch-menu")! as AsyncDialog).flush();
+    expect(ui.menuOpen).toBe(false);
+    expect(order).toEqual(["modal-open", "modal-closed", "press:push"]);
+  });
+  it("R9: disabled controls ignore taps and the pad, and a menu open at that moment is closed", () => {
+    const { root, order, touch, ui } = build();
+    root.find("touch-menu-button")!.dispatchEvent(new Event("click"));
+    ui.setEnabled(false);
+    expect(ui.menuOpen).toBe(false);
+    expect(root.attributes.get("inert")).toBe("");
+    for (const cls of ["touch-primary", "touch-run", "touch-menu-button"]) {
+      expect(root.find(cls)!.disabled).toBe(true);
+      root.find(cls)!.dispatchEvent(new Event("click"));
+    }
+    root.find("touch-pad")!.dispatchEvent(pointer("pointerdown", 3, 100, 56));
+    expect(touch.stickOwner).toBeNull();
+    expect(touch.run).toBe(false);
+    expect(order.filter((o) => o.startsWith("press"))).toEqual([]);
+    ui.setEnabled(true);
+    expect(root.attributes.has("inert")).toBe(false);
+    root.find("touch-primary")!.dispatchEvent(new Event("click"));
+    expect(order.at(-1)).toBe("press:interact");
   });
 });
