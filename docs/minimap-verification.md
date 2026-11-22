@@ -16,8 +16,20 @@ Kiro Crew interactive chat authored `src/view/minimap.ts`, `tests/minimap.test.t
 
 ## Final normal-input acceptance
 
-Pending on a fixed commit after all implementation and Required findings are complete. The designated Codex supervisor owns the only browser verification slot: compact/fullscreen map, click/C/Escape/native activation, focus, pause/resume, stale-input prevention, portrait/landscape layout, milk/door updates and one growth-to-street route. Native browser behaviour is not established by fake-DOM tests.
+The designated Codex supervisor completed one normal-input route on fixed commit `89f6d181352bdcae7b73eef731bf9aef9ece5e2c`, using the production build on 2026-11-22. Source, dependencies, HEAD and the running server were frozen throughout play. An initial preview base-path setup issue was corrected before gameplay began; it did not require a code change or a repeated route.
+
+- Compact map stayed visible beside the shoulder view and followed position/facing. Clicking it, C and native Enter activation opened the fullscreen dialog. Close, native Space, C and Escape returned to the shoulder view and restored focus to the minimap button.
+- Fullscreen map paused movement and camera orbit. E, Q and R had no gameplay effect while open. Opening during held movement stopped the player; closing left the same map position, stage, milk count and towel state without delayed actions or movement.
+- Portrait 390 × 844 and landscape 844 × 390 viewport checks showed the compact map, fullscreen map, labels and close control without HUD overlap. The temporary viewport override was reset. These are browser viewport/click checks, not physical-device touch or notch tests.
+- Both milk markers disappeared after collection. Both high-handle doors changed to their open map state after normal E interaction.
+- Completed Duck → Child → Adult, two milk bottles, narrow child passage, opened gate, drying, dressing, reception, front door and street-only CLEAR. The map remained available on the clear screen. Browser error log: zero entries.
+
+Private screenshots retain desktop/fullscreen, portrait compact/fullscreen, grown-player map and clear-screen evidence. No additional all-failure-condition route was repeated; existing automatic coverage and prior release evidence remain separate.
 
 ## Publication
 
-Not yet published. Existing main/Pages authorization and the repository deadline checks apply. The final production revision and artifact comparison will be recorded after acceptance and deployment.
+Before the verification-record push, the concurrent contextual-help session had already merged this implementation into `555b386bfc204a458d08178f837f3ba005c665d0` and published it. That revision is preserved. Its [Pages workflow](https://github.com/shunkat/sento-duck-explorer/actions/runs/45015379028) passed build/deploy, 292 tests across 33 files, 21 Python tests and publication checks. Public `version.json` matched the same revision. The model tree is unchanged and the separate outdoor-bath WIP is excluded.
+
+The integration reviewer reported Required 0: the map module and level are unchanged; the new settings gate blocks C only while settings are open, while map C-close, pause, held-input cleanup and layout remain intact. The supervisor performed a separate, limited production check on `555b386`: settings blocked C and movement; Escape then C opened the map; map pause, C-close, fresh movement, click-to-expand, Escape return and compact/fullscreen layout at 390 × 844 all worked. The viewport was restored and the production error log had zero entries. This was a merge-interaction check, not a second full route. The `89f6d18` route is not relabelled as an integrated-version run, and the broader help/signage checks in `docs/contextual-help-verification.md` remain separate.
+
+This follow-up changes verification records only, under the existing main/Pages authorization and immediate pre-push publication, identity, remote-state and deadline checks. Its live revision and exact artifact comparison are checked after deployment. No new asset, paid service or Devpost submission is part of this release.

@@ -99,7 +99,7 @@ A/B stopped editing after repeated network errors, preserving `72bdbe8` and A's 
 - [x] Codex integration: C opens the map without changing the shoulder camera; open/close boundaries clear held/pending input and mouse capture, pause the fixed-step loop and discard elapsed time; responsive HUD/CSS and current Japanese/English instructions.
 - [x] Independent implementation review: no Required finding; narrow-screen safe-area advisory applied.
 - [x] Integrated automatic checks: 278 cases across 30 files accounted for after the targeted HUD expectation correction; TypeScript/production build passed. See `docs/minimap-verification.md`.
-- [ ] One final normal-input verification slot for the whole minimap batch, including map open/close, input pause/resume, compact/fullscreen layouts and the growth-to-street route.
+- [x] One final normal-input verification slot for the whole minimap batch on `89f6d18`: map open/close, input pause/resume, compact/fullscreen portrait/landscape layouts, milk/door state and one Duck → Child → Adult → street CLEAR route passed. Evidence and scope limits: `docs/minimap-verification.md`.
 - [ ] Publish the checked revision through the existing main/Pages workflow.
 
 The separate outdoor-bath WIP is not included in this branch. Its unfinished bathing logic and verification remain recorded on that branch; this map change does not mark them complete. This feature changes no assets or licensing and does not claim hackathon submission or category acceptance.
