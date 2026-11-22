@@ -6,8 +6,9 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import fc from "fast-check";
 import { GameScene } from "../src/view/scene";
+import { placeAtSocket } from "../src/view/shoulder";
 import { EnvironmentModels } from "../src/view/environmentModels";
-import { type GltfSource, type ManifestLimits, ModelLibrary, SOCKET_NAMES, checkBounds, copySocketPose, measureModel, placeHatOnSocket } from "../src/view/models";
+import { type GltfSource, type ManifestLimits, ModelLibrary, SOCKET_NAMES, checkBounds, measureModel } from "../src/view/models";
 
 function fixtureBytes(): ArrayBuffer {
   const b = readFileSync(new URL("./fixtures/test_box_duck.glb", import.meta.url));
@@ -163,7 +164,7 @@ describe("manifest bounds check", () => {
   }
 });
 
-describe("copySocketPose", () => {
+describe("placeAtSocket on the fixture socket_hat (Req 6.5)", () => {
   async function setup() {
     const lib = new ModelLibrary();
     await lib.parse("fixture", fixtureBytes());
@@ -178,7 +179,7 @@ describe("copySocketPose", () => {
     parent.position.set(1, 0.5, -2);
     parent.updateMatrixWorld(true);
     const hat = new THREE.Object3D();
-    copySocketPose(hat, socket, new THREE.Vector3());
+    placeAtSocket(hat, socket);
     hat.updateMatrixWorld(true);
     expect(hat.getWorldPosition(new THREE.Vector3()).distanceTo(socket.getWorldPosition(new THREE.Vector3()))).toBeLessThan(1e-6);
     const hatFwd = new THREE.Vector3(0, 0, 1).applyQuaternion(hat.quaternion);
@@ -196,30 +197,5 @@ describe("copySocketPose", () => {
   it("follows the parent's yaw for any angle", async () => {
     const { parent, socket } = await setup();
     fc.assert(fc.property(fc.double({ min: -Math.PI, max: Math.PI, noNaN: true }), (yaw) => check(parent, socket, yaw)));
-  });
-
-  it("placeHatOnSocket copies the full socket pose while attached", async () => {
-    const { parent, socket } = await setup();
-    parent.rotation.y = 1.2;
-    parent.position.set(1, 0.5, -2);
-    parent.updateMatrixWorld(true);
-    const hat = new THREE.Object3D();
-    expect(placeHatOnSocket(hat, true, socket, new THREE.Vector3())).toBe(true);
-    const fwd = new THREE.Vector3(0, 0, 1).applyQuaternion(hat.quaternion);
-    expect(fwd.x).toBeCloseTo(Math.sin(1.2), 6);
-    expect(fwd.z).toBeCloseTo(Math.cos(1.2), 6);
-    expect(hat.position.distanceTo(socket.getWorldPosition(new THREE.Vector3()))).toBeLessThan(1e-6);
-  });
-
-  it("placeHatOnSocket resets rotation and keeps position when detached or without a socket", async () => {
-    const { socket } = await setup();
-    for (const [attached, sock] of [[false, socket], [true, null]] as const) {
-      const hat = new THREE.Object3D();
-      hat.quaternion.setFromAxisAngle(new THREE.Vector3(0, 1, 0), 1);
-      hat.position.set(3, 4, 5);
-      expect(placeHatOnSocket(hat, attached, sock, new THREE.Vector3())).toBe(false);
-      expect(hat.quaternion.angleTo(new THREE.Quaternion())).toBeLessThan(1e-9);
-      expect(hat.position.toArray()).toEqual([3, 4, 5]);
-    }
   });
 });

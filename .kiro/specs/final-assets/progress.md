@@ -88,6 +88,10 @@ The initial status and PR #3 standalone notes above are historical snapshots. Fo
 
 Validation: 194 tests passed, including two new renderer-free tests for partial loading, invalid-human fallback, idempotent attachment and initial outfit selection. Production build and publication checks are recorded with the integration commit. Existing independent reviews and version-specific browser evidence are retained; this merge work did not repeat the playthrough. Non-hat final props, environment assets and animation remain unfinished.
 
+## Hat placement unified (2026-11-20)
+
+`copySocketPose` and `placeHatOnSocket` (`src/view/models.ts`) were unused by the game; `GameScene` already places the hat with `placeAtSocket` (`src/view/shoulder.ts`), as the shoulder-view design requires. Both functions and their tests were removed. The Req 6.5 yaw-following checks in `tests/models.test.ts` (fixed angles and a fast-check property) now call `placeAtSocket` with the fixture's `socket_hat`; `tests/shoulder.test.ts` and `tests/assets.test.ts` also cover it. The detached/no-socket reset tests were dropped because `GameScene` has no such code path (it only calls `placeAtSocket` while attached to a socket). No browser run was done. The branch was merged with main (3f57ed2) on 2026-11-21; `npm test` and `npm run build` were run after the merge, and no browser run was done for the merge either.
+
 ## Finishing batch, 2026-11-21 (Codex, local branch)
 
 Base: `ab085bf`, branch `assets/wash-station-finish`. The user deferred real play and requested finishing, then reported poor Duck eye fidelity. Codex produced this batch; it is not Kiro implementation or independent-review evidence. Existing frozen worktrees, servers and game browsers were not changed.
