@@ -5,8 +5,8 @@ import { readFileSync } from "node:fs";
 import { Box3, Group, Mesh, MeshStandardMaterial, type Object3D, Quaternion, Raycaster, Texture, Vector3 } from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { describe, expect, it } from "vitest";
-import { CHARACTER_MODEL_URLS, ENVIRONMENT_MODEL_URLS, ITEM_MODEL_URLS } from "../src/view/modelEntry";
-import { ITEM_LABEL_Y, itemLabelShown, LABEL_CENTER_Y } from "../src/view/labels";
+import { CHARACTER_MODEL_URLS, ENVIRONMENT_MODEL_URLS, ITEM_MODEL_URLS, MILK_MODEL_URL } from "../src/view/modelEntry";
+import { MILK_LABEL_Y, LABEL_CENTER_Y } from "../src/view/labels";
 import { modelRotationY, placeAtSocket } from "../src/view/shoulder";
 
 const file = (url: string) => readFileSync(new URL(`../public/${url}`, import.meta.url));
@@ -101,14 +101,44 @@ describe("production washing-station assets", () => {
 });
 
 describe("connected models (shoulder-view Req 6)", () => {
-  it("lists all three character models and all carried items", () => {
+  it("lists all three stage models and the milk bottle; the retired coin/key/hat are not loaded", () => {
     expect(Object.keys(CHARACTER_MODEL_URLS)).toEqual(["duck", "child", "adult"]);
-    expect(Object.keys(ITEM_MODEL_URLS)).toEqual(["hat", "coin", "key"]);
+    expect(ITEM_MODEL_URLS).toEqual({ milk_bottle: MILK_MODEL_URL });
+    expect(MILK_MODEL_URL).toBe("models/milk_bottle.glb");
+  });
+
+  it("the milk bottle GLB meets its asset contract: size, origin, triangles, materials, hash", async () => {
+    const b = file(MILK_MODEL_URL);
+    expect(b.length).toBe(43916);
+    expect(createHash("sha256").update(b).digest("hex")).toBe("cdc89960e175a49a8402b2e279eee0a245fd272096efc0c5c3712c0e5d7a8f93");
+    const root = await parse(b);
+    const box = new Box3().setFromObject(root);
+    const s = box.getSize(new Vector3());
+    expect(s.y).toBeGreaterThanOrEqual(0.18);
+    expect(s.y).toBeLessThanOrEqual(0.22);
+    for (const w of [s.x, s.z]) {
+      expect(w).toBeGreaterThanOrEqual(0.06);
+      expect(w).toBeLessThanOrEqual(0.08);
+    }
+    expect(box.min.y).toBeCloseTo(0, 6); // bottom-center origin on the floor
+    expect((box.min.x + box.max.x) / 2).toBeCloseTo(0, 6);
+    expect((box.min.z + box.max.z) / 2).toBeCloseTo(0, 6);
+    let triangles = 0;
+    const materials = new Set<unknown>();
+    root.traverse((o) => {
+      if (o instanceof Mesh) {
+        triangles += (o.geometry.index?.count ?? o.geometry.getAttribute("position").count) / 3;
+        for (const m of Array.isArray(o.material) ? o.material : [o.material]) materials.add(m);
+      }
+    });
+    expect(triangles).toBeLessThanOrEqual(1500);
+    expect(materials.size).toBeLessThanOrEqual(2);
+    expect(s.y).toBeLessThan(MILK_LABEL_Y); // the label sits wholly above the bottle
   });
 
   it("files match the confirmed SHA-256 and size", () => {
     const manifest = JSON.parse(readFileSync(new URL("../assets/manifest.json", import.meta.url), "utf8"));
-    for (const [id, url] of Object.entries({ ...CHARACTER_MODEL_URLS, hat_sauna_duck: ITEM_MODEL_URLS.hat! })) {
+    for (const [id, url] of Object.entries({ ...CHARACTER_MODEL_URLS, hat_sauna_duck: "models/hat_sauna_duck.glb" })) {
       const b = file(url);
       expect([createHash("sha256").update(b).digest("hex"), b.length])
         .toEqual([manifest.assets[id].measured.sha256, manifest.assets[id].measured.glb_bytes]);
@@ -259,7 +289,7 @@ describe("connected models (shoulder-view Req 6)", () => {
 
   it("hat on the Duck's socket: base on the socket, turned with the Duck, own scale kept", async () => {
     const duckRoot = await parse(file(CHARACTER_MODEL_URLS.duck!));
-    const hatRoot = await parse(file(ITEM_MODEL_URLS.hat!));
+    const hatRoot = await parse(file("models/hat_sauna_duck.glb"));
     const hs = size(hatRoot);
     expect(hs.y).toBeGreaterThanOrEqual(0.08);
     expect(hs.y).toBeLessThanOrEqual(0.2);
@@ -284,22 +314,9 @@ describe("connected models (shoulder-view Req 6)", () => {
   });
 });
 
-describe("item labels do not hide small models (shoulder-view Req 7.5)", () => {
-  it("held or worn items show no label in the shoulder view; resting items and the overview keep it", () => {
-    for (const id of ["duck", "child", "adult"] as const) {
-      expect(itemLabelShown({ kind: "character", id }, false)).toBe(false);
-      expect(itemLabelShown({ kind: "character", id }, true)).toBe(true);
-    }
-    expect(itemLabelShown({ kind: "node", id: "sauna_hat_shelf" }, false)).toBe(true);
-  });
-
-  it("a resting item's label sits wholly above its model (bottom-anchored above the model top)", async () => {
+describe("milk label does not hide the bottle (shoulder-view Req 7.5)", () => {
+  it("the label is bottom-anchored above the tallest bottle the asset contract allows (0.22 m)", () => {
     expect(LABEL_CENTER_Y.item).toBe(0);
-    // The hat model rests with its base at center − 0.08 m (the primitive's half height).
-    const hat = await parse(file(ITEM_MODEL_URLS.hat!));
-    const top = new Box3().setFromObject(hat).max.y - 0.08;
-    expect(top).toBeLessThan(ITEM_LABEL_Y);
-    // Primitive coin (0.03 m) and key (0.04 m) are centered on the group.
-    expect(0.02).toBeLessThan(ITEM_LABEL_Y);
+    expect(0.22).toBeLessThan(MILK_LABEL_Y);
   });
 });

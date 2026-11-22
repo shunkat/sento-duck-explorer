@@ -6,7 +6,7 @@
 //
 // Source-specific credits/licenses are recorded in THIRD_PARTY_NOTICES.md and
 // public/models/*.LICENSE.txt (Req 6.6); generated and free public assets differ.
-import type { CharacterId, ItemId } from "../core/types";
+import type { CharacterId } from "../core/types";
 import type { EnvironmentModelId } from "./environmentModels";
 
 export const CHARACTER_MODEL_URLS: Partial<Record<CharacterId, string>> = {
@@ -15,10 +15,17 @@ export const CHARACTER_MODEL_URLS: Partial<Record<CharacterId, string>> = {
   adult: "models/adult.glb",
 };
 
-export const ITEM_MODEL_URLS: Partial<Record<ItemId, string>> = {
-  hat: "models/hat_sauna_duck.glb",
-  coin: "models/coin_500.glb",
-  key: "models/sauna_key.glb",
+/** The milk bottle (design "Milk bottle asset contract"), delivered 2026-11-22 and checked against it. */
+export const MILK_MODEL_URL = "models/milk_bottle.glb";
+
+/**
+ * Item models in play. Growth and exit (2026-11-21): the only item is the milk
+ * bottle, one model shared by milk1 and milk2. A failed load keeps the small
+ * primitive placeholder. The retired coin, key and hat GLBs stay in
+ * public/models with their records but are no longer loaded.
+ */
+export const ITEM_MODEL_URLS: Partial<Record<"milk_bottle", string>> = {
+  milk_bottle: MILK_MODEL_URL,
 };
 
 // Add URLs only after the real pipeline, measurements and rights checks finish.
@@ -36,4 +43,9 @@ export const ENVIRONMENT_MODEL_URLS: Partial<Record<EnvironmentModelId, string>>
   npc_staff_lod_far: "models/npc_staff_lod_far.glb",
   npc_seated_lod_far: "models/npc_seated_lod_far.glb",
   npc_bath_standing_lod_far: "models/npc_bath_standing_lod_far.glb",
+  // The guardian 「見守りの大人」 (2026-11-22): the existing standing bather, reused unchanged.
+  npc_bath_standing: "models/npc_bath_standing.glb",
 };
+
+/** Model drawn for the guardian; origin at the bottom center, 1.6 m tall (manifest). */
+export const GUARDIAN_MODEL_ID = "npc_bath_standing";

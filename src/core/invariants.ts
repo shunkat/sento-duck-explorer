@@ -1,47 +1,23 @@
-import type { CoreState, GameState, ItemId, Owner } from "./types";
+import type { CoreState, GameState, Stage } from "./types";
 
-const ALLOWED_OWNERS: Record<ItemId, readonly string[]> = {
-  coin: ["node:narrow_hole_coin", "character:duck", "character:adult", "node:reception_register"],
-  key: ["node:reception_desk", "character:adult", "character:child"],
-  hat: ["node:sauna_hat_shelf", "character:child", "character:duck"],
-};
-
-const tag = (o: Owner) => `${o.kind}:${o.id}`;
+const ORDER: readonly Stage[] = ["duck", "child", "adult"];
 
 /** Returns the list of violated invariants (empty when consistent). */
 export function checkInvariants(s: GameState | CoreState): string[] {
   const out: string[] = [];
-  const { coin, key, hat } = s.items;
-
-  for (const id of ["coin", "key", "hat"] as const) {
-    if (!ALLOWED_OWNERS[id].includes(tag(s.items[id].owner))) out.push(`${id}: unexpected owner ${tag(s.items[id].owner)}`);
+  const p = s.player;
+  const collected = (["milk1", "milk2"] as const).filter((m) => s.milk[m] === "collected").length;
+  // Growth is one-way and follows the bottles: Duck 0, Child 1 (milk1), Adult 2.
+  if (ORDER.indexOf(p.stage) !== collected) out.push(`stage ${p.stage} with ${collected} bottle(s)`);
+  if (s.milk.milk2 === "collected" && s.milk.milk1 !== "collected") out.push("milk2 before milk1");
+  if (p.stage === "duck") {
+    if (p.towel !== "none") out.push("duck: has a towel");
+    if (p.clothing !== "unclothed") out.push("duck: clothed");
+    if (p.wet !== "wet") out.push("duck: dry");
+  } else if (p.towel === "none") out.push(`${p.stage}: no towel`);
+  for (const d of ["kidsGate", "frontExit"] as const) {
+    if (s.doors[d] === "open" && p.stage !== "adult") out.push(`${d} open before Adult`);
   }
-  const coinPaid = coin.status === "paid";
-  if (coinPaid !== (tag(coin.owner) === "node:reception_register")) out.push("coin: paid ⇔ owner reception_register");
-  if (coin.status === "equipped") out.push("coin: invalid status equipped");
-  if (key.status !== "available") out.push("key: invalid status");
-  if ((tag(key.owner) === "node:reception_desk") === coinPaid) out.push("key: at desk ⇔ coin not paid");
-  if (s.saunaDoor === "unlocked" && !coinPaid) out.push("door unlocked ⇒ coin paid");
-  if (hat.status === "paid") out.push("hat: invalid status paid");
-  if ((hat.status === "equipped") !== (tag(hat.owner) === "character:duck")) out.push("hat: equipped ⇔ owner duck");
-
-  const carrier = s.duck.carriedBy;
-  if (carrier !== null) {
-    if (carrier !== "adult" && carrier !== "child") out.push("duck: carrier must be a human");
-    else {
-      if (s.duck.pos.x !== s[carrier].pos.x || s.duck.pos.z !== s[carrier].pos.z) out.push("duck: not at carrier anchor");
-      // Child carries before the hat, Adult after it.
-      if ((carrier === "child") !== (hat.status !== "equipped")) out.push("duck: carrier does not match the hat stage");
-    }
-    if (s.duck.inPond) out.push("duck: carried while in pond");
-  }
-  if (s.dialog && !(["coin", "key"] as string[]).includes(s.dialog.item)) out.push("dialog: non-allowlisted item");
-
-  if ("checkpoints" in s && s.lastCheckpoint === "duckInPond") {
-    const snap = s.checkpoints.duckInPond;
-    if (!snap || snap.adult.zone !== "pond_entrance" || snap.child.zone !== "pond_entrance" || !snap.duck.inPond) {
-      out.push("duckInPond checkpoint without both humans on the shore");
-    }
-  }
+  if (s.outcome.kind === "cleared" && (p.stage !== "adult" || p.zone !== "street")) out.push("cleared outside the street or not Adult");
   return out;
 }

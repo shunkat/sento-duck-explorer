@@ -1,7 +1,7 @@
 // Japanese HUD: status panel, objective, nearby keys, key help, toasts,
-// transfer dialog, game-over and clear screens (Req 7.10, 9.6).
+// game-over and clear screens. Growth and exit (2026-11-21).
 import { nearbyHints, objective } from "../core/guide";
-import { CHARACTER_NAME, CHECKPOINT_NAME, ITEM_NAME, ITEM_TEXT, VIOLATION_TEXT } from "../core/text";
+import { CHECKPOINT_NAME, MSG, VIOLATION_TEXT } from "../core/text";
 import type { GameEvent, GameState } from "../core/types";
 import type { Level } from "../level/layout";
 import { statusLines } from "./deriveView";
@@ -9,8 +9,7 @@ import { statusLines } from "./deriveView";
 export const KEY_HELP = [
   "WASD / 矢印：移動（カメラの向き基準）　Shift：走る",
   "J / L・マウスドラッグ：視点を左右に回す",
-  "Tab：キャラクター切替（アヒル→子ども→大人）",
-  "E：その場でできること（体を拭く・服・拾う・渡す・使う・タオルを頭へ）。確認はE / Enter、取消はEsc",
+  "E / Enter：その場でできること（牛乳びんを飲む・体を拭く・服・高い取っ手の戸・タオルを頭へ）",
   "体を拭く：浴室の出口かサウナの扉の前でE　服：ロッカーの前でE",
   "C：全体マップ視点の切替",
   "マナー違反の行動（試すとゲームオーバー）：Q 手のタオルを湯船へ／V 大声／F 押す",
@@ -23,6 +22,16 @@ function el<K extends keyof HTMLElementTagNameMap>(tag: K, cls: string, parent: 
   e.className = cls;
   parent.appendChild(e);
   return e;
+}
+
+/** Toast text for an event, or null. */
+export function toastFor(e: GameEvent): string | null {
+  if (e.kind === "rejected") return e.reason;
+  if (e.kind === "prompt") return e.text;
+  if (e.kind === "checkpointSaved") return `再開地点を保存：${CHECKPOINT_NAME[e.id]}`;
+  if (e.kind === "grew") return MSG.grew(e.to);
+  if (e.kind === "doorOpened") return e.id === "frontExit" ? "玄関の戸が開きました" : "休憩所の戸が開きました";
+  return null;
 }
 
 export class Hud {
@@ -48,18 +57,10 @@ export class Hud {
     this.devWarn = el("div", "hud-dev", root);
   }
 
-  /** Show rejected actions and blocked-door prompts briefly. */
+  /** Show growth, rejected actions and prompts briefly. */
   onEvents(events: readonly GameEvent[], now: number): void {
     for (const e of events) {
-      let text: string | null = null;
-      if (e.kind === "rejected") text = e.reason;
-      else if (e.kind === "prompt") text = e.text;
-      else if (e.kind === "checkpointSaved") text = `再開地点を保存：${CHECKPOINT_NAME[e.id]}`;
-      else if (e.kind === "itemMoved") {
-        const item = ITEM_NAME[e.item];
-        text = e.to.kind === "character" ? `${item} → ${CHARACTER_NAME[e.to.id]}` : null;
-        if (e.item === "coin" && e.to.kind === "node" && e.to.id === "reception_register") text = "サウナ代を払いました（このゲームの施設では500円）";
-      } else if (e.kind === "doorUnlocked") text = "サウナ室の扉が開きました";
+      const text = toastFor(e);
       if (text) {
         this.toast.textContent = text;
         this.toastUntil = now + TOAST_SECONDS;
@@ -97,16 +98,9 @@ export class Hud {
       key = "cleared";
       html =
         `<h2>クリア！</h2>` +
-        `<p>サウナハットを被ったアヒルが、秘密の池の奥に着きました。</p>` +
-        `<p>アヒル・子ども・大人の協力で、銭湯のマナーを守りながら進めました。</p>` +
+        `<p>アヒルから子ども、大人へと育って、銭湯の玄関から外へ出ました。</p>` +
+        `<p>体を拭いて、服を着て、マナーを守りながら進めました。</p>` +
         `<p class="key">Rキーで最初から遊ぶ</p>`;
-    } else if (s.dialog) {
-      const d = s.dialog;
-      key = `dialog:${d.item}`;
-      html =
-        `<h2>${CHARACTER_NAME[d.from]}から${CHARACTER_NAME[d.to]}へ渡しますか？</h2>` +
-        `<p>${ITEM_NAME[d.item]}：${ITEM_TEXT[d.item]}</p>` +
-        `<p class="key">E / Enter：渡す　　Esc：やめる</p>`;
     }
     if (key === this.lastKey) return;
     this.lastKey = key;

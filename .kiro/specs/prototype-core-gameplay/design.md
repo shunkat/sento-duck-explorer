@@ -1,5 +1,81 @@
 # Design Document
 
+## Growth and exit (2026-11-21, current; provisional geometry)
+
+**This section supersedes, for current behavior, the character switching, item transfers, carrying, payment/key/hat chain, pair doors, the 10-step route, the pond goal and the four checkpoints described earlier in this design. The earlier sections stay as the record of the versions they describe.**
+
+User request (2026-11-21): 「アヒルと子供と大人を切り替えるのではなく最初はアヒル、子供、大人とだんだんキャラが成長していく形」「各ポイントの牛乳瓶を取って成長」「銭湯から出たらクリア」; then 「対応を開始してほしい／kiroを使うようになってるよね？」. Decided by the user: one player who grows Duck → Child → Adult by taking milk bottles, and clears by leaving the sento. Everything else below (two bottles, E, positions, sizes, guardian, high handles, checkpoint points) is a provisional design adopted by Kiro.
+
+### Player and stages
+
+| Item | Contract |
+| --- | --- |
+| Player | One entity `CoreState.player` with `stage` (`duck` / `child` / `adult`), `pos`, `vel`, `zone`, `wet`, `clothing`, `towel`. No Tab, no inactive bodies, no transfers, no carrying, no reverse growth |
+| Collider | Stage radius as before: Duck 0.15, Child 0.25, Adult 0.35 (pass widths 0.30 / 0.50 / 0.70) |
+| Duck | Moves only on `LEVEL.duckWater` (`stepDuckWater`), always wet, no clothing, `towel: "none"`. Never walks on floor |
+| Child / Adult | Walk and run on land; wetness, clothing, towel and F1–F8 apply as before to the one player |
+| Milk bottles | Two unique bottles `milk1` (Duck → Child) and `milk2` (Child → Adult) at `LEVEL.nodes`. E within `REACH.milk` 0.6 m, with a clear straight line (no wall or fixture between), picks one up and grows the player at once. The wrong stage, a second pickup or out-of-order pickup is refused with a hint |
+| Growth (atomic, one tick) | Mark the bottle collected, set the next stage, keep position when the new collider fits there, else move to `LEVEL.growthSpots[milk]` (a checked safe spot); keep facing (view); reset velocity. Duck → Child: `wet`, `unclothed`, `towel: "head"`. Child → Adult: keep wetness, clothing and towel. No movement that tick, no entry rules from growth, then the checkpoint |
+
+### Route (coordinates in meters, bath hall west part)
+
+```
+x:  0   0.7      2.3 2.5      4.6
+z=2.8 +--+GATE+--+                  GATE = high-latch gate x 0.6–1.6 (Adult opens with E)
+      | 広い休憩所 |  milk2 (1.7,3.5)
+z=4.5 |  +--------+  storage block (0.7,4.5)–(2.3,6.7) h 1.2
+      |P |########|  P = child passage x 0.1–0.7 (clear 0.6)
+z=6.7 |  +--------+
+      | 湯だまり   |  milk1 (1.2,7.05); pool (0.3,7.3)–(2.1,8.7)
+z=8.3 |        ~~~|~~~~~~~~~~~~~ trough (−0.1,8.3)–(4.7,8.7) joined to the tub
+z=8.9 +-----------+curb              Duck-only gap 0.4 between partition end and curb
+          partition x 2.3–2.5, z 2.8–8.3 (h 1.2)        tub (4.6,5.4)–(10.6,8.8)
+```
+
+| Step | Stage | Path and clearance |
+| --- | --- | --- |
+| 1 | Duck | Start in the tub (6.0, 6.8). Swim west along the trough (0.40 m wide, now joined to the tub) through the 0.40 m gap between the partition end and the curb into the shallow pool of the 湯だまり. E at milk1 |
+| 2 | Child | 湯だまり (2.2 × 2.2 m) fits the 0.50 m Child. Its only exit for Child is the child passage (0.60 m clear, 2.2 m long) to the 広い休憩所; the trough gap (0.40 m) and the hole (0.40 m) do not fit Child. E at milk2 |
+| 3 | Adult | 広い休憩所 (2.2 × 1.5 m) fits the 0.70 m Adult; the passage (0.60 m) does not, so Adult leaves by the separate 1.0 m gate with a high latch (E, Adult only). Then dry on the mat (E), enter the changing room, dress at the locker (E), go round the privacy screen to reception |
+| 4 | Adult | Reception → genkan through the ordinary open doorway (x 8). The street door of the genkan (x 11, z −7.6 to −6.4; review R-1, 2026-11-22) has a high handle at 1.6 m (`LEVEL.highDoors.frontExit`, handle (10.9, −7.0)). E opens it for Adult only; Duck/Child get the hint 「取っ手が高くて届かない（大人になったら開けられる）」. A flush threshold stone marks the line. Clear when the player crosses from `genkan` into `street` (zone (11, −9)–(13, −5), 「外」, a 2 m street stub with a low fence) |
+
+- Clear needs the Adult stage and that boundary crossing (the drawn street door, the zone edge and the clear line are the same line x = 11). Reception, the genkan, the sauna, open air, garden and pond never clear. The zone formerly called `exterior` is `genkan`. A failure on the same tick wins over clear. The cleared state is frozen; R (view layer) starts a new game.
+- Retired from required progress: coin, payment, key, hat, carrying, transfer dialogs, the pond goal and Duck's pond physics. The coin hole, hat shelf and pond remain as scenery; humans may explore the sauna, open air and garden. The sauna door is never locked: in this fictional facility the sauna is included in the bath admission (not a claim about real sento).
+- New fixtures (partition, storage block, curb, gate, street door, handles, street fences, threshold) are provisional shapes drawn over the authored environment; they are not final assets. The environment re-export follows the dynamic door contract: optional root children `growth_kids_gate` / `growth_front_exit` (identity transform, world coordinates, hidden while open) with `_upper` children hidden in the Overview; fixed frames and growth fixtures in `environment_static` / `environment_upper`. The loader accepts both door nodes or neither; with them it hides the game's own growth primitives. The growth_v02 export (2026-11-22, 9,907 architecture triangles) follows this contract: doors under the `sento_environment` root node, fixed growth geometry in `growth_fixed_static` / `growth_fixed_upper` inside the static / upper parts; the layout hash matches again. The game primitives remain only as the load-failure fallback.
+
+### Guardian (non-player)
+
+A scripted adult NPC 「見守りの大人」 watches the Child from the bath hall, outside the kids' corner. It is drawn with the existing standing-bather model `npc_bath_standing.glb` (reused unchanged, bottom-center origin, 1.6 m); the capsule remains the fallback. It walks (Adult speed and radius, wall collision) along a fixed chain of checked dry-floor spots and never enters water, the kids' corner, the passage or the women's entrance. It does not block the player and has no inventory, switching, drying or distance rule.
+
+| Player | Guardian target |
+| --- | --- |
+| Duck, or Child in the 湯だまり | `pool` (3.1, 7.6), beside the pool |
+| Child in the passage or 広い休憩所 | `room` (3.1, 3.9), beside the room |
+| Adult | `rest` (3.6, 2.3), out of the Adult's way |
+
+### Checkpoints
+
+`start`, `childGrown` (saved in the tick milk1 is taken), `adultGrown` (milk2). A snapshot stores stage, collected bottles, the safe growth spot, wetness, clothing, towel, door states and the guardian at its target spot, all together. Restoring never duplicates a bottle, reverses growth, repeats a failure at once (the spots are dry or in the pool, away from every trigger) or overlaps a wall. The view faces north (yaw 0) after `childGrown` and `adultGrown`, west at `start`. The old in-memory checkpoints (`paidReturned`, `hatEquipped`, `duckInPond`) are removed; there is no persistent save, so no migration exists.
+
+### HUD and camera
+
+The HUD shows the stage, the next objective and the contextual E action; Tab, transfers and pond guidance are removed. On growth a toast and a short ring pulse mark the change. The camera blends height and distance to the new stage's profile over the existing switch blend (0.4 s), keeps the facing (also when growth moved the player to its safe spot) and the shoulder controls and the overview.
+
+### F1–F8
+
+Unchanged rules, applied to the one player when human: F1 towel in bath water (incl. trough and pool), F2 wet into changing, F3 run over soap, F4 unclothed out of changing, F5 wet into sauna, F6 shout in sauna, F7 push in sauna, F8 attempt into the women's entrance. Order F1 … F8; game over beats clear. Duck triggers none.
+
+### Milk bottle asset contract (for the asset production role)
+
+| Item | Contract |
+| --- | --- |
+| File | `public/models/milk_bottle.glb` (URL `models/milk_bottle.glb`), license `public/models/milk_bottle.LICENSE.txt`, `assets/manifest.json` entry and `assets/ledger.csv` row with source, method and terms |
+| Units / axes | Meters, +Y up, front +Z, origin at the bottom center (base on y = 0, centered in x and z) |
+| Bounds | Height 0.18–0.22 m, width and depth 0.06–0.08 m |
+| Look | A classic glass milk bottle with a paper cap: opaque white milk body (readable without transparency), a colored cap band; at most 2 materials, at most 1,500 triangles, textures at most 512 px |
+| View | Drawn at scale 1, standing on the floor at its node (or on a fixture top), one model shared by both bottles; hidden once collected; label 「牛乳びん」 bottom-anchored 0.32 m above the base |
+| Delivered | 2026-11-22: `milk_bottle.glb` 0.072 × 0.200 × 0.072 m, 1,340 triangles, 2 materials, no textures, 43,916 bytes; listed in `ITEM_MODEL_URLS`. A failed load keeps the primitive placeholder (white cylinder with a blue cap) |
+
 ## Overview
 
 This design covers the prototype phase (仮モデルフェーズ) of Sento Duck Explorer. The goal is a browser-playable build in which one player switches between Duck, Child, and Adult and completes the confirmed 10-step route with placeholder shapes, while the seven game-over conditions (F1–F7) and all state rules are enforced.
@@ -200,7 +276,7 @@ This keeps Child from being left alone in the bath during the payment trip and o
 | F1 | `dipTowel` while the active human stands on the bath water (`LEVEL.duckWater`: tub, channel, hole) with the towel in the hand (`towel: "held"`) | Walking through water with the towel in hand; Q with the towel on the head (HUD: "タオルは頭の上にあります") | 7.1 |
 | F2 | A human with `wet` enters `changing` (active human only, see pair rules) | Dry human entering | 4.2, 7.2 |
 | F3 | Active character moves with `run: true` and its circle overlaps a soap circle | Walking over soap | 7.3 |
-| F4 | A human with `unclothed` moves from `changing` into `reception`, `common`, or `exterior` | `changing → bath` | 7.4 |
+| F4 | A human with `unclothed` moves from `changing` into `reception`, `common`, or `exterior` (since 2026-11-22: `genkan`, `street`) | `changing → bath` | 7.4 |
 | F5 | A human with `wet` enters `sauna_entry` or `sauna_crowd` | Dry human entering | 7.5 |
 | F6 | `shout` while the active character is in a sauna zone | Shouting outside the sauna (no effect). Safety calls are not modeled as actions in the prototype | 7.6 |
 | F7 | `push` by a human in a sauna zone with an NPC body within 0.8 m of the pusher's body edge | Walking through a CrowdGap; collisions with NPCs are resolved silently | 7.7, 7.8 |

@@ -1,0 +1,141 @@
+{
+  "asset_id": "milk_bottle",
+  "revision": "v01",
+  "date": "2026-11-22",
+  "scope": "Original asset build, GLB reimport/topology/dimension checks and offline render inspection; no gameplay verification",
+  "glb": "public/models/milk_bottle.glb",
+  "blend": "assets/milk_bottle/blend/milk_bottle__v01.blend",
+  "blend_sha256": "fcbec50502952fa2aad1da14fda20454760386af976e490a9902aaf4feb1026a",
+  "profile_radius_height_m": [
+    [
+      0.03,
+      0.0
+    ],
+    [
+      0.034,
+      0.0015
+    ],
+    [
+      0.0355,
+      0.005
+    ],
+    [
+      0.036,
+      0.01
+    ],
+    [
+      0.036,
+      0.025
+    ],
+    [
+      0.036,
+      0.115
+    ],
+    [
+      0.035,
+      0.13
+    ],
+    [
+      0.032,
+      0.142
+    ],
+    [
+      0.027,
+      0.152
+    ],
+    [
+      0.023,
+      0.16
+    ],
+    [
+      0.021,
+      0.167
+    ],
+    [
+      0.021,
+      0.18
+    ],
+    [
+      0.024,
+      0.183
+    ],
+    [
+      0.0245,
+      0.187
+    ],
+    [
+      0.0245,
+      0.19
+    ],
+    [
+      0.023,
+      0.192
+    ],
+    [
+      0.026,
+      0.193
+    ],
+    [
+      0.026,
+      0.196
+    ],
+    [
+      0.025,
+      0.199
+    ],
+    [
+      0.022,
+      0.2
+    ],
+    [
+      0.008,
+      0.2
+    ]
+  ],
+  "measured": {
+    "bounds": {
+      "min": [
+        -0.035999998450279236,
+        0.0,
+        -0.035999998450279236
+      ],
+      "max": [
+        0.035999998450279236,
+        0.20000000298023224,
+        0.035999998450279236
+      ]
+    },
+    "width": 0.07199999690055847,
+    "height": 0.20000000298023224,
+    "depth": 0.07199999690055847,
+    "max_width": 0.07199999690055847,
+    "triangles": 1340,
+    "vertices": 928,
+    "welded_vertices": 672,
+    "connected_components": 1,
+    "nonmanifold_edges_after_seam_weld": 0,
+    "degenerate_faces": 0,
+    "signed_volume_m3": 0.0006725263746513569,
+    "finite_vertices": true,
+    "bottom_contact_y_m": 0.0,
+    "origin_bottom_center": true,
+    "front_thumb_edge_gltf_positive_z": true,
+    "materials": 2,
+    "textures": 0,
+    "texture_px": 0,
+    "alpha_mode": "OPAQUE",
+    "external_uris": 0,
+    "private_metadata_markers": 0,
+    "glb_bytes": 43916,
+    "glb_mb": 0.043916,
+    "sha256": "cdc89960e175a49a8402b2e279eee0a245fd272096efc0c5c3712c0e5d7a8f93",
+    "measured_date": "2026-11-22",
+    "tool": "Blender 5.2.4 LTS actual exported GLB reimport"
+  },
+  "renders": {
+    "front": "4b3c514c788268cedd8f85bf84d1de2ab1fba16400d86ba9bd52bd841c86cff7",
+    "side": "fda8efc20e4d72cda2ff51158d7097eb2e5f6cab2b2f415cb73c53e8545f6499",
+    "threequarter": "d658ff4055f6044568e2687c243dc2bea71ff6a972ef9622ab280bcb531ad8d8",
+    "cap": "0c72f82da38d5d5a8663b592c07d665ac48b9057933ee49102bde3769f81b978"
+  }
+}

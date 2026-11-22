@@ -1,0 +1,351 @@
+{
+  "glb_sha256": "29f7ad1219bb6a6fef625c76d091bd34b73600d691de5c00e967c5ccceb7df61",
+  "blend_sha256": "d1573388b260cf12224b23f688bd01b58bf2e86f2d0f953abe2443e33c2409b4",
+  "blend_images": [
+    {
+      "name": "bath_floor_basecolor",
+      "path": "//textures/bath_floor_basecolor.png",
+      "packed": true,
+      "size": [
+        512,
+        512
+      ],
+      "packed_paths": [
+        "//textures/bath_floor_basecolor.png"
+      ],
+      "decoded_rgba_floats": 1048576,
+      "finite_pixels": true,
+      "rgb_min": 0.2039215862751007,
+      "rgb_max": 0.7921569347381592,
+      "decoded_pixels_sha256": "2a6616e5893aefeb804f01b13fabb346ea97f1fde5250ee3f88161e26083fe7d"
+    },
+    {
+      "name": "ceramic_cream_basecolor",
+      "path": "//textures/ceramic_cream_basecolor.png",
+      "packed": true,
+      "size": [
+        512,
+        512
+      ],
+      "packed_paths": [
+        "//textures/ceramic_cream_basecolor.png"
+      ],
+      "decoded_rgba_floats": 1048576,
+      "finite_pixels": true,
+      "rgb_min": 0.3686274588108063,
+      "rgb_max": 0.7921569347381592,
+      "decoded_pixels_sha256": "59e838f3cf3d81a6ea6d0cc86b9c84cb5a1527221580d96c160b4f5bc38cd0c4"
+    },
+    {
+      "name": "ceramic_teal_basecolor",
+      "path": "//textures/ceramic_teal_basecolor.png",
+      "packed": true,
+      "size": [
+        512,
+        512
+      ],
+      "packed_paths": [
+        "//textures/ceramic_teal_basecolor.png"
+      ],
+      "decoded_rgba_floats": 1048576,
+      "finite_pixels": true,
+      "rgb_min": 0.14509804546833038,
+      "rgb_max": 0.43529415130615234,
+      "decoded_pixels_sha256": "d0f4bc72ee0dc24f3ef5eb2ca04f3801b25d9c37967b05aa321e2682deaad162"
+    },
+    {
+      "name": "hinoki_planks_diff_1k.jpg",
+      "path": "//textures/hinoki_planks_diff_1k.jpg.png",
+      "packed": true,
+      "size": [
+        1024,
+        1024
+      ],
+      "packed_paths": [
+        "//textures/hinoki_planks_diff_1k.jpg.png"
+      ],
+      "decoded_rgba_floats": 4194304,
+      "finite_pixels": true,
+      "rgb_min": 0.003921568859368563,
+      "rgb_max": 0.7254902124404907,
+      "decoded_pixels_sha256": "84e8ebbb6b97c87217029dfb1791e94fc702a8554351260343bcb5da393ae294"
+    },
+    {
+      "name": "hinoki_planks_nor_gl_1k.jpg",
+      "path": "//textures/hinoki_planks_nor_gl_1k.jpg.png",
+      "packed": true,
+      "size": [
+        1024,
+        1024
+      ],
+      "packed_paths": [
+        "//textures/hinoki_planks_nor_gl_1k.jpg.png"
+      ],
+      "decoded_rgba_floats": 4194304,
+      "finite_pixels": true,
+      "rgb_min": 0.1725490242242813,
+      "rgb_max": 1.0,
+      "decoded_pixels_sha256": "8b35c8f38b205d71c9bb18f859928b0bf4d942e15e46a331bfab22fa6cd645be"
+    },
+    {
+      "name": "hinoki_planks_rough_1k.jpg",
+      "path": "//textures/hinoki_planks_rough_1k.jpg.png",
+      "packed": true,
+      "size": [
+        1024,
+        1024
+      ],
+      "packed_paths": [
+        "//textures/hinoki_planks_rough_1k.jpg.png"
+      ],
+      "decoded_rgba_floats": 4194304,
+      "finite_pixels": true,
+      "rgb_min": 0.8980392813682556,
+      "rgb_max": 0.9490196704864502,
+      "decoded_pixels_sha256": "7b909de1047b260ed32ad25d800596ce0b398642f674f640a9be67c55379e4f4"
+    },
+    {
+      "name": "npc_bath_standing_basecolor_v02",
+      "path": "//textures/npc_bath_standing_basecolor_v02.png",
+      "packed": true,
+      "size": [
+        512,
+        512
+      ],
+      "packed_paths": [
+        "//textures/npc_bath_standing_basecolor_v02.png"
+      ],
+      "decoded_rgba_floats": 1048576,
+      "finite_pixels": true,
+      "rgb_min": 0.07058823853731155,
+      "rgb_max": 1.0,
+      "decoded_pixels_sha256": "83a831d09ff90fb1c83911b2d605931f0e6baff3b2c5d0ab83a29fa28893b7c0"
+    },
+    {
+      "name": "npc_seated_basecolor_v01",
+      "path": "//textures/npc_seated_basecolor_v01.png",
+      "packed": true,
+      "size": [
+        512,
+        512
+      ],
+      "packed_paths": [
+        "//textures/npc_seated_basecolor_v01.png"
+      ],
+      "decoded_rgba_floats": 1048576,
+      "finite_pixels": true,
+      "rgb_min": 0.07058823853731155,
+      "rgb_max": 1.0,
+      "decoded_pixels_sha256": "83a831d09ff90fb1c83911b2d605931f0e6baff3b2c5d0ab83a29fa28893b7c0"
+    },
+    {
+      "name": "npc_staff_basecolor_v02",
+      "path": "//textures/npc_staff_basecolor_v02.png",
+      "packed": true,
+      "size": [
+        512,
+        512
+      ],
+      "packed_paths": [
+        "//textures/npc_staff_basecolor_v02.png"
+      ],
+      "decoded_rgba_floats": 1048576,
+      "finite_pixels": true,
+      "rgb_min": 0.07058823853731155,
+      "rgb_max": 1.0,
+      "decoded_pixels_sha256": "98191c0e997d9ab5cd5b413e7eda062a69d0d31f0c8bac0cd37b6b04e652bcf4"
+    },
+    {
+      "name": "sento_mural__v01.png",
+      "path": "//textures/sento_mural__v01.png.png",
+      "packed": true,
+      "size": [
+        2172,
+        724
+      ],
+      "packed_paths": [
+        "//textures/sento_mural__v01.png.png"
+      ],
+      "decoded_rgba_floats": 6290112,
+      "finite_pixels": true,
+      "rgb_min": 0.0,
+      "rgb_max": 1.0,
+      "decoded_pixels_sha256": "1a818858768e0052c77c2264c339c69d8607902a9e5bb150ecf8c295312fc6b9"
+    },
+    {
+      "name": "straw_basecolor",
+      "path": "//textures/straw_basecolor.png",
+      "packed": true,
+      "size": [
+        512,
+        512
+      ],
+      "packed_paths": [
+        "//textures/straw_basecolor.png"
+      ],
+      "decoded_rgba_floats": 1048576,
+      "finite_pixels": true,
+      "rgb_min": 0.11372549831867218,
+      "rgb_max": 0.6549019813537598,
+      "decoded_pixels_sha256": "f73159388fdad5778e56f573ca6945a40380e7ce39ad5780940f01e2e5fb3e8e"
+    }
+  ],
+  "world_groups_identity": {
+    "sento_environment": true,
+    "environment_static": true,
+    "environment_upper": true,
+    "environment_ceiling": true,
+    "sauna_door": true
+  },
+  "glb_external_buffers": 0,
+  "glb_external_images": 0,
+  "glb_json_private_absolute_paths": false,
+  "vertices_unique_position_accessors": 26210,
+  "mesh_count": 33,
+  "primitive_count": 33,
+  "materials": 17,
+  "textures": 11,
+  "embedded_images": 11,
+  "decoded_export_images": [
+    {
+      "name": "bath_floor_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "decoded_rgba_floats": 1048576,
+      "finite_pixels": true,
+      "rgb_min": 0.2039215862751007,
+      "rgb_max": 0.7921569347381592,
+      "decoded_pixels_sha256": "2a6616e5893aefeb804f01b13fabb346ea97f1fde5250ee3f88161e26083fe7d"
+    },
+    {
+      "name": "ceramic_cream_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "decoded_rgba_floats": 1048576,
+      "finite_pixels": true,
+      "rgb_min": 0.3686274588108063,
+      "rgb_max": 0.7921569347381592,
+      "decoded_pixels_sha256": "59e838f3cf3d81a6ea6d0cc86b9c84cb5a1527221580d96c160b4f5bc38cd0c4"
+    },
+    {
+      "name": "ceramic_teal_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "decoded_rgba_floats": 1048576,
+      "finite_pixels": true,
+      "rgb_min": 0.14509804546833038,
+      "rgb_max": 0.43529415130615234,
+      "decoded_pixels_sha256": "d0f4bc72ee0dc24f3ef5eb2ca04f3801b25d9c37967b05aa321e2682deaad162"
+    },
+    {
+      "name": "hinoki_planks_diff_1k.jpg",
+      "size": [
+        1024,
+        1024
+      ],
+      "decoded_rgba_floats": 4194304,
+      "finite_pixels": true,
+      "rgb_min": 0.003921568859368563,
+      "rgb_max": 0.7254902124404907,
+      "decoded_pixels_sha256": "84e8ebbb6b97c87217029dfb1791e94fc702a8554351260343bcb5da393ae294"
+    },
+    {
+      "name": "hinoki_planks_nor_gl_1k.jpg",
+      "size": [
+        1024,
+        1024
+      ],
+      "decoded_rgba_floats": 4194304,
+      "finite_pixels": true,
+      "rgb_min": 0.1725490242242813,
+      "rgb_max": 1.0,
+      "decoded_pixels_sha256": "8b35c8f38b205d71c9bb18f859928b0bf4d942e15e46a331bfab22fa6cd645be"
+    },
+    {
+      "name": "hinoki_planks_rough_1k.jpg",
+      "size": [
+        1024,
+        1024
+      ],
+      "decoded_rgba_floats": 4194304,
+      "finite_pixels": true,
+      "rgb_min": 0.8980392813682556,
+      "rgb_max": 1.0,
+      "decoded_pixels_sha256": "d78853f50e40e4a75447879e5f07c1d810ea75048a4eba7e5acb7a7ae504c6d6"
+    },
+    {
+      "name": "npc_bath_standing_basecolor_v02",
+      "size": [
+        512,
+        512
+      ],
+      "decoded_rgba_floats": 1048576,
+      "finite_pixels": true,
+      "rgb_min": 0.07058823853731155,
+      "rgb_max": 1.0,
+      "decoded_pixels_sha256": "83a831d09ff90fb1c83911b2d605931f0e6baff3b2c5d0ab83a29fa28893b7c0"
+    },
+    {
+      "name": "npc_seated_basecolor_v01",
+      "size": [
+        512,
+        512
+      ],
+      "decoded_rgba_floats": 1048576,
+      "finite_pixels": true,
+      "rgb_min": 0.07058823853731155,
+      "rgb_max": 1.0,
+      "decoded_pixels_sha256": "83a831d09ff90fb1c83911b2d605931f0e6baff3b2c5d0ab83a29fa28893b7c0"
+    },
+    {
+      "name": "npc_staff_basecolor_v02",
+      "size": [
+        512,
+        512
+      ],
+      "decoded_rgba_floats": 1048576,
+      "finite_pixels": true,
+      "rgb_min": 0.07058823853731155,
+      "rgb_max": 1.0,
+      "decoded_pixels_sha256": "98191c0e997d9ab5cd5b413e7eda062a69d0d31f0c8bac0cd37b6b04e652bcf4"
+    },
+    {
+      "name": "sento_mural__v01.png",
+      "size": [
+        2172,
+        724
+      ],
+      "decoded_rgba_floats": 6290112,
+      "finite_pixels": true,
+      "rgb_min": 0.0,
+      "rgb_max": 1.0,
+      "decoded_pixels_sha256": "1a818858768e0052c77c2264c339c69d8607902a9e5bb150ecf8c295312fc6b9"
+    },
+    {
+      "name": "straw_basecolor",
+      "size": [
+        512,
+        512
+      ],
+      "decoded_rgba_floats": 1048576,
+      "finite_pixels": true,
+      "rgb_min": 0.11372549831867218,
+      "rgb_max": 0.6549019813537598,
+      "decoded_pixels_sha256": "f73159388fdad5778e56f573ca6945a40380e7ce39ad5780940f01e2e5fb3e8e"
+    }
+  ],
+  "max_texture_dimension": 2172,
+  "mural_source_png_size": [
+    2172,
+    724
+  ],
+  "mural_runtime_resize": false,
+  "source": "assets/sento_mural/ref/sento_mural__v01.png",
+  "observed_blender_warning": "Image empty name not available; keeping packed image. All used packed images were subsequently reopened, decoded and checked finite/nonempty; all embedded GLB images were independently decoded after import. No missing texture was inferred from that warning."
+}

@@ -2,16 +2,16 @@ import { CHARACTER_RADIUS, type Level } from "../level/layout";
 import { circleOverlapsBox, distance } from "../sim/geometry";
 import { type AreaId, isSauna } from "../sim/zones";
 import { REACH } from "./tuning";
-import type { CoreState, HumanId, HumanState, Outcome, Vec2, ViolationId, ZoneId } from "./types";
+import type { HumanId, Outcome, PlayerState, Vec2, ViolationId, ZoneId } from "./types";
 
-const OUTSIDE_CHANGING: ReadonlySet<AreaId> = new Set(["reception", "common", "exterior"]);
+const OUTSIDE_CHANGING: ReadonlySet<AreaId> = new Set(["reception", "common", "genkan", "street"]);
 const SAUNA_AREAS: ReadonlySet<AreaId> = new Set(["sauna_entry", "sauna_crowd"]);
 
 /**
  * Entry rule for a human moving from one area to another (F2, F4, F5).
  * Returns null when the move is allowed.
  */
-export function entryViolation(h: Pick<HumanState, "wet" | "clothing">, from: AreaId, to: AreaId): ViolationId | null {
+export function entryViolation(h: Pick<PlayerState, "wet" | "clothing">, from: AreaId, to: AreaId): ViolationId | null {
   if (from === to) return null;
   if (to === "changing" && h.wet === "wet") return "F2";
   if (from === "changing" && OUTSIDE_CHANGING.has(to) && h.clothing === "unclothed") return "F4";
@@ -31,16 +31,12 @@ export function npcWithinPushReach(level: Level, id: HumanId, pos: Vec2, zone: Z
   return level.npcs.some((n) => circleOverlapsBox(pos, REACH.push + CHARACTER_RADIUS[id], n));
 }
 
-/** Clear requires the hat-wearing Duck itself inside the goal (Req 3.13–3.15). */
-export function isCleared(s: CoreState): boolean {
-  const hat = s.items.hat;
-  return (
-    s.duck.zone === "pond_goal" &&
-    s.duck.inPond &&
-    hat.owner.kind === "character" &&
-    hat.owner.id === "duck" &&
-    hat.status === "equipped"
-  );
+/**
+ * Clear (2026-11-21; boundary moved 2026-11-22): the Adult player crosses from
+ * the genkan through the street door to the street in this tick (review R-1). Nowhere else clears.
+ */
+export function crossesFrontExit(stage: PlayerState["stage"], from: AreaId, to: AreaId): boolean {
+  return stage === "adult" && from === "genkan" && to === "street";
 }
 
 const ORDER: readonly ViolationId[] = ["F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8"];

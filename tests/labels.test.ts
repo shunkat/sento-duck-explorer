@@ -98,7 +98,7 @@ describe("overview labels do not hide the characters (browser pilot: C view hid 
     const labelPx = (kind: LabelKind, at: Vector3) =>
       (labelPixelHeight(kind, at.distanceTo(cam.position)) * LABEL_CANVAS_H) / LABEL_TEXT_PX;
     for (const id of ["duck", "child", "adult"] as const) {
-      const p = LEVEL.initialPositions[id];
+      const p = LEVEL.start; // every stage body is drawn at the player
       const h = BODY_HEIGHT[id];
       const bodyTop = screenY(new Vector3(p.x, h, p.z));
       const anchor = new Vector3(p.x, h + CHARACTER_LABEL_GAP, p.z);
@@ -111,7 +111,7 @@ describe("overview labels do not hide the characters (browser pilot: C view hid 
     const h = labelPx("zone", at);
     const zoneTop = screenY(at) - (1 - LABEL_CENTER_Y.zone) * h;
     const zoneBottom = screenY(at) + LABEL_CENTER_Y.zone * h;
-    const duck = LEVEL.initialPositions.duck;
+    const duck = LEVEL.start;
     const duckTop = screenY(new Vector3(duck.x, BODY_HEIGHT.duck, duck.z));
     const duckBottom = screenY(new Vector3(duck.x, 0, duck.z));
     expect(zoneTop > duckBottom || zoneBottom < duckTop).toBe(true);

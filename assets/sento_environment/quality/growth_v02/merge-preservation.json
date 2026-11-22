@@ -1,0 +1,43 @@
+{
+  "base_sha256": "29f7ad1219bb6a6fef625c76d091bd34b73600d691de5c00e967c5ccceb7df61",
+  "output_sha256": "3c37930e66a6d27f2a32cc174b64cb54b6a713bfafd6322ef4959cbb7ec6eb00",
+  "output_bytes": 6931636,
+  "preserved_source_binary_bytes": 6288372,
+  "replaced_nodes": [
+    "environment_static__bath_floor",
+    "environment_static__cedar",
+    "environment_static__ceramic_cream",
+    "environment_static__dark_cedar",
+    "environment_static__warm_plaster",
+    "environment_upper__cedar",
+    "environment_upper__navy_cloth",
+    "environment_upper__warm_plaster"
+  ],
+  "added_nodes": {
+    "growth_fixed_static": "environment_static",
+    "growth_fixed_upper": "environment_upper",
+    "growth_kids_gate": "sento_environment",
+    "growth_front_exit": "sento_environment"
+  },
+  "materials_images_textures_unchanged": true,
+  "layout_sha256": "01d4ef0eda8966fe87ec3ac4551bcce129bd697040ae6dd201a0cff50e9ceba8",
+  "triangles_total": 22107,
+  "bounds_gltf_m": [
+    [
+      -3.200000047683716,
+      -0.28999999165534973,
+      -9.100000381469727
+    ],
+    [
+      36.099998474121094,
+      2.75,
+      12.100000381469727
+    ]
+  ],
+  "dynamic_nodes": [
+    "growth_kids_gate",
+    "growth_front_exit"
+  ],
+  "source_unchanged": true,
+  "verification": "Binary-preservation assertions passed; committed patch reapplication reproduces exact final SHA-256. Actual candidate GLB import and 19 zero-intersection clearance checks are recorded in geometry.json."
+}

@@ -3,9 +3,7 @@
 // by exactly one tick, so they work at any display rate.
 import { EMPTY_INPUT, type InputFrame } from "../core/types";
 
-type PressAction =
-  | "switchCharacter" | "interact" | "cancel" | "dipTowel"
-  | "shout" | "push" | "restart" | "overview";
+type PressAction = "interact" | "dipTowel" | "shout" | "push" | "restart" | "overview";
 
 const MOVE_KEYS: Record<string, { x: number; z: number }> = {
   KeyW: { x: 0, z: -1 }, ArrowUp: { x: 0, z: -1 },
@@ -17,10 +15,8 @@ const RUN_KEYS = new Set(["ShiftLeft", "ShiftRight"]);
 /** Held keys that turn the shoulder camera (view only). */
 const ORBIT_KEYS: Record<string, number> = { KeyJ: -1, KeyL: 1 };
 const PRESS_KEYS: Record<string, PressAction> = {
-  Tab: "switchCharacter",
   KeyE: "interact",
   Enter: "interact",
-  Escape: "cancel",
   KeyQ: "dipTowel",
   KeyV: "shout",
   KeyF: "push",
@@ -89,11 +85,8 @@ export class KeyboardState {
     return had;
   }
 
-  /**
-   * Build the frame for one logic tick and consume single presses.
-   * While a transfer dialog is open, E / Enter mean "confirm".
-   */
-  takeFrame(dialogOpen: boolean): InputFrame {
+  /** Build the frame for one logic tick and consume single presses. */
+  takeFrame(): InputFrame {
     let x = 0;
     let z = 0;
     for (const [code, d] of Object.entries(MOVE_KEYS)) {
@@ -111,10 +104,7 @@ export class KeyboardState {
       ...EMPTY_INPUT,
       move: len > 0 ? { x: x / len, z: z / len } : { x: 0, z: 0 },
       run: this.shiftFromModifier || [...RUN_KEYS].some((k) => this.held.has(k)),
-      switchCharacter: p.has("switchCharacter"),
-      interact: !dialogOpen && p.has("interact"),
-      confirm: dialogOpen && p.has("interact"),
-      cancel: p.has("cancel"),
+      interact: p.has("interact"),
       dipTowel: p.has("dipTowel"),
       shout: p.has("shout"),
       push: p.has("push"),

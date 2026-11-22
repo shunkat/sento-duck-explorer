@@ -1,7 +1,7 @@
 // Screen-space sizing for 3D text labels (pure). Labels shrink with distance
 // but stay within a readable pixel range, so a nearby label never covers the
 // screen in Duck's low view and distant labels stay legible in the overview.
-import type { Owner, ZoneId } from "../core/types";
+import type { ZoneId } from "../core/types";
 import type { AABB } from "../sim/geometry";
 import type { PerspectiveCamera, Vector3 } from "three";
 
@@ -33,21 +33,11 @@ export const CHARACTER_LABEL_GAP = 0.1;
 export const LABEL_CENTER_Y: Record<LabelKind, number> = { character: 0, zone: 0.5, item: 0, fixture: 0.5 };
 
 /**
- * Item label anchor above the item's group center (m). Item labels are
- * bottom-anchored there, so the whole label sits above the item model
- * (tallest: the hat, top ≤ 0.12 m above the center) (shoulder-view Req 7.5).
+ * Milk bottle label anchor above the bottle's base (m). The label is
+ * bottom-anchored there, so it sits wholly above a bottle of at most 0.22 m
+ * (milk bottle asset contract). A collected bottle and its label are hidden.
  */
-export const ITEM_LABEL_Y = 0.25;
-
-/**
- * Whether an item's label is drawn. In the shoulder view a held or worn item
- * (owned by a character) shows no label: the small model in the hand or on
- * Duck's head stays visible, and the status panel names the holder. Items
- * lying on a shelf, desk or node keep their label; the overview keeps all.
- */
-export function itemLabelShown(owner: Owner, overview: boolean): boolean {
-  return overview || owner.kind !== "character";
-}
+export const MILK_LABEL_Y = 0.32;
 
 /**
  * Where a zone's name label sits. Small inner zones that characters stand in
@@ -57,7 +47,7 @@ export function itemLabelShown(owner: Owner, overview: boolean): boolean {
 export function zoneLabelAnchor(id: ZoneId, b: AABB): { x: number; y: number; z: number } {
   if (id === "narrow_hole") return { x: b.minX + 0.8, y: 0.45, z: b.minZ - 0.3 };
   const x = (b.minX + b.maxX) / 2;
-  if (id === "bathwater" || id === "splash" || id === "pond_goal") return { x, y: 0.35, z: b.maxZ - 0.3 };
+  if (id === "bathwater" || id === "splash") return { x, y: 0.35, z: b.maxZ - 0.3 };
   return { x, y: 0.35, z: (b.minZ + b.maxZ) / 2 };
 }
 
@@ -89,7 +79,7 @@ export function labelWorldHeight(px: number, at: Vector3, camera: PerspectiveCam
 
 /**
  * Draw priority (lower wins): the controlled character first, then the key
- * items (coin, key, hat), then the other characters, fixtures, and room names.
+ * items (the milk bottles), then the other characters, fixtures, and room names.
  */
 export const LABEL_PRIORITY = { active: 0, item: 1, character: 2, fixture: 3, zone: 4 } as const;
 

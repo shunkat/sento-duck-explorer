@@ -3,14 +3,11 @@
 // every number comes from LEVEL.
 import { describe, expect, it } from "vitest";
 import type { Vec2 } from "../src/core/types";
-import { createInitialState } from "../src/core/initialState";
-import { REACH } from "../src/core/tuning";
 import { CHARACTER_RADIUS, LEVEL } from "../src/level/layout";
 import { type AABB, circleOverlapsBox } from "../src/sim/geometry";
+import { wallsFor } from "../src/sim/movement";
 import { overviewPose } from "../src/view/camera";
-import { deriveView } from "../src/view/deriveView";
 import { CAMERA_PROFILE, obstaclesFor, shoulderPose, WALL_HEIGHT } from "../src/view/shoulder";
-import * as R from "./helpers/route";
 
 const zone = (id: string) => LEVEL.zones.find((z) => z.id === id)!.box;
 const W = LEVEL.waypoints;
@@ -42,7 +39,8 @@ const VIEW_BLOCKERS = LEVEL.walls.filter((w) => tallFixtures.has(w) || !lowFixtu
 describe("realistic layout: privacy and order of rooms", () => {
   it("rooms follow genkan → reception → changing → bath, with offset doors", () => {
     const door = (id: string) => LEVEL.doors.find((d) => d.id === id)!;
-    expect([door("reception_exterior").a, door("reception_exterior").b]).toEqual(["reception", "exterior"]);
+    expect([door("reception_genkan").a, door("reception_genkan").b]).toEqual(["reception", "genkan"]);
+    expect([door("genkan_street").a, door("genkan_street").b]).toEqual(["genkan", "street"]);
     expect([door("changing_reception").a, door("changing_reception").b]).toEqual(["changing", "reception"]);
     const rc = door("changing_reception").box;
     const bc = door("bath_changing").box;
@@ -105,15 +103,14 @@ describe("realistic layout: water, fixtures and collision agree", () => {
     }
   });
 
-  it("the trough is separate from the tub by a dry gap and joined to the hole", () => {
-    const [tub, trough, hole] = water;
-    expect(tub!.minX - trough!.maxX).toBeGreaterThanOrEqual(0.8 - 1e-9);
+  it("the trough is joined to the tub and to the hole, along the rear wall (growth route, 2026-11-21)", () => {
+    const [tub, trough, , hole] = water;
+    expect(trough!.maxX).toBeGreaterThan(tub!.minX); // overlaps the tub: Duck swims from the tub into it
+    expect(trough!.minZ).toBeGreaterThanOrEqual(tub!.minZ);
     expect(trough!.minX).toBeLessThanOrEqual(hole!.maxX);
     expect(trough!.maxZ - trough!.minZ).toBeCloseTo(hole!.maxZ - hole!.minZ, 9);
-    // At the rear wall: the trough is inside the bath, next to the wall.
     expect(trough!.maxZ).toBeLessThan(zone("bath").maxZ);
     expect(zone("bath").maxZ - trough!.maxZ).toBeLessThan(0.5);
-    // The tub rests against the rear wall too, with an aisle to the east.
     expect(zone("bath").maxZ - tub!.maxZ).toBeLessThan(0.3);
     expect(zone("bath").maxX - tub!.maxX).toBeGreaterThanOrEqual(2 * CHARACTER_RADIUS.adult + 0.3);
   });
@@ -150,20 +147,13 @@ describe("realistic layout: dry routes after drying", () => {
     expect(crossesWet([W.saunaDoorDry, doorCenter("bath_sauna")], CHARACTER_RADIUS.adult)).toBe(false);
   });
 
-  it("from the paidReturned spawns to the sauna drying spot along the aisle crosses no water", () => {
-    for (const p of Object.values(LEVEL.checkpointSpawns.paidReturned)) {
-      expect(crossesWet([p, W.bathAisle, W.bathMid, W.saunaDoorDry], CHARACTER_RADIUS.adult)).toBe(false);
-    }
+  it("from the Adult's gate to both drying spots along the aisle crosses no water", () => {
+    expect(crossesWet([W.gateOut, W.bathDoorDry], CHARACTER_RADIUS.adult)).toBe(false);
+    expect(crossesWet([W.gateOut, { x: 3.0, z: 2.3 }, W.bathMid, W.saunaDoorDry], CHARACTER_RADIUS.adult)).toBe(false);
   });
 
-  it("every human spawn and waypoint used on foot is clear of fixtures, water and the splash", () => {
-    const human = [
-      ...Object.values(LEVEL.checkpointSpawns.paidReturned),
-      LEVEL.checkpointSpawns.hatEquipped.child,
-      LEVEL.checkpointSpawns.hatEquipped.adult,
-      ...Object.values(LEVEL.checkpointSpawns.duckInPondShore),
-    ];
-    for (const p of human) {
+  it("the Adult growth spot and the dry-route waypoints are clear of fixtures, water and the splash", () => {
+    for (const p of [LEVEL.growthSpots.milk2, W.gateIn, W.gateOut, W.bathDoorDry, W.changingIn, W.receptionIn, W.frontExitIn]) {
       for (const w of LEVEL.walls) expect(circleOverlapsBox(p, CHARACTER_RADIUS.adult, w), JSON.stringify(p)).toBe(false);
       expect(wetBoxes.some((w) => p.x > w.minX && p.x < w.maxX && p.z > w.minZ && p.z < w.maxZ)).toBe(false);
     }
@@ -179,14 +169,13 @@ describe("realistic layout: pond edge and camera", () => {
   });
 
   it("the Adult's camera looks over the hedge; the Duck's low camera is stopped by the pond edge", () => {
-    const obs = obstaclesFor(LEVEL, "unlocked");
+    const obs = obstaclesFor(LEVEL, { kidsGate: "open", frontExit: "open" });
     // Adult in the garden facing the pond (+X): the eye behind it may pass back over the hedge.
     const a = shoulderPose("adult", { x: W.gardenIn.x - 0.4, y: 0.85, z: W.gardenIn.z + 1.6 }, Math.PI / 2, obs);
     expect(a.eye.x).toBeLessThan(20); // over the hedge on x = 20
-    // Duck just inside the pond facing the goal: the eye stays on the pond side of the low edge.
-    const pond = zone("pond");
-    const d = shoulderPose("duck", { x: LEVEL.pondSpawn.x, y: 0.1, z: LEVEL.pondSpawn.z }, Math.PI / 2, obs);
-    expect(d.eye.x).toBeGreaterThan(pond.minX);
+    // Duck's low camera in the kids' pool facing north stays inside the corner (partition and storage block).
+    const d = shoulderPose("duck", { x: W.milk1Swim.x, y: 0.15, z: W.milk1Swim.z }, 0, obs);
+    expect(d.eye.z).toBeGreaterThan(6.7);
     expect(CAMERA_PROFILE.duck.eye).toBeLessThan(0.5);
   });
 
@@ -197,19 +186,17 @@ describe("realistic layout: pond edge and camera", () => {
     expect(o.eye.y).toBeGreaterThan(20);
   });
 
-  it("the pond route still clears with the moved pond (rocks keep forcing a detour)", () => {
-    const rocks = LEVEL.fixtures.filter((f) => f.kind === "rock");
-    expect(rocks).toHaveLength(2);
-    for (const r of rocks) expect(R.POND_PATH.some((p) => circleOverlapsBox(p, 0.15, r.box))).toBe(false);
+  it("the pond stays as scenery behind its low edge; the rocks are still there", () => {
+    expect(LEVEL.fixtures.filter((f) => f.kind === "rock")).toHaveLength(2);
+    expect(LEVEL.duckWater.some((w) => w.minX >= zone("pond").minX)).toBe(false); // Duck no longer swims in the pond
   });
 });
 
-describe("realistic layout: sauna hat shelf (review M-1, L-4)", () => {
+describe("realistic layout: sauna (optional since 2026-11-21)", () => {
   const shelf = LEVEL.fixtures.find((f) => f.kind === "shelf")!;
-  const hat = LEVEL.nodes.sauna_hat_shelf;
   const lastRowX1 = Math.max(...LEVEL.npcs.map((n) => n.maxX));
 
-  it("leaves at least 0.9 m in front of the shelf, while the row gaps stay Child-only", () => {
+  it("keeps the seated rows (Child-only gaps) and 0.9 m in front of the (now empty) shelf", () => {
     expect(shelf.box.minX - lastRowX1).toBeGreaterThanOrEqual(0.9);
     for (const g of LEVEL.crowdGaps) {
       expect(g.width).toBe(0.6);
@@ -218,18 +205,9 @@ describe("realistic layout: sauna hat shelf (review M-1, L-4)", () => {
     }
   });
 
-  it("Child can stand anywhere in a strip at least 0.3 m deep and reach the hat", () => {
-    const r = CHARACTER_RADIUS.child;
-    const clear = (p: Vec2) => !LEVEL.walls.some((w) => circleOverlapsBox(p, r - 1e-3, w)) && !LEVEL.npcs.some((n) => circleOverlapsBox(p, r - 1e-3, n));
-    const reachable = (x: number) => clear({ x, z: hat.z }) && Math.abs(x - hat.x) <= REACH.hat;
-    const xs: number[] = [];
-    for (let x = lastRowX1; x <= shelf.box.minX; x += 0.01) if (reachable(x)) xs.push(x);
-    expect(Math.max(...xs) - Math.min(...xs)).toBeGreaterThanOrEqual(0.3);
-  });
-
-  it("the resting hat is drawn on top of the shelf; the key on top of the desk", () => {
-    const v = deriveView(createInitialState(LEVEL), LEVEL);
-    expect(v.items.hat.pos.y).toBeCloseTo(shelf.height + 0.05);
-    expect(v.items.key.pos.y).toBeCloseTo(LEVEL.fixtures.find((f) => f.kind === "desk")!.height + 0.05);
+  it("the sauna door is never locked (no blocker in the collision list)", () => {
+    const door = LEVEL.doors.find((d) => d.id === "bath_sauna")!.box;
+    const c = { x: (door.minX + door.maxX) / 2, z: (door.minZ + door.maxZ) / 2 };
+    expect(wallsFor(LEVEL, { kidsGate: "closed", frontExit: "closed" }).some((w) => circleOverlapsBox(c, 0.3, w))).toBe(false);
   });
 });

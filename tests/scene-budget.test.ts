@@ -91,7 +91,8 @@ describe("connected scene geometry budget", () => {
     const manifest = JSON.parse(readFileSync(new URL("../assets/manifest.json", import.meta.url), "utf8"));
     expect(manifest.scene_limits.stage2_triangles_drawn).toBe(LIMIT);
     // Fail rather than silently count placeholder geometry if promotion regresses.
-    for (const id of ["coin", "key", "hat"] as const) expect(ITEM_MODEL_URLS[id], id).toBeTruthy();
+    // Growth version: the only item GLB is the milk bottle, drawn twice (milk1, milk2).
+    expect(Object.keys(ITEM_MODEL_URLS)).toEqual(["milk_bottle"]);
     for (const id of ["sento_environment", "soap", "towel", "bath_stool", "wash_basin",
       "bath_stool_lod_medium", "bath_stool_lod_far", "wash_basin_lod_medium", "wash_basin_lod_far",
       "npc_staff_lod_far", "npc_seated_lod_far", "npc_bath_standing_lod_far"] as const) {
@@ -134,7 +135,6 @@ describe("connected scene geometry budget", () => {
       expect(library.get(id)!.root.parent, `${id} uses its real GLB`).toBe(internal.chars[id]);
       expect(library.get(id)!.root.visible, `${id} GLB is visible`).toBe(true);
     }
-    for (const id of ["coin", "key", "hat"]) expect(library.get(id)!.root.parent).not.toBeNull();
     const view = deriveView(createInitialState(LEVEL), LEVEL);
     game.positionCharacters(view, 0, new FacingTracker());
     game.render(view, cameraPose({ eye: [9, .45, .5], overview: false, triangles: 0 }), false);
@@ -152,7 +152,7 @@ describe("connected scene geometry budget", () => {
     const seenWash = new Set<string>(), seenNpcs = new Set<string>();
     const applyCamera = (sample: Sample) => {
       const eye = new THREE.Vector3(...sample.eye);
-      internal.worldEnvironment.setView(sample.overview, true);
+      internal.worldEnvironment.setView(sample.overview, false); // the sauna door is never locked (2026-11-21)
       internal.environmentModels.updateDetail(eye, sample.overview);
       internal.worldEnvironment.updateDetail(eye);
       for (const instance of washing) {

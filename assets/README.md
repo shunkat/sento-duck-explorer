@@ -49,3 +49,8 @@ free-source/direct-authored world and small props plus source-derived washing
 and NPC distance variants. See [environment release verification](../docs/environment-release-verification.md)
 for fixed revisions, rights/metadata checks, actual rendering and limits.
 Earlier uncompleted-environment statements above describe historical snapshots.
+
+2026-11-22 growth item: [milk bottle v01](milk_bottle/README.md) is directly
+authored in Blender, exported at 0.20 m height and checked by GLB reimport and
+offline renders. It uses 1,340 triangles, two opaque materials and no textures.
+The export is ready for loader integration; gameplay verification is separate.

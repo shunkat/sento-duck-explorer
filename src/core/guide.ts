@@ -1,102 +1,45 @@
 // Pure guidance for the HUD: the current objective and the keys that do
 // something right now. Derived from state only; no side effects.
 import type { Level } from "../level/layout";
-import { areaOf, inBathWater, isSauna } from "../sim/zones";
-import { atDryingSpot, holds, interactHint } from "./actions";
-import { CHARACTER_NAME } from "./text";
-import type { CharacterId, GameState, HumanId } from "./types";
-
-const name = (id: CharacterId) => CHARACTER_NAME[id];
-const switchTo = (s: GameState, id: CharacterId) =>
-  s.active === id ? "" : `（Tabで${name(id)}に切り替え）`;
+import { inBathWater, isSauna } from "../sim/zones";
+import { atDryingSpot, interactHint } from "./actions";
+import type { GameState } from "./types";
 
 /** One-line objective for the current progress. */
 export function objective(s: GameState): string {
-  const { coin, key, hat } = s.items;
-  if (s.outcome.kind === "cleared") return "クリア！帽子を被ったアヒルが池の奥に着きました";
-
-  if (coin.owner.kind === "node" && coin.owner.id === "narrow_hole_coin") {
-    if (s.duck.carriedBy === "child") return "子どもで湯船の左奥、壁ぞいの「水路の入口」まで歩き、Eでアヒルを水路に下ろそう";
-    if (s.duck.zone === "bathwater") {
-      return `500円玉は浴室の左奥の小さな穴の奥。アヒルだけでは湯船から水路へ行けないので、子どもでアヒルの近くでEを押して抱え、湯船の左の水路の入口へ運ぼう${switchTo(s, "child")}`;
-    }
-    return `アヒルで水路を泳いで小さな穴に入り、奥の500円玉を拾おう（アヒルは水の上だけ動けます）${switchTo(s, "duck")}`;
+  const p = s.player;
+  if (s.outcome.kind === "cleared") return "クリア！大人に育って、銭湯の玄関から外へ出ました";
+  if (p.stage === "duck") {
+    return "湯船の奥（左の壁ぞい）の細い水路を泳いで浅い湯だまりへ。牛乳びんの近くでEを押して飲もう（子どもに育つ）。アヒルは水の上だけ泳げます";
   }
-  if (holds(s, "coin", "duck")) {
-    return `アヒルで大人に500円玉を渡そう：大人を水路の入口のそばへ連れてきて、近くでE（子どもがアヒルを抱えて運んでもOK）${switchTo(s, "duck")}`;
+  if (p.stage === "child") {
+    return "湯だまりの横の、子どもだけが通れるせまい通り道を通って広い休憩所へ。牛乳びんをEで飲もう（大人に育つ）";
   }
-
-  if (coin.status !== "paid") {
-    const both = (f: (h: HumanId) => boolean) => f("child") && f("adult");
-    const inArea = (a: string) => both((h) => areaOf(s[h].zone) === a);
-    if (inArea("reception")) return `大人で受付台の前に立ち、Eでサウナ代を払おう${switchTo(s, "adult")}`;
-    if (inArea("changing")) {
-      if (both((h) => s[h].clothing === "clothed")) return "親子で受付へ行こう（ついたての奥、更衣室の右上の扉）";
-      return "更衣室の左の壁のロッカー（オレンジの棚）の前でEを押し、子どもも大人も服を着よう";
-    }
-    if (!both((h) => s[h].wet === "dry")) {
-      const wet = (["child", "adult"] as const).filter((h) => s[h].wet === "wet").map(name).join("と");
-      return `湯船から出て、浴室の出口（更衣室の扉）の前で${wet}がそれぞれEで体を拭こう（Tabで切り替え）`;
-    }
-    return "親子で更衣室へ（浴室の左上の扉）。2人が3m以内にいれば一緒に移動できます";
+  if (s.doors.kidsGate === "closed" && (p.zone === "kids_room" || p.zone === "kids_passage" || p.zone === "kids_pool")) {
+    return "休憩所の戸の高い掛け金をEで外して、浴室へ出よう";
   }
-
-  if (holds(s, "key", "adult")) {
-    if (areaOf(s.adult.zone) !== "bath" || areaOf(s.child.zone) !== "bath") {
-      if (s.adult.clothing === "clothed" || s.child.clothing === "clothed") return "更衣室のロッカーの前でEを押して2人とも服を脱ごう";
-      return "親子で浴室へ戻ろう（更衣室の左下の扉）";
-    }
-    return `大人で子どもに鍵を渡そう：子どもの近くでE${switchTo(s, "adult")}`;
+  if (p.clothing === "unclothed") {
+    if (p.zone === "changing") return "更衣室の左の壁のロッカー（オレンジの棚）の前でEを押して服を着よう";
+    if (p.wet === "wet") return "浴室の出口（更衣室の扉）の前のマットでEを押して体を拭こう";
+    return "体を拭いたら、浴室の左上の扉から更衣室へ入ろう";
   }
-
-  // Who still has to dry before the sauna (the door's bath side is a drying spot).
-  const wetNames = (["child", "adult"] as const).filter((h) => s[h].wet === "wet").map(name).join("と");
-  if (s.saunaDoor === "locked") {
-    if (wetNames) return `浴室の右奥、水風呂のそばにあるサウナの扉（茶色）の前で${wetNames}がEを押して体を拭こう（Tabで切り替え）。そのあと子どもがEで扉を開けよう`;
-    return "子どもで浴室の右奥、洗い場の先にあるサウナの扉（茶色）の前に行きEで開けよう。大人も近くへ";
-  }
-
-  if (hat.owner.kind === "node") {
-    if (!isSauna(s.child.zone)) {
-      if (wetNames) return `サウナの扉の前で${wetNames}がEを押して体を拭こう（Tabで切り替え）`;
-      return "親子でサウナへ（扉の前で2人が3m以内）。子どもだけが座っている人たちのすき間を通れます（押さず・静かに）";
-    }
-    return "子どもで座っている人たちのすき間を縫って、奥の棚の帽子を取ろう（E）。大人は入口で待ちます";
-  }
-  if (holds(s, "hat", "child")) return `子どもでサウナを出て、アヒルの近くでEを押して帽子を被せよう${switchTo(s, "child")}`;
-
-  if (s.duck.inPond) return `流れに乗ってアヒルを池の奥の金色のゴールへ。WASDで向きを調整${switchTo(s, "duck")}`;
-  if (s.duck.carriedBy === "adult") {
-    return "子どもと一緒に浴室の右の扉から露天風呂へ出て、生け垣の門を通って池のほとりへ。ほとりでEを押すとアヒルを池に置けます（2人は3m以内で）";
-  }
-  return `大人で水辺のアヒルに近づき、Eで抱えよう（帽子を被ったアヒルは大人が池まで運びます）${switchTo(s, "adult")}`;
+  if (s.doors.frontExit === "closed") return "ついたての奥の扉から受付を通って玄関（下足箱）へ。外へ出る戸の高い取っ手をEで開けよう";
+  return "開いた玄関の戸を通って外へ出よう（クリア）";
 }
 
-/** Keys that currently do something for the active character, e.g. "E: 500円玉を拾う". */
+/** Keys that currently do something for the player, e.g. "E: 牛乳びんを飲む". */
 export function nearbyHints(s: GameState, level: Level): string[] {
   if (s.outcome.kind !== "playing") return [];
-  if (s.dialog) return ["E / Enter: 渡す", "Esc: やめる"];
   const out: string[] = [];
   const e = interactHint(s, level);
   if (e) out.push(`E: ${e}`);
-  const id = s.active;
-  if (id !== "duck") {
-    const h = s[id];
-    const other: HumanId = id === "child" ? "adult" : "child";
-    // Both need drying: say who still has to come to the exit (Tab, then E there).
-    if (h.zone === "bath" && h.wet === "wet" && !atDryingSpot(s, level, id)) {
-      out.push("体が濡れています：浴室の出口かサウナの扉の前でE");
-    }
-    if (areaOf(h.zone) === "bath" && s[other].wet === "wet" && s[other].zone !== "bathwater") {
-      out.push(`${name(other)}も濡れています（Tabで切り替えて出口の前でE）`);
-    }
-    if (inBathWater(level, h.pos) && h.towel === "head") out.push("タオルは頭の上（Qでは湯につきません）");
-    if (isSauna(h.zone)) out.push("サウナでは大声(V)・押す(F)はマナー違反");
-  } else if (s.duck.carriedBy) {
-    const who = name(s.duck.carriedBy);
-    out.push(`${who}が抱えている間、アヒルは動けません（Tabで${who}に切り替え）`);
-  } else if (!s.duck.inPond) {
+  const p = s.player;
+  if (p.stage === "duck") {
     out.push("アヒルは水の上だけ泳げます");
+    return out;
   }
+  if (p.zone === "bath" && p.wet === "wet" && !atDryingSpot(s, level)) out.push("体が濡れています：浴室の出口かサウナの扉の前でE");
+  if (inBathWater(level, p.pos) && p.towel === "head") out.push("タオルは頭の上（Qでは湯につきません）");
+  if (isSauna(p.zone)) out.push("サウナでは大声(V)・押す(F)はマナー違反");
   return out;
 }

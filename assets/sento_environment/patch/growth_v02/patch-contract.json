@@ -1,0 +1,58 @@
+{
+  "layout_sha256": "01d4ef0eda8966fe87ec3ac4551bcce129bd697040ae6dd201a0cff50e9ceba8",
+  "replacements": {
+    "environment_static__bath_floor": "c9314d13af8545a614bd0cac84f4af98506cc4fdfbe80b31e3e79c6138a9e582",
+    "environment_static__cedar": "26bec35b61c48995986230df686d535a93099505bff95bf32be3fc73195a3cd0",
+    "environment_static__ceramic_cream": "937a2b6dcc24d2bb2a0a0f2f5c4bf6f546bc96b8f6b7e2ba229f21f4d2e9f527",
+    "environment_static__dark_cedar": "ba8ed64817b7a9d18ca16d2185029518cdccc4cb212f05f6c9c4188c11ab49b5",
+    "environment_static__warm_plaster": "083ad56f611e01c4e5e56d8207a3d8bea5b81e3b9e220c2d1ee22e4ee5e9a577",
+    "environment_upper__cedar": "9dc5a5e53fe2121d99f122f9b2883c19e58ff118612b19d1b0312c900de10755",
+    "environment_upper__navy_cloth": "becba1e22d75f1b8954b8f88e4b9eaadb232a318d8dc89bb21210ef10985cef1",
+    "environment_upper__warm_plaster": "a9e5d60d911fc86212bf60608b2dd2d1598d2cbcc2e80364847030c9b85fb7fd"
+  },
+  "additions": {
+    "growth_fixed_static": "environment_static",
+    "growth_fixed_upper": "environment_upper",
+    "growth_kids_gate": "sento_environment",
+    "growth_front_exit": "sento_environment"
+  },
+  "source_sha256": "29f7ad1219bb6a6fef625c76d091bd34b73600d691de5c00e967c5ccceb7df61",
+  "changes": [
+    {
+      "node": "environment_static__cedar",
+      "removed_surface_area_m2": 0.0,
+      "source_zero_area_triangles_removed": 16
+    },
+    {
+      "node": "environment_static__ceramic_cream",
+      "removed_surface_area_m2": 0.8819958833299317,
+      "source_zero_area_triangles_removed": 0
+    },
+    {
+      "node": "environment_static__dark_cedar",
+      "removed_surface_area_m2": 0.41760787034482405,
+      "source_zero_area_triangles_removed": 0
+    },
+    {
+      "node": "environment_static__warm_plaster",
+      "removed_surface_area_m2": 2.7000462196488115,
+      "source_zero_area_triangles_removed": 0
+    },
+    {
+      "node": "environment_upper__cedar",
+      "removed_surface_area_m2": 0.124271359404176,
+      "source_zero_area_triangles_removed": 0
+    },
+    {
+      "node": "environment_upper__navy_cloth",
+      "removed_surface_area_m2": 3.097102901492806,
+      "source_zero_area_triangles_removed": 0
+    },
+    {
+      "node": "environment_upper__warm_plaster",
+      "removed_surface_area_m2": 3.0000496150644835,
+      "source_zero_area_triangles_removed": 0
+    }
+  ],
+  "scope": "Architecture only; no gameplay or normal-input verification"
+}

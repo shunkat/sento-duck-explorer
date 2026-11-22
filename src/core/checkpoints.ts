@@ -1,72 +1,32 @@
-// Four provisional checkpoints. A snapshot is taken from the final state of a
-// tick, normalized to safe spawn points, and restored as one consistent step.
+// Three provisional checkpoints (growth and exit, 2026-11-21): start, after
+// Child growth, after Adult growth. A snapshot is taken from the final state
+// of a tick, normalized to the bottle's safe growth spot, and restored as one
+// consistent step. In-memory only: there is no persistent save to migrate.
 import type { Level } from "../level/layout";
-import { areaOf, zoneAtOr } from "../sim/zones";
-import { toCore } from "./initialState";
-import type { CheckpointId, CoreState, GameEvent, GameState, Vec2 } from "./types";
-
-function place(level: Level, c: { pos: Vec2; vel: Vec2; zone: CoreState["duck"]["zone"] }, p: Vec2): void {
-  c.pos = { ...p };
-  c.vel = { x: 0, z: 0 };
-  c.zone = zoneAtOr(level, c.pos, c.zone);
-}
+import { guardianTarget } from "./guardian";
+import { toCore, zoneOf } from "./initialState";
+import type { CheckpointId, CoreState, GameEvent, GameState } from "./types";
 
 /** Which checkpoint (if any) the state has just reached. */
 export function reachedCheckpoint(s: GameState): CheckpointId | null {
   if (s.outcome.kind !== "playing") return null;
-  if (
-    !s.checkpoints.duckInPond &&
-    s.duck.inPond &&
-    s.duck.carriedBy === null &&
-    s.adult.zone === "pond_entrance" &&
-    s.child.zone === "pond_entrance"
-  ) {
-    return "duckInPond";
-  }
-  if (!s.checkpoints.hatEquipped && s.items.hat.status === "equipped") return "hatEquipped";
-  if (
-    !s.checkpoints.paidReturned &&
-    s.items.coin.status === "paid" &&
-    areaOf(s.adult.zone) === "bath" &&
-    areaOf(s.child.zone) === "bath"
-  ) {
-    return "paidReturned";
-  }
+  if (!s.checkpoints.adultGrown && s.milk.milk2 === "collected") return "adultGrown";
+  if (!s.checkpoints.childGrown && s.milk.milk1 === "collected") return "childGrown";
   return null;
 }
 
-/** Snapshot with spawn normalization so restoring never repeats the same failure. */
+/** Snapshot with spawn normalization so restoring never repeats a failure or overlaps a wall. */
 export function takeSnapshot(s: GameState, id: CheckpointId, level: Level): CoreState {
   const snap = toCore(s);
   snap.outcome = { kind: "playing" };
-  snap.dialog = null;
   snap.lastCheckpoint = id;
-  const sp = level.checkpointSpawns;
-  switch (id) {
-    case "start":
-      break;
-    case "paidReturned":
-      place(level, snap.adult, sp.paidReturned.adult);
-      place(level, snap.child, sp.paidReturned.child);
-      break; // a Duck held by Child follows the carrier below
-    case "hatEquipped":
-      place(level, snap.duck, sp.hatEquipped.duck);
-      place(level, snap.child, sp.hatEquipped.child);
-      place(level, snap.adult, sp.hatEquipped.adult);
-      snap.duck.carriedBy = null;
-      break;
-    case "duckInPond":
-      place(level, snap.duck, level.pondSpawn);
-      place(level, snap.adult, sp.duckInPondShore.adult);
-      place(level, snap.child, sp.duckInPondShore.child);
-      snap.active = "duck";
-      break;
-  }
-  // A carried Duck is stored exactly at its (possibly moved) carrier.
-  const carrier = snap.duck.carriedBy;
-  if (carrier) {
-    snap.duck.pos = { ...snap[carrier].pos };
-    snap.duck.zone = snap[carrier].zone;
+  if (id !== "start") {
+    const spot = level.growthSpots[id === "childGrown" ? "milk1" : "milk2"];
+    snap.player.pos = { ...spot };
+    snap.player.vel = { x: 0, z: 0 };
+    snap.player.zone = zoneOf(level, spot);
+    const at = guardianTarget(snap);
+    snap.guardian = { pos: { ...level.guardianPath[at]! }, at };
   }
   return snap;
 }
@@ -80,7 +40,7 @@ export function saveCheckpointIfReached(s: GameState, level: Level, events: Game
   events.push({ kind: "checkpointSaved", id });
 }
 
-/** Restore the most recent checkpoint, keeping the stored snapshots (Req 10.8). */
+/** Restore the most recent checkpoint, keeping the stored snapshots. */
 export function restoreLatest(s: GameState): GameState {
   const id = s.lastCheckpoint;
   const snap = s.checkpoints[id] ?? s.checkpoints.start!;

@@ -1,4 +1,7 @@
 // Pure game-state types. No rendering or DOM dependencies.
+// Growth and exit (2026-11-21): one player grows Duck → Child → Adult by
+// drinking milk bottles, and clears by leaving the sento (prototype-core-gameplay
+// Requirement 11, design "Growth and exit").
 
 /** A point or vector on the XZ ground plane, in meters. */
 export interface Vec2 {
@@ -6,7 +9,9 @@ export interface Vec2 {
   z: number;
 }
 
+/** The player's growth stage; also the id of the model and camera profile for that stage. */
 export type CharacterId = "duck" | "child" | "adult";
+export type Stage = CharacterId;
 export type HumanId = "child" | "adult";
 
 export type ZoneId =
@@ -14,70 +19,50 @@ export type ZoneId =
   | "bathwater"
   | "splash"
   | "narrow_hole"
+  | "kids_pool"
+  | "kids_passage"
+  | "kids_room"
   | "changing"
   | "reception"
   | "common"
-  | "exterior"
+  | "genkan"
+  | "street"
   | "sauna_entry"
   | "sauna_crowd"
   | "open_air"
   | "pond_entrance"
-  | "pond"
-  | "pond_goal";
+  | "pond";
 
-export type NodeId =
-  | "narrow_hole_coin"
-  | "reception_desk"
-  | "reception_register"
-  | "sauna_hat_shelf";
+/** The two unique milk bottles: milk1 grows Duck into Child, milk2 grows Child into Adult. */
+export type MilkId = "milk1" | "milk2";
+export type NodeId = MilkId;
 
-export type Owner =
-  | { kind: "character"; id: CharacterId }
-  | { kind: "node"; id: NodeId };
+/** Doors with a handle only the Adult can reach. */
+export type HighDoorId = "kidsGate" | "frontExit";
 
-export type ItemId = "coin" | "key" | "hat";
-
-export interface ItemState {
-  owner: Owner;
-  /** `paid` is valid only for the Coin, `equipped` only for the Hat. */
-  status: "available" | "paid" | "equipped";
-}
-
-export interface CharacterState {
+export interface PlayerState {
+  stage: Stage;
   pos: Vec2;
-  /** Velocity; used for Duck in the pond. */
   vel: Vec2;
   /** Most specific zone containing `pos`. */
   zone: ZoneId;
   wet: "wet" | "dry";
-}
-
-export interface HumanState extends CharacterState {
+  /** Duck is always "unclothed". */
   clothing: "clothed" | "unclothed";
-  /**
-   * Each human has one towel from the start: in the hand or on the head.
-   * Duck never has a towel. Separate from the Duck's sauna hat.
-   */
-  towel: "held" | "head";
+  /** Duck has no towel ("none"); a human's towel is in the hand or on the head. */
+  towel: "none" | "held" | "head";
 }
 
-export interface DuckState extends CharacterState {
-  /**
-   * Who holds Duck: Child before the hat is equipped (to bring it to the coin
-   * channel), Adult from the hat to the pond. Duck never carries itself.
-   */
-  carriedBy: HumanId | null;
-  inPond: boolean;
+/** Non-player adult who watches the Child (scripted; never blocks the player). */
+export interface GuardianState {
+  pos: Vec2;
+  /** Index of the spot in `LEVEL.guardianPath` it stands at or walks toward next. */
+  at: number;
 }
-
-/** Allowlisted character-to-character transfers. The hat is excluded by type. */
-export type TransferDialog =
-  | { item: "coin"; from: "duck"; to: "adult" }
-  | { item: "key"; from: "adult"; to: "child" };
 
 export type ViolationId = "F1" | "F2" | "F3" | "F4" | "F5" | "F6" | "F7" | "F8";
 
-export type CheckpointId = "start" | "paidReturned" | "hatEquipped" | "duckInPond";
+export type CheckpointId = "start" | "childGrown" | "adultGrown";
 
 export type Outcome =
   | { kind: "playing" }
@@ -86,13 +71,10 @@ export type Outcome =
 
 /** Game state without the stored checkpoint snapshots. */
 export interface CoreState {
-  active: CharacterId;
-  duck: DuckState;
-  child: HumanState;
-  adult: HumanState;
-  items: { coin: ItemState; key: ItemState; hat: ItemState };
-  saunaDoor: "locked" | "unlocked";
-  dialog: TransferDialog | null;
+  player: PlayerState;
+  milk: Record<MilkId, "available" | "collected">;
+  doors: Record<HighDoorId, "closed" | "open">;
+  guardian: GuardianState;
   outcome: Outcome;
   lastCheckpoint: CheckpointId;
   tickCount: number;
@@ -107,11 +89,7 @@ export interface InputFrame {
   /** Direction on the XZ plane; (0,0) when idle. Length ≤ 1. */
   move: Vec2;
   run: boolean;
-  /** Manual character switch (edge-triggered). */
-  switchCharacter: boolean;
   interact: boolean;
-  confirm: boolean;
-  cancel: boolean;
   dipTowel: boolean;
   shout: boolean;
   push: boolean;
@@ -119,11 +97,10 @@ export interface InputFrame {
 }
 
 export type GameEvent =
-  | { kind: "switched"; to: CharacterId }
   | { kind: "rejected"; reason: string }
   | { kind: "prompt"; text: string }
-  | { kind: "itemMoved"; item: ItemId; to: Owner }
-  | { kind: "doorUnlocked" }
+  | { kind: "grew"; milk: MilkId; from: Stage; to: Stage }
+  | { kind: "doorOpened"; id: HighDoorId }
   | { kind: "checkpointSaved"; id: CheckpointId }
   | { kind: "restored"; id: CheckpointId }
   | { kind: "gameOver"; reason: ViolationId }
@@ -137,10 +114,7 @@ export interface TickResult {
 export const EMPTY_INPUT: InputFrame = Object.freeze({
   move: Object.freeze({ x: 0, z: 0 }),
   run: false,
-  switchCharacter: false,
   interact: false,
-  confirm: false,
-  cancel: false,
   dipTowel: false,
   shout: false,
   push: false,

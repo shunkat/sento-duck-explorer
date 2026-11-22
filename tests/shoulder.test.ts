@@ -80,7 +80,7 @@ describe("camera-relative movement (shoulder-view Req 3)", () => {
 });
 
 describe("shoulder pose (Req 1, 4)", () => {
-  const obs = obstaclesFor(LEVEL, "locked");
+  const obs = obstaclesFor(LEVEL, { kidsGate: "closed", frontExit: "closed" });
 
   it("frames the carried Duck and hat at their actual elevated model center", () => {
     const focus = { x: 20.24, y: 1.05, z: 3.8 };
@@ -144,10 +144,10 @@ describe("shoulder pose (Req 1, 4)", () => {
     const g = LEVEL.crowdGaps[0]!.box;
     const at = (id: "duck" | "child" | "adult", q: { x: number; z: number }) => [id, q.x, q.z] as const;
     const spots = [
-      at("duck", LEVEL.initialPositions.duck), at("adult", { x: 1.4, z: 0.6 }), at("adult", W.receptionIn), at("adult", W.screenPassage),
-      at("child", LEVEL.channelEntrance), at("child", { x: g.maxX + 0.4, z: (g.minZ + g.maxZ) / 2 }), at("child", LEVEL.nodes.sauna_hat_shelf),
-      at("adult", W.openAirIn), at("adult", LEVEL.checkpointSpawns.duckInPondShore.adult), at("duck", LEVEL.pondSpawn), at("duck", R.POND_PATH.at(-1)!),
-      at("child", W.bathMid), at("duck", W.troughEnd),
+      at("duck", LEVEL.start), at("adult", { x: 1.4, z: 0.6 }), at("adult", W.receptionIn), at("adult", W.screenPassage),
+      at("duck", W.troughGap), at("duck", W.milk1Swim), at("child", LEVEL.growthSpots.milk1), at("child", { x: 0.4, z: 5.6 }),
+      at("child", W.milk2Stand), at("adult", LEVEL.growthSpots.milk2), at("adult", W.gateOut), at("adult", W.frontExitIn),
+      at("child", { x: g.maxX + 0.4, z: (g.minZ + g.maxZ) / 2 }), at("adult", W.openAirIn), at("adult", W.gardenIn), at("child", W.bathMid),
     ];
     for (const [id, x, z] of spots) {
       for (let k = 0; k < 8; k++) {
@@ -168,27 +168,42 @@ describe("shoulder pose (Req 1, 4)", () => {
 });
 
 describe("facing and orbit (Req 2, 3.4)", () => {
-  const view = (duck: [number, number], child: [number, number], adult: [number, number], carried = false) =>
+  const view = (stage: "duck" | "child" | "adult", x: number, z: number) =>
     ({
+      active: stage,
       characters: {
-        duck: { id: "duck", pos: { x: duck[0], y: 0.15, z: duck[1] }, radius: CHARACTER_RADIUS.duck, height: 0.3, active: true, carried },
-        child: { id: "child", pos: { x: child[0], y: 0.6, z: child[1] }, radius: 0.25, height: 1.2, active: false, carried: false },
-        adult: { id: "adult", pos: { x: adult[0], y: 0.85, z: adult[1] }, radius: 0.35, height: 1.7, active: false, carried: false },
+        duck: { id: "duck", pos: { x, y: 0.15, z }, radius: CHARACTER_RADIUS.duck, height: 0.3, active: stage === "duck", visible: stage === "duck" },
+        child: { id: "child", pos: { x, y: 0.6, z }, radius: 0.25, height: 1.2, active: stage === "child", visible: stage === "child" },
+        adult: { id: "adult", pos: { x, y: 0.85, z }, radius: 0.35, height: 1.7, active: stage === "adult", visible: stage === "adult" },
       },
     }) as unknown as View;
 
-  it("moving sets facing, standing keeps it, teleports are ignored, a carried Duck faces like Adult", () => {
+  it("moving sets facing, standing keeps it, teleports are ignored, growth keeps the facing", () => {
     const f = new FacingTracker();
-    f.update(view([4, 5], [4, 4], [5, 4]));
-    f.update(view([4.02, 5], [4, 4], [5, 4]));
+    f.update(view("duck", 4, 5));
+    f.update(view("duck", 4.02, 5));
     expect(f.yaw("duck")).toBeCloseTo(Math.PI / 2, 9); // +X
-    f.update(view([4.02, 5], [4, 4], [5, 4]));
+    f.update(view("duck", 4.02, 5));
     expect(f.yaw("duck")).toBeCloseTo(Math.PI / 2, 9);
-    f.update(view([20, 5], [4, 4], [5, 4]));
+    f.update(view("duck", 20, 5));
     expect(f.yaw("duck")).toBeCloseTo(Math.PI / 2, 9);
-    f.update(view([5, 4], [4, 4], [5, 3.98], true));
-    expect(f.yaw("adult")).toBeCloseTo(0, 9); // −Z
-    expect(f.yaw("duck")).toBe(f.yaw("adult"));
+    f.update(view("child", 20, 5)); // grew in place
+    expect(f.yaw("child")).toBeCloseTo(Math.PI / 2, 9);
+    expect(f.moving("child")).toBe(false);
+    f.update(view("child", 20, 4.98));
+    expect(f.yaw("adult")).toBeCloseTo(0, 9); // one shared facing (−Z)
+  });
+
+  it("a growth keeps the facing, even when the player is moved to the safe spot (review L-1)", () => {
+    const f = new FacingTracker();
+    f.update(view("child", 2.0, 3.5));
+    f.update(view("child", 2.02, 3.5));
+    expect(f.yaw("child")).toBeCloseTo(Math.PI / 2, 9);
+    f.update(view("adult", 1.2, 3.75)); // grew and moved 0.85 m to the growth spot
+    expect(f.yaw("adult")).toBeCloseTo(Math.PI / 2, 9);
+    expect(f.moving("adult")).toBe(false);
+    f.update(view("adult", 1.2, 3.73));
+    expect(f.yaw("adult")).toBeCloseTo(0, 9);
   });
 
   it("J / L held turn the camera; the overview freezes the yaw", () => {
@@ -213,7 +228,7 @@ describe("facing and orbit (Req 2, 3.4)", () => {
 });
 
 describe("camera follows behind the moving character (Req 1.5)", () => {
-  const obs = obstaclesFor(LEVEL, "locked");
+  const obs = obstaclesFor(LEVEL, { kidsGate: "closed", frontExit: "closed" });
   const focus = { x: 8, y: 0.85, z: 4 };
 
   it("eases toward the heading while moving; holds when standing, walking toward the camera, or just after orbit", () => {
@@ -276,7 +291,7 @@ describe("hat at the Duck model's socket (Req 6.5)", () => {
 });
 
 describe("every pose FollowCamera.update returns is safe (Req 4.1, 4.2, 4.5)", () => {
-  const obs = obstaclesFor(LEVEL, "locked");
+  const obs = obstaclesFor(LEVEL, { kidsGate: "closed", frontExit: "closed" });
   type Id = "duck" | "child" | "adult";
   const at = (id: Id, x: number, z: number) => ({ id, focus: { x, y: id === "duck" ? 0.15 : id === "child" ? 0.6 : 0.85, z } });
   const check = (id: Id, focus: { x: number; z: number }, eye: { x: number; y: number; z: number }) => {
@@ -314,7 +329,7 @@ describe("every pose FollowCamera.update returns is safe (Req 4.1, 4.2, 4.5)", (
 });
 
 describe("held A/D with the follow camera is stable (review N-1)", () => {
-  const obs = obstaclesFor(LEVEL, "locked");
+  const obs = obstaclesFor(LEVEL, { kidsGate: "closed", frontExit: "closed" });
   /** Walk in open space with keys held, like main.ts does each frame. */
   function walk(keys: { x: number; z: number }[], frames: number[], cam = new FollowCamera()) {
     let pos = { x: 20, z: 4 }; // open-air bath, no walls near (camera clip irrelevant here)
@@ -370,29 +385,24 @@ describe("held A/D with the follow camera is stable (review N-1)", () => {
     expect(cam.yaw).toBe(-Math.PI / 2);
     expect(cam.moveYaw).toBe(-Math.PI / 2);
     const f = new FacingTracker();
-    f.lookAlong(CHECKPOINT_VIEW_YAW.duckInPond);
-    expect(f.yaw("duck")).toBe(Math.PI / 2);
+    f.lookAlong(CHECKPOINT_VIEW_YAW.adultGrown);
+    expect(f.yaw("adult")).toBe(0);
     expect(f.moving("duck")).toBe(false);
   });
 
-  it("the start view looks toward the NarrowHole; a human beside the lens is faded (D-1)", () => {
-    const d0 = LEVEL.initialPositions.duck;
+  it("the start view looks west along the tub toward the trough; growth checkpoints look north", () => {
+    const d0 = LEVEL.start;
     const p = shoulderPose("duck", { x: d0.x, y: 0.15, z: d0.z }, CHECKPOINT_VIEW_YAW.start, obs);
-    expect(p.target.x).toBeLessThan(d0.x); // looks toward −X (the trough and the hole)
-    for (const id of ["child", "adult"] as const) {
-      const h = LEVEL.initialPositions[id];
-      const toHuman = { x: h.x - p.eye.x, z: h.z - p.eye.z };
-      const ahead = forwardOf(CHECKPOINT_VIEW_YAW.start);
-      const inFront = toHuman.x * ahead.x + toHuman.z * ahead.z > 0.3;
-      if (inFront) expect(nearCameraOpacity(Math.hypot(toHuman.x, toHuman.z))).toBeLessThan(0.5);
-    }
+    expect(p.target.x).toBeLessThan(d0.x); // looks toward −X
+    expect(CHECKPOINT_VIEW_YAW.childGrown).toBe(0);
+    expect(CHECKPOINT_VIEW_YAW.adultGrown).toBe(0);
     expect(nearCameraOpacity(0.3)).toBe(0.15);
     expect(nearCameraOpacity(2)).toBe(1);
   });
 
-  it("the sauna door view (Child unlocking) stays in the bath, locked or unlocked", () => {
-    for (const door of ["locked", "unlocked"] as const) {
-      const o = obstaclesFor(LEVEL, door);
+  it("the sauna door view stays in the bath, with the high doors closed or open", () => {
+    for (const d of ["closed", "open"] as const) {
+      const o = obstaclesFor(LEVEL, { kidsGate: d, frontExit: d });
       const f = LEVEL.waypoints.saunaDoorDry;
       const p = shoulderPose("child", { x: f.x, y: 0.6, z: f.z }, Math.PI / 2, o); // facing +X, the door
       expect(p.eye.x).toBeLessThan(12 - 0.1);
@@ -402,7 +412,7 @@ describe("held A/D with the follow camera is stable (review N-1)", () => {
 });
 
 describe("review round 3: N-4 orbit steers a walk, N-6 Adult hiding Child", () => {
-  const obs = obstaclesFor(LEVEL, "locked");
+  const obs = obstaclesFor(LEVEL, { kidsGate: "closed", frontExit: "closed" });
 
   it("orbit while a move key is held turns the walk with the camera (N-4)", () => {
     const cam = new FollowCamera();
@@ -416,10 +426,10 @@ describe("review round 3: N-4 orbit steers a walk, N-6 Adult hiding Child", () =
     expect(cam.moveYaw).toBeCloseTo(0.6, 9);
   });
 
-  it("at the start, Adult standing between the camera and Child fades (N-6)", () => {
-    const c = LEVEL.initialPositions.child;
-    const a = LEVEL.initialPositions.adult;
-    const p = shoulderPose("child", { x: c.x, y: 0.6, z: c.z }, CHECKPOINT_VIEW_YAW.start, obs);
+  it("a body between the camera and the player fades (N-6; the guardian beside the kids' corner)", () => {
+    const c = { x: 3.1, z: 6.0 }; // a player south of the guardian's room spot, looking north
+    const a = { x: 3.1, z: 6.8 }; // body right behind, near the lens
+    const p = shoulderPose("child", { x: c.x, y: 0.6, z: c.z }, 0, obs);
     expect(bodyOpacity(p.eye, c, a, CHARACTER_RADIUS.adult)).toBeLessThanOrEqual(0.3);
     // A body off to the side and far from the lens stays solid.
     expect(bodyOpacity({ x: 0, z: 0 }, { x: 0, z: -4 }, { x: 3, z: -2 }, 0.35)).toBe(1);

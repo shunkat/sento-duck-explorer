@@ -1,22 +1,11 @@
 import type { Level } from "../level/layout";
 import { zoneAt } from "../sim/zones";
-import type { CoreState, GameState, HumanState, Vec2, ZoneId } from "./types";
+import type { CoreState, GameState, Vec2, ZoneId } from "./types";
 
-function zoneOf(level: Level, p: Vec2): ZoneId {
+export function zoneOf(level: Level, p: Vec2): ZoneId {
   const z = zoneAt(level, p);
   if (z === null) throw new Error(`Spawn point (${p.x}, ${p.z}) is outside every zone`);
   return z;
-}
-
-function human(level: Level, pos: Vec2): HumanState {
-  return {
-    pos: { ...pos },
-    vel: { x: 0, z: 0 },
-    zone: zoneOf(level, pos),
-    wet: "wet",
-    clothing: "unclothed",
-    towel: "held",
-  };
 }
 
 /** Strip stored snapshots so a snapshot never nests other snapshots. */
@@ -25,28 +14,21 @@ export function toCore(state: GameState | CoreState): CoreState {
   return structuredClone(core);
 }
 
-/** Start of the game: everyone in the bathwater, Duck active (Req 3.1). */
+/** Start of the game: the player is Duck in the tub; both bottles available, both high doors closed. */
 export function createInitialState(level: Level): GameState {
-  const p = level.initialPositions;
   const core: CoreState = {
-    active: "duck",
-    duck: {
-      pos: { ...p.duck },
+    player: {
+      stage: "duck",
+      pos: { ...level.start },
       vel: { x: 0, z: 0 },
-      zone: zoneOf(level, p.duck),
+      zone: zoneOf(level, level.start),
       wet: "wet",
-      carriedBy: null,
-      inPond: false,
+      clothing: "unclothed",
+      towel: "none",
     },
-    child: human(level, p.child),
-    adult: human(level, p.adult),
-    items: {
-      coin: { owner: { kind: "node", id: "narrow_hole_coin" }, status: "available" },
-      key: { owner: { kind: "node", id: "reception_desk" }, status: "available" },
-      hat: { owner: { kind: "node", id: "sauna_hat_shelf" }, status: "available" },
-    },
-    saunaDoor: "locked",
-    dialog: null,
+    milk: { milk1: "available", milk2: "available" },
+    doors: { kidsGate: "closed", frontExit: "closed" },
+    guardian: { pos: { ...level.guardianPath[0]! }, at: 0 },
     outcome: { kind: "playing" },
     lastCheckpoint: "start",
     tickCount: 0,

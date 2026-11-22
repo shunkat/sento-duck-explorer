@@ -1,77 +1,51 @@
 {
-  "status": "fixed candidate; ready for independent quality review",
-  "reviewer": "Codex environment production agent",
-  "reviewed_at": "2026-11-21T10:34:41.446125+00:00",
-  "glb_sha256": "29f7ad1219bb6a6fef625c76d091bd34b73600d691de5c00e967c5ccceb7df61",
-  "blend_sha256": "d1573388b260cf12224b23f688bd01b58bf2e86f2d0f953abe2443e33c2409b4",
-  "builder_file": "scripts/build-sento-environment.py",
-  "builder_sha256": "c657a70d2f0fff0b8ed1ead2950201e34d8e83741f7365821e85b6b8c73a10a6",
-  "build_command": "Blender --background --python scripts/build-sento-environment.py",
-  "production_method": "Direct Blender architecture, fixtures and decor; actual imported Kenney CC0 bench, bush and rock geometry; actual Poly Haven Hinoki PBR maps; existing source-derived NPCs; original generated mural used as a texture. No Image-to-3D step is claimed for this world.",
-  "source_placement_count": 111,
-  "coverage_key_count": 116,
-  "coverage_status_counts": {
-    "authored": 104,
-    "independent_runtime_overlay": 2,
-    "independent_existing_bath_stool": 5,
-    "independent_existing_wash_basin": 5
-  },
-  "extra_coverage_groups": [
-    "additional_door_frames",
-    "additional_ceilings",
-    "additional_narrow_hole_lid_lintel",
-    "additional_sauna_door",
-    "additional_fuji_mural"
-  ],
+  "revision": "growth_v02",
+  "created_date": "2026-11-22",
+  "glb_sha256": "3c37930e66a6d27f2a32cc174b64cb54b6a713bfafd6322ef4959cbb7ec6eb00",
+  "blend_sha256": "d07c51fa6d452460465874dc961a003eea2ac160f25f58b1488f30fb7f513f64",
+  "layout_sha256": "01d4ef0eda8966fe87ec3ac4551bcce129bd697040ae6dd201a0cff50e9ceba8",
+  "builder_file": "scripts/update-growth-environment.py",
+  "builder_sha256": "f1cf8bfc42e4dd3c1ddb61f1c1c56f23fa77b508ff5a044a9d46b2ea8ac52eb9",
+  "merger_file": "scripts/merge-environment-patch.py",
+  "production_method": "Import reviewed environment; clip only affected architecture, add growth fixtures and named dynamic doors, merge geometry-only patch while preserving unrelated source bytes and all source materials/images. No Image-to-3D step claimed.",
+  "source_placement_count": 125,
+  "coverage_key_count": 133,
   "visual_review": {
+    "scope": "Actual final GLB reimported into Blender, 7 fixed Cycles inspection views. QA-only runtime water context is not exported. Upper walls/ceiling hidden in overview. Not game lighting or normal-input play.",
     "inspected_images": {
-      "overview.png": "a516d67eba5a19e2a76fb1c94dfcefef632187ff67e632dfb22c97d310967834",
-      "bath_low.png": "85451ce817d0c5735a639d4aa365f72e339f043213c9353f395f3df37973ca6e",
-      "reception_low.png": "4429af08a0d1f2af41e50659226862b68f4f23e2969bdf2ee55f35884750fd11",
-      "sauna_low.png": "86cc068c3e06b63a54864f3265bdd5d8bfe03af4fa516c147b8c17b30a94eabe",
-      "garden_low.png": "11e6ca5dcbfbea428d5f199ca63725857e9d00c844c4a5fa367d225eb02aa50b",
-      "pond_low.png": "cb970592a5970de0660fd5e45f044167eb84c0183ac7edc9ecc7d26f349d285c",
-      "washing_low.png": "0246913821809bb0342edf05780bd3a17d6aafbfbe6eedd487a8f0fc501263a3"
+      "street_open.png": "dd91fb87cd390cf15639f28da892ad9385d38ee74a550b28036e63be9cd6ea97",
+      "street_closed.png": "179d50d511b26c23e52d6834609037098923a6000a28e21fd53359c3d99d6a0e",
+      "kids_gate_closed.png": "64e3b2491617c2bd88f972ec0231aa4d7ca797d2db97597322a73b11579d13a6",
+      "child_passage.png": "78911b785767f5cd933c636c6b56f0f30f3c00b40a55b13275ed1947beb74889",
+      "growth_overview.png": "25027cca0ee44e7427c4669a2d21861d0cb63692f609ddaabb7d022ef2cc38ac",
+      "water_connection.png": "ce4783583eeb2cde411047591ce59dd0ed321160c2222fa24f6b3e1899f2bb19",
+      "street_outside.png": "d8e2e163872d102fc38bf4e892a4a580d33038a708e17c7b08ace62cbad747b8"
     },
-    "scope": "Actual candidate GLB reimported into Blender. Cycles 24 samples with inspection lights. Upper walls and ceilings hidden only in overview. Static water previews and the existing five stool/basin pairs are QA-only additions after export; they are not included in the world GLB. Fixed fixture preview water is h-0.025, matching the prepared runtime adaptation.",
     "resolved_findings": [
-      "Removed coplanar wall caps/skirting and cabinet face overlaps that rendered black.",
-      "Stopped mirror horizontal rails inside vertical frame pieces to remove black corner intersections.",
-      "Rejected periodic stone/grout micro-patterns that read as visible stripes.",
-      "Rejected pancake-like stacked low rocks; used rounded rock_smallH/I source geometry, modest local weathering and welded smooth normals.",
-      "Matched fixed fixture water below the hollow rim; main bath/channel/pond water heights unchanged.",
-      "Preserved complete NPC shape in overview; high NPC geometry remains under seven independent transform slots."
+      "Recessed floor and trimmed tub/wall geometry through the water connection.",
+      "East street boundary changed to spaced slats at the same collision footprint/height so the opened doorway reads as outdoors.",
+      "Thinner door leaves and wider central noren slit expose the high metal grips.",
+      "New threshold/poolEdge decor emitted explicitly; border geometry stays outside all duck-water rectangles.",
+      "Clipped duplicate/collinear polygon corners removed 22 triangles from the first draft; 16 pre-existing exact zero-area cedar triangles removed.",
+      "Cedar cleanup preserves all remaining positions/winding/UVs; Blender export rounds normals slightly on 216 triangles/441 corners, maximum component delta 0.0050001 (0.2865 degrees)."
     ],
-    "accepted_for_independent_review": "Coherent cream/teal ceramics, Hinoki wood, recessed tubs/channels, source-derived furniture, smooth stone silhouettes and preserved openings. Runtime lighting, LOD transitions and full game composition still require the root integration review."
+    "limitations": [
+      "Source enclosure surfaces are stylized and may expose dark cut edges near doorway seams.",
+      "East fence gaps are visual only; the existing solid outer-boundary collider is retained.",
+      "No normal-input play or game lighting review performed in this asset worktree."
+    ]
   },
   "geometry_checks": {
-    "architecture_triangles": 7996,
-    "near_npc_triangles": 12200,
-    "total_triangles": 20196,
-    "vertices": 26210,
-    "meshes": 33,
-    "materials": 17,
+    "architecture_triangles": 9907,
+    "npc_triangles": 12200,
+    "export_triangles": 22107,
+    "vertices": 35954,
+    "mesh_count": 52,
     "finite_vertices": true,
-    "degenerate_faces": 0,
-    "clearance_checks": 11,
-    "all_clearance_intersections_zero": true,
-    "clearance_scope": "Narrow hole Y 0.05-0.45; crowd gaps Y 0.05-1.75; seven door interiors Y 0.05-1.4 excluding the intentionally locked sauna-door group. Boundary contact allowed. This is a geometric clipping check, not gameplay verification.",
-    "manifold_claim": false,
-    "surface_note": "Architecture intentionally omits faces fully covered by other surfaces; recessed door/mirror faces use their existing carcasses for unseen thickness."
+    "degenerate_faces": 0
   },
-  "texture_checks": {
-    "embedded_images": 11,
-    "textures": 11,
-    "max_dimension": 2172,
-    "mural_size": [
-      2172,
-      724
-    ],
-    "mural_resized": false,
-    "all_used_blend_images_packed_relative_and_decoded": true,
-    "all_glb_images_embedded_and_decoded": true,
-    "observed_warning": "Image empty name not available; keeping packed image. All used packed images were subsequently reopened, decoded and checked finite/nonempty; all embedded GLB images were independently decoded after import. No missing texture was inferred from that warning."
-  },
+  "clearance_checks": 19,
+  "all_clearance_intersections_zero": true,
   "preserved_canonical_models": {
     "duck": "43d385d81d6f2e1f520972db33426ddaf64b33250ca89b9f50d33a14fa17b779",
     "hat_sauna_duck": "e6362a9bdffa39b987d30540dbc8bce061b6c867bdddee563ebd0a1bcba7bce6",
@@ -80,12 +54,10 @@
     "bath_stool": "1df13475185623882db1d63d99cc52f9ebff03cc40d62fb5136672a4f7515e55",
     "wash_basin": "29196b8bc4b62edec5f81a4831b183472f34f86cc2477ae1cd7653386be80111"
   },
+  "independent_review_scope": "Independent binary/index and cedar-cleanup review covered candidate be1efe3ccece3664092746410d082320a662d560f2ba411c167b6795375488e8. Final iteration adjusted only newly authored growth meshes (door leaves/grips, noren gap, street fence and decor); merger preservation assertions and exact-GLB reimport/clearance checks were rerun. Final door/gate images were also independently inspected; no second full binary review is claimed. Game implementation/review belongs to Kiro.",
   "not_performed": [
-    "Browser or actual Three.js world rendering",
-    "Normal-input play",
-    "Full application test suite",
-    "Public registry promotion",
-    "Commit or push"
-  ],
-  "provenance_detail": "See measurements.json public_geometry_uses and npc_slots; original public source files remain unchanged. The downloaded rounded_square_tiled_wall set is not used by this world."
+    "Browser/server/normal-input play",
+    "Full application test suite or build",
+    "Push/PR/deploy"
+  ]
 }

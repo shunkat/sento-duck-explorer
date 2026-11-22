@@ -1,7 +1,7 @@
 // 女湯 entrance and F8 (2026-11-20 user request; prototype-core-gameplay
-// Req 7.11–7.14). Real-input runs use the Sim driver; the carried-Duck and
-// free-Duck cases put characters in the lobby directly, because the normal
-// route never brings a free Duck onto the lobby floor.
+// Req 7.11–7.14). Real-input runs use the Sim driver along the growth route
+// (2026-11-21); the Child and Duck cases put the player in the lobby directly,
+// because the normal route never brings a Child or a Duck onto the lobby floor.
 import { describe, expect, it } from "vitest";
 import { createInitialState } from "../src/core/initialState";
 import { decideOutcome, pushesIntoWomensEntrance, WOMENS_ENTRY_MARGIN } from "../src/core/rules";
@@ -26,44 +26,31 @@ const front = (r: number, dist: number, z = MID_Z): Vec2 => ({ x: FACE + r + dis
 const lobbyDoorIn: Vec2 = { x: 4.8, z: -7.0 };
 const lobbyIn: Vec2 = { x: 2.0, z: MID_Z };
 
-/** Real input: both humans dress and go round the screen into reception (no payment). */
-function pairToReception(sim: Sim): void {
-  R.pairToChanging(sim);
-  R.pairToggleClothes(sim, W.lockerAisle);
-  sim.walk([W.screenPassage, W.screenWait]);
-  sim.switchTo("adult");
+/** Real input (growth route): grow into the Adult, dry, dress and go round the screen into reception. */
+function adultToReception(sim: Sim): void {
+  R.duckDrinksMilk1(sim);
+  R.childDrinksMilk2(sim);
+  R.adultDriesAndDresses(sim);
   sim.walk([W.lockerAisle, W.screenPassage, W.receptionDoorIn, W.receptionIn]);
-  expect(sim.state.adult.zone).toBe("reception");
-  expect(sim.state.child.zone).toBe("reception");
+  expect(sim.state.player.zone).toBe("reception");
 }
 
-/** Hold one direction until the game ends or `n` ticks pass; returns the min x reached by every body. */
+/** Hold one direction until the game ends or `n` ticks pass; returns the min x reached by the body. */
 function hold(sim: Sim, move: Vec2, n: number, run = false): number {
   let minX = Infinity;
   for (let i = 0; i < n && sim.state.outcome.kind === "playing"; i++) {
     sim.step({ move, run });
-    for (const id of ["adult", "child", "duck"] as const) minX = Math.min(minX, sim.state[id].pos.x - CHARACTER_RADIUS[id]);
+    minX = Math.min(minX, sim.state.player.pos.x - CHARACTER_RADIUS[sim.state.player.stage]);
   }
   return minX;
 }
 
-/** Direct state: the given human clothed and dry in the lobby at `pos`, optionally carrying Duck. */
-function inLobby(id: HumanId, pos: Vec2, carrying = false): GameState {
+/** Direct state: the player clothed and dry in the lobby at `pos` as `stage` (not reachable as Child by normal play). */
+function inLobby(stage: HumanId, pos: Vec2): GameState {
   const s = createInitialState(LEVEL);
-  for (const h of ["adult", "child"] as const) {
-    s[h].clothing = "clothed";
-    s[h].wet = "dry";
-  }
-  s[id].pos = pos;
-  s[id].zone = "common";
-  s.active = id;
-  if (carrying) {
-    s.duck.carriedBy = id;
-    s.duck.pos = { ...pos };
-    s.duck.zone = "common";
-    // Child carries before the hat, Adult after it (invariant).
-    if (id === "adult") s.items.hat = { owner: { kind: "character", id: "duck" }, status: "equipped" };
-  }
+  s.milk.milk1 = "collected";
+  if (stage === "adult") s.milk.milk2 = "collected";
+  Object.assign(s.player, { stage, pos, zone: "common", clothing: "clothed", wet: "dry", towel: "head" });
   return s;
 }
 
@@ -126,7 +113,7 @@ describe("women's entrance: geometry from LEVEL", () => {
       expect(blockers.some((w) => hits(eye, door, w)), `eye → doorway z=${z}`).toBe(false);
     }
     // The window is filled by a low counter: nobody walks from the lobby into the staff area.
-    const walls = wallsFor(LEVEL, "locked");
+    const walls = wallsFor(LEVEL, { kidsGate: "closed", frontExit: "closed" });
     const counter = LEVEL.fixtures.find((f) => f.kind === "desk" && f.box.minX < 4 && f.box.maxX > 4)!.box;
     for (const id of ["duck", "child", "adult"] as CharacterId[]) {
       const r = CHARACTER_RADIUS[id];
@@ -139,7 +126,7 @@ describe("women's entrance: geometry from LEVEL", () => {
   });
 
   it("no body gets past the step: every radius, lateral offset, angle and run speed", () => {
-    const walls = wallsFor(LEVEL, "locked");
+    const walls = wallsFor(LEVEL, { kidsGate: "closed", frontExit: "closed" });
     for (const id of ["duck", "child", "adult"] as CharacterId[]) {
       const r = CHARACTER_RADIUS[id];
       for (let z = E.doorway.minZ - 0.4; z <= E.doorway.maxZ + 0.4; z += 0.1) {
@@ -162,47 +149,44 @@ describe("women's entrance: geometry from LEVEL", () => {
 describe("women's entrance: F8 with real input", () => {
   it("Adult walking straight in is reprimanded (F8) at the step and never gets through", () => {
     const sim = new Sim();
-    pairToReception(sim);
+    adultToReception(sim);
     sim.walk([lobbyDoorIn, lobbyIn]);
-    expect(sim.state.adult.zone).toBe("common");
+    expect(sim.state.player.zone).toBe("common");
     const minX = hold(sim, IN, 200);
     expect(sim.state.outcome).toEqual({ kind: "gameOver", reason: "F8" });
     expect(minX).toBeGreaterThanOrEqual(FACE - 1e-6);
-    expect(sim.state.adult.zone).toBe("common");
+    expect(sim.state.player.zone).toBe("common");
 
     // Input is frozen until restart; restart returns to the checkpoint and the held key does not repeat F8.
-    const frozen = sim.state.adult.pos;
+    const frozen = sim.state.player.pos;
     sim.step({ move: IN });
-    expect(sim.state.adult.pos).toEqual(frozen);
+    expect(sim.state.player.pos).toEqual(frozen);
     sim.press("restart");
     expect(sim.state.outcome).toEqual({ kind: "playing" });
-    expect(sim.state.adult.zone).not.toBe("common");
+    expect(sim.state.player.zone).toBe("kids_room");
     hold(sim, IN, 120);
     expect(sim.state.outcome).toEqual({ kind: "playing" });
   });
 
-  it("Child walking in diagonally gets F8 too", () => {
-    const sim = new Sim();
-    pairToReception(sim);
-    sim.switchTo("child");
-    sim.walk([lobbyDoorIn, { x: 1.0, z: E.doorway.maxZ - 0.2 }]);
+  it("a Child walking in diagonally gets F8 too (direct state: the Child cannot reach the lobby by normal play)", () => {
+    const sim = simFrom(inLobby("child", { x: 1.0, z: E.doorway.maxZ - 0.2 }));
     hold(sim, { x: -Math.SQRT1_2, z: -Math.SQRT1_2 }, 200);
     expect(sim.state.outcome).toEqual({ kind: "gameOver", reason: "F8" });
-    expect(sim.state.child.pos.x - CHARACTER_RADIUS.child).toBeGreaterThanOrEqual(FACE - 1e-6);
+    expect(sim.state.player.pos.x - CHARACTER_RADIUS.child).toBeGreaterThanOrEqual(FACE - 1e-6);
   });
 
   it("Adult running in gets F8 and is stopped at the step", () => {
     const sim = new Sim();
-    pairToReception(sim);
+    adultToReception(sim);
     sim.walk([lobbyDoorIn, lobbyIn]);
     const minX = hold(sim, IN, 200, true);
     expect(sim.state.outcome).toEqual({ kind: "gameOver", reason: "F8" });
     expect(minX).toBeGreaterThanOrEqual(FACE - 1e-6);
   });
 
-  it("walking past, standing, leaving, switching and the inactive companion near it do not trigger F8", () => {
+  it("walking past, standing, leaving and pushing the wall beside it do not trigger F8", () => {
     const sim = new Sim();
-    pairToReception(sim);
+    adultToReception(sim);
     const a = CHARACTER_RADIUS.adult;
     sim.walk([lobbyDoorIn, front(a, 0.05, E.doorway.minZ - 0.4)]);
     // Parallel along the step face, through the whole doorway span and back.
@@ -210,12 +194,7 @@ describe("women's entrance: F8 with real input", () => {
     sim.idle(120); // standing at the step, looking at it (the camera is view only)
     sim.walk([{ x: 3.0, z: MID_Z }]); // moving away
     sim.walk([front(a, WOMENS_ENTRY_MARGIN + 0.1)]); // walking up to just outside the margin
-    // Child comes and stands near the step too; switching between them is not an attempt.
-    sim.switchTo("child");
-    sim.walk([lobbyDoorIn, front(CHARACTER_RADIUS.child, 0.6, E.doorway.minZ + 0.25)]);
-    for (let i = 0; i < 4; i++) sim.press("switchCharacter");
-    sim.switchTo("adult");
-    sim.walk([{ x: 3.0, z: MID_Z }, lobbyDoorIn]); // the active Adult leaves; nobody moves the Child in
+    sim.walk([{ x: 3.0, z: MID_Z }, lobbyDoorIn]);
     // Pushing the lobby wall beside the doorway (outside its span) is not an attempt.
     sim.walk([{ x: 1.0, z: E.doorway.minZ - 0.4 }]);
     hold(sim, IN, 60);
@@ -226,32 +205,13 @@ describe("women's entrance: F8 with real input", () => {
   });
 });
 
-describe("women's entrance: carried and free Duck (direct state)", () => {
-  it("Adult or Child carrying Duck gets the same F8; nobody and no Duck gets through", () => {
-    for (const id of ["adult", "child"] as const) {
-      const sim = simFrom(inLobby(id, front(CHARACTER_RADIUS[id], 0.4), true));
-      const minX = hold(sim, IN, 120);
-      expect(sim.state.outcome, id).toEqual({ kind: "gameOver", reason: "F8" });
-      expect(sim.state.duck.carriedBy).toBe(id);
-      expect(minX).toBeGreaterThanOrEqual(FACE - 1e-6);
-    }
-  });
-
-  it("active Duck while carried ignores its input and does not trigger anything", () => {
-    const sim = simFrom(inLobby("adult", front(CHARACTER_RADIUS.adult, 0.02), true));
-    sim.switchTo("duck");
-    const at = sim.state.duck.pos;
-    hold(sim, IN, 60);
-    expect(sim.state.duck.pos).toEqual(at);
-    expect(sim.state.outcome).toEqual({ kind: "playing" });
-  });
-
+describe("women's entrance: Duck stage (direct state)", () => {
   it("a free Duck at the step is blocked, gets the step hint, and never F8 or the reprimand", () => {
     // Tick directly: the Sim's water invariant rejects a free Duck on the floor.
     let s = createInitialState(LEVEL);
-    s.duck.pos = front(CHARACTER_RADIUS.duck, 0.05);
-    s.duck.zone = "common";
-    const start = s.duck.pos;
+    s.player.pos = front(CHARACTER_RADIUS.duck, 0.05);
+    s.player.zone = "common";
+    const start = s.player.pos;
     const prompts: string[] = [];
     for (let i = 0; i < 60; i++) {
       const r = tick(s, { ...EMPTY_INPUT, move: IN }, LEVEL);
@@ -259,9 +219,9 @@ describe("women's entrance: carried and free Duck (direct state)", () => {
       for (const e of r.events) if (e.kind === "prompt") prompts.push(e.text);
     }
     expect(s.outcome).toEqual({ kind: "playing" });
-    expect(s.duck.pos).toEqual(start);
+    expect(s.player.pos).toEqual(start);
     expect(prompts).toContain(MSG.duckStepTooHigh);
-    expect(pushesIntoWomensEntrance(LEVEL, s.duck.pos, CHARACTER_RADIUS.duck, { x: 1, z: 0 })).toBe(false);
+    expect(pushesIntoWomensEntrance(LEVEL, s.player.pos, CHARACTER_RADIUS.duck, { x: 1, z: 0 })).toBe(false);
   });
 });
 

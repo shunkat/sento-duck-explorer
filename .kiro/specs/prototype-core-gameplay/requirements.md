@@ -21,6 +21,8 @@ Scope note: this spec ends when the full route is playable with placeholder shap
 | Pond movement | Continuous movement from water current plus directional input. Pond physics advances only while Duck is the ActiveCharacter. |
 | Item transfers | Allowlist: Coin Duck → Adult, Key Adult → Child. The Hat moves only by Child's Equip action onto Duck. |
 
+> **Current direction (2026-11-21).** Requirement 11 (growth and exit) is the current play contract. It supersedes Requirement 1 (character switching), Requirement 3 (the 10-step route and the pond goal), Requirement 4 (payment route), Requirement 5 (item transfers) and Requirement 8 (pond navigation) as required progress, and replaces the four checkpoints of Requirement 10 with three. Requirements 2 (sizes), 6 (wet and clothing), 7 (F1–F8), 9 and the rest of 10 apply to the one player. The superseded text stays as the record of the earlier versions.
+
 ## Glossary
 
 - **Duck**: The rubber duck character. Navigates narrow holes and the secret pond. Not subject to human clothing or drying rules.
@@ -250,3 +252,21 @@ Scope note: this spec ends when the full route is playable with placeholder shap
 6. THE Game SHALL NOT produce a state where SaunaHat is equipped on Duck but Duck's view does not show the hat after a character switch or restart.
 7. THE Game SHALL save checkpoints at these moments *(Provisional)*: `start` at game start; `paidReturned` when the Coin is `paid` and Adult and Child have both crossed from the changing room back into the bath; `hatEquipped` when Child equips the SaunaHat on Duck; `duckInPond` at the end of the tick in which Adult places Duck in the SecretPond, only if Duck is in the pond, not carried, and Adult and Child are both inside the PondEntrance shore zone.
 8. WHEN the player restarts, THE Game SHALL restore the most recent checkpoint, including progress, item owners and statuses, positions, payment, door state, clothing, wetness, hat state, and CarriedBy, and SHALL place characters so that one idle tick after restore does not trigger a GameOverCondition.
+
+---
+
+### Requirement 11: Growth and exit (2026-11-21)
+
+**User Story:** As a player, I want to start as Duck, grow into Child and then Adult by taking milk bottles, and clear by leaving the sento, so that the bathhouse is explored step by step through one character. (User: 「アヒルと子供と大人を切り替えるのではなく最初はアヒル、子供、大人とだんだんキャラが成長していく形」「各ポイントの牛乳瓶を取って成長」「銭湯から出たらクリア」.)
+
+#### Acceptance Criteria
+
+1. THE Game SHALL have one player whose stage is Duck, Child or Adult, starting as Duck, with no manual switching, no inactive bodies, no transfers, no carrying and no reverse growth.
+2. WHEN the player presses E within reach of an available milk bottle with a clear line to it and in the stage that bottle needs (milk1: Duck, milk2: Child), THE Game SHALL mark that bottle collected and grow the player to the next stage in the same tick. Otherwise THE Game SHALL refuse with a hint and change nothing.
+3. Growth SHALL keep the position when the new collider fits there (else a safe growth spot), keep the facing, reset velocity, and set Duck → Child to wet, unclothed, towel on the head, while Child → Adult keeps wetness, clothing and towel. Growth SHALL NOT move the player again, trigger a GameOverCondition, or skip the checkpoint in that tick.
+4. Duck SHALL reach milk1 only by swimming on water connected to the tub. The milk1 landing SHALL fit Child and have a Child-sized exit; the milk2 space SHALL fit Adult and have an Adult-sized exit, so no growth traps the player.
+5. THE street door from the genkan to the outside SHALL open only by the Adult's E at its high handle; Duck and Child SHALL get a hint. THE Game SHALL clear only when the Adult player crosses that door line from the genkan to the street, and SHALL NOT clear anywhere else (including reception, the genkan and the pond). *(Updated 2026-11-22, review R-1: the clear line was the reception–genkan doorway.)* A GameOverCondition on the same tick SHALL win.
+6. THE Game SHALL save checkpoints at start, after Child growth and after Adult growth, and restoring SHALL bring back stage, collected bottles, safe position, wetness, clothing, towel, doors and the guardian together, without repeating a failure at once.
+7. A non-player guardian SHALL stand on safe dry spots near the Child's area and SHALL never enter water, the kids' corner or the women's entrance, and SHALL never block the player.
+8. THE HUD SHALL show the stage, the next objective and the E action, and SHALL NOT mention Tab, transfers or the pond goal. THE camera SHALL blend to the new stage's profile on growth.
+
