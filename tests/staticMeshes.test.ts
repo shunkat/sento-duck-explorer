@@ -11,11 +11,45 @@ vi.mock("three", async () => {
 
 beforeEach(() => {
   vi.stubGlobal("window", { devicePixelRatio: 1 });
-  vi.stubGlobal("document", { createElement: () => ({
-    getContext: () => ({ measureText: () => ({ width: 100 }), fillRect() {}, fillText() {} }),
-  }) });
+  vi.stubGlobal("document", { createElement: () => {
+    // Compare the actual texture drawing commands between the two constructed
+    // scenes, including style changes. Fresh CanvasTextures have different UUIDs.
+    const drawCommands: unknown[] = [];
+    const context = {
+      fillStyle: "", font: "", textAlign: "", textBaseline: "",
+      measureText: () => ({ width: 100 }),
+      fillRect(...args: number[]) { drawCommands.push(["rect", this.fillStyle, ...args]); },
+      fillText(...args: unknown[]) {
+        drawCommands.push(["text", this.fillStyle, this.font, this.textAlign, this.textBaseline, ...args]);
+      },
+    };
+    return { getContext: () => context, drawCommands };
+  } });
 });
 afterEach(() => { vi.restoreAllMocks(); vi.unstubAllGlobals(); });
+
+/** Stable texture content and sampling settings, rather than allocation UUIDs. */
+function materialContent(source: THREE.Material): unknown {
+  const meta: THREE.JSONMeta = { geometries: {}, materials: {}, textures: {}, images: {},
+    shapes: {}, skeletons: {}, animations: {}, nodes: {} };
+  const textures = new Map<string, unknown>();
+  for (const value of Object.values(source)) {
+    if (!(value instanceof THREE.Texture)) continue;
+    const image = value.image as { width: number; height: number; drawCommands?: unknown[] };
+    // These scenes use runtime-drawn sign textures. Fail if an unfamiliar image
+    // arrives so a new texture cannot be silently omitted from the comparison.
+    expect(image.drawCommands).toBeDefined();
+    const content = { width: image.width, height: image.height, drawing: image.drawCommands };
+    // Supply the recorded image content to Source.toJSON instead of asking a
+    // canvas stub to encode pixels. Keep every other texture sampling property.
+    meta.images[value.source.uuid] = { uuid: value.source.uuid, url: JSON.stringify(content) };
+    const { uuid: _uuid, image: _image, metadata: _metadata, ...settings } = value.toJSON(meta);
+    textures.set(value.uuid, { ...settings, image: content });
+  }
+  const { uuid: _uuid, metadata: _metadata, name: _name, ...material } = source.toJSON(meta);
+  return Object.fromEntries(Object.entries(material).map(([key, value]) =>
+    [key, typeof value === "string" && textures.has(value) ? textures.get(value) : value]));
+}
 
 /** Oriented triangles, world normals and UVs keyed by their actual material.
  * This compares surfaces, not just bounds/counts: dropped or moved faces fail. */
@@ -25,7 +59,7 @@ function surfaces(root: THREE.Object3D) {
   root.traverseVisible(object => {
     if (!(object instanceof THREE.Mesh)) return;
     if (Array.isArray(object.material)) throw new Error("Unexpected multi-material fixture");
-    const { uuid: _uuid, metadata: _metadata, name: _name, ...material } = object.material.toJSON();
+    const material = materialContent(object.material);
     const g = object.geometry;
     const position = g.getAttribute("position"), normal = g.getAttribute("normal"), uv = g.getAttribute("uv");
     const count = g.index?.count ?? position.count;

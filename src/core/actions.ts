@@ -103,6 +103,8 @@ interface Candidate {
   /** Short Japanese label for the HUD hint ("E: ..."). */
   label: (c: Ctx) => string;
   applies: (c: Ctx) => boolean;
+  /** A rejected interaction is feedback, not an available control hint. */
+  available?: (c: Ctx) => boolean;
   run: (c: Ctx) => void;
 }
 
@@ -120,6 +122,7 @@ const CANDIDATES: Candidate[] = [
         : `牛乳びん（${CHARACTER_NAME[MILK_STAGE[m].needs]}のときに飲める）`;
     },
     applies: ({ s, level }) => milkInReach(s, level) !== null,
+    available: ({ s, level }) => MILK_STAGE[milkInReach(s, level)!].needs === s.player.stage,
     run: (c) => {
       const m = milkInReach(c.s, c.level)!;
       if (MILK_STAGE[m].needs !== c.s.player.stage) {
@@ -154,6 +157,7 @@ const CANDIDATES: Candidate[] = [
       return d === "frontExit" ? "玄関の戸を開ける" : "高い掛け金を外して戸を開ける";
     },
     applies: ({ s, level }) => highDoorInReach(s, level) !== null,
+    available: ({ s }) => s.player.stage === "adult",
     run: ({ s, level, events }) => {
       const d = highDoorInReach(s, level)!;
       if (s.player.stage !== "adult") {
@@ -183,9 +187,10 @@ export function interact(c: Ctx): void {
 
 /** Label of the action `interact` would run now, for the HUD (no side effects). */
 export function interactHint(s: GameState, level: Level): string | null {
+  if (s.outcome.kind !== "playing") return null;
   const c: Ctx = { s, level, events: [], pending: [], grew: false };
   const cand = CANDIDATES.find((x) => x.applies(c));
-  return cand ? cand.label(c) : null;
+  return cand && (!cand.available || cand.available(c)) ? cand.label(c) : null;
 }
 
 export type { Ctx };

@@ -268,5 +268,18 @@ Scope note: this spec ends when the full route is playable with placeholder shap
 5. THE street door from the genkan to the outside SHALL open only by the Adult's E at its high handle; Duck and Child SHALL get a hint. THE Game SHALL clear only when the Adult player crosses that door line from the genkan to the street, and SHALL NOT clear anywhere else (including reception, the genkan and the pond). *(Updated 2026-11-22, review R-1: the clear line was the reception–genkan doorway.)* A GameOverCondition on the same tick SHALL win.
 6. THE Game SHALL save checkpoints at start, after Child growth and after Adult growth, and restoring SHALL bring back stage, collected bottles, safe position, wetness, clothing, towel, doors and the guardian together, without repeating a failure at once.
 7. A non-player guardian SHALL stand on safe dry spots near the Child's area and SHALL never enter water, the kids' corner or the women's entrance, and SHALL never block the player.
-8. THE HUD SHALL show the stage, the next objective and the E action, and SHALL NOT mention Tab, transfers or the pond goal. THE camera SHALL blend to the new stage's profile on growth.
+8. THE HUD SHALL show compact stage/progress and contextual controls according to Requirement 12, and SHALL NOT mention Tab, transfers or the pond goal. THE camera SHALL blend to the new stage's profile on growth. *(Updated 2026-11-22: the permanent next-objective walkthrough is removed.)*
 
+
+
+### Requirement 12: Contextual controls and physical notices (2026-11-22)
+
+**User request:** Reduce screen clutter, show operation help where that operation can be performed, allow help to be turned off, remove on-screen descriptions of places, and communicate drying/manners through realistic posters or notices.
+
+1. During play, THE Game SHALL remove permanent walkthrough text, the large control list and floating room/fixture/character/item descriptions. A compact stage/milk count MAY remain. On-demand map navigation is independent of operation help.
+2. WHEN operation help is enabled, THE Game SHALL show only controls applicable to the current stage, position, reach and state. The E hint SHALL use the same priority as the interaction itself. A too-high handle or wrong-stage bottle SHALL NOT advertise an actionable E key; explicit attempts retain rejection feedback.
+3. THE Game SHALL expose a keyboard- and pointer-operable settings control with a help toggle, default on. The choice SHALL apply immediately and persist across reloads when browser storage is available. Unavailable storage SHALL NOT prevent play or the in-session toggle.
+4. WHEN help is off, THE Game SHALL hide contextual control hints and instructional prompt events. World notices, game-over reasons, restart controls, clear feedback and growth feedback SHALL remain available. Help SHALL NOT change game rules, movement or checkpoints.
+5. Settings SHALL pause gameplay and isolate its input. Closing settings SHALL clear held/pending game input and return focus predictably without triggering E/Enter or restarting the game.
+6. Drying notices SHALL be mounted in the world on the bath side of the changing-room and sauna entrances, readable before crossing a failure threshold. Other world notices SHALL communicate towels out of bathwater, walking on slippery floors, dressing before entering common areas, quiet sauna use and not pushing. They SHALL use facility wording and visual symbols, not keyboard instructions, billboards or screen overlays.
+7. Existing F1–F8, growth, exit and recovery behavior SHALL remain intact. Validation follows verification-ownership.md: focused automated tests, one independent review, and outstanding visual/normal-input checks joined to the designated supervisor's final batch.

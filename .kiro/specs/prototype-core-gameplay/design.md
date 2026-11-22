@@ -659,3 +659,15 @@ Properties are tested by generating random sequences of `InputFrame`s (and rando
 - **Pond reachability test**: a scripted input sequence reaches `pond_goal` without leaving the pond bounds (Req 8.3).
 - **Manual check**: a short checklist for things tests cannot see: camera transition feel, shapes and colors distinguishable, HUD readable, labels visible.
 - Commands: `npx vitest --run` for all tests. The dev server (`npm run dev`) is started by the user in a terminal.
+
+
+## Contextual help and facility notices (2026-11-22, Codex)
+
+This user-requested presentation change supersedes earlier permanent HUD objectives and floating place/fixture descriptions. It does not change the growth route or F1–F8.
+
+- `core/actions.ts` keeps one E-priority list. Availability for a successful bottle/door action is checked on that selected candidate; a rejected candidate cannot fall through to a lower-priority towel hint.
+- `core/guide.ts` derives only current keys: E, held-towel Q in bathwater, V in the sauna, F within a sauna NPC's reach. Text describing rooms, wetness and the next route destination is removed from the playing HUD.
+- HUD keeps a compact stage/milk badge, contextual keys and transient outcome feedback. General movement/camera instructions live in settings. A persistent, fail-soft browser preference controls operation help without entering GameState or affecting checkpoints.
+- Settings isolate pointer/keyboard input and pause the simulation; opening/closing clears queued/held input. Failure/restart and clear/new-game overlays remain available with help disabled.
+- Fixed world boards have opaque textured faces, depth testing and ordinary perspective. Procedural Japanese text and drawn pictograms are original code artwork under the repository MIT license; no third-party raster or model asset is introduced. They stay outside environment placeholder groups so loaded GLBs do not replace them. Door-side placement and orientation are checked against the real architecture.
+- Ordinary controls are shown at their usable location rather than as a permanent walkthrough. Physical manners notices remain visible regardless of the help setting. Readability and approach visibility belong to the supervisor's combined final visual checks.

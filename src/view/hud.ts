@@ -1,18 +1,18 @@
-// Japanese HUD: status panel, objective, nearby keys, key help, toasts,
-// game-over and clear screens. Growth and exit (2026-11-21).
-import { nearbyHints, objective } from "../core/guide";
+// Compact contextual HUD. General controls live in the settings dialog;
+// facility guidance belongs to the world posters.
+import { nearbyHints } from "../core/guide";
 import { CHECKPOINT_NAME, MSG, VIOLATION_TEXT } from "../core/text";
 import type { GameEvent, GameState } from "../core/types";
 import type { Level } from "../level/layout";
 import { statusLines } from "./deriveView";
+import { HelpSettings } from "./helpSettings";
 
 export const KEY_HELP = [
-  "WASD / 矢印：移動（カメラの向き基準）　Shift：走る",
+  "WASD / 矢印：移動（カメラの向き基準）",
   "J / L・マウスドラッグ：視点を左右に回す",
-  "E / Enter：その場でできること（牛乳びんを飲む・体を拭く・服・高い取っ手の戸・タオルを頭へ）",
-  "体を拭く：浴室の出口かサウナの扉の前でE　服：ロッカーの前でE",
+  "E / Enter：近くのものを使う",
+  "Shift：走る（子ども・大人）",
   "C：全体マップ視点の切替",
-  "マナー違反の行動（試すとゲームオーバー）：Q 手のタオルを湯船へ／V 大声／F 押す",
 ];
 
 const TOAST_SECONDS = 2.5;
@@ -36,32 +36,91 @@ export function toastFor(e: GameEvent): string | null {
 
 export class Hud {
   private status: HTMLElement;
-  private goal: HTMLElement;
   private hints: HTMLElement;
   private toast: HTMLElement;
   private overlay: HTMLElement;
   private devWarn: HTMLElement;
   private toastUntil = 0;
   private lastKey = "";
+  private settings: HelpSettings;
+  private settingsButton: HTMLButtonElement;
+  private settingsDialog: HTMLDialogElement;
+  private helpCheckbox: HTMLInputElement;
+  private settingsOpen = false;
+  private toastIsPrompt = false;
 
-  constructor(root: HTMLElement) {
+  constructor(root: HTMLElement, onSettingsChange: () => void = () => {}, settings = new HelpSettings()) {
+    this.settings = settings;
     root.innerHTML = "";
     this.status = el("div", "hud-status", root);
-    const guide = el("div", "hud-guide", root);
-    this.goal = el("div", "hud-goal", guide);
-    this.hints = el("div", "hud-hints", guide);
-    const keys = el("div", "hud-keys", root);
-    keys.textContent = KEY_HELP.join("\n");
+    this.hints = el("div", "hud-hints", root);
     this.toast = el("div", "hud-toast", root);
+    this.toast.setAttribute("role", "status");
     this.overlay = el("div", "hud-overlay", root);
     this.devWarn = el("div", "hud-dev", root);
+
+    this.settingsButton = el("button", "hud-settings-button", root);
+    this.settingsButton.type = "button";
+    this.settingsButton.textContent = "設定";
+    this.settingsButton.setAttribute("aria-haspopup", "dialog");
+    this.settingsButton.setAttribute("aria-expanded", "false");
+    this.settingsButton.setAttribute("aria-controls", "game-settings");
+    this.settingsDialog = el("dialog", "hud-settings-dialog", root);
+    this.settingsDialog.id = "game-settings";
+    this.settingsDialog.setAttribute("aria-labelledby", "game-settings-title");
+    const title = el("h2", "", this.settingsDialog);
+    title.id = "game-settings-title";
+    title.textContent = "設定";
+    const label = el("label", "hud-help-toggle", this.settingsDialog);
+    this.helpCheckbox = el("input", "", label);
+    this.helpCheckbox.type = "checkbox";
+    this.helpCheckbox.checked = this.settings.enabled;
+    el("span", "", label).textContent = "操作ヘルプを表示";
+    const controls = el("details", "hud-controls", this.settingsDialog);
+    el("summary", "", controls).textContent = "基本操作";
+    el("p", "", controls).textContent = KEY_HELP.join("\n");
+    const close = el("button", "hud-settings-close", this.settingsDialog);
+    close.type = "button";
+    close.textContent = "探検に戻る";
+
+    const changed = (open: boolean) => {
+      if (this.settingsOpen === open) return;
+      this.settingsOpen = open;
+      this.settingsButton.setAttribute("aria-expanded", String(open));
+      this.hints.hidden = open || !this.settings.enabled;
+      onSettingsChange();
+    };
+    this.settingsButton.addEventListener("click", () => {
+      this.settingsDialog.showModal();
+      changed(true);
+      this.helpCheckbox.focus();
+    });
+    close.addEventListener("click", () => this.settingsDialog.close());
+    // Native dialog cancel handles Escape and its modal focus trap.
+    this.settingsDialog.addEventListener("close", () => {
+      changed(false);
+      this.settingsButton.focus();
+    });
+    this.helpCheckbox.addEventListener("change", () => {
+      this.settings.setEnabled(this.helpCheckbox.checked);
+      this.hints.hidden = !this.settings.enabled || this.settingsOpen;
+      if (!this.settings.enabled && this.toastIsPrompt) {
+        this.toastUntil = 0;
+        this.toast.style.opacity = "0";
+        this.toast.textContent = "";
+      }
+    });
   }
+
+  get isSettingsOpen(): boolean { return this.settingsOpen; }
 
   /** Show growth, rejected actions and prompts briefly. */
   onEvents(events: readonly GameEvent[], now: number): void {
     for (const e of events) {
+      if (e.kind === "prompt" && !this.settings.enabled) continue;
       const text = toastFor(e);
       if (text) {
+        this.toastIsPrompt = e.kind === "prompt";
         this.toast.textContent = text;
         this.toastUntil = now + TOAST_SECONDS;
       }
@@ -72,11 +131,11 @@ export class Hud {
     this.devWarn.textContent = lines.length ? `開発用チェック：${lines.join(" / ")}` : "";
   }
 
-  update(s: GameState, level: Level, now: number, overview: boolean): void {
-    this.status.textContent = statusLines(s).join("\n");
-    this.goal.textContent = `目的：${objective(s)}`;
-    const hints = nearbyHints(s, level);
-    this.hints.textContent = (overview ? ["（全体マップ視点：Cで戻る）", ...hints] : hints).join("\n");
+  update(s: GameState, level: Level, now: number, overview = false): void {
+    this.status.textContent = statusLines(s).join(" · ");
+    const showHelp = this.settings.enabled && !this.settingsOpen && s.outcome.kind === "playing";
+    this.hints.textContent = showHelp ? (overview ? ["C: 探検に戻る"] : nearbyHints(s, level)).join("\n") : "";
+    this.hints.hidden = !this.hints.textContent;
     this.toast.style.opacity = now < this.toastUntil ? "1" : "0";
     this.renderOverlay(s);
   }

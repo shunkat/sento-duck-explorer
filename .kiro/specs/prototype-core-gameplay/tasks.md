@@ -145,3 +145,11 @@ Integrated validation: 219 tests passed across 16 files; the production build pa
   - [x] 16.7 Environment re-export (asset side, growth_v02, 9,907 architecture triangles) integrated in the loader (door contract), layout hash matching; then one full suite, tsc, build and source + dist scans; then one combined B review
   - [ ] 16.8 Final normal-input check (Codex), after B's review
 
+
+
+- [ ] 17. Contextual help and physical notices (2026-11-22 user request; Codex implementation)
+  - [x] 17.1 Record Req 12 and presentation design; supersede permanent objective/label requirements
+  - [x] 17.2 Contextual control availability, compact HUD, persistent help setting and isolated settings input
+  - [x] 17.3 Fixed facility notices and removal of descriptive floating labels
+  - [x] 17.4 Focused regressions, full automated checks/build, independent review and publication checks
+  - [ ] 17.5 Final normal-input/visual check in the designated supervisor's combined verification batch (not duplicated by this session)

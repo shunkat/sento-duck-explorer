@@ -16,27 +16,42 @@ const app = document.getElementById("app")!;
 const hudRoot = document.getElementById("hud")!;
 
 const scene = new GameScene(app, LEVEL);
-const hud = new Hud(hudRoot);
+const hud = new Hud(hudRoot, () => {
+  kb.blur();
+  endDrag();
+  camera.setMoveHeld(false);
+  accumulator = 0;
+  last = performance.now();
+});
 const camera = new FollowCamera();
 const facing = new FacingTracker();
 const kb = new KeyboardState();
-attachKeyboard(kb);
+attachKeyboard(kb, window, () => !hud.isSettingsOpen);
 
 // Mouse drag turns the view (view only).
 let dragX: number | null = null;
+let dragPointer: number | null = null;
 const canvas = scene.renderer.domElement;
 canvas.addEventListener("pointerdown", (e) => {
+  if (hud.isSettingsOpen) return;
   dragX = e.clientX;
+  dragPointer = e.pointerId;
   canvas.setPointerCapture(e.pointerId);
 });
 canvas.addEventListener("pointermove", (e) => {
-  if (dragX === null) return;
+  if (dragX === null || hud.isSettingsOpen) return;
   camera.orbit((e.clientX - dragX) * ORBIT_DRAG_RATE);
   dragX = e.clientX;
 });
-const endDrag = () => (dragX = null);
+const endDrag = () => {
+  if (dragPointer !== null && canvas.hasPointerCapture(dragPointer)) canvas.releasePointerCapture(dragPointer);
+  dragX = null;
+  dragPointer = null;
+};
 canvas.addEventListener("pointerup", endDrag);
 canvas.addEventListener("pointercancel", endDrag);
+canvas.addEventListener("lostpointercapture", endDrag);
+window.addEventListener("blur", endDrag);
 
 // Final models, when any are listed. A failure keeps the primitive.
 const charEntries = Object.entries(CHARACTER_MODEL_URLS) as [CharacterId, string][];
@@ -84,6 +99,10 @@ function frame(nowMs: number): void {
   const now = nowMs / 1000;
   const dt = Math.min(frameSeconds, 0.1);
 
+  if (hud.isSettingsOpen) {
+    accumulator = 0;
+    return;
+  }
   if (kb.takeOverview()) camera.toggleOverview();
   camera.orbit(kb.orbit() * ORBIT_KEY_RATE * dt);
   camera.setMoveHeld(kb.moveHeld());

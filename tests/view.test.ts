@@ -1,6 +1,6 @@
 // View, HUD and camera for the one growing player (2026-11-21).
 import { describe, expect, it } from "vitest";
-import { nearbyHints, objective } from "../src/core/guide";
+import { nearbyHints } from "../src/core/guide";
 import { DT } from "../src/core/tuning";
 import type { GameState } from "../src/core/types";
 import { KeyboardState } from "../src/input/keyboard";
@@ -17,9 +17,8 @@ const W = LEVEL.waypoints;
 const STALE = /Tab|切り替|渡す|500円|鍵|帽子|ハット|池の奥|ゴール|抱え/;
 
 describe("view and guide along the full route", () => {
-  it("one visible body at the player, objective/hints/status consistent at every step, no old-route wording", () => {
+  it("one visible body at the player, contextual hints and compact status throughout the route", () => {
     const sim = new Sim();
-    const seen: string[] = [];
     const check = () => {
       const s = sim.state;
       const v = deriveView(s, LEVEL);
@@ -31,11 +30,8 @@ describe("view and guide along the full route", () => {
       expect(v.active).toBe(s.player.stage);
       expect(v.focus.y).toBe(v.characters[s.player.stage].pos.y);
       for (const m of ["milk1", "milk2"] as const) expect(v.milk[m].visible).toBe(s.milk[m] === "available");
-      const o = objective(s);
-      expect(o).not.toMatch(STALE);
       for (const h of nearbyHints(s, LEVEL)) expect(h).not.toMatch(STALE);
       for (const l of statusLines(s)) expect(l).not.toMatch(STALE);
-      if (seen[seen.length - 1] !== o) seen.push(o);
     };
     const origStep = sim.step.bind(sim);
     sim.step = (input) => {
@@ -44,30 +40,28 @@ describe("view and guide along the full route", () => {
       return ev;
     };
     check();
-    expect(objective(sim.state)).toContain("牛乳びん");
     R.fullRoute(sim);
-    expect(objective(sim.state)).toContain("クリア");
-    expect(seen.length).toBeGreaterThanOrEqual(6);
+    expect(nearbyHints(sim.state, LEVEL)).toEqual([]);
   });
 
   it("the HUD shows the stage, the bottle count and the E action", () => {
     const sim = new Sim();
     expect(statusLines(sim.state)[0]).toContain("アヒル");
-    expect(statusLines(sim.state)).toContain("牛乳びん：0 / 2 本");
+    expect(statusLines(sim.state)).toEqual(["アヒル · 牛乳 0/2"]);
     sim.walk([W.tubWestDeep, W.troughGap, W.poolIn, W.milk1Swim]);
     expect(nearbyHints(sim.state, LEVEL)).toContain("E: 牛乳びんを飲む（子どもに育つ）");
     sim.press("interact");
     expect(statusLines(sim.state)[0]).toContain("子ども");
-    expect(statusLines(sim.state)).toContain("牛乳びん：1 / 2 本");
+    expect(statusLines(sim.state)).toEqual(["子ども · 牛乳 1/2"]);
     expect(toastFor({ kind: "grew", milk: "milk1", from: "duck", to: "child" })).toBe("牛乳を飲んで子どもに育った！");
     for (const line of KEY_HELP) expect(line).not.toMatch(/Tab|渡す|Esc/);
   });
 
-  it("near a high handle, a Child is told it cannot reach; the Adult is offered to open it", () => {
+  it("near a high handle, only the Adult is offered the available open action", () => {
     const sim = new Sim();
     R.duckDrinksMilk1(sim);
     sim.walk([W.passageSouth, W.passageNorth, { x: 0.9, z: 3.4 }]);
-    expect(nearbyHints(sim.state, LEVEL)).toContain("E: 取っ手が高くて届かない");
+    expect(nearbyHints(sim.state, LEVEL)).toEqual([]);
     sim.walk([W.milk2Stand]);
     sim.press("interact");
     sim.walk([W.gateIn]);

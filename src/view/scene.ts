@@ -1,7 +1,6 @@
 // Static level and fallback primitives, with pipeline-produced character/item
 // models following the view each frame. Gameplay state remains in core.
 import * as THREE from "three";
-import { CHARACTER_NAME, ZONE_NAME } from "../core/text";
 import type { CharacterId, HighDoorId, HumanId, MilkId } from "../core/types";
 import { CHARACTER_RADIUS, type DecorKind, type FixtureKind, GROWTH_DECOR_KINDS, GROWTH_FIXTURE_KINDS, isStreetFixture, type Level } from "../level/layout";
 import type { AABB } from "../sim/geometry";
@@ -17,21 +16,7 @@ import { batchOpaqueMeshes } from "./staticMeshes";
 import { applyOutfit, checkHumanContract, type Clothing, TOWEL_DEPTH, TOWEL_THICKNESS, TOWEL_WIDTH, headAnchor, towelPose } from "./humanModel";
 import { bindHumanMotion, type HumanMotion } from "./humanMotion";
 import { CEILING_Y, type FacingTracker, HOLE_LID_Y, bodyOpacity, modelRotationY, WALL_HEIGHT } from "./shoulder";
-import {
-  CHARACTER_LABEL_GAP,
-  LABEL_CANVAS_H,
-  MILK_LABEL_Y,
-  LABEL_CENTER_Y,
-  LABEL_HIDE_DISTANCE,
-  LABEL_PRIORITY,
-  LABEL_TEXT_PX,
-  type LabelKind,
-  type ScreenRect,
-  declutter,
-  labelPixelHeight,
-  labelWorldHeight,
-  zoneLabelAnchor,
-} from "./labels";
+import { createSentoSigns } from "./signs";
 
 const ZONE_COLORS: Record<string, number> = {
   bath: 0x6fa8dc, bathwater: 0x2f6fb3, splash: 0x9fc5e8, narrow_hole: 0x8e7cc3,
@@ -40,9 +25,6 @@ const ZONE_COLORS: Record<string, number> = {
   pond_entrance: 0x6aa84f, pond: 0x2f7f8f,
   kids_pool: 0x7fb7e0, kids_passage: 0x9fc5e8, kids_room: 0xb7d7f0,
 };
-/** Rooms on the clear route: their names rank with fixtures, above other rooms (review N-5). */
-const ROUTE_ZONES = new Set(["reception", "changing", "bath", "kids_pool", "kids_passage", "kids_room", "genkan", "street"]);
-
 /** Zones with a ceiling in the shoulder view (hidden in the overview). */
 const INDOOR = new Set(["reception", "common", "genkan", "changing", "bath", "sauna_entry", "sauna_crowd"]);
 
@@ -66,40 +48,6 @@ const GROWTH_CUE_SECONDS = 0.6;
 
 const CHAR_COLORS: Record<CharacterId, number> = { duck: 0xffe033, child: 0x3fa0ff, adult: 0x3fc76a };
 
-interface Label {
-  sprite: THREE.Sprite;
-  kind: LabelKind;
-  /** Width / height of the label texture. */
-  aspect: number;
-  /** Hidden while this character is active (the ring already marks it). */
-  owner?: CharacterId;
-  /** Milk labels: hidden once the bottle is collected. */
-  milk?: MilkId;
-  /** Overrides the kind's priority (route rooms rank with fixtures, review N-5). */
-  priority?: number;
-}
-
-function makeLabelSprite(text: string, color: string): { sprite: THREE.Sprite; aspect: number } {
-  const canvas = document.createElement("canvas");
-  const ctx = canvas.getContext("2d")!;
-  const font = `bold ${LABEL_TEXT_PX}px system-ui, "Hiragino Sans", sans-serif`;
-  ctx.font = font;
-  const w = Math.ceil(ctx.measureText(text).width) + 24;
-  canvas.width = w;
-  canvas.height = LABEL_CANVAS_H;
-  ctx.font = font;
-  ctx.fillStyle = "rgba(0,0,0,0.55)";
-  ctx.fillRect(0, 0, w, LABEL_CANVAS_H);
-  ctx.fillStyle = color;
-  ctx.textBaseline = "middle";
-  ctx.fillText(text, 12, LABEL_CANVAS_H / 2 + 2);
-  const tex = new THREE.CanvasTexture(canvas);
-  tex.colorSpace = THREE.SRGBColorSpace;
-  const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, depthTest: false, transparent: true }));
-  sprite.renderOrder = 10;
-  return { sprite, aspect: w / LABEL_CANVAS_H };
-}
-
 /** Transform of `o` in the space of its ancestor `root` (world matrices brought up to date). */
 function relativeMatrix(o: THREE.Object3D, root: THREE.Object3D): THREE.Matrix4 {
   root.updateWorldMatrix(true, true);
@@ -117,7 +65,7 @@ function boxMesh(b: AABB, height: number, y0: number, color: number, opacity = 1
 
 const originalFadeSinglePass = new WeakMap<THREE.Material, boolean>();
 
-/** Fade model meshes, keeping labels opaque; rebuild the shader at the opaque boundary. */
+/** Fade model meshes; rebuild the shader at the opaque boundary. */
 export function setBodyOpacity(root: THREE.Object3D, opacity: number): void {
   root.traverse((o) => {
     if (!(o instanceof THREE.Mesh)) return;
@@ -165,7 +113,7 @@ export class GameScene {
   /** Growth-route primitives (partitions, storage, curb, doors); hidden when the export draws them. */
   private growthFallback = new THREE.Group();
   private growthCueUntil = -Infinity;
-  private labels: Label[] = [];
+  private signs = new THREE.Group();
   /** Full-height walls, cut down in the overview. */
   /** Meshes cut down to OVERVIEW_WALL_HEIGHT in the overview, with their own full height. */
   private tallWalls: { mesh: THREE.Mesh; height: number }[] = [];
@@ -183,69 +131,7 @@ export class GameScene {
   private humanMotion: Partial<Record<HumanId, HumanMotion>> = {};
   /** Last ClothingState seen per human (the game starts in the bath). */
   private clothing: Record<"child" | "adult", Clothing> = { child: "unclothed", adult: "unclothed" };
-  private viewportHeight = 1;
-  private viewportWidth = 1;
   private tmp = new THREE.Vector3();
-
-  private label(text: string, kind: LabelKind, color = "#fff", owner?: CharacterId): THREE.Sprite {
-    const { sprite, aspect } = makeLabelSprite(text, color);
-    sprite.center.set(0.5, LABEL_CENTER_Y[kind]);
-    // Room and fixture names stay behind walls in the shoulder view.
-    if (kind === "zone" || kind === "fixture") sprite.material.depthTest = true;
-    this.labels.push({ sprite, kind, aspect, owner });
-    return sprite;
-  }
-
-  /**
-   * Keep every label within a readable on-screen size (12–22 px text), then
-   * hide labels that would overlap one with higher priority: the controlled
-   * character, key items, other characters, fixtures, rooms (review D-4).
-   * The controlled character's own label shows only in the overview (the ring
-   * marks it in the shoulder view).
-   */
-  private sizeLabels(active: CharacterId, overview: boolean, milk: View["milk"]): void {
-    const camPos = this.camera.position;
-    const cand: { l: Label; rect: ScreenRect }[] = [];
-    for (const l of this.labels) {
-      l.sprite.getWorldPosition(this.tmp);
-      const dist = this.tmp.distanceTo(camPos);
-      const own = l.owner === active;
-      const gone = (l.milk !== undefined && !milk[l.milk].visible) || (l.owner !== undefined && !this.chars[l.owner].visible);
-      const hidden = (own && !overview) || gone || dist < LABEL_HIDE_DISTANCE;
-      l.sprite.visible = !hidden;
-      if (hidden) continue;
-      const textPx = labelPixelHeight(l.kind, dist);
-      const hPx = (textPx * LABEL_CANVAS_H) / LABEL_TEXT_PX;
-      const h = labelWorldHeight(hPx, this.tmp, this.camera, this.viewportHeight);
-      if (h === null) {
-        l.sprite.visible = false;
-        continue;
-      }
-      l.sprite.scale.set(h * l.aspect, h, 1);
-      const ndc = this.tmp.project(this.camera);
-      const px = ((ndc.x + 1) / 2) * this.viewportWidth;
-      const py = ((1 - ndc.y) / 2) * this.viewportHeight;
-      const wPx = hPx * l.aspect;
-      const top = py - (1 - LABEL_CENTER_Y[l.kind]) * hPx;
-      const priority = own ? LABEL_PRIORITY.active : (l.priority ?? LABEL_PRIORITY[l.kind]);
-      cand.push({ l, rect: { x0: px - wPx / 2, y0: top, x1: px + wPx / 2, y1: top + hPx, priority } });
-    }
-    const keep = declutter(cand.map((c) => c.rect));
-    cand.forEach((c, i) => {
-      const k = keep[i]!;
-      c.l.sprite.visible = k.show;
-      // Sprite center is in label units (0 = bottom at the anchor): lowering it moves the label up.
-      const hPx = c.rect.y1 - c.rect.y0;
-      c.l.sprite.center.y = LABEL_CENTER_Y[c.l.kind] + k.dy / hPx;
-    });
-  }
-
-  /** A fixture-kind label above the center of `b`. */
-  private fixtureLabel(text: string, b: AABB, y: number, color = "#fff"): void {
-    const l = this.label(text, "fixture", color);
-    l.position.set((b.minX + b.maxX) / 2, y, (b.minZ + b.maxZ) / 2);
-    this.scene.add(l);
-  }
 
   constructor(container: HTMLElement, level: Level) {
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -261,8 +147,11 @@ export class GameScene {
     this.environmentFallback.name = "environment_fallback";
     this.scene.add(this.environmentFallback);
     const staticSurfaces: THREE.Mesh[] = [];
+    // Real wall notices are independent of the optional control help.
+    this.signs = createSentoSigns(level);
+    this.scene.add(this.signs);
 
-    // Floors per zone, with name labels.
+    // Floors keep their materials; places are identified by the architecture and signs.
     for (const z of [...level.zones].reverse()) {
       const sub = z.id === "bathwater" || z.id === "splash" || z.id === "narrow_hole";
       // Water and state overlays remain independent from the authored solid floors.
@@ -273,11 +162,6 @@ export class GameScene {
       // Splash/goal overlays retain their existing semantic colors and alpha.
       surfaceParent.add(boxMesh(z.box, 0.02, sub ? 0.012 : 0, ZONE_COLORS[z.id] ?? 0xffffff, opacity,
         water ? this.waterAppearance.material(water, opacity) : undefined));
-      const label = this.label(ZONE_NAME[z.id], "zone");
-      if (ROUTE_ZONES.has(z.id)) this.labels[this.labels.length - 1]!.priority = LABEL_PRIORITY.fixture;
-      const at = zoneLabelAnchor(z.id, z.box);
-      label.position.set(at.x, at.y, at.z);
-      this.scene.add(label);
     }
     const hole = level.narrowHole.box;
     // Water surfaces from the same data Duck swims on (the tub is drawn by its zone).
@@ -316,7 +200,6 @@ export class GameScene {
         this.scene.add(surface);
         this.fixtureWater.push({ mesh: surface, rimHeight: f.height });
       }
-      if (f.label) this.fixtureLabel(f.label, f.box, f.height + 0.35);
       // Receptionist (provisional): the fixture box is the body; add a head.
       if (f.kind === "staff") {
         const hx = (f.box.maxX - f.box.minX) / 4;
@@ -331,7 +214,6 @@ export class GameScene {
       else if (d.kind === "mirror") this.environmentFallback.add(dm);
       else staticSurfaces.push(dm);
       if (d.kind === "bucket") this.environmentModels.register("wash_basin", dm, d.box, d.y0, d.height);
-      if (d.label) this.fixtureLabel(d.label, d.box, d.y0 + d.height + 0.3);
     }
     // NarrowHole alcove: lid over the corridor and the wall part above the opening.
     const lid = boxMesh({ minX: hole.minX - 0.2, minZ: hole.minZ - 0.2, maxX: hole.maxX, maxZ: hole.maxZ + 0.2 }, 0.05, HOLE_LID_Y, 0xd8d0e8);
@@ -351,10 +233,6 @@ export class GameScene {
       staticSurfaces.push(boxMesh(n, 0.45, 0, 0x8a5a32));
       staticSurfaces.push(boxMesh({ minX: n.minX + 0.1, minZ: n.minZ + 0.05, maxX: n.maxX - 0.1, maxZ: n.maxZ - 0.05 }, 0.75, 0.45, 0xc27ba0));
     }
-    if (level.npcs.length > 0) {
-      const b = level.npcs.reduce((u, n) => ({ minX: Math.min(u.minX, n.minX), minZ: Math.min(u.minZ, n.minZ), maxX: Math.max(u.maxX, n.maxX), maxZ: Math.max(u.maxZ, n.maxZ) }));
-      this.fixtureLabel("座っている人たち（押さない）", b, 1.6, "#ffd");
-    }
 
     // High-handle doors (provisional shapes, always drawn over the authored world while closed).
     for (const id of ["kidsGate", "frontExit"] as const) {
@@ -367,7 +245,6 @@ export class GameScene {
       g.add(handle);
       this.growthFallback.add(g);
       this.highDoors[id] = g;
-      this.fixtureLabel(d.label, d.blocker, leafH + 0.3, "#fda");
     }
 
     this.growthFallback.name = "growth_fallback";
@@ -378,9 +255,6 @@ export class GameScene {
       new THREE.MeshStandardMaterial({ color: 0x8e6fd8 }));
     this.guardian.add(gBody);
     this.guardianCapsule = gBody;
-    const gLabel = this.label("見守りの大人", "character", "#e8dcff");
-    gLabel.position.set(0, BODY_HEIGHT.adult / 2 + CHARACTER_LABEL_GAP, 0);
-    this.guardian.add(gLabel);
     this.scene.add(this.guardian);
     for (const soap of level.soaps) {
       const m = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.08, 0.18), new THREE.MeshStandardMaterial({ color: 0xffffff }));
@@ -388,7 +262,6 @@ export class GameScene {
       this.scene.add(m);
       this.environmentModels.register("soap", m, { minX: soap.pos.x - 0.15, maxX: soap.pos.x + 0.15,
         minZ: soap.pos.z - 0.09, maxZ: soap.pos.z + 0.09 }, 0.01, 0.08);
-      this.fixtureLabel("石鹸（走らない）", { minX: soap.pos.x, maxX: soap.pos.x, minZ: soap.pos.z, maxZ: soap.pos.z }, 0.5);
     }
     this.environmentFallback.add(...batchOpaqueMeshes(staticSurfaces));
 
@@ -428,9 +301,6 @@ export class GameScene {
         g.add(towel);
         this.towels[id] = towel;
       }
-      const label = this.label(CHARACTER_NAME[id], "character", "#fff", id);
-      label.position.set(0, BODY_HEIGHT[id] / 2 + CHARACTER_LABEL_GAP, 0);
-      g.add(label);
       this.scene.add(g);
       this.chars[id] = g;
 
@@ -453,10 +323,6 @@ export class GameScene {
       cap.position.y = 0.18;
       g.add(bottle, cap);
       g.name = "milk_bottle_provisional";
-      const l = this.label("牛乳びん", "item", "#ffe");
-      this.labels[this.labels.length - 1]!.milk = id;
-      l.position.set(0, MILK_LABEL_Y, 0);
-      g.add(l);
       this.scene.add(g);
       this.items[id] = g;
     }
@@ -556,10 +422,6 @@ export class GameScene {
     root.position.set(0, -centerToBottom, 0);
     this.chars[id].add(root);
     this.models[id] = root;
-    // Name label at the model's socket_label, if it has one (final-assets sockets).
-    const sl = root.getObjectByName("socket_label");
-    const label = this.chars[id].children.find((o) => o instanceof THREE.Sprite);
-    if (sl && label) label.position.setFromMatrixPosition(relativeMatrix(sl, this.chars[id]));
     if (id !== "duck") {
       // Towel anchors from the model: top of the bounds (head) and socket_hand_r, in group space.
       root.updateMatrix();
@@ -613,14 +475,12 @@ export class GameScene {
       mesh.position.y = h / 2;
     }
     for (const r of this.roofs) r.visible = !on;
-    // Overview: cut walls must not chop room names; shoulder view: names stay behind walls.
-    for (const l of this.labels) if (l.kind === "zone" || l.kind === "fixture") l.sprite.material.depthTest = !on;
+    // These signs are mounted on upper walls, which are cut away in the overview.
+    this.signs.visible = !on;
   }
 
   resize(w: number, h: number): void {
     this.renderer.setSize(w, h);
-    this.viewportHeight = h;
-    this.viewportWidth = w;
     this.camera.aspect = w / h;
     this.camera.updateProjectionMatrix();
   }
@@ -659,9 +519,6 @@ export class GameScene {
           this.towels[id].position.set(t.x, t.y, t.z);
           this.towels[id].rotation.set(t.rotX, 0, 0);
         }
-        const labelSocket = this.models[id]?.getObjectByName("socket_label");
-        const label = this.chars[id].children.find(o => o instanceof THREE.Sprite);
-        if (labelSocket && label) label.position.setFromMatrixPosition(relativeMatrix(labelSocket, this.chars[id]));
       }
       if (id !== "duck" && this.clothing[id] !== c.clothing) {
         this.clothing[id] = c.clothing;
@@ -700,7 +557,6 @@ export class GameScene {
     this.environmentModels.updateDetail(this.camera.position, overview);
     this.worldEnvironment.updateDetail(this.camera.position);
     this.camera.updateMatrixWorld();
-    this.sizeLabels(view.active, overview, view.milk);
     this.renderer.render(this.scene, this.camera);
   }
 }

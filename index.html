@@ -2,21 +2,18 @@
 <html lang="ja">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>アヒルと子どもと大人の銭湯探検</title>
     <style>
       html, body { margin: 0; height: 100%; overflow: hidden; background: #1d2330; font-family: system-ui, "Hiragino Sans", sans-serif; }
       #app { position: fixed; inset: 0; }
       #hud { position: fixed; inset: 0; pointer-events: none; color: #fff; font-size: 13px; line-height: 1.55; }
-      #hud > div { position: absolute; background: rgba(0,0,0,0.62); border-radius: 6px; padding: 8px 12px; white-space: pre-wrap; }
-      .hud-status { top: 10px; left: 10px; max-width: 360px; }
-      .hud-guide { top: 10px; left: 50%; transform: translateX(-50%); max-width: 640px; text-align: center; }
-      .hud-goal { font-size: 15px; font-weight: bold; color: #ffe27a; }
-      .hud-hints { margin-top: 4px; color: #bff; }
+      #hud > div { position: absolute; box-sizing: border-box; background: rgba(0,0,0,0.62); border-radius: 6px; padding: 8px 12px; white-space: pre-wrap; }
+      .hud-status { top: max(10px, env(safe-area-inset-top)); left: max(10px, env(safe-area-inset-left)); font-size: 12px; }
+      .hud-hints { bottom: max(16px, env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%); width: max-content; max-width: calc(100% - 190px); text-align: center; color: #e9fbef; }
       .hud-hints:empty { display: none; }
-      .hud-keys { bottom: 10px; right: 10px; font-size: 12px; color: #ddd; }
-      .hud-toast { bottom: 10px; left: 50%; transform: translateX(-50%); font-size: 15px; transition: opacity 0.3s; }
-      .hud-dev { bottom: 10px; left: 10px; color: #f88; font-size: 11px; }
+      .hud-toast { top: max(58px, env(safe-area-inset-top)); left: 50%; transform: translateX(-50%); max-width: calc(100% - 40px); font-size: 14px; text-align: center; transition: opacity 0.3s; }
+      .hud-dev { bottom: 70px; left: 10px; color: #f88; font-size: 11px; }
       .hud-dev:empty { display: none; }
       #hud > .hud-overlay { inset: 0; display: none; align-items: center; justify-content: center; flex-direction: column; text-align: center; background: rgba(10,15,25,0.72); border-radius: 0; font-size: 16px; }
       .hud-overlay.dialog { background: rgba(10,15,25,0.45); }
@@ -26,6 +23,23 @@
       .hud-overlay .small { font-size: 12px; color: #ccc; }
       .hud-overlay .key { margin-top: 16px; font-size: 18px; color: #ffe27a; }
       .hud-overlay.cleared h2 { color: #ffe27a; }
+      .hud-settings-button, .hud-settings-close { min-width: 64px; min-height: 44px; padding: 8px 16px; border: 1px solid #abc8bb; border-radius: 8px; background: #183b36ed; color: #fff; font: inherit; cursor: pointer; pointer-events: auto; touch-action: manipulation; }
+      .hud-settings-button { position: absolute; bottom: max(12px, env(safe-area-inset-bottom)); left: max(12px, env(safe-area-inset-left)); }
+      .hud-settings-button:focus-visible, .hud-settings-close:focus-visible, .hud-settings-dialog summary:focus-visible, .hud-settings-dialog input:focus-visible { outline: 3px solid #ffe27a; outline-offset: 4px; }
+      .hud-settings-dialog { box-sizing: border-box; width: min(440px, calc(100vw - 32px)); max-height: calc(100dvh - 48px); overflow: auto; border: 1px solid #abc8bb; border-radius: 16px; padding: 24px; color: #f2f7f2; background: #16322f; pointer-events: auto; }
+      .hud-settings-dialog::backdrop { background: #081c20b8; }
+      .hud-settings-dialog h2 { margin: 0 0 20px; font-size: 22px; }
+      .hud-help-toggle { display: flex; align-items: center; gap: 12px; min-height: 44px; cursor: pointer; font-size: 16px; }
+      .hud-help-toggle input { width: 22px; height: 22px; accent-color: #d4efbd; }
+      .hud-controls { margin: 20px 0; color: #d1dfd5; }
+      .hud-controls summary { padding: 10px 0; cursor: pointer; }
+      .hud-controls p { white-space: pre-line; line-height: 1.8; font-size: 13px; }
+      .hud-settings-close { width: 100%; }
+      @media (max-width: 520px) {
+        .hud-hints { bottom: max(70px, env(safe-area-inset-bottom)); max-width: calc(100% - 24px); font-size: 12px; }
+        .hud-overlay { box-sizing: border-box; padding: 20px; }
+        .hud-overlay p { margin: 8px 0; }
+      }
       .credits { position: fixed; top: 10px; right: 10px; z-index: 1; padding: 4px 8px; border-radius: 4px; background: rgba(0,0,0,0.72); color: #ddd; font-size: 11px; }
     </style>
   </head>

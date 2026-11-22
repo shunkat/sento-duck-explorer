@@ -1,7 +1,7 @@
 // Pure state → view model. The renderer only applies this, so what is drawn
 // (one body for the current stage, the bottles, doors, the guardian) is
 // testable without WebGL. Growth and exit (2026-11-21).
-import { CHARACTER_NAME, CHECKPOINT_NAME, ZONE_NAME } from "../core/text";
+import { CHARACTER_NAME } from "../core/text";
 import type { CharacterId, GameState, HighDoorId, MilkId } from "../core/types";
 import { CHARACTER_RADIUS, type Level } from "../level/layout";
 
@@ -81,17 +81,9 @@ export function deriveView(s: GameState, level: Level): View {
   };
 }
 
-/** Always-visible state panel lines. */
+/** Compact progress badge; location and route descriptions stay out of the HUD. */
 export function statusLines(s: GameState): string[] {
   const p = s.player;
-  const wet = p.wet === "wet" ? "濡れ" : "乾き";
-  const lines = [`今の姿：${CHARACTER_NAME[p.stage]}（${ZONE_NAME[p.zone]}）`];
-  if (p.stage === "duck") lines.push(`体：${wet}`);
-  else {
-    lines.push(`体：${wet}・${p.clothing === "clothed" ? "服あり" : "入浴中"}・タオル：${p.towel === "head" ? "頭の上" : "手"}`);
-  }
   const n = (["milk1", "milk2"] as const).filter((m) => s.milk[m] === "collected").length;
-  lines.push(`牛乳びん：${n} / 2 本`);
-  lines.push(`再開地点：${CHECKPOINT_NAME[s.lastCheckpoint]}`);
-  return lines;
+  return [`${CHARACTER_NAME[p.stage]} · 牛乳 ${n}/2`];
 }

@@ -1,5 +1,7 @@
 # Requirements Document: Shoulder View
 
+> **Presentation update (2026-11-22).** Prototype-core-gameplay Requirement 12 supersedes this spec's floating-label requirements (7.2, 7.3, 7.5) and permanent key-help panels. Room/fixture/character/item descriptions are removed from the 3D view; manners use fixed world notices and controls use an optional contextual HUD. Camera, model and towel requirements remain in force.
+
 ## Introduction
 
 2026-11-20, the user said the current prototype is not a 3D third-person game. It draws spheres and capsules and uses a low follow camera with a fixed direction ("W = up the screen"). The user asked for a 3D third-person over-the-shoulder game with real 3D character models.

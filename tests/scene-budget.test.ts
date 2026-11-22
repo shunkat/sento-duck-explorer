@@ -76,7 +76,7 @@ function cameraPose(sample: Sample): Pose {
   return sample.overview ? OVERVIEW : { eye: { x, y, z }, target: { x, y: Math.max(.1, y - .15), z: z - 1 } };
 }
 
-// Camera selection only affects background/washing geometry. The single growth
+// Camera selection affects background/washing geometry and wall notices. The single growth
 // body, its outfit, towel and fade add a camera-independent bound when every
 // potential overlay is retained. Sweep the level and a denser washing region,
 // then check every material/outfit combination at each height's maximum and
@@ -112,6 +112,9 @@ describe("connected scene geometry budget", () => {
     game.useModels(library);
     const internal = game as unknown as Internals;
     const { scene } = internal;
+    const notices = scene.getObjectByName("sento_wall_notices")!;
+    expect(notices).toBeDefined();
+    expect(notices.children.length).toBeGreaterThan(0);
     expect(internal.worldEnvironment.active).toBe(true);
     expect(scene.getObjectByName("environment_fallback")?.visible).toBe(false);
     expect(scene.children.filter(o => o.name === "soap")).toHaveLength(LEVEL.soaps.length);
@@ -151,6 +154,7 @@ describe("connected scene geometry budget", () => {
     const seenWash = new Set<string>(), seenNpcs = new Set<string>();
     const applyCamera = (sample: Sample) => {
       const eye = new THREE.Vector3(...sample.eye);
+      notices.visible = !sample.overview; // notices share their upper walls' cutaway visibility
       internal.worldEnvironment.setView(sample.overview, false); // the sauna door is never locked (2026-11-21)
       internal.environmentModels.updateDetail(eye, sample.overview);
       internal.worldEnvironment.updateDetail(eye);
@@ -219,6 +223,7 @@ describe("connected scene geometry budget", () => {
     // every tested extreme. Restore the same all-visible/opaque bound afterward.
     for (const sample of candidates) {
       game.render(view, cameraPose(sample), sample.overview);
+      expect(notices.visible).toBe(!sample.overview);
       for (const id of CHARACTERS) setBodyOpacity(internal.chars[id], 1);
       showPotentialOverlays(internal);
       expect(triangleCounter(scene)(), `full-render parity at ${sample.eye}`).toBe(sample.triangles);

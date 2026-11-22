@@ -90,7 +90,7 @@ describe("shipped human rigs", () => {
     expect(root.worldToLocal(world(hand)).distanceTo(handRest)).toBeLessThan(1e-6);
   });
 
-  it.each(["child", "adult"] as const)("%s walks as the sole growth body with attached towels, label and unchanged milk/doors", async id => {
+  it.each(["child", "adult"] as const)("%s walks as the sole growth body with attached towels, no floating label and unchanged milk/doors", async id => {
     vi.stubGlobal("window", { devicePixelRatio: 1 });
     vi.stubGlobal("document", { createElement: () => ({ getContext: () => ({ measureText: () => ({ width: 100 }), fillRect() {}, fillText() {} }) }) });
     const scene = new GameScene({ appendChild() {} } as unknown as HTMLElement, LEVEL);
@@ -115,8 +115,14 @@ describe("shipped human rigs", () => {
     expect(forward.distanceTo(new THREE.Vector3(1, 0, 0))).toBeLessThan(1e-6);
     const towel = internals.towels[id];
     expect(world(towel).y).toBeCloseTo(world(root).y + BODY_HEIGHT[id] + TOWEL_THICKNESS / 2, 3);
-    const label = internals.chars[id].children.find(o => o instanceof THREE.Sprite)!;
-    expect(world(label).distanceTo(world(root.getObjectByName("socket_label")!))).toBeLessThan(1e-6);
+    // The authored socket remains in the rig contract, but the view no longer
+    // attaches a floating name tag to it.
+    const labelSocket = root.getObjectByName("socket_label");
+    expect(labelSocket).toBeDefined();
+    expect(world(labelSocket!).toArray().every(Number.isFinite)).toBe(true);
+    const labels: THREE.Sprite[] = [];
+    internals.chars[id].traverse(o => { if (o instanceof THREE.Sprite) labels.push(o); });
+    expect(labels).toEqual([]);
     state.player.towel = "held";
     state.player.pos.x += .02;
     view = deriveView(state, LEVEL); facing.update(view);
