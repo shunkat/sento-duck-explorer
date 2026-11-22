@@ -1132,6 +1132,75 @@
       },
       "layout_sha256": "8bee95aa4ad7e753f521c4327e7586d3df4717e6c1aa9072790a0c40ecc52ab5",
       "quality_record": "assets/sento_environment/quality/measurements.json"
+    },
+    "milk_bottle": {
+      "stage": 3,
+      "status": "exported",
+      "revision": "v01",
+      "source": "Original project-authored mesh",
+      "method": "Original authored lathed profile, continuous closed body and paper closure; vertex-colored opaque PBR materials",
+      "license": "MIT",
+      "terms": "LICENSE",
+      "provenance": "assets/milk_bottle/provenance.json",
+      "limits": {
+        "height": [
+          0.18,
+          0.22
+        ],
+        "width": [
+          0.06,
+          0.08
+        ],
+        "depth": [
+          0.06,
+          0.08
+        ],
+        "max_width": 0.08,
+        "triangles": 1500,
+        "materials": 2,
+        "texture_px": 512,
+        "glb_mb": 0.1
+      },
+      "measured": {
+        "bounds": {
+          "min": [
+            -0.035999998450279236,
+            0.0,
+            -0.035999998450279236
+          ],
+          "max": [
+            0.035999998450279236,
+            0.20000000298023224,
+            0.035999998450279236
+          ]
+        },
+        "width": 0.07199999690055847,
+        "height": 0.20000000298023224,
+        "depth": 0.07199999690055847,
+        "max_width": 0.07199999690055847,
+        "triangles": 1340,
+        "vertices": 928,
+        "welded_vertices": 672,
+        "connected_components": 1,
+        "nonmanifold_edges_after_seam_weld": 0,
+        "degenerate_faces": 0,
+        "signed_volume_m3": 0.0006725263746513569,
+        "finite_vertices": true,
+        "bottom_contact_y_m": 0.0,
+        "origin_bottom_center": true,
+        "front_thumb_edge_gltf_positive_z": true,
+        "materials": 2,
+        "textures": 0,
+        "texture_px": 0,
+        "alpha_mode": "OPAQUE",
+        "external_uris": 0,
+        "private_metadata_markers": 0,
+        "glb_bytes": 43916,
+        "glb_mb": 0.043916,
+        "sha256": "cdc89960e175a49a8402b2e279eee0a245fd272096efc0c5c3712c0e5d7a8f93",
+        "measured_date": "2026-11-22",
+        "tool": "Blender 5.2.4 LTS actual exported GLB reimport"
+      }
     }
   },
   "scene_limits": {

@@ -1,0 +1,41 @@
+{
+  "asset_id": "milk_bottle",
+  "revision": "v01",
+  "created_date": "2026-11-22",
+  "creator": "Codex via Blender",
+  "tool": "Blender 5.2.4 LTS",
+  "method": "Original authored lathed profile, continuous closed body and paper closure; vertex-colored opaque PBR materials",
+  "source_type": "Project-authored geometry; no downloaded geometry or textures",
+  "source_script": {
+    "file": "scripts/build-milk-bottle.py",
+    "sha256": "0d964394b7ca6a2f52693e891bce013df3c33f7b01c42d5ea72ea444ca83e0a2"
+  },
+  "art_direction": {
+    "file": "assets/sento_environment/ref/sento_environment__style_v01.png",
+    "sha256": "e67b34b6e35f6f3a45fa61a898aeeffd1aeb5da08ea148f4368239a14b5e4cb4",
+    "role": "Existing original project palette and miniature style reference; no image-to-3D conversion"
+  },
+  "external_inputs": [],
+  "new_image_generation": false,
+  "image_to_3d": false,
+  "rights": {
+    "license": "MIT",
+    "terms": "LICENSE",
+    "input_rights": "Original project work; existing project-held art-direction rights",
+    "redistributable": "yes",
+    "commercial_use": "yes",
+    "attribution": "Copyright (c) 2026 shunkat; keep MIT notice"
+  },
+  "outputs": [
+    {
+      "file": "assets/milk_bottle/blend/milk_bottle__v01.blend",
+      "sha256": "fcbec50502952fa2aad1da14fda20454760386af976e490a9902aaf4feb1026a"
+    },
+    {
+      "file": "public/models/milk_bottle.glb",
+      "sha256": "cdc89960e175a49a8402b2e279eee0a245fd272096efc0c5c3712c0e5d7a8f93"
+    }
+  ],
+  "quality_report": "assets/milk_bottle/quality/measurements.json",
+  "integration_status": "Exported asset; source/test integration and gameplay verification are separate"
+}

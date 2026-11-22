@@ -22,6 +22,7 @@ The runtime loads four GLBs from `public/models/`: Duck, Child, Adult and the sa
 | Blender-adjusted models and game GLBs | CC BY 4.0, with modifications identified | `.blend` sources, `public/models/*.LICENSE.txt`, `THIRD_PARTY_NOTICES.md` |
 | Provisional level geometry, towel and remaining small props | Code-generated placeholders, not completed final assets | `src/view/scene.ts` |
 | Box GLB under `tests/fixtures/` | Locally generated test fixture, not a final asset or runtime model | `scripts/make-test-glb.mjs` |
+| Growth milk bottle (2026-11-22) | Original Blender-authored geometry and materials, MIT; exported asset ready for integration | `assets/milk_bottle/README.md`, provenance, manifest/ledger and `public/models/milk_bottle.LICENSE.txt` |
 
 Human models contain embedded textures and two outfit variants; no shared skeleton or skeletal animations are claimed. No audio or custom font asset is listed in the current inventory. The [ledger](../assets/ledger.csv) and [manifest](../assets/manifest.json) are the detailed file/measurement records. Code MIT does not replace the models' separate CC BY 4.0 terms.
 

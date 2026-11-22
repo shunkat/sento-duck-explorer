@@ -211,6 +211,16 @@ public sources remain CC0. Full records, checksums and inspections are in
 `assets/sento_small_items/README.md`, `provenance.json` and `quality/`.
 Keep the per-model license files when distributing the exports.
 
+## Growth milk bottle — original project work
+
+`milk_bottle.glb` is original Blender-authored geometry and materials, released
+under the project MIT license. It includes no downloaded mesh, external texture
+or Image-to-3D output. The existing original sento art-direction reference
+informed its cream/blue palette; its earlier image provenance remains separate.
+The editable Blend, build script, hashes, measurements and offline inspection
+renders are recorded in `assets/milk_bottle/README.md` and `provenance.json`.
+Keep `public/models/milk_bottle.LICENSE.txt` with distributed copies.
+
 ## three.js
 
 - Installed version reviewed: 0.187.0
