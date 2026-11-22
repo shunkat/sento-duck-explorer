@@ -31,6 +31,9 @@ const world = (node: THREE.Object3D) => node.getWorldPosition(new THREE.Vector3(
 const point = (mesh: THREE.SkinnedMesh, index: number) => mesh.getVertexPosition(index, new THREE.Vector3()).applyMatrix4(mesh.matrixWorld);
 const meshes = (root: THREE.Object3D) => ["outfit_clothed", "outfit_bath"].map(name => root.getObjectByName(name) as THREE.SkinnedMesh);
 
+/** Timeout for the per-vertex stride check only; see the note at that case. */
+const RIG_STRIDE_TIMEOUT_MS = 20_000;
+
 describe("shipped human rigs", () => {
   it.each(["child", "adult"] as const)("%s has two bounded skins on the same named skeleton and a bone-parented hand", async id => {
     const root = await load(id);
@@ -88,7 +91,10 @@ describe("shipped human rigs", () => {
     motion.update({ position: { x: 0, z: speed * 181 / 60 }, time: 181 / 60, holdRight: true, holdLeft: id === "adult" });
     root.updateMatrixWorld(true);
     expect(root.worldToLocal(world(hand)).distanceTo(handRest)).toBeLessThan(1e-6);
-  });
+    // Every vertex of both skins is checked on 180 frames. The child cases took
+    // about 4.6–5.7 s on a shared CI runner (the 5 s default failed once at 5663 ms
+    // with no assertion failure), so this case alone gets a finite, wider limit.
+  }, RIG_STRIDE_TIMEOUT_MS);
 
   it.each(["child", "adult"] as const)("%s walks as the sole growth body with attached towels, no floating label and unchanged milk/doors", async id => {
     vi.stubGlobal("window", { devicePixelRatio: 1 });
