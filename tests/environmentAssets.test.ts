@@ -12,7 +12,7 @@ describe("complete environment export", () => {
   it("ships every registered model with its measured bytes, embedded resources and license", () => {
     const manifest = JSON.parse(read("assets/manifest.json").toString());
     const urls = Object.values({ ...CHARACTER_MODEL_URLS, ...ITEM_MODEL_URLS, ...ENVIRONMENT_MODEL_URLS });
-    expect(urls).toHaveLength(18);
+    expect(urls).toHaveLength(19);
     let totalBytes = 0;
     for (const url of urls) {
       const id = url.slice("models/".length, -4);
@@ -72,6 +72,8 @@ describe("complete environment export", () => {
     const roles = new Set<string>();
     for (const slot of slots) {
       const role = slot.extras.npc_role;
+      if (slot.name === "npc_slot_2") expect(role).toBe("npc_bath_tattooed");
+      else expect(role).not.toBe("npc_bath_tattooed");
       roles.add(role);
       expect(slot.extras.source_author, slot.name).toBe("Quaternius");
       expect(slot.extras.source_sha256, slot.name).toBe(sha(read(`public/models/${role}.glb`)));
@@ -86,7 +88,7 @@ describe("complete environment export", () => {
       };
       for (const child of slot.children ?? []) visit(child);
     }
-    expect([...roles].sort()).toEqual(["npc_bath_standing", "npc_seated", "npc_staff"]);
+    expect([...roles].sort()).toEqual(["npc_bath_tattooed", "npc_seated", "npc_staff"]);
   });
 
   it("embeds the full Fuji artwork on the bath wall, upright and unmirrored from inside", () => {

@@ -36,4 +36,5 @@ export const ENVIRONMENT_MODEL_URLS: Partial<Record<EnvironmentModelId, string>>
   npc_staff_lod_far: "models/npc_staff_lod_far.glb",
   npc_seated_lod_far: "models/npc_seated_lod_far.glb",
   npc_bath_standing_lod_far: "models/npc_bath_standing_lod_far.glb",
+  npc_bath_tattooed_lod_far: "models/npc_bath_tattooed_lod_far.glb",
 };

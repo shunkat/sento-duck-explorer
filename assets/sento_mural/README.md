@@ -36,7 +36,7 @@ v01, the independent-NPC v02 and the current v03 editable source. Run
 the archived v02 GLB. The script pins the input checksum and rejects an already
 corrected or changed input. Output stays in `.local/fuji-mural/`.
 
-- Current GLB: `public/models/sento_environment.glb`, SHA-256
+- Preserved Fuji-correction v03 GLB: `assets/sento_environment/blend/sento_environment__v03.glb`, SHA-256
   `6ac2a9e99b4d068118ad30ddd01c9feda9ec273ade594aa157a39010d21b4c98`.
 - [Byte-preservation audit](../sento_environment/quality/v03/mural-uv-audit.json):
   only the four inward-facing U values change; the original art is unchanged.
@@ -59,6 +59,8 @@ list. Main/production integration is held while the separate growth/exit work
 is reconciled; this record describes the isolated asset branch.
 
 Original art generation and rights are in [reference provenance](ref/README.md).
+The later [v04 world](../sento_environment/README.md) changes one visitor's
+appearance while preserving this corrected mural and all of its image/UV data.
 The project-held original image rights are MIT to the extent permitted by law.
 World-composite inspection renders retain CC BY 4.0 with the independent source
 licenses and credits described in [the world notice](../../public/models/sento_environment.LICENSE.txt).

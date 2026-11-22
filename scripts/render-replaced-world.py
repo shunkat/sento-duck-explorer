@@ -1,4 +1,4 @@
-"""Render two placement/contact QA views from the actual patched world GLB.
+"""Render placement/contact QA views from the actual patched world GLB.
 
 Blender --background --python-exit-code 1 --python scripts/render-replaced-world.py
 
@@ -42,6 +42,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--world', type=Path, default=Path('.local/distinct-sento-npcs/world/sento_environment.glb'))
     parser.add_argument('--output-dir', type=Path, default=Path('.local/distinct-sento-npcs/world/renders'))
+    parser.add_argument('--tattoo', action='store_true', help='Inspect only the tattooed standing visitor in its actual slot')
     args = parser.parse_args(sys.argv[sys.argv.index('--')+1:] if '--' in sys.argv else [])
     assert '.local' in args.output_dir.resolve().parts, 'Render output remains private until reviewed'
     digest = hashlib.sha256(args.world.read_bytes()).hexdigest()
@@ -62,6 +63,9 @@ def main():
               [((5.5, 2.35, -7.5), 270, 3), ((4.4, 1.8, -8.4), 90, 1.3)]),
              ('npc_seated_contact_v02', (16.95, 1.05, 3.9), (15.988, .60, 2.5), 30,
               [((16.4, 2.35, 2.4), 250, 3), ((15.0, 2.1, 4.3), 110, 2)])]
+    if args.tattoo:
+        views = [('tattoo_visitor_placement_v04', (17.1, 1.45, 2.8), (15.7, .95, .3), 48,
+                  [((15.0, 2.3, 2.0), 190, 3), ((17.2, 1.9, 1.0), 85, 2)])]
     reports = []
     for name, eye, target, lens, lights in views:
         created = []

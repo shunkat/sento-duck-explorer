@@ -31,7 +31,9 @@ class BackgroundNpcReplacementTests(unittest.TestCase):
             for suffix in ('', '_lod_far'):
                 name = role + suffix + '.glb'
                 shutil.copyfile(ROOT / 'public/models' / name, self.models / name)
-        self.world = ROOT / 'public/models/sento_environment.glb'
+        # This suite exercises the historical three-role replacement producer.
+        # Later appearance variants use their own producer and preservation tests.
+        self.world = ROOT / 'assets/sento_environment/blend/sento_environment__v03.glb'
         self.output = self.base / 'world.glb'; self.report = self.base / 'audit.json'
 
     def tearDown(self):

@@ -94,7 +94,7 @@ describe("connected scene geometry budget", () => {
     for (const id of ["coin", "key", "hat"] as const) expect(ITEM_MODEL_URLS[id], id).toBeTruthy();
     for (const id of ["sento_environment", "soap", "towel", "bath_stool", "wash_basin",
       "bath_stool_lod_medium", "bath_stool_lod_far", "wash_basin_lod_medium", "wash_basin_lod_far",
-      "npc_staff_lod_far", "npc_seated_lod_far", "npc_bath_standing_lod_far"] as const) {
+      "npc_staff_lod_far", "npc_seated_lod_far", "npc_bath_standing_lod_far", "npc_bath_tattooed_lod_far"] as const) {
       expect(ENVIRONMENT_MODEL_URLS[id], id).toBeTruthy();
     }
     const game = new GameScene({ appendChild() {} } as unknown as HTMLElement, LEVEL);

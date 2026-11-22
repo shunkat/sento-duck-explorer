@@ -210,6 +210,15 @@ This exception preserves the mural and readable separate surface materials;
 it does not raise the whole-scene 60,000 triangles, 120 calls or 12 MB first-load
 limits. Those require actual integrated measurements before publication.
 
+The 2026-11-22 tattooed-visitor request adds one material variant of the free
+Quaternius standing adult. Its near/far models keep the original 1,594/594
+triangles, pose and occupied space. A role-specific 1024² single atlas and
+0.5 MB per-model allowance reserve native pixel density for the existing face
+and readable space for the original koi/wave tattoo. The ordinary three roles
+retain their 512² and 0.25 MB limits. Only the existing standing slot uses the
+variant; no collision, crowd placement or game behavior changes. The world
+retains its existing material/image counts and all global limits above.
+
 Small-item allocations are soap 300, towel 350, coin 650 and key 500 triangles,
 up to two materials and 0.05 MB each. Their selected exports use 236 / 296 /
 608 / 468 triangles, 51,760 bytes total and no textures. With two towels the

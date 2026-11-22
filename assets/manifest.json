@@ -1095,7 +1095,7 @@
     "sento_environment": {
       "stage": 3,
       "status": "exported",
-      "revision": "v03",
+      "revision": "v04",
       "origin": "Identity root; authored world coordinates from LEVEL, not normalized",
       "limits": {
         "triangles": 20200,
@@ -1111,12 +1111,12 @@
         "depth": 21.200000762939453,
         "max_width": 39.29999852180481,
         "triangles": 20153,
-        "vertices": 19966,
+        "vertices": 20090,
         "materials": 17,
         "textures": 11,
         "texture_px": 2172,
-        "glb_bytes": 5931660,
-        "glb_mb": 5.93166,
+        "glb_bytes": 6247436,
+        "glb_mb": 6.247436,
         "bounds": {
           "min": [
             -3.200000047683716,
@@ -1129,14 +1129,100 @@
             12.100000381469727
           ]
         },
-        "sha256": "6ac2a9e99b4d068118ad30ddd01c9feda9ec273ade594aa157a39010d21b4c98",
-        "measured_date": "2026-11-21",
-        "tool": "Actual v02 measurements retained by v03 four-U-value byte-preservation audit; Blender UV/image reimport review",
+        "sha256": "afbea3f724255c1016b4968aac2fdacafa787c402315488c2d839c91ea31b54b",
+        "measured_date": "2026-11-22",
+        "tool": "Actual v04 triangle measurements and slot2-only attribute preservation audit; Blender reimport",
         "architecture_triangles": 7996,
         "npc_triangles": 12157
       },
       "layout_sha256": "8bee95aa4ad7e753f521c4327e7586d3df4717e6c1aa9072790a0c40ecc52ab5",
       "quality_record": "assets/sento_environment/quality/measurements.json"
+    },
+    "npc_bath_tattooed": {
+      "stage": 3,
+      "status": "exported",
+      "parent_asset": "npc_bath_standing",
+      "revision": "tattoo_v01",
+      "origin": "Parent standing visitor frame; bottom center, +Y up, +Z forward",
+      "limits": {
+        "triangles": 1600,
+        "materials": 1,
+        "texture_px": 1024,
+        "glb_mb": 0.5
+      },
+      "measured": {
+        "height": 1.600000023841858,
+        "width": 0.4511750638484955,
+        "depth": 0.27078795433044434,
+        "max_width": 0.4511750638484955,
+        "triangles": 1594,
+        "vertices": 971,
+        "materials": 1,
+        "textures": 1,
+        "texture_px": 1024,
+        "glb_bytes": 398704,
+        "glb_mb": 0.398704,
+        "bounds": {
+          "min": [
+            -0.22558753192424774,
+            0,
+            -0.13539397716522217
+          ],
+          "max": [
+            0.22558753192424774,
+            1.600000023841858,
+            0.13539397716522217
+          ]
+        },
+        "sha256": "83f2ea50218978cac3f16e78483ff04e4b187b822fc89308ea7094b7e3d8d040",
+        "measured_date": "2026-11-22",
+        "tool": "Actual indexed GLB triangle samples; native-pixel atlas comparison; Blender reimport"
+      },
+      "quality_record": "assets/sento_visitors/tattoo/quality/measurements.json",
+      "notes": "Quaternius CC0 geometry; original project-generated tattoo art and material/UV modifications MIT. Shape/normals unchanged; shared1024 atlas preserves native face pixels."
+    },
+    "npc_bath_tattooed_lod_far": {
+      "stage": 3,
+      "status": "exported",
+      "parent_asset": "npc_bath_standing_lod_far",
+      "revision": "tattoo_v01",
+      "origin": "Parent standing visitor frame; bottom center, +Y up, +Z forward",
+      "limits": {
+        "triangles": 600,
+        "materials": 1,
+        "texture_px": 1024,
+        "glb_mb": 0.5
+      },
+      "measured": {
+        "height": 1.5968174934387207,
+        "width": 0.44860193133354187,
+        "depth": 0.2802351266145706,
+        "max_width": 0.44860193133354187,
+        "triangles": 594,
+        "vertices": 401,
+        "materials": 1,
+        "textures": 1,
+        "texture_px": 1024,
+        "glb_bytes": 374692,
+        "glb_mb": 0.374692,
+        "bounds": {
+          "min": [
+            -0.22430099546909332,
+            0,
+            -0.14484114944934845
+          ],
+          "max": [
+            0.22430093586444855,
+            1.5968174934387207,
+            0.13539397716522217
+          ]
+        },
+        "sha256": "bea4ad32b9285f36b00dac523550ab7c7e7b65701a7e9f04ae051f92aa9572a3",
+        "measured_date": "2026-11-22",
+        "tool": "Actual indexed GLB triangle samples; native-pixel atlas comparison; Blender reimport"
+      },
+      "quality_record": "assets/sento_visitors/tattoo/quality/measurements.json",
+      "notes": "Quaternius CC0 geometry; original project-generated tattoo art and material/UV modifications MIT. Shape/normals unchanged; shared1024 atlas preserves native face pixels. Distant use only beyond6m or Overview."
     }
   },
   "scene_limits": {

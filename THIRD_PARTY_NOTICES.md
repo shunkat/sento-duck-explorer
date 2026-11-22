@@ -208,6 +208,14 @@ and `assets/sento_environment/ref/`; original PNGs and provenance are retained.
 The art-direction image is a reference, not a screenshot or a map.
 
 The assembled `sento_environment.glb` is distributed as a CC BY 4.0 composite.
+
+The tattooed standing visitor retains the independent Quaternius CC0 body,
+with original koi/wave/peony art generated from a project prompt through the
+built-in OpenAI image tool. Blender supplies the atlas and UV modifications.
+Project-held art/modification rights are MIT to the extent permitted by law;
+no playable-father geometry is used. The original prompt, image and detailed
+credits are in `assets/sento_visitors/tattoo/`, and each new GLB has its own
+`.LICENSE.txt` notice. The world composite retains its existing license.
 Its current background NPCs use the independent Quaternius sources above;
 independent CC0 and project MIT components retain their original licenses.
 The previous Meshy-NPC composite and its notice remain preserved as v01.

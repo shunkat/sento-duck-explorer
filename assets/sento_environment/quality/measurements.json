@@ -1,8 +1,8 @@
 {
   "layout_sha256": "8bee95aa4ad7e753f521c4327e7586d3df4717e6c1aa9072790a0c40ecc52ab5",
-  "export_sha256": "6ac2a9e99b4d068118ad30ddd01c9feda9ec273ade594aa157a39010d21b4c98",
-  "export_bytes": 5931660,
-  "blend_sha256": "95ee169db14ea863c656f987e090f8d162398f304d02340bc0d746daaf04d838",
+  "export_sha256": "afbea3f724255c1016b4968aac2fdacafa787c402315488c2d839c91ea31b54b",
+  "export_bytes": 6247436,
+  "blend_sha256": "d5b0553c8d88568fd8897a7f77e4b2e02f5457785af6119115b8bd565c9817fb",
   "architecture_triangles": 7996,
   "npc_triangles": 12157,
   "triangles_by_placement": {
@@ -122,7 +122,7 @@
     "garden_stone",
     "mirror_glass",
     "navy_cloth",
-    "npc_bath_standing_single_atlas",
+    "npc_bath_tattooed_single_atlas",
     "npc_seated_single_atlas",
     "npc_staff_single_atlas",
     "rose_cloth",
@@ -1120,8 +1120,8 @@
       "objects_before_batching": [
         "npc_bath_standing_body"
       ],
-      "npc_replacement_model": "npc_bath_standing",
-      "npc_replacement_source_sha256": "0446e67bb93dbb2e0307b77732a490f96d654477d6dbf2bbae39fb753dc162cb"
+      "npc_replacement_model": "npc_bath_tattooed",
+      "npc_replacement_source_sha256": "83f2ea50218978cac3f16e78483ff04e4b187b822fc89308ea7094b7e3d8d040"
     },
     "npcs_03": {
       "status": "authored",
@@ -1518,7 +1518,7 @@
     {
       "slot": "npc_slot_2",
       "near": "npc_high_2",
-      "model_kind": "npc_bath_standing",
+      "model_kind": "npc_bath_tattooed",
       "position_gltf_m": [
         15.699999809265137,
         0,
@@ -1526,7 +1526,7 @@
       ],
       "yaw_degrees": 0,
       "uniform_scale": 1,
-      "source_sha256": "0446e67bb93dbb2e0307b77732a490f96d654477d6dbf2bbae39fb753dc162cb",
+      "source_sha256": "83f2ea50218978cac3f16e78483ff04e4b187b822fc89308ea7094b7e3d8d040",
       "placement_id": "npcs_02",
       "bounds_gltf_m": [
         [
@@ -2058,7 +2058,7 @@
   },
   "triangles_by_placement_scope": "Architecture only, totaling 7996 triangles; inherited byte-identically from v01. NPC triangles are measured separately.",
   "npc_source_record": "assets/public_sources/quaternius_universal_base/source.json",
-  "preservation_record": "assets/sento_environment/quality/v02/replacement-proof.json",
+  "preservation_record": "assets/sento_environment/quality/v04/tattoo-replacement-proof.json",
   "mural_uv_correction": {
     "revision": "v03",
     "prior_export_sha256": "39cfd9954b2de71807ecf3e860063f0569a9bd2611f322b361c10232f963950e",
@@ -2066,5 +2066,14 @@
     "scope": "Four inward-facing U coordinates only; positions, indices, normals, transforms, material/image bytes, and all other UVs identical to v02",
     "geometry_measurements_reused_from": "assets/sento_environment/quality/v02/measurements.json",
     "visibility": "Upper wall: visible in normal view; intentionally hidden in Overview cutaway"
+  },
+  "tattoo_visitor_revision": {
+    "revision": "v04",
+    "slot": "npc_slot_2",
+    "source_world_sha256": "6ac2a9e99b4d068118ad30ddd01c9feda9ec273ade594aa157a39010d21b4c98",
+    "only_appearance_changed": true,
+    "source_triangle_position_normals_identical": true,
+    "world_vertices": 20090,
+    "all_other_119_buffer_views_unchanged": true
   }
 }

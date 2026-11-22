@@ -1,4 +1,4 @@
-Sento environment v03 — composite asset, CC BY 4.0
+Sento environment v04 — composite asset, CC BY 4.0
 https://creativecommons.org/licenses/by/4.0/
 
 Assembled and modified by this project in Blender. Preserve this credit,
@@ -30,6 +30,13 @@ its Meshy attribution remain preserved beside the original editable source.
 v03 corrects four inward-facing UV coordinates on the Fuji wall mural to show
 the original artwork without horizontal reflection from the bath. All other
 v02 bytes, including the full original image and all geometry, are unchanged.
+
+v04 uses the tattooed standing visitor in the existing slot2. The Quaternius
+standing geometry and normals remain unchanged; UV seam splits and a new
+1024px atlas add original koi/wave/peony art generated through OpenAI and
+composed in Blender. Project-held art/material/UV rights are MIT to the extent
+permitted by law. Other visitors, architecture, images and corrected Fuji
+mural retain v03 data. See assets/sento_visitors/tattoo/README.md.
 
 Rooms, fixtures and tile materials were authored for this project. Project-held
 rights are MIT. The mural was generated from an original prompt through OpenAI;

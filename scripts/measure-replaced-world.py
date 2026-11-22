@@ -141,6 +141,7 @@ def measure(world, reference_path, layout_path=None):
         node = d['nodes'][actual['node']]
         entry = dict(expected[name])
         entry.update(bounds_gltf_m=bounds(actual['points']), triangles=actual['triangles'],
+                     model_kind=node['extras']['npc_role'],
                      source_sha256=node['extras']['source_sha256'],
                      position_gltf_m=node.get('translation', [0, 0, 0]),
                      uniform_scale=node.get('scale', [1, 1, 1])[0])

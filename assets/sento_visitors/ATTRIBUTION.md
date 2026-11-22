@@ -9,6 +9,18 @@ are MIT, under the repository LICENSE. These models contain no father geometry.
 The original author license and unmodified source files remain under
 `assets/public_sources/quaternius_universal_base/`.
 
+## Tattooed visitor variant
+
+The tattooed standing visitor and its distant version retain the ordinary
+standing visitor's Quaternius-derived geometry. Original koi/wave/peony artwork
+was generated from a project text prompt with the built-in OpenAI image tool,
+then composed into a material atlas in Blender. Project-held rights in the
+artwork and material/UV modifications are MIT to the extent permitted by law;
+the original CC0 geometry rights remain intact. See [art provenance](tattoo/ref/provenance.json)
+and [production records](tattoo/README.md). Standalone tattooed-visitor renders
+contain no Meshy/father component. Their world-placement render uses the
+separately credited CC BY 4.0 world composite.
+
 ## Father comparison only
 
 `quality/father-and-distinct-visitors.png` also depicts the playable father,

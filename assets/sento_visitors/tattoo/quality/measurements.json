@@ -1,0 +1,617 @@
+{
+  "models": {
+    "npc_bath_tattooed": {
+      "file": "npc_bath_tattooed.glb",
+      "sha256": "83f2ea50218978cac3f16e78483ff04e4b187b822fc89308ea7094b7e3d8d040",
+      "bytes": 398704,
+      "triangles": 1594,
+      "vertices": 971,
+      "source_vertices": 847,
+      "source_file": "public/models/npc_bath_standing.glb",
+      "source_sha256": "0446e67bb93dbb2e0307b77732a490f96d654477d6dbf2bbae39fb753dc162cb",
+      "source_triangle_position_normal_sha256": {
+        "POSITION": "0d8ca6a323ebedf1b2306ab1c86d188d8af7db7abc9effa3b2384b7dff38d045",
+        "NORMAL": "ac4afe661e73a68822df4ca9ae6e95f1e90433d9877711e12aba634d72f7e458"
+      },
+      "source_triangle_position_normal_exact": true,
+      "uv_chart_triangle_counts": {
+        "original": 1257,
+        "back": 186,
+        "chest": 105,
+        "arm": 46
+      },
+      "bounds": [
+        [
+          -0.22558753192424774,
+          0,
+          -0.13539397716522217
+        ],
+        [
+          0.22558753192424774,
+          1.600000023841858,
+          0.13539397716522217
+        ]
+      ],
+      "inner_arm_seam_triangles_unwrapped_to_skin_gutter": 0,
+      "materials": 1,
+      "textures": 1,
+      "texture_px": 1024,
+      "atlas_sha256": "30636328bd110f082b612f8d0a9f754275cba1a8a0bf7d5e3e536dc9e840f26e"
+    },
+    "npc_bath_tattooed_lod_far": {
+      "file": "npc_bath_tattooed_lod_far.glb",
+      "sha256": "bea4ad32b9285f36b00dac523550ab7c7e7b65701a7e9f04ae051f92aa9572a3",
+      "bytes": 374692,
+      "triangles": 594,
+      "vertices": 401,
+      "source_vertices": 347,
+      "source_file": "public/models/npc_bath_standing_lod_far.glb",
+      "source_sha256": "d2bc8e2d2920d9d068ddd95772e9d516ff56bda17c87ab8004913b484dbd4bbe",
+      "source_triangle_position_normal_sha256": {
+        "POSITION": "3ecb659c1c909aecca1fc8145750d80093454efea89a61b0a5db0e5ef83cc2e4",
+        "NORMAL": "76cd1ccb1fc061d40ac26c900cfb26d2e0d853c2843ff08a677291d4a48abe8a"
+      },
+      "source_triangle_position_normal_exact": true,
+      "uv_chart_triangle_counts": {
+        "original": 489,
+        "back": 36,
+        "chest": 56,
+        "arm": 13
+      },
+      "bounds": [
+        [
+          -0.22430099546909332,
+          0,
+          -0.14484114944934845
+        ],
+        [
+          0.22430093586444855,
+          1.5968174934387207,
+          0.13539397716522217
+        ]
+      ],
+      "inner_arm_seam_triangles_unwrapped_to_skin_gutter": 0,
+      "materials": 1,
+      "textures": 1,
+      "texture_px": 1024,
+      "atlas_sha256": "30636328bd110f082b612f8d0a9f754275cba1a8a0bf7d5e3e536dc9e840f26e"
+    }
+  },
+  "atlas": {
+    "size": [
+      1024,
+      1024
+    ],
+    "source_native_512_max_channel_delta": 0.0,
+    "eye_native_240_max_channel_delta": 0.0,
+    "original_eye_pixel_dimensions": [
+      240,
+      240
+    ],
+    "original_atlas_sha256": "d916499873cc6d57d5795dc6db191045d38def25c1d77dd4bc369e98bdc96a9e",
+    "art_sha256": "03f724c67b56521a174d1f9966e8285b9b2bb1bae78c95911de955307be20528",
+    "layout_blender_uv": {
+      "original": [
+        0,
+        0,
+        0.5,
+        0.5
+      ],
+      "back": [
+        0,
+        0.5,
+        0.5,
+        1
+      ],
+      "chest": [
+        0.5,
+        0.5,
+        1,
+        1
+      ],
+      "upper_arm": [
+        0.5,
+        0,
+        1,
+        0.5
+      ]
+    }
+  },
+  "editable": {
+    "file": "npc_bath_tattooed__v01.blend",
+    "sha256": "d90717c81eb559090308bdfc23af0bfb4c07f1872ab73ac769b2169233862a72",
+    "objects_reopened_unchanged": true,
+    "images_reopened_unchanged": true,
+    "images": [
+      {
+        "name": "Original independent visitor atlas",
+        "path": "//textures/Original_independent_visitor_atlas.png",
+        "packed": true,
+        "packed_paths": [
+          "//textures/Original_independent_visitor_atlas.png"
+        ],
+        "size": [
+          512,
+          512
+        ],
+        "decoded_pixels_sha256": "f0e3886898f7878e3fd1b49f3f729a777f388e2716b2fe86c1a34677759e6c89"
+      },
+      {
+        "name": "Original koi waves and peony artwork",
+        "path": "//textures/Original_koi_waves_and_peony_artwork.png",
+        "packed": true,
+        "packed_paths": [
+          "//textures/Original_koi_waves_and_peony_artwork.png"
+        ],
+        "size": [
+          1086,
+          1448
+        ],
+        "decoded_pixels_sha256": "39bdfb62450bedc829416cf56de2ac26df45518f515ffbf5b1a20575ffdba9b2"
+      },
+      {
+        "name": "Tattooed visitor shared 1024 atlas",
+        "path": "//textures/Tattooed_visitor_shared_1024_atlas.png",
+        "packed": true,
+        "packed_paths": [
+          "//textures/Tattooed_visitor_shared_1024_atlas.png"
+        ],
+        "size": [
+          1024,
+          1024
+        ],
+        "decoded_pixels_sha256": "74152113c9c96aa1e68fab5544093adb6f2d59530a1c18def89d593922a3e2f3"
+      },
+      {
+        "name": "npc_bath_standing_basecolor",
+        "path": "//textures/npc_bath_standing_basecolor.png",
+        "packed": true,
+        "packed_paths": [
+          "//textures/npc_bath_standing_basecolor.png"
+        ],
+        "size": [
+          512,
+          512
+        ],
+        "decoded_pixels_sha256": "f0e3886898f7878e3fd1b49f3f729a777f388e2716b2fe86c1a34677759e6c89"
+      },
+      {
+        "name": "npc_bath_standing_basecolor.001",
+        "path": "//textures/npc_bath_standing_basecolor.001.png",
+        "packed": true,
+        "packed_paths": [
+          "//textures/npc_bath_standing_basecolor.001.png"
+        ],
+        "size": [
+          512,
+          512
+        ],
+        "decoded_pixels_sha256": "f0e3886898f7878e3fd1b49f3f729a777f388e2716b2fe86c1a34677759e6c89"
+      },
+      {
+        "name": "npc_bath_tattooed_atlas",
+        "path": "//textures/npc_bath_tattooed_atlas.png",
+        "packed": true,
+        "packed_paths": [
+          "//textures/npc_bath_tattooed_atlas.png"
+        ],
+        "size": [
+          1024,
+          1024
+        ],
+        "decoded_pixels_sha256": "74152113c9c96aa1e68fab5544093adb6f2d59530a1c18def89d593922a3e2f3"
+      },
+      {
+        "name": "npc_bath_tattooed_atlas.001",
+        "path": "//textures/npc_bath_tattooed_atlas.001.png",
+        "packed": true,
+        "packed_paths": [
+          "//textures/npc_bath_tattooed_atlas.001.png"
+        ],
+        "size": [
+          1024,
+          1024
+        ],
+        "decoded_pixels_sha256": "74152113c9c96aa1e68fab5544093adb6f2d59530a1c18def89d593922a3e2f3"
+      }
+    ],
+    "object_facts": {
+      "ATLAS_original_native_512": {
+        "type": "MESH",
+        "parent": null,
+        "matrix": [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "properties": {},
+        "vertices": 4,
+        "triangles": 2,
+        "polygon_degenerate_faces": 0,
+        "legacy_bmesh_degenerate_faces": 0,
+        "positions_sha256": "00e4f13b18cffd7539d47adb80d71bb808ae97e66b7cb0a80e6a72927450d387",
+        "materials": [
+          "Original native pixel atlas"
+        ],
+        "uv_sha256": "eeb394f1726eac2bb9656979b5b3190f0fc2bfc9a3df8e179d13da2ebc8c513a"
+      },
+      "ATLAS_back_koi": {
+        "type": "MESH",
+        "parent": null,
+        "matrix": [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "properties": {},
+        "vertices": 4,
+        "triangles": 2,
+        "polygon_degenerate_faces": 0,
+        "legacy_bmesh_degenerate_faces": 0,
+        "positions_sha256": "8e0a22dea04483dd630147d5467f7ce8b7fecab1e1ea92dc521328b785fe833e",
+        "materials": [
+          "Back koi projection"
+        ],
+        "uv_sha256": "eeb394f1726eac2bb9656979b5b3190f0fc2bfc9a3df8e179d13da2ebc8c513a"
+      },
+      "ATLAS_chest_peony": {
+        "type": "MESH",
+        "parent": null,
+        "matrix": [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "properties": {},
+        "vertices": 4,
+        "triangles": 2,
+        "polygon_degenerate_faces": 0,
+        "legacy_bmesh_degenerate_faces": 0,
+        "positions_sha256": "199ee0006afb418a69c1d05e69cfeebc8e96e392773d2ae66157f1a4e9cbd63b",
+        "materials": [
+          "Upper chest peony projection"
+        ],
+        "uv_sha256": "eeb394f1726eac2bb9656979b5b3190f0fc2bfc9a3df8e179d13da2ebc8c513a"
+      },
+      "ATLAS_upper_arm_waves": {
+        "type": "MESH",
+        "parent": null,
+        "matrix": [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "properties": {},
+        "vertices": 4,
+        "triangles": 2,
+        "polygon_degenerate_faces": 0,
+        "legacy_bmesh_degenerate_faces": 0,
+        "positions_sha256": "009bbc9685211f9093049abf98db94fabc8d255c96dbeff8ba168d9b7dafe419",
+        "materials": [
+          "Outer upper arm waves projection"
+        ],
+        "uv_sha256": "eeb394f1726eac2bb9656979b5b3190f0fc2bfc9a3df8e179d13da2ebc8c513a"
+      },
+      "SOURCE_npc_bath_standing": {
+        "type": "MESH",
+        "parent": null,
+        "matrix": [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "properties": {
+          "source_author": "Quaternius",
+          "source_pack": "Universal Base Characters - Free Standard",
+          "source_license": "CC0-1.0",
+          "license": "MIT (project modifications); CC0-1.0 source",
+          "source_url": "https://quaternius.com/packs/universalbasecharacters",
+          "source_file": "Superhero_Male_FullBody.gltf",
+          "modifications": "Independent mature sento adult; relaxed shoulders and muscles, enlarged head, source hairstyle, static pose, featureless toy surface, protected reduction and single color atlas"
+        },
+        "vertices": 847,
+        "triangles": 1594,
+        "polygon_degenerate_faces": 0,
+        "legacy_bmesh_degenerate_faces": 0,
+        "positions_sha256": "fe02d4c16f71ef83c049dacb8710fccd02b25b71347b8a4a9a360b1050df5377",
+        "materials": [
+          "npc_bath_standing_single_atlas"
+        ],
+        "uv_sha256": "51bbd1ce93090bd9828f1aa7bdf556a7a5d9981fb6aadbbf9ab6cc8724ad4268"
+      },
+      "npc_bath_tattooed": {
+        "type": "MESH",
+        "parent": null,
+        "matrix": [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "properties": {
+          "source_author": "Quaternius",
+          "source_pack": "Universal Base Characters - Free Standard",
+          "source_license": "CC0-1.0",
+          "license": "MIT (project modifications); CC0-1.0 source",
+          "source_url": "https://quaternius.com/packs/universalbasecharacters",
+          "source_file": "Superhero_Male_FullBody.gltf",
+          "modifications": "Independent mature sento adult; relaxed shoulders and muscles, enlarged head, source hairstyle, static pose, featureless toy surface, protected reduction and single color atlas",
+          "asset_id": "npc_bath_tattooed",
+          "npc_role": "npc_bath_tattooed",
+          "derived_from_model": "public/models/npc_bath_standing.glb",
+          "derived_from_sha256": "0446e67bb93dbb2e0307b77732a490f96d654477d6dbf2bbae39fb753dc162cb",
+          "tattoo_source": "assets/sento_visitors/tattoo/ref/koi_waves__v01.png",
+          "tattoo_source_sha256": "03f724c67b56521a174d1f9966e8285b9b2bb1bae78c95911de955307be20528",
+          "modifications_tattoo": "Original koi/waves back tattoo and asymmetric peony/upper-arm waves; atlas and UV chart edits only; source indexed positions/normals retained exactly"
+        },
+        "vertices": 971,
+        "triangles": 1594,
+        "polygon_degenerate_faces": 0,
+        "legacy_bmesh_degenerate_faces": 0,
+        "positions_sha256": "9bf9a6e03b1a8bdfa02ea797db06877fe66f763e4cfec437237cc279bb36838f",
+        "materials": [
+          "npc_bath_tattooed_single_atlas"
+        ],
+        "uv_sha256": "dceb720c92d8fbda452ad0af93bb887589f412ff6aa4ad66bd21b675fe7087c7"
+      },
+      "SOURCE_npc_bath_standing_lod_far": {
+        "type": "MESH",
+        "parent": null,
+        "matrix": [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "properties": {
+          "source_author": "Quaternius",
+          "source_pack": "Universal Base Characters - Free Standard",
+          "source_license": "CC0-1.0",
+          "license": "MIT (project modifications); CC0-1.0 source",
+          "source_url": "https://quaternius.com/packs/universalbasecharacters",
+          "source_file": "Superhero_Male_FullBody.gltf",
+          "modifications": "Independent mature sento adult; relaxed shoulders and muscles, enlarged head, source hairstyle, static pose, featureless toy surface, protected reduction and single color atlas",
+          "asset_id": "npc_bath_standing_lod_far",
+          "derived_from_model": "public/models/npc_bath_standing.glb",
+          "derived_from_sha256": "0446e67bb93dbb2e0307b77732a490f96d654477d6dbf2bbae39fb753dc162cb",
+          "lod_target_triangles": 600,
+          "modifications_lod": "Source topology collapse with protected face/contact regions and near-surface normals; original atlas unchanged"
+        },
+        "vertices": 347,
+        "triangles": 594,
+        "polygon_degenerate_faces": 0,
+        "legacy_bmesh_degenerate_faces": 0,
+        "positions_sha256": "a2722a21462e7648ce4e88270f8d295b00ea2c8425fb43a55f82ad8925c70678",
+        "materials": [
+          "npc_bath_standing_single_atlas.001"
+        ],
+        "uv_sha256": "09a3a4f6bb426141546e14ed91f37447ed55f5066e3bbc08906fad5590ae4f93"
+      },
+      "npc_bath_tattooed_lod_far": {
+        "type": "MESH",
+        "parent": null,
+        "matrix": [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "properties": {
+          "source_author": "Quaternius",
+          "source_pack": "Universal Base Characters - Free Standard",
+          "source_license": "CC0-1.0",
+          "license": "MIT (project modifications); CC0-1.0 source",
+          "source_url": "https://quaternius.com/packs/universalbasecharacters",
+          "source_file": "Superhero_Male_FullBody.gltf",
+          "modifications": "Independent mature sento adult; relaxed shoulders and muscles, enlarged head, source hairstyle, static pose, featureless toy surface, protected reduction and single color atlas",
+          "asset_id": "npc_bath_tattooed_lod_far",
+          "derived_from_model": "public/models/npc_bath_standing_lod_far.glb",
+          "derived_from_sha256": "d2bc8e2d2920d9d068ddd95772e9d516ff56bda17c87ab8004913b484dbd4bbe",
+          "lod_target_triangles": 600,
+          "modifications_lod": "Source topology collapse with protected face/contact regions and near-surface normals; original atlas unchanged",
+          "npc_role": "npc_bath_tattooed",
+          "tattoo_source": "assets/sento_visitors/tattoo/ref/koi_waves__v01.png",
+          "tattoo_source_sha256": "03f724c67b56521a174d1f9966e8285b9b2bb1bae78c95911de955307be20528",
+          "modifications_tattoo": "Original koi/waves back tattoo and asymmetric peony/upper-arm waves; atlas and UV chart edits only; source indexed positions/normals retained exactly",
+          "lod_variant_of": "npc_bath_tattooed"
+        },
+        "vertices": 401,
+        "triangles": 594,
+        "polygon_degenerate_faces": 0,
+        "legacy_bmesh_degenerate_faces": 0,
+        "positions_sha256": "ed50437b382b71d549afe0252d0d1f81a458829090e14eb8de36c70785630e13",
+        "materials": [
+          "npc_bath_tattooed_single_atlas.001"
+        ],
+        "uv_sha256": "4bf13ac3571cda6e94746a65962293c2dee5918ae52e5b3f6601fc0610b3f6f3"
+      }
+    },
+    "metadata": {
+      "decompressed_bytes": 4775819,
+      "redacted_match_counts": {
+        "personal_absolute_paths": 0,
+        "private_candidate_paths": 0,
+        "file_uris": 0
+      }
+    }
+  },
+  "renders": [
+    {
+      "file": "renders-83f2ea502189/npc_bath_tattooed_front.png",
+      "sha256": "192572cf1228df7cf663def0d89dfe1371c09a0456a6cc73d74712468125f798",
+      "source_glb_sha256": "83f2ea50218978cac3f16e78483ff04e4b187b822fc89308ea7094b7e3d8d040"
+    },
+    {
+      "file": "renders-83f2ea502189/npc_bath_tattooed_threequarter.png",
+      "sha256": "2f3a20aa6b262484b0d52882a7f22b6f9bbdaeda00f2c8f0ea87297631f32e65",
+      "source_glb_sha256": "83f2ea50218978cac3f16e78483ff04e4b187b822fc89308ea7094b7e3d8d040"
+    },
+    {
+      "file": "renders-83f2ea502189/npc_bath_tattooed_threequarter_left.png",
+      "sha256": "f3150a1fec039954fb5ace4354d0705465a5fc11d22622271dac51e12d29e0ab",
+      "source_glb_sha256": "83f2ea50218978cac3f16e78483ff04e4b187b822fc89308ea7094b7e3d8d040"
+    },
+    {
+      "file": "renders-83f2ea502189/npc_bath_tattooed_back.png",
+      "sha256": "0f92cffc8467267b3f65ef4c5538a9185ec681b90e3004da732047697f8c6a63",
+      "source_glb_sha256": "83f2ea50218978cac3f16e78483ff04e4b187b822fc89308ea7094b7e3d8d040"
+    },
+    {
+      "file": "renders-83f2ea502189/npc_bath_tattooed_face.png",
+      "sha256": "ca494d99f78f841b1162224df3c35486622828482fb45b957ce7526d8555af3b",
+      "source_glb_sha256": "83f2ea50218978cac3f16e78483ff04e4b187b822fc89308ea7094b7e3d8d040"
+    },
+    {
+      "file": "renders-83f2ea502189/npc_bath_tattooed_lod_far_front.png",
+      "sha256": "da5255df816cdf6b10ceffb0e0d19f1e911eaed9d89f5161ab7dccc48c2441cf",
+      "source_glb_sha256": "bea4ad32b9285f36b00dac523550ab7c7e7b65701a7e9f04ae051f92aa9572a3"
+    },
+    {
+      "file": "renders-83f2ea502189/npc_bath_tattooed_lod_far_threequarter.png",
+      "sha256": "8ca1afa070a9367fc5f493c4d737c52dd73ace26f12b1a63620720ddc447e0b2",
+      "source_glb_sha256": "bea4ad32b9285f36b00dac523550ab7c7e7b65701a7e9f04ae051f92aa9572a3"
+    },
+    {
+      "file": "renders-83f2ea502189/npc_bath_tattooed_lod_far_threequarter_left.png",
+      "sha256": "0b53fe1a7384e545f515ccb7fd4624f73b18dc5d5f78377892c0b961e061dade",
+      "source_glb_sha256": "bea4ad32b9285f36b00dac523550ab7c7e7b65701a7e9f04ae051f92aa9572a3"
+    },
+    {
+      "file": "renders-83f2ea502189/npc_bath_tattooed_lod_far_back.png",
+      "sha256": "8ff2c86bcb7c3dc118a8892a2e42439b7531ffa543753d8a4779a2c6210fd13d",
+      "source_glb_sha256": "bea4ad32b9285f36b00dac523550ab7c7e7b65701a7e9f04ae051f92aa9572a3"
+    },
+    {
+      "file": "renders-83f2ea502189/near_far_front_6m.png",
+      "sha256": "429a8e803c649a25fe2b3ed0a3456b16f74945685b87191789b5e8ac9e447b59",
+      "source_glb_sha256": {
+        "npc_bath_tattooed": "83f2ea50218978cac3f16e78483ff04e4b187b822fc89308ea7094b7e3d8d040",
+        "npc_bath_tattooed_lod_far": "bea4ad32b9285f36b00dac523550ab7c7e7b65701a7e9f04ae051f92aa9572a3"
+      },
+      "camera_to_nominal_bounds_center_m": 6.1,
+      "vertical_fov_degrees": 55,
+      "resolution": [
+        1280,
+        720
+      ],
+      "scope": "Uncropped intended-distance comparison; existing far shape is not approved for close views"
+    },
+    {
+      "file": "renders-83f2ea502189/near_far_back_6m.png",
+      "sha256": "08849c6ef45bf8f4f225f23c3e10c6f603e285de980f2ef572d20328f4598fc7",
+      "source_glb_sha256": {
+        "npc_bath_tattooed": "83f2ea50218978cac3f16e78483ff04e4b187b822fc89308ea7094b7e3d8d040",
+        "npc_bath_tattooed_lod_far": "bea4ad32b9285f36b00dac523550ab7c7e7b65701a7e9f04ae051f92aa9572a3"
+      },
+      "camera_to_nominal_bounds_center_m": 6.1,
+      "vertical_fov_degrees": 55,
+      "resolution": [
+        1280,
+        720
+      ],
+      "scope": "Uncropped intended-distance comparison; existing far shape is not approved for close views"
+    }
+  ],
+  "scope": "Private authored candidates only; no public adoption, world placement, or gameplay verification"
+}

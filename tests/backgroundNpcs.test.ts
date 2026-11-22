@@ -17,6 +17,25 @@ function world() {
   return root;
 }
 describe("background NPC distance detail", () => {
+  it("keeps the tattooed customer's appearance when slot2 switches to distant detail", async () => {
+    const lib = new ModelLibrary({
+      loadAsync: async (url: string) => {
+        const scene = body(); scene.userData.variant = url; return { scene };
+      },
+      parseAsync: async () => ({ scene: body() }),
+    });
+    for (const id of NPC_LOD_IDS) await lib.load(id, id);
+    const root = world(), adapter = BackgroundNpcs.create(root, lib)!;
+    expect(adapter).toBeTruthy();
+    adapter.update(new THREE.Vector3(0, 50, 0), true);
+    const tattooedFar = root.getObjectByName("npc_far_2")!;
+    expect(tattooedFar.visible).toBe(true);
+    expect(tattooedFar.userData.variant).toBe("npc_bath_tattooed_lod_far");
+    for (const [suffix] of NPC_SLOTS) {
+      if (suffix !== "2") expect(root.getObjectByName(`npc_far_${suffix}`)!.userData.variant).not.toBe("npc_bath_tattooed_lod_far");
+    }
+    expect(lib.get("npc_bath_standing_lod_far")).toBeTruthy();
+  });
   it("waits for all sources and preserves placement while showing exactly one level", async () => {
     const root = world();
     const lib = new ModelLibrary({ loadAsync: async () => ({ scene: body() }), parseAsync: async () => ({ scene: body() }) });

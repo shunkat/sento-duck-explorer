@@ -2,6 +2,10 @@
 
 These three background adults use the free **Quaternius Universal Base Characters — Standard** male body, eyes, eyebrows and hairstyles. They contain no geometry, UVs or textures from the playable father. Reception uses short dark hair and a navy uniform; the standing visitor has gray parted hair; the seated visitor has a beard, broader middle and hands resting over the knees. The existing seven placements share these three static roles.
 
+The subsequent [tattooed visitor variant](tattoo/README.md) retains these original
+models and adds an appearance for the existing standing slot. The original
+three-role numbers and inspections below remain their historical records.
+
 The comparison [father-and-distinct-visitors.png](quality/father-and-distinct-visitors.png) uses the actual father bath outfit only for a read-only render beside the three exported visitors, with the same camera, meter scale and lighting. [comparison.json](quality/comparison.json) records the input hashes. This image does not change the father model.
 
 Comparison image: **CC BY 4.0 composite including the Meshy-derived father**; see [ATTRIBUTION.md](ATTRIBUTION.md) for credits, license links and the change notice. The NPC models themselves retain CC0 source / MIT project modifications.
