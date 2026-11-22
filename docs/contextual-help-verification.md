@@ -42,3 +42,26 @@ These checks are pending and must join the supervisor's final combined batch. Th
 The user authorized resolving concurrent conflicts and merging this change into production main. Public-handle/noreply local commit metadata, current main, deadline and source/index/distribution scans are checked before push. No force push, account permission change, paid service or Devpost submission is part of this work.
 
 The official [Kiroween rules](https://kiroween.devpost.com/rules) were rechecked on 2026-11-22; the published deadline remains 2026-12-04 14:00 PST (2026-12-05 07:00 JST). Category fit and participant eligibility remain separate unresolved submission matters from `kiroween-review.md`; this display change is not a claim of contest acceptance.
+
+## Help appearance follow-up — 2026-11-23
+
+Base: `9c710ea`, branch `fix/help-text-affordance`. Codex addressed the user's
+report that help looked like a button. World target text and the HUD target and
+secondary-action hints now use outlined/shadowed caption text without a filled
+panel or border. PC target text says `Eキーで…`; touch labels retain their action
+wording. Actual settings, map, touch and restart buttons are unchanged.
+
+- Focused existing help, target, touch-UI and main-Escape checks: **39 passed in
+  five files**. TypeScript and production-base build passed; the existing
+  bundle-size advisory remains. No new tests were added for this appearance edit.
+- This changes presentation only: target selection, depth testing, prompt
+  placement, help preferences, input and game rules are unchanged.
+- Independent review and source/distribution publication checks are pending.
+- Final visual confirmation belongs to the designated supervisor's combined
+  verification batch: check world text and HUD fallback against bright tiles
+  and dark rooms, narrow-screen wrapping of the longer PC wording, and clear
+  distinction from usable touch/settings buttons. No browser or playthrough was
+  performed for this follow-up, and earlier route results retain their revisions.
+- No assets, dependencies or licensing terms changed. This local follow-up does
+  not establish contest acceptance or publication; submission matters in
+  `kiroween-review.md` remain open.

@@ -316,7 +316,7 @@ function frame(nowMs: number): void {
   const obstacles = obstaclesFor(LEVEL, state.doors);
   const pose = camera.update(view.active, focus, dt, obstacles);
   const target = interactTarget(state, LEVEL);
-  const shown = target ? { ...target, label: touchMode ? target.label : `E：${target.label}` } : null;
+  const shown = target ? { ...target, label: touchMode ? target.label : `Eキーで${target.label}` } : null;
   const place = scene.render(view, pose, false, { target: shown, enabled: help.enabled, margin: touchMode ? MARGIN.touch : MARGIN.desktop });
   hud.setPrompt(place === "hud" && shown ? shown.label : null);
   touchUi.setLabel(target?.label ?? null);
