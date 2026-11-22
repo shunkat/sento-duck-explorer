@@ -1,0 +1,100 @@
+{
+  "role": "npc_bath_standing",
+  "source_model": "public/models/npc_bath_standing.glb",
+  "source_sha256": "0446e67bb93dbb2e0307b77732a490f96d654477d6dbf2bbae39fb753dc162cb",
+  "export_model": "public/models/npc_bath_standing_lod_far.glb",
+  "export_sha256": "d2bc8e2d2920d9d068ddd95772e9d516ff56bda17c87ab8004913b484dbd4bbe",
+  "near": {
+    "sha256": "0446e67bb93dbb2e0307b77732a490f96d654477d6dbf2bbae39fb753dc162cb",
+    "bytes": 83996,
+    "triangles": 1594,
+    "bounds": [
+      [
+        -0.22558753192424774,
+        0.0,
+        -0.13539397716522217
+      ],
+      [
+        0.22558753192424774,
+        1.600000023841858,
+        0.13539397716522217
+      ]
+    ],
+    "atlas_pixels": [
+      512,
+      512
+    ],
+    "mesh_node": 0,
+    "root_node": 0
+  },
+  "far": {
+    "sha256": "d2bc8e2d2920d9d068ddd95772e9d516ff56bda17c87ab8004913b484dbd4bbe",
+    "bytes": 62284,
+    "triangles": 594,
+    "bounds": [
+      [
+        -0.22430099546909332,
+        0.0,
+        -0.14484114944934845
+      ],
+      [
+        0.22430093586444855,
+        1.5968174934387207,
+        0.13539397716522217
+      ]
+    ],
+    "atlas_pixels": [
+      512,
+      512
+    ],
+    "mesh_node": 0,
+    "root_node": 0
+  },
+  "lod_min_max_distances_m": [
+    0.009534371516592224,
+    0.003432758247821056
+  ],
+  "floor_contact_adjustment_m": 0.0031825441401451826,
+  "source_envelope_fit_applied": false,
+  "face_protection": "Eye and brow connected components plus adjacent sockets, nose and mouth vertices excluded from collapse",
+  "protected_facial_island_vertices": 110,
+  "protected_hairline_vertices": 32,
+  "game_distance_comparison": {
+    "vertical_fov_degrees": 55,
+    "viewport": [
+      1280,
+      720
+    ],
+    "distance_m": 6.1
+  },
+  "raw_degenerate_triangles": 0,
+  "source_atlas_bytes_identical": true,
+  "source_atlas_sha256": "d916499873cc6d57d5795dc6db191045d38def25c1d77dd4bc369e98bdc96a9e",
+  "blend_source": "assets/sento_visitors/lod/blend/npc_bath_standing__lod_far_v01.blend",
+  "blend_sha256": "7d383bb57bed57b0d13ed3220b68bcd0042edf118c5436cfeb2865ee164f5e0a",
+  "reopened_geometry_images_identical": true,
+  "binary_metadata_audit": {
+    "decompressed_bytes": 861854,
+    "redacted_match_counts": {
+      "personal_absolute_paths": 0,
+      "private_candidate_paths": 0,
+      "file_uris": 0
+    }
+  },
+  "comparisons": [
+    {
+      "file": "assets/sento_visitors/lod/quality/npc_bath_standing_near_far_front.png",
+      "sha256": "73364183a5f9fd71363b50107a8a551796b4362358176874c2931c101a553c27"
+    },
+    {
+      "file": "assets/sento_visitors/lod/quality/npc_bath_standing_near_far_threequarter.png",
+      "sha256": "9906611d8fa6e34a2efef885b7eab965a4197ae26453029aa336196e1279ef76"
+    },
+    {
+      "file": "assets/sento_visitors/lod/quality/npc_bath_standing_near_far_game_distance.png",
+      "sha256": "f0dd00242be6164cc6d908535fd66d74d81df4de8058092eab071b0d6798ef8b"
+    }
+  ],
+  "source_unchanged": true,
+  "scope": "Static far LOD from independent near source; no playable family model referenced; visual acceptance is recorded separately."
+}

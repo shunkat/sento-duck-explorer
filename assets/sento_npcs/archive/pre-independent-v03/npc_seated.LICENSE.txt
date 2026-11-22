@@ -1,0 +1,14 @@
+npc_seated — Sento Duck Explorer
+
+Derived by the project in Blender 5.2.4 LTS from Adult v02,
+originally generated with Meshy 6 Lite from an original project reference.
+Source: https://www.meshy.ai/
+Terms: https://www.meshy.ai/terms-of-use/
+License: Creative Commons Attribution 4.0 International (CC BY 4.0)
+https://creativecommons.org/licenses/by/4.0/
+
+Modifications: source-derived background pose, protected facial UVs and body
+contours, detail-surface normal transfer and reduced geometry/512px texture.
+See assets/sento_npcs/README.md and assets/ledger.csv.
+Keep this attribution, license link and modification notice with copies.
+Meshy does not endorse this project.

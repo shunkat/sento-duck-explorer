@@ -1,0 +1,22 @@
+{
+  "views": [
+    {
+      "file": "tattoo_visitor_placement_v04.png",
+      "sha256": "917bb98de7d7b18b0f0b7b5d68917056fdb99aaed72d8f8bb5023de49c6398c7",
+      "eye_gltf_m": [
+        17.1,
+        1.45,
+        2.8
+      ],
+      "target_gltf_m": [
+        15.7,
+        0.95,
+        0.3
+      ],
+      "lens_mm": 48,
+      "source_world_sha256": "afbea3f724255c1016b4968aac2fdacafa787c402315488c2d839c91ea31b54b",
+      "source_geometry_materials_visibility_unchanged": true
+    }
+  ],
+  "scope": "Asset placement/contact inspection of the exact GLB; QA-only lights/cameras; no gameplay verification."
+}

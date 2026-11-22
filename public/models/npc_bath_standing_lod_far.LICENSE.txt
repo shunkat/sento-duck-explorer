@@ -1,10 +1,16 @@
 npc_bath_standing_lod_far — Sento Duck Explorer
-Source-derived far geometry from npc_bath_standing, itself derived from Adult v02.
-Original generation: Meshy 6 Lite, https://www.meshy.ai/
-License: CC BY 4.0, https://creativecommons.org/licenses/by/4.0/
-Modifications: seam-aware weighted reduction of the actual accepted NPC,
-source-normal transfer, preserved UV texture and authored coordinate frame.
-Far use is limited to camera-to-center distance >6m or Overview.
-Keep the Meshy credit, license link and modification notice with copies.
-See assets/sento_npcs/quality/distance-lod/README.md.
-No Meshy endorsement is implied.
+
+Source: Quaternius, Universal Base Characters - Free Standard
+https://quaternius.com/packs/universalbasecharacters
+Original source license: CC0 1.0 Universal
+https://creativecommons.org/publicdomain/zero/1.0/
+Original author license and unmodified selected files are retained in
+assets/public_sources/quaternius_universal_base/.
+
+Project modifications: distinct sento adult proportions/hairstyles and static
+pose, smooth non-anatomical toy body, authored clothing/color masks, protected
+face/hand reduction and an embedded color atlas. Distant variants reduce the
+same independent source while preserving its texture and coordinate frame.
+Project-held rights in these modifications are MIT (repository LICENSE).
+This model does not use the playable father/Adult geometry.
+See assets/sento_visitors/README.md and assets/ledger.csv for exact provenance.

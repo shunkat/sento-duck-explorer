@@ -1,0 +1,428 @@
+{
+  "base_sha256": "afbea3f724255c1016b4968aac2fdacafa787c402315488c2d839c91ea31b54b",
+  "output_sha256": "98f43e692fa430c2595acdf7c879a004735b4d0bc1b503a00fa69889b6cdde46",
+  "output_bytes": 6850416,
+  "preserved_source_binary_bytes": 6187470,
+  "replaced_nodes": [
+    "environment_static__bath_floor",
+    "environment_static__cedar",
+    "environment_static__ceramic_cream",
+    "environment_static__dark_cedar",
+    "environment_static__warm_plaster",
+    "environment_upper__cedar",
+    "environment_upper__navy_cloth",
+    "environment_upper__warm_plaster"
+  ],
+  "added_nodes": {
+    "growth_fixed_static": "environment_static",
+    "growth_fixed_upper": "environment_upper",
+    "growth_kids_gate": "sento_environment",
+    "growth_front_exit": "sento_environment"
+  },
+  "materials_images_textures_unchanged": true,
+  "growth_parent_sha256": "3c37930e66a6d27f2a32cc174b64cb54b6a713bfafd6322ef4959cbb7ec6eb00",
+  "geometry_patch_sha256": "326389cdbd2623ae1d632590148a7903c3df9d9b011ac189dc48f108393b7b83",
+  "contract_sha256": "a3400c8977eb46b71df0af40659d8b21a111e2aace38afd04f1b7a504b0d6775",
+  "current_layout_sha256": "01d4ef0eda8966fe87ec3ac4551bcce129bd697040ae6dd201a0cff50e9ceba8",
+  "current_source_files_match": {
+    "src/level/layout.ts": "db67af19c83231142755c1b1c2e57da1d90651a96361363380b220bfc12f7392",
+    "src/sim/geometry.ts": "add41da0b418a3445439e18f9ff3a91174023b8cbc263ce0c971ec45bec58d6c"
+  },
+  "active_hierarchy_and_transforms_match_growth_parent": true,
+  "all_v04_npc_nodes_and_provenance_unchanged": true,
+  "all_v04_materials_images_textures_unchanged": true,
+  "growth_architecture_material_texture_image_proofs": [
+    {
+      "material_index": 0,
+      "name": "ceramic_cream",
+      "descriptor_sha256": "fa3b4a3b207a9ada9a2c84481d031b4f89711d7bbbb7540cd886a3b5b47eef70",
+      "images": [
+        {
+          "image_index": 0,
+          "sha256": "ef58e396ed7e3e756e00cdf3c7dbafdc42e94412a98463ad3fe6de1a6503964f"
+        }
+      ]
+    },
+    {
+      "material_index": 1,
+      "name": "warm_plaster",
+      "descriptor_sha256": "576d126b34d0931604902fe061eb64b2a7b269400442cc1479e2a63d6b2e9c32",
+      "images": []
+    },
+    {
+      "material_index": 2,
+      "name": "bath_floor",
+      "descriptor_sha256": "fa5aeab203513647049123509607640d71a2f15cbeedf9f6e87b8c59b27d8771",
+      "images": [
+        {
+          "image_index": 1,
+          "sha256": "4cfbdf036cf1635dd754ad49ff68073fd956ec312021323db6e0e4a227dda0a3"
+        }
+      ]
+    },
+    {
+      "material_index": 3,
+      "name": "brushed_metal",
+      "descriptor_sha256": "5306ae274ee6a718a345db7f5655971c48387335cc2085f460366445a73b13d4",
+      "images": []
+    },
+    {
+      "material_index": 4,
+      "name": "cedar",
+      "descriptor_sha256": "1503adf5811e0349a223363ec0cefbecb6d72088b3fb2daa2de38bc4c395088c",
+      "images": [
+        {
+          "image_index": 2,
+          "sha256": "d2ae1719b7ec8a89ac31d427c6e43b5edec66f6bf3230864e9810ab61c8901d1"
+        },
+        {
+          "image_index": 3,
+          "sha256": "e6804ab132364c61788bd94894eb689f32d1a83928c9906839806f32d2c03dc9"
+        },
+        {
+          "image_index": 4,
+          "sha256": "6b6a4698b46ecb1304d0c4b1e7b69670384855c1b90e567776429ab78d4b5226"
+        }
+      ]
+    },
+    {
+      "material_index": 5,
+      "name": "ceramic_teal",
+      "descriptor_sha256": "1a8eeb4d11d448be93d71f1056b19b234b5491f7725c06b758ebd7af4cd36e21",
+      "images": [
+        {
+          "image_index": 5,
+          "sha256": "d9f04d8eb60d123c6460dd63317533670bd6d770eedabe98e1b067ca94136df1"
+        }
+      ]
+    },
+    {
+      "material_index": 6,
+      "name": "dark_cedar",
+      "descriptor_sha256": "db8254519edd584c79c347605d84fafe3f35e83a795ed1eb4ccfca65ad57ecf1",
+      "images": []
+    },
+    {
+      "material_index": 7,
+      "name": "garden_stone",
+      "descriptor_sha256": "2bec908dc4a66177ebeb61b363a26d685fd984f7162e1922b17663846f3b08d9",
+      "images": []
+    },
+    {
+      "material_index": 8,
+      "name": "mirror_glass",
+      "descriptor_sha256": "870dd8b39f8472da4ff7243425551d560c8e50a78739f44c3a5e53f379e5ead0",
+      "images": []
+    },
+    {
+      "material_index": 9,
+      "name": "sage_foliage",
+      "descriptor_sha256": "c271491aa89359fdbfba53bcc970f71d3e622fca3ff9757dda18dc27f2f208c3",
+      "images": []
+    },
+    {
+      "material_index": 10,
+      "name": "straw",
+      "descriptor_sha256": "f0df565d623cf0835cb759a17c22c2984999bc2c0f21651547a2d493962d6ed6",
+      "images": [
+        {
+          "image_index": 6,
+          "sha256": "f1b583a012eaa0794a9e3e1524da832205a01a4fa24423a1aba53d4ac50703b7"
+        }
+      ]
+    },
+    {
+      "material_index": 14,
+      "name": "fuji_mural",
+      "descriptor_sha256": "86fbd1be226e8875e25d60c8d9aca92353c7ba326c7af5f8b38a734510f9e00c",
+      "images": [
+        {
+          "image_index": 10,
+          "sha256": "c4eee5741685275bd4790320011c3c0cd81e8aeb694ff0657b9de58947b5c90a"
+        }
+      ]
+    },
+    {
+      "material_index": 15,
+      "name": "navy_cloth",
+      "descriptor_sha256": "1d74a0eda1ebe9937dfd3e7bc5477907b78093a1ae7dcdcf3cebe73bed5dcf1b",
+      "images": []
+    },
+    {
+      "material_index": 16,
+      "name": "rose_cloth",
+      "descriptor_sha256": "b967377ab54d9a8fe2a6e1f38821bfd739e9fca796332882ef1cbce3ab526005",
+      "images": []
+    }
+  ],
+  "architecture_leaf_proofs": [
+    {
+      "name": "environment_ceiling__ceramic_cream",
+      "fingerprint": "db4c1f15ad72d31003a50c1fb613f7b29a01a55afc35c7dd2a8b03d48d3de6ea",
+      "source": "growth_v02"
+    },
+    {
+      "name": "environment_ceiling__warm_plaster",
+      "fingerprint": "121b39cf8e68074459d0e23eb4caac0d11cd438e0a647291b5089ef1d12402c2",
+      "source": "growth_v02"
+    },
+    {
+      "name": "environment_static__bath_floor",
+      "fingerprint": "309dade1c631b20298630ded089f85e318449ebb8c3a4a10df4edd8596bcf19d",
+      "source": "growth_v02"
+    },
+    {
+      "name": "environment_static__brushed_metal",
+      "fingerprint": "84322e24fbf4442f5ac83ac610c75a87f5f3cd63f65853c57a780c2aa74f1aa4",
+      "source": "growth_v02"
+    },
+    {
+      "name": "environment_static__cedar",
+      "fingerprint": "30f4520c8c5ea8edf9053568952808392880d7240adb807f3018fccf02b25c0a",
+      "source": "growth_v02"
+    },
+    {
+      "name": "environment_static__ceramic_cream",
+      "fingerprint": "91db8d223b188cefceda0ce5d680e8a7736cec924a64125cbffebe06a2572098",
+      "source": "growth_v02"
+    },
+    {
+      "name": "environment_static__ceramic_teal",
+      "fingerprint": "025a42464f9fad8898b859a1fddea9df378b9c7fc8e45b271554adc06f2768e9",
+      "source": "growth_v02"
+    },
+    {
+      "name": "environment_static__dark_cedar",
+      "fingerprint": "61f3dab549639cc4348e291726adfc6226ddc993077f2e5379721ac84a79042b",
+      "source": "growth_v02"
+    },
+    {
+      "name": "environment_static__garden_stone",
+      "fingerprint": "2cf0925300ee8e1a42063843385ecf05f9aa05b9e8e8f484957f6d11a892d42d",
+      "source": "growth_v02"
+    },
+    {
+      "name": "environment_static__mirror_glass",
+      "fingerprint": "34ed47a8335963a01a7443e2e432729a5ba30d970d2559ece3f5e0dc1730f27f",
+      "source": "growth_v02"
+    },
+    {
+      "name": "environment_static__sage_foliage",
+      "fingerprint": "51fe909aea676960867a04669e03740996e194c882babd6998737c34aed89701",
+      "source": "growth_v02"
+    },
+    {
+      "name": "environment_static__straw",
+      "fingerprint": "841b9e15a9e8ba68e6d151978e020e9a7b1bbe98ab185a6568745808d9ba49df",
+      "source": "growth_v02"
+    },
+    {
+      "name": "environment_static__warm_plaster",
+      "fingerprint": "367f6930f2ed2fc1805768fb703d4420a5960d29d53d5b4d262ee7ec3303b2c0",
+      "source": "growth_v02"
+    },
+    {
+      "name": "environment_upper__brushed_metal",
+      "fingerprint": "e1c4e4a7e01a4ed123be3fb4d99d77490fb7eb0577c32b68cf43ef8227728158",
+      "source": "growth_v02"
+    },
+    {
+      "name": "environment_upper__cedar",
+      "fingerprint": "1b927f81df188dc514d478adc3391408b05e4534d12891a8322ff5e7b6ec6e4d",
+      "source": "growth_v02"
+    },
+    {
+      "name": "environment_upper__ceramic_cream",
+      "fingerprint": "a2367c471be03712f011c005c7222030aa15ae5b7d5fdffa524af0d5929b2985",
+      "source": "growth_v02"
+    },
+    {
+      "name": "environment_upper__dark_cedar",
+      "fingerprint": "1e9fa2f04dd7efad9de27fd98498e1f0b9d57a0851eec3c27ef9c28ea8efc174",
+      "source": "growth_v02"
+    },
+    {
+      "name": "environment_upper__fuji_mural",
+      "fingerprint": "6778fabd29967285384727411bf2b3cb567efb66d30714a033825b169763a5af",
+      "source": "v04"
+    },
+    {
+      "name": "environment_upper__mirror_glass",
+      "fingerprint": "3fd2a9f472893570a747aa1645f5f82a5ccdc6f7b0cffb9038ac06f88453946c",
+      "source": "growth_v02"
+    },
+    {
+      "name": "environment_upper__navy_cloth",
+      "fingerprint": "a87340afb9a44dd5aa2ac3dfd235f75971a3c67ebdf29c12ea9373a9655bba36",
+      "source": "growth_v02"
+    },
+    {
+      "name": "environment_upper__rose_cloth",
+      "fingerprint": "421eaf543c215793f1c6d5001876a7010570a577b7fa413e1f9236bc2f19e206",
+      "source": "growth_v02"
+    },
+    {
+      "name": "environment_upper__straw",
+      "fingerprint": "239b31222f4a2263f109082a0ae26113210b0dc2c6db69e5efc7aa2d061a858c",
+      "source": "growth_v02"
+    },
+    {
+      "name": "environment_upper__warm_plaster",
+      "fingerprint": "1623a01a499e86351cdb4e1344c8e517a3612be062c75341e50a862806e6b8c5",
+      "source": "growth_v02"
+    },
+    {
+      "name": "sauna_door__cedar",
+      "fingerprint": "430ab2fd6eb79d1073ac08e5e0cee9fe08dd9f6b0d55d05e6ad6dc2996d14f69",
+      "source": "growth_v02"
+    },
+    {
+      "name": "sauna_door__dark_cedar",
+      "fingerprint": "043e7750fe0e0b13f4ae647fcdd042060aafc8082a2b785641f4350e8be5f6cd",
+      "source": "growth_v02"
+    },
+    {
+      "name": "sauna_door__mirror_glass",
+      "fingerprint": "6b915761b24f16d135744de7d434481deb51a3663c30609db767b54aff9ddfd9",
+      "source": "growth_v02"
+    },
+    {
+      "name": "growth_fixed_static__cedar",
+      "fingerprint": "114b290ff12abb7dee2e18fe344382e6bbc34c3eb7ad62c0b3e0802439911af7",
+      "source": "growth_v02"
+    },
+    {
+      "name": "growth_fixed_static__ceramic_cream",
+      "fingerprint": "8252ba673c2a8abe67e1a5098a4589e7642c22f4daaa9a6a36beabc04c35e62a",
+      "source": "growth_v02"
+    },
+    {
+      "name": "growth_fixed_static__ceramic_teal",
+      "fingerprint": "1df0c75e093862eeea6fe4f856642898177e43eff6a89c097ca3da1917b75754",
+      "source": "growth_v02"
+    },
+    {
+      "name": "growth_fixed_static__garden_stone",
+      "fingerprint": "5d9f3c9f377d4524bb8a882f4b34e9a00a83df322517f4c92b850653f799ce99",
+      "source": "growth_v02"
+    },
+    {
+      "name": "growth_fixed_upper__cedar",
+      "fingerprint": "5462eaeb966c0f4750b44280b658452e8ca094bed160546e2bd8613f7f477e02",
+      "source": "growth_v02"
+    },
+    {
+      "name": "growth_fixed_upper__ceramic_cream",
+      "fingerprint": "01a36ab576699e8cca3ac68d3f6acc023374cb7985d8178b5cb14b9398af8f28",
+      "source": "growth_v02"
+    },
+    {
+      "name": "growth_fixed_upper__ceramic_teal",
+      "fingerprint": "c004a2ddf8bf9a81bbad957c96e58d9f863473d278ddfdfb0bd461aa1e864de0",
+      "source": "growth_v02"
+    },
+    {
+      "name": "growth_fixed_upper__dark_cedar",
+      "fingerprint": "118a01a552e6144d1f1e8cd830d5fb75e2c2b535596444a08caab303d53a7a0d",
+      "source": "growth_v02"
+    },
+    {
+      "name": "growth_fixed_upper__navy_cloth",
+      "fingerprint": "73e6efde8707118a0793d331da1d227c4a608c29a5b1894e88116a25b306e553",
+      "source": "growth_v02"
+    },
+    {
+      "name": "growth_front_exit_inset_lower",
+      "fingerprint": "64924360a48c1460cfb70aa80a6ecfc9f479025acca35bcb823db68b09f9383b",
+      "source": "growth_v02"
+    },
+    {
+      "name": "growth_front_exit_leaf_lower",
+      "fingerprint": "1a53764b34880dfb7fca955b594d075a158e5eaf7aedc06adcd8280f9914cc1e",
+      "source": "growth_v02"
+    },
+    {
+      "name": "growth_front_exit_handle_upper",
+      "fingerprint": "f525bfc0500e88eebe44da6252ee293c20aa457e2abdd416b4187caa547ffca4",
+      "source": "growth_v02"
+    },
+    {
+      "name": "growth_front_exit_inset_upper",
+      "fingerprint": "307ae6cc23b4c86ab8610fcd86fc557cbfbf5f2d7d5567c341c202043543f4d8",
+      "source": "growth_v02"
+    },
+    {
+      "name": "growth_front_exit_leaf_upper",
+      "fingerprint": "8f15d4f116c08dffdda88629024ad4f808f94b20df799f6c7dfdd9c3aeddad81",
+      "source": "growth_v02"
+    },
+    {
+      "name": "growth_kids_gate_inset_lower",
+      "fingerprint": "bf851dbd21442171c0553d7b318e06e651ddb849a0385cbe4c4fa5570e3d085a",
+      "source": "growth_v02"
+    },
+    {
+      "name": "growth_kids_gate_leaf_lower",
+      "fingerprint": "d729862665fbb8ae850d07c06aef8568a317ff6ff370d9217954341d178ad0bd",
+      "source": "growth_v02"
+    },
+    {
+      "name": "growth_kids_gate_handle_upper",
+      "fingerprint": "ca5076ace8cedd62075da17df2586c3117ee6fb379a54ec2677c1d9647976f3b",
+      "source": "growth_v02"
+    },
+    {
+      "name": "growth_kids_gate_inset_upper",
+      "fingerprint": "bd8409be6ae7ba438315a286baa9cf1a8136c4ada91f8b310eb0af6e5a3cb2f4",
+      "source": "growth_v02"
+    },
+    {
+      "name": "growth_kids_gate_leaf_upper",
+      "fingerprint": "4292c6ca71e860f6d250efd0b3c25c2fcb01451d745d3401f6aafedcc0e1c495",
+      "source": "growth_v02"
+    }
+  ],
+  "visitor_leaf_proofs": [
+    {
+      "name": "npc_seated_body",
+      "fingerprint": "4ac305330523698c9fc60d91d458077174a5141967b92c82852d36209e9043b9",
+      "source": "v04"
+    },
+    {
+      "name": "npc_seated_body.001",
+      "fingerprint": "0ffb49d7b1516262b52b10de4af3dfb23853630141d522112138832c40cd87d1",
+      "source": "v04"
+    },
+    {
+      "name": "npc_bath_standing_body",
+      "fingerprint": "5473b13c2909ff2a66c27ed5f8f76e3d18c1f0150d0110272d964da35f84ab19",
+      "source": "v04"
+    },
+    {
+      "name": "npc_seated_body.002",
+      "fingerprint": "002cabbd70624877788b59a9edbae22e21912dd3b5154084b055108ef3340643",
+      "source": "v04"
+    },
+    {
+      "name": "npc_seated_body.003",
+      "fingerprint": "627649473b3382c1259767d6050d3ae1ebf5a9c2a531554575605f568e16be6b",
+      "source": "v04"
+    },
+    {
+      "name": "npc_seated_body.004",
+      "fingerprint": "e8daf00519de874959ea858f98f2a34bf07ac4f00800e315129fd475e502221e",
+      "source": "v04"
+    },
+    {
+      "name": "npc_staff_body",
+      "fingerprint": "7f766d1d7d2def1310c7c4813823f0eeccdf7604e4fad1c940c96b333cc4d745",
+      "source": "v04"
+    }
+  ],
+  "fuji_source": "v04 preserves its corrected inward UVs and original image; growth architecture never replaces this node",
+  "active_mesh_count": 52,
+  "node_count": 89,
+  "stored_mesh_count": 60,
+  "stored_mesh_note": "Eight old replaced mesh descriptors/payloads remain unreferenced; active scene measurements do not count them.",
+  "scope": "Both parent contributions compared from actual accessor payloads; no gameplay verification"
+}

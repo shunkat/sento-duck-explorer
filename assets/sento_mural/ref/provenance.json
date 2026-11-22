@@ -10,5 +10,5 @@
   "sha256": "c4eee5741685275bd4790320011c3c0cd81e8aeb694ff0657b9de58947b5c90a",
   "input": "Original text prompt only; no third-party image inputs",
   "rights": "Project output rights released under MIT to the extent permitted by law; separate from Meshy-derived geometry",
-  "status": "generated and visually inspected; integration pending"
+  "status": "Original PNG preserved and embedded unchanged on the bath wall; environment v03 corrects the inward-facing UV orientation; see assets/sento_mural/README.md"
 }

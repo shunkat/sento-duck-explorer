@@ -1,5 +1,5 @@
 {
-  "scope": "Selected original public source assets only; no runtime adoption or scene-quality completion is implied.",
+  "scope": "Selected unmodified CC0 environment and character sources; runtime use is recorded separately in the asset ledger and per-asset quality records.",
   "checked_date_utc": "2026-11-21",
   "license": "CC0-1.0 for all selected source assets",
   "packages": [
@@ -12,6 +12,20 @@
       "package": "kenney_nature",
       "source_record": "assets/public_sources/kenney_nature/source.json",
       "selected_models": 10
+    },
+    {
+      "package": "quaternius_universal_base",
+      "source_record": "assets/public_sources/quaternius_universal_base/source.json",
+      "selected_models": 5,
+      "selected_files": 20,
+      "selected_bytes": 21647457,
+      "roles": [
+        "male body",
+        "buzzed hair",
+        "parted hair",
+        "beard",
+        "eyebrows"
+      ]
     }
   ],
   "texture_sets": [
@@ -34,10 +48,10 @@
       "bytes": 2192388
     }
   ],
-  "selected_model_count": 19,
+  "selected_model_count": 24,
   "selected_texture_count": 6,
   "texture_bytes": 3333008,
-  "source_model_bytes": 162012,
+  "source_model_bytes": 1175236,
   "geometry_inspection": "quality/model-measurements.json",
   "coordinate_note": "Dimensions are measured from actual imported GLBs, including node transforms, in native glTF XYZ (Y up). They are author native values, not verified real furniture dimensions.",
   "absent_requested_items": [
@@ -50,9 +64,8 @@
   "unmodified_source_files_sha256": "SHA256SUMS",
   "actions_not_taken": [
     "No purchase or account creation",
-    "No source geometry or texture modification",
-    "No shared ledger/manifest/src changes",
-    "No commit, push or deployment"
+    "No selected original source geometry or texture modification"
   ],
-  "round_rock_supplement": "quality/round-rock-measurements.json"
+  "round_rock_supplement": "quality/round-rock-measurements.json",
+  "texture_count_scope": "selected_texture_count and texture_bytes count the six standalone Poly Haven maps. Quaternius dependent images are included separately in its package selected_files/selected_bytes, including retained duplicate path dependencies."
 }

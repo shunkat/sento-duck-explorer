@@ -1,0 +1,29 @@
+{
+  "result": "PASS",
+  "candidate_sha256": "888017c8912e37dcce7f7c9522fe4aad8e26200b354b1b867d8238eea0ee98a6",
+  "blend_sha256": "a784feee08ee32ee948ced387355a2a87d6b6462bdbec40797af9d5626741a41",
+  "uv_1024_pixel_center_coverage": {
+    "outfit_clothed": {
+      "face_patch_covered_texels": 331005,
+      "face_patch_overlapping_texels": 0,
+      "facial_feature_region_texels": 67364,
+      "facial_features_overlapping_texels": 0,
+      "eye_neighborhood_texels": 9260,
+      "eye_neighborhood_overlapping_texels": 0
+    },
+    "outfit_bath": {
+      "face_patch_covered_texels": 328050,
+      "face_patch_overlapping_texels": 0,
+      "facial_feature_region_texels": 66234,
+      "facial_features_overlapping_texels": 0,
+      "eye_neighborhood_texels": 9793,
+      "eye_neighborhood_overlapping_texels": 0
+    }
+  },
+  "packed_images": true,
+  "metadata_heuristic_findings": {
+    "uncompressed_blend": [],
+    "candidate_glb": []
+  },
+  "limits": "UV overlap is sampled at 1024 pixel centers, excluding exact triangle edges. Metadata scan is heuristic, not exhaustive."
+}

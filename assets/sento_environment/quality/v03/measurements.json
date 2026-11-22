@@ -1,0 +1,2070 @@
+{
+  "layout_sha256": "8bee95aa4ad7e753f521c4327e7586d3df4717e6c1aa9072790a0c40ecc52ab5",
+  "export_sha256": "6ac2a9e99b4d068118ad30ddd01c9feda9ec273ade594aa157a39010d21b4c98",
+  "export_bytes": 5931660,
+  "blend_sha256": "95ee169db14ea863c656f987e090f8d162398f304d02340bc0d746daaf04d838",
+  "architecture_triangles": 7996,
+  "npc_triangles": 12157,
+  "triangles_by_placement": {
+    "fixtures_09": 236,
+    "additional_ceilings": 84,
+    "zones_03": 72,
+    "zones_01": 12,
+    "fixtures_16": 167,
+    "fixtures_23": 168,
+    "fixtures_04": 165,
+    "fixtures_08": 168,
+    "decor_23": 84,
+    "decor_24": 96,
+    "zones_04": 12,
+    "zones_06": 12,
+    "npcs_00": 84,
+    "npcs_01": 84,
+    "npcs_03": 84,
+    "npcs_04": 84,
+    "npcs_05": 84,
+    "decor_02": 64,
+    "decor_26": 44,
+    "fixtures_01": 68,
+    "fixtures_03": 56,
+    "additional_door_frames": 72,
+    "zones_07": 12,
+    "fixtures_28": 156,
+    "fixtures_29": 276,
+    "additional_fuji_mural": 12,
+    "fixtures_20": 188,
+    "fixtures_30": 44,
+    "fixtures_31": 44,
+    "fixtures_17": 44,
+    "fixtures_18": 44,
+    "fixtures_19": 44,
+    "fixtures_07": 268,
+    "decor_04": 44,
+    "decor_11": 76,
+    "decor_14": 76,
+    "decor_17": 76,
+    "decor_20": 76,
+    "decor_03": 76,
+    "decor_08": 76,
+    "additional_narrow_hole_lid_lintel": 24,
+    "zones_00": 12,
+    "decor_01": 64,
+    "decor_00": 64,
+    "zones_10": 12,
+    "fixtures_22": 236,
+    "fixtures_15": 236,
+    "zones_11": 12,
+    "zones_13": 12,
+    "fixtures_32": 56,
+    "fixtures_33": 56,
+    "fixtures_34": 56,
+    "fixtures_35": 56,
+    "zones_05": 12,
+    "fixtures_26": 268,
+    "fixtures_27": 268,
+    "zones_08": 12,
+    "additional_sauna_door": 116,
+    "zones_09": 12,
+    "fixtures_06": 236,
+    "fixtures_21": 112,
+    "decor_07": 44,
+    "fixtures_00": 352,
+    "decor_25": 68,
+    "decor_05": 68,
+    "decor_06": 68,
+    "fixtures_24": 132,
+    "fixtures_25": 132,
+    "fixtures_05": 44,
+    "decor_27": 12,
+    "decor_28": 12,
+    "decor_12": 76,
+    "decor_15": 76,
+    "decor_18": 76,
+    "decor_21": 76,
+    "decor_09": 76,
+    "structural_walls_00": 42,
+    "structural_walls_10": 42,
+    "structural_walls_11": 42,
+    "structural_walls_12": 42,
+    "structural_walls_13": 42,
+    "structural_walls_14": 42,
+    "structural_walls_15": 42,
+    "structural_walls_16": 32,
+    "structural_walls_17": 64,
+    "structural_walls_18": 32,
+    "structural_walls_19": 32,
+    "structural_walls_01": 42,
+    "structural_walls_20": 32,
+    "structural_walls_21": 64,
+    "structural_walls_22": 64,
+    "structural_walls_23": 64,
+    "structural_walls_24": 32,
+    "structural_walls_25": 32,
+    "structural_walls_02": 42,
+    "structural_walls_03": 42,
+    "structural_walls_04": 42,
+    "structural_walls_05": 42,
+    "structural_walls_06": 42,
+    "structural_walls_07": 42,
+    "structural_walls_08": 42,
+    "structural_walls_09": 42
+  },
+  "export_triangles": 20153,
+  "mesh_count": 33,
+  "materials": [
+    "bath_floor",
+    "brushed_metal",
+    "cedar",
+    "ceramic_cream",
+    "ceramic_teal",
+    "dark_cedar",
+    "fuji_mural",
+    "garden_stone",
+    "mirror_glass",
+    "navy_cloth",
+    "npc_bath_standing_single_atlas",
+    "npc_seated_single_atlas",
+    "npc_staff_single_atlas",
+    "rose_cloth",
+    "sage_foliage",
+    "straw",
+    "warm_plaster"
+  ],
+  "bounds_gltf_m": [
+    [
+      -3.200000047683716,
+      -0.28999999165534973,
+      -9.100000381469727
+    ],
+    [
+      36.099998474121094,
+      2.75,
+      12.100000381469727
+    ]
+  ],
+  "finite_vertices": true,
+  "degenerate_faces": 16,
+  "coverage": {
+    "zones_00": {
+      "status": "authored",
+      "objects_before_batching": [
+        "narrow_hole_recessed_bed"
+      ]
+    },
+    "zones_01": {
+      "status": "authored",
+      "objects_before_batching": [
+        "bathwater_recessed_bed"
+      ]
+    },
+    "zones_02": {
+      "status": "independent_runtime_overlay"
+    },
+    "zones_03": {
+      "status": "authored",
+      "objects_before_batching": [
+        "bath_floor_0",
+        "bath_floor_1",
+        "bath_floor_2",
+        "bath_floor_3",
+        "bath_floor_4",
+        "bath_floor_5"
+      ]
+    },
+    "zones_04": {
+      "status": "authored",
+      "objects_before_batching": [
+        "changing_floor_0"
+      ]
+    },
+    "zones_05": {
+      "status": "authored",
+      "objects_before_batching": [
+        "reception_floor_0"
+      ]
+    },
+    "zones_06": {
+      "status": "authored",
+      "objects_before_batching": [
+        "common_floor_0"
+      ]
+    },
+    "zones_07": {
+      "status": "authored",
+      "objects_before_batching": [
+        "exterior_floor_0"
+      ]
+    },
+    "zones_08": {
+      "status": "authored",
+      "objects_before_batching": [
+        "sauna_crowd_floor_0"
+      ]
+    },
+    "zones_09": {
+      "status": "authored",
+      "objects_before_batching": [
+        "sauna_entry_floor_0"
+      ]
+    },
+    "zones_10": {
+      "status": "authored",
+      "objects_before_batching": [
+        "open_air_floor_0"
+      ]
+    },
+    "zones_11": {
+      "status": "authored",
+      "objects_before_batching": [
+        "pond_entrance_floor_0"
+      ]
+    },
+    "zones_12": {
+      "status": "independent_runtime_overlay"
+    },
+    "zones_13": {
+      "status": "authored",
+      "objects_before_batching": [
+        "pond_recessed_bed"
+      ]
+    },
+    "structural_walls_00": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_0_0_lower",
+        "wall_0_0_upper",
+        "wall_0_0_cap",
+        "wall_0_0_skirting"
+      ]
+    },
+    "structural_walls_01": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_1_0_lower",
+        "wall_1_0_upper",
+        "wall_1_0_cap",
+        "wall_1_0_skirting"
+      ]
+    },
+    "structural_walls_02": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_2_0_lower",
+        "wall_2_0_upper",
+        "wall_2_0_cap",
+        "wall_2_0_skirting"
+      ]
+    },
+    "structural_walls_03": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_3_0_lower",
+        "wall_3_0_upper",
+        "wall_3_0_cap",
+        "wall_3_0_skirting"
+      ]
+    },
+    "structural_walls_04": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_4_0_lower",
+        "wall_4_0_upper",
+        "wall_4_0_cap",
+        "wall_4_0_skirting"
+      ]
+    },
+    "structural_walls_05": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_5_0_lower",
+        "wall_5_0_upper",
+        "wall_5_0_cap",
+        "wall_5_0_skirting"
+      ]
+    },
+    "structural_walls_06": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_6_0_lower",
+        "wall_6_0_upper",
+        "wall_6_0_cap",
+        "wall_6_0_skirting"
+      ]
+    },
+    "structural_walls_07": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_7_0_lower",
+        "wall_7_0_upper",
+        "wall_7_0_cap",
+        "wall_7_0_skirting"
+      ]
+    },
+    "structural_walls_08": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_8_0_lower",
+        "wall_8_0_upper",
+        "wall_8_0_cap",
+        "wall_8_0_skirting"
+      ]
+    },
+    "structural_walls_09": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_9_0_lower",
+        "wall_9_0_upper",
+        "wall_9_0_cap",
+        "wall_9_0_skirting"
+      ]
+    },
+    "structural_walls_10": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_10_0_lower",
+        "wall_10_0_upper",
+        "wall_10_0_cap",
+        "wall_10_0_skirting"
+      ]
+    },
+    "structural_walls_11": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_11_0_lower",
+        "wall_11_0_upper",
+        "wall_11_0_cap",
+        "wall_11_0_skirting"
+      ]
+    },
+    "structural_walls_12": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_12_0_lower",
+        "wall_12_0_upper",
+        "wall_12_0_cap",
+        "wall_12_0_skirting"
+      ]
+    },
+    "structural_walls_13": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_13_0_lower",
+        "wall_13_0_upper",
+        "wall_13_0_cap",
+        "wall_13_0_skirting"
+      ]
+    },
+    "structural_walls_14": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_14_0_lower",
+        "wall_14_0_upper",
+        "wall_14_0_cap",
+        "wall_14_0_skirting"
+      ]
+    },
+    "structural_walls_15": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_15_0_lower",
+        "wall_15_0_upper",
+        "wall_15_0_cap",
+        "wall_15_0_skirting"
+      ]
+    },
+    "structural_walls_16": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_16_0_lower",
+        "wall_16_0_upper",
+        "wall_16_0_cap"
+      ]
+    },
+    "structural_walls_17": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_17_0_lower",
+        "wall_17_0_upper",
+        "wall_17_0_cap",
+        "wall_17_1_lower",
+        "wall_17_1_upper",
+        "wall_17_1_cap"
+      ]
+    },
+    "structural_walls_18": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_18_0_lower",
+        "wall_18_0_upper",
+        "wall_18_0_cap"
+      ]
+    },
+    "structural_walls_19": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_19_0_lower",
+        "wall_19_0_upper",
+        "wall_19_0_cap"
+      ]
+    },
+    "structural_walls_20": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_20_0_lower",
+        "wall_20_0_upper",
+        "wall_20_0_cap"
+      ]
+    },
+    "structural_walls_21": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_21_0_lower",
+        "wall_21_0_upper",
+        "wall_21_0_cap",
+        "wall_21_1_lower",
+        "wall_21_1_upper",
+        "wall_21_1_cap"
+      ]
+    },
+    "structural_walls_22": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_22_0_lower",
+        "wall_22_0_upper",
+        "wall_22_0_cap",
+        "wall_22_1_lower",
+        "wall_22_1_upper",
+        "wall_22_1_cap"
+      ]
+    },
+    "structural_walls_23": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_23_0_lower",
+        "wall_23_0_upper",
+        "wall_23_0_cap",
+        "wall_23_1_lower",
+        "wall_23_1_upper",
+        "wall_23_1_cap"
+      ]
+    },
+    "structural_walls_24": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_24_0_lower",
+        "wall_24_0_upper",
+        "wall_24_0_cap"
+      ]
+    },
+    "structural_walls_25": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_25_0_lower",
+        "wall_25_0_upper",
+        "wall_25_0_cap"
+      ]
+    },
+    "additional_door_frames": {
+      "status": "authored",
+      "objects_before_batching": [
+        "door_header_0",
+        "door_header_1",
+        "door_header_2",
+        "door_header_3",
+        "door_header_5",
+        "door_header_6"
+      ]
+    },
+    "fixtures_00": {
+      "status": "authored",
+      "objects_before_batching": [
+        "shoeLocker_0_carcass_lower",
+        "shoeLocker_0_carcass_upper",
+        "shoeLocker_0_door0_0_lower",
+        "shoeLocker_0_pull",
+        "shoeLocker_0_door0_1_lower",
+        "shoeLocker_0_pull.001",
+        "shoeLocker_0_door0_2_lower",
+        "shoeLocker_0_pull.002",
+        "shoeLocker_0_door0_3_lower",
+        "shoeLocker_0_pull.003",
+        "shoeLocker_0_door0_4_lower",
+        "shoeLocker_0_pull.004",
+        "shoeLocker_0_door0_5_lower",
+        "shoeLocker_0_pull.005",
+        "shoeLocker_0_door1_0_lower",
+        "shoeLocker_0_pull.006",
+        "shoeLocker_0_door1_1_lower",
+        "shoeLocker_0_pull.007",
+        "shoeLocker_0_door1_2_lower",
+        "shoeLocker_0_pull.008",
+        "shoeLocker_0_door1_3_lower",
+        "shoeLocker_0_pull.009",
+        "shoeLocker_0_door1_4_lower",
+        "shoeLocker_0_pull.010",
+        "shoeLocker_0_door1_5_lower",
+        "shoeLocker_0_pull.011",
+        "shoeLocker_0_door2_0_lower",
+        "shoeLocker_0_door2_0_upper",
+        "shoeLocker_0_pull.012",
+        "shoeLocker_0_door2_1_lower",
+        "shoeLocker_0_door2_1_upper",
+        "shoeLocker_0_pull.013",
+        "shoeLocker_0_door2_2_lower",
+        "shoeLocker_0_door2_2_upper",
+        "shoeLocker_0_pull.014",
+        "shoeLocker_0_door2_3_lower",
+        "shoeLocker_0_door2_3_upper",
+        "shoeLocker_0_pull.015",
+        "shoeLocker_0_door2_4_lower",
+        "shoeLocker_0_door2_4_upper",
+        "shoeLocker_0_pull.016",
+        "shoeLocker_0_door2_5_lower",
+        "shoeLocker_0_door2_5_upper",
+        "shoeLocker_0_pull.017"
+      ]
+    },
+    "fixtures_01": {
+      "status": "authored",
+      "objects_before_batching": [
+        "desk_1_body",
+        "desk_1_counter",
+        "desk_1_inlay"
+      ]
+    },
+    "fixtures_02": {
+      "status": "authored",
+      "objects_before_batching": [
+        "npc_staff_body"
+      ],
+      "npc_replacement_model": "npc_staff",
+      "npc_replacement_source_sha256": "e479a4a9012e7de52216087cd18a706376e274f15589e576e473449110eac926"
+    },
+    "fixtures_03": {
+      "status": "authored",
+      "objects_before_batching": [
+        "desk_3_body",
+        "desk_3_counter"
+      ]
+    },
+    "fixtures_04": {
+      "status": "authored",
+      "objects_before_batching": [
+        "bench_4"
+      ]
+    },
+    "fixtures_05": {
+      "status": "authored",
+      "objects_before_batching": [
+        "step_5"
+      ]
+    },
+    "fixtures_06": {
+      "status": "authored",
+      "objects_before_batching": [
+        "screen_6_panel_lower",
+        "screen_6_panel_upper",
+        "screen_6_post_lower",
+        "screen_6_post_upper",
+        "screen_6_post_lower.001",
+        "screen_6_post_upper.001",
+        "screen_6_crossbar",
+        "screen_6_crossbar.001",
+        "screen_6_crossbar.002"
+      ]
+    },
+    "fixtures_07": {
+      "status": "authored",
+      "objects_before_batching": [
+        "locker_7_carcass_lower",
+        "locker_7_carcass_upper",
+        "locker_7_door0_0_lower",
+        "locker_7_pull",
+        "locker_7_door0_1_lower",
+        "locker_7_pull.001",
+        "locker_7_door0_2_lower",
+        "locker_7_pull.002",
+        "locker_7_door0_3_lower",
+        "locker_7_pull.003",
+        "locker_7_door0_4_lower",
+        "locker_7_pull.004",
+        "locker_7_door0_5_lower",
+        "locker_7_pull.005",
+        "locker_7_door1_0_lower",
+        "locker_7_door1_0_upper",
+        "locker_7_pull.006",
+        "locker_7_door1_1_lower",
+        "locker_7_door1_1_upper",
+        "locker_7_pull.007",
+        "locker_7_door1_2_lower",
+        "locker_7_door1_2_upper",
+        "locker_7_pull.008",
+        "locker_7_door1_3_lower",
+        "locker_7_door1_3_upper",
+        "locker_7_pull.009",
+        "locker_7_door1_4_lower",
+        "locker_7_door1_4_upper",
+        "locker_7_pull.010",
+        "locker_7_door1_5_lower",
+        "locker_7_door1_5_upper",
+        "locker_7_pull.011"
+      ]
+    },
+    "fixtures_08": {
+      "status": "authored",
+      "objects_before_batching": [
+        "bench_8"
+      ]
+    },
+    "fixtures_09": {
+      "status": "authored",
+      "objects_before_batching": [
+        "basin_9_wall_0",
+        "basin_9_wall_1",
+        "basin_9_wall_2",
+        "basin_9_wall_3",
+        "basin_9_rolled_rim_0",
+        "basin_9_rolled_rim_1",
+        "basin_9_rolled_rim_2",
+        "basin_9_rolled_rim_3",
+        "basin_9_inside_floor"
+      ]
+    },
+    "fixtures_10": {
+      "status": "independent_existing_bath_stool"
+    },
+    "fixtures_11": {
+      "status": "independent_existing_bath_stool"
+    },
+    "fixtures_12": {
+      "status": "independent_existing_bath_stool"
+    },
+    "fixtures_13": {
+      "status": "independent_existing_bath_stool"
+    },
+    "fixtures_14": {
+      "status": "independent_existing_bath_stool"
+    },
+    "fixtures_15": {
+      "status": "authored",
+      "objects_before_batching": [
+        "plunge_15_wall_0",
+        "plunge_15_wall_1",
+        "plunge_15_wall_2",
+        "plunge_15_wall_3",
+        "plunge_15_rolled_rim_0",
+        "plunge_15_rolled_rim_1",
+        "plunge_15_rolled_rim_2",
+        "plunge_15_rolled_rim_3",
+        "plunge_15_inside_floor"
+      ]
+    },
+    "fixtures_16": {
+      "status": "authored",
+      "objects_before_batching": [
+        "bench_16"
+      ]
+    },
+    "fixtures_17": {
+      "status": "authored",
+      "objects_before_batching": [
+        "holeSide_17"
+      ]
+    },
+    "fixtures_18": {
+      "status": "authored",
+      "objects_before_batching": [
+        "holeSide_18"
+      ]
+    },
+    "fixtures_19": {
+      "status": "authored",
+      "objects_before_batching": [
+        "holeSide_19"
+      ]
+    },
+    "fixtures_20": {
+      "status": "authored",
+      "objects_before_batching": [
+        "heater_20_body",
+        "heater_20_heater_stone",
+        "heater_20_heater_stone.001",
+        "heater_20_heater_stone.002",
+        "heater_20_heater_stone.003",
+        "heater_20_heater_stone.004",
+        "heater_20_heater_stone.005",
+        "heater_20_guard",
+        "heater_20_guard.001"
+      ]
+    },
+    "fixtures_21": {
+      "status": "authored",
+      "objects_before_batching": [
+        "shelf_21_shelf",
+        "shelf_21_shelf.001",
+        "shelf_21_upright",
+        "shelf_21_upright.001"
+      ]
+    },
+    "fixtures_22": {
+      "status": "authored",
+      "objects_before_batching": [
+        "outdoorBath_22_wall_0",
+        "outdoorBath_22_wall_1",
+        "outdoorBath_22_wall_2",
+        "outdoorBath_22_wall_3",
+        "outdoorBath_22_rolled_rim_0",
+        "outdoorBath_22_rolled_rim_1",
+        "outdoorBath_22_rolled_rim_2",
+        "outdoorBath_22_rolled_rim_3",
+        "outdoorBath_22_inside_floor"
+      ]
+    },
+    "fixtures_23": {
+      "status": "authored",
+      "objects_before_batching": [
+        "bench_23"
+      ]
+    },
+    "fixtures_24": {
+      "status": "authored",
+      "objects_before_batching": [
+        "shrub_24_stem",
+        "shrub_24_foliage"
+      ]
+    },
+    "fixtures_25": {
+      "status": "authored",
+      "objects_before_batching": [
+        "shrub_25_stem",
+        "shrub_25_foliage"
+      ]
+    },
+    "fixtures_26": {
+      "status": "authored",
+      "objects_before_batching": [
+        "rock_26_boulder0",
+        "rock_26_boulder1",
+        "rock_26_boulder2",
+        "rock_26_boulder3",
+        "rock_26_boulder4"
+      ]
+    },
+    "fixtures_27": {
+      "status": "authored",
+      "objects_before_batching": [
+        "rock_27_boulder0",
+        "rock_27_boulder1",
+        "rock_27_boulder2",
+        "rock_27_boulder3",
+        "rock_27_boulder4"
+      ]
+    },
+    "fixtures_28": {
+      "status": "authored",
+      "objects_before_batching": [
+        "fence_28_hinoki_panel_lower",
+        "fence_28_hinoki_panel_upper",
+        "fence_28_post0_lower",
+        "fence_28_post0_upper",
+        "fence_28_post1_lower",
+        "fence_28_post1_upper",
+        "fence_28_post2_lower",
+        "fence_28_post2_upper",
+        "fence_28_post3_lower",
+        "fence_28_post3_upper",
+        "fence_28_rail",
+        "fence_28_rail.001",
+        "fence_28_rail.002"
+      ]
+    },
+    "fixtures_29": {
+      "status": "authored",
+      "objects_before_batching": [
+        "fence_29_hinoki_panel_lower",
+        "fence_29_hinoki_panel_upper",
+        "fence_29_post0_lower",
+        "fence_29_post0_upper",
+        "fence_29_post1_lower",
+        "fence_29_post1_upper",
+        "fence_29_post2_lower",
+        "fence_29_post2_upper",
+        "fence_29_post3_lower",
+        "fence_29_post3_upper",
+        "fence_29_post4_lower",
+        "fence_29_post4_upper",
+        "fence_29_post5_lower",
+        "fence_29_post5_upper",
+        "fence_29_post6_lower",
+        "fence_29_post6_upper",
+        "fence_29_post7_lower",
+        "fence_29_post7_upper",
+        "fence_29_post8_lower",
+        "fence_29_post8_upper",
+        "fence_29_rail",
+        "fence_29_rail.001",
+        "fence_29_rail.002"
+      ]
+    },
+    "fixtures_30": {
+      "status": "authored",
+      "objects_before_batching": [
+        "hedge_30_clipped_body"
+      ]
+    },
+    "fixtures_31": {
+      "status": "authored",
+      "objects_before_batching": [
+        "hedge_31_clipped_body"
+      ]
+    },
+    "fixtures_32": {
+      "status": "authored",
+      "objects_before_batching": [
+        "pondEdge_32_bank",
+        "pondEdge_32_cap"
+      ]
+    },
+    "fixtures_33": {
+      "status": "authored",
+      "objects_before_batching": [
+        "pondEdge_33_bank",
+        "pondEdge_33_cap"
+      ]
+    },
+    "fixtures_34": {
+      "status": "authored",
+      "objects_before_batching": [
+        "pondEdge_34_bank",
+        "pondEdge_34_cap"
+      ]
+    },
+    "fixtures_35": {
+      "status": "authored",
+      "objects_before_batching": [
+        "pondEdge_35_bank",
+        "pondEdge_35_cap"
+      ]
+    },
+    "decor_00": {
+      "status": "authored",
+      "objects_before_batching": [
+        "norenWomen_0_fabric0",
+        "norenWomen_0_fabric1",
+        "norenWomen_0_fabric2",
+        "norenWomen_0_rail"
+      ]
+    },
+    "decor_01": {
+      "status": "authored",
+      "objects_before_batching": [
+        "norenMen_1_fabric0",
+        "norenMen_1_fabric1",
+        "norenMen_1_fabric2",
+        "norenMen_1_rail"
+      ]
+    },
+    "decor_02": {
+      "status": "authored",
+      "objects_before_batching": [
+        "curtain_2_fabric0",
+        "curtain_2_fabric1",
+        "curtain_2_fabric2",
+        "curtain_2_rail"
+      ]
+    },
+    "decor_03": {
+      "status": "authored",
+      "objects_before_batching": [
+        "mirror_3_glass_lower",
+        "mirror_3_glass_upper",
+        "mirror_3_frame0_lower",
+        "mirror_3_frame0_upper",
+        "mirror_3_frame1_lower",
+        "mirror_3_frame1_upper",
+        "mirror_3_bottom_lower",
+        "mirror_3_top_upper"
+      ]
+    },
+    "decor_04": {
+      "status": "authored",
+      "objects_before_batching": [
+        "mat_4"
+      ]
+    },
+    "decor_05": {
+      "status": "authored",
+      "objects_before_batching": [
+        "shower_5_stem",
+        "shower_5_neck",
+        "shower_5_head"
+      ]
+    },
+    "decor_06": {
+      "status": "authored",
+      "objects_before_batching": [
+        "shower_6_stem",
+        "shower_6_neck",
+        "shower_6_head"
+      ]
+    },
+    "decor_07": {
+      "status": "authored",
+      "objects_before_batching": [
+        "shelf_7"
+      ]
+    },
+    "decor_08": {
+      "status": "authored",
+      "objects_before_batching": [
+        "mirror_8_glass_lower",
+        "mirror_8_glass_upper",
+        "mirror_8_frame0_lower",
+        "mirror_8_frame0_upper",
+        "mirror_8_frame1_lower",
+        "mirror_8_frame1_upper",
+        "mirror_8_bottom_lower",
+        "mirror_8_top_upper"
+      ]
+    },
+    "decor_09": {
+      "status": "authored",
+      "objects_before_batching": [
+        "tap_9_base",
+        "tap_9_spout",
+        "tap_9_lever"
+      ]
+    },
+    "decor_10": {
+      "status": "independent_existing_wash_basin"
+    },
+    "decor_11": {
+      "status": "authored",
+      "objects_before_batching": [
+        "mirror_11_glass_lower",
+        "mirror_11_glass_upper",
+        "mirror_11_frame0_lower",
+        "mirror_11_frame0_upper",
+        "mirror_11_frame1_lower",
+        "mirror_11_frame1_upper",
+        "mirror_11_bottom_lower",
+        "mirror_11_top_upper"
+      ]
+    },
+    "decor_12": {
+      "status": "authored",
+      "objects_before_batching": [
+        "tap_12_base",
+        "tap_12_spout",
+        "tap_12_lever"
+      ]
+    },
+    "decor_13": {
+      "status": "independent_existing_wash_basin"
+    },
+    "decor_14": {
+      "status": "authored",
+      "objects_before_batching": [
+        "mirror_14_glass_lower",
+        "mirror_14_glass_upper",
+        "mirror_14_frame0_lower",
+        "mirror_14_frame0_upper",
+        "mirror_14_frame1_lower",
+        "mirror_14_frame1_upper",
+        "mirror_14_bottom_lower",
+        "mirror_14_top_upper"
+      ]
+    },
+    "decor_15": {
+      "status": "authored",
+      "objects_before_batching": [
+        "tap_15_base",
+        "tap_15_spout",
+        "tap_15_lever"
+      ]
+    },
+    "decor_16": {
+      "status": "independent_existing_wash_basin"
+    },
+    "decor_17": {
+      "status": "authored",
+      "objects_before_batching": [
+        "mirror_17_glass_lower",
+        "mirror_17_glass_upper",
+        "mirror_17_frame0_lower",
+        "mirror_17_frame0_upper",
+        "mirror_17_frame1_lower",
+        "mirror_17_frame1_upper",
+        "mirror_17_bottom_lower",
+        "mirror_17_top_upper"
+      ]
+    },
+    "decor_18": {
+      "status": "authored",
+      "objects_before_batching": [
+        "tap_18_base",
+        "tap_18_spout",
+        "tap_18_lever"
+      ]
+    },
+    "decor_19": {
+      "status": "independent_existing_wash_basin"
+    },
+    "decor_20": {
+      "status": "authored",
+      "objects_before_batching": [
+        "mirror_20_glass_lower",
+        "mirror_20_glass_upper",
+        "mirror_20_frame0_lower",
+        "mirror_20_frame0_upper",
+        "mirror_20_frame1_lower",
+        "mirror_20_frame1_upper",
+        "mirror_20_bottom_lower",
+        "mirror_20_top_upper"
+      ]
+    },
+    "decor_21": {
+      "status": "authored",
+      "objects_before_batching": [
+        "tap_21_base",
+        "tap_21_spout",
+        "tap_21_lever"
+      ]
+    },
+    "decor_22": {
+      "status": "independent_existing_wash_basin"
+    },
+    "decor_23": {
+      "status": "authored",
+      "objects_before_batching": [
+        "border_23_rim_0",
+        "border_23_rim_1",
+        "border_23_rim_2",
+        "border_23_recess_0",
+        "border_23_recess_1",
+        "border_23_recess_2",
+        "border_23_recess_3"
+      ]
+    },
+    "decor_24": {
+      "status": "authored",
+      "objects_before_batching": [
+        "border_24_rim_0",
+        "border_24_rim_1",
+        "border_24_rim_2",
+        "border_24_rim_3",
+        "border_24_recess_0",
+        "border_24_recess_1",
+        "border_24_recess_2",
+        "border_24_recess_3"
+      ]
+    },
+    "decor_25": {
+      "status": "authored",
+      "objects_before_batching": [
+        "shower_25_stem",
+        "shower_25_neck",
+        "shower_25_head"
+      ]
+    },
+    "decor_26": {
+      "status": "authored",
+      "objects_before_batching": [
+        "deck_26"
+      ]
+    },
+    "decor_27": {
+      "status": "authored",
+      "objects_before_batching": [
+        "stone_27"
+      ]
+    },
+    "decor_28": {
+      "status": "authored",
+      "objects_before_batching": [
+        "stone_28"
+      ]
+    },
+    "npcs_00": {
+      "status": "authored",
+      "objects_before_batching": [
+        "crowd_bench_0_seat0",
+        "crowd_bench_0_seat1",
+        "crowd_bench_0_seat2",
+        "crowd_bench_0_leg",
+        "crowd_bench_0_leg.001",
+        "crowd_bench_0_leg.002",
+        "crowd_bench_0_leg.003",
+        "npc_seated_body"
+      ],
+      "npc_replacement_model": "npc_seated",
+      "npc_replacement_source_sha256": "9580c0fdded4e8dd0a9c2559eeae16af2d2c8f75aa7011d3f009567ac781be57"
+    },
+    "npcs_01": {
+      "status": "authored",
+      "objects_before_batching": [
+        "crowd_bench_1_seat0",
+        "crowd_bench_1_seat1",
+        "crowd_bench_1_seat2",
+        "crowd_bench_1_leg",
+        "crowd_bench_1_leg.001",
+        "crowd_bench_1_leg.002",
+        "crowd_bench_1_leg.003",
+        "npc_seated_body.001"
+      ],
+      "npc_replacement_model": "npc_seated",
+      "npc_replacement_source_sha256": "9580c0fdded4e8dd0a9c2559eeae16af2d2c8f75aa7011d3f009567ac781be57"
+    },
+    "npcs_02": {
+      "status": "authored",
+      "objects_before_batching": [
+        "npc_bath_standing_body"
+      ],
+      "npc_replacement_model": "npc_bath_standing",
+      "npc_replacement_source_sha256": "0446e67bb93dbb2e0307b77732a490f96d654477d6dbf2bbae39fb753dc162cb"
+    },
+    "npcs_03": {
+      "status": "authored",
+      "objects_before_batching": [
+        "crowd_bench_3_seat0",
+        "crowd_bench_3_seat1",
+        "crowd_bench_3_seat2",
+        "crowd_bench_3_leg",
+        "crowd_bench_3_leg.001",
+        "crowd_bench_3_leg.002",
+        "crowd_bench_3_leg.003",
+        "npc_seated_body.002"
+      ],
+      "npc_replacement_model": "npc_seated",
+      "npc_replacement_source_sha256": "9580c0fdded4e8dd0a9c2559eeae16af2d2c8f75aa7011d3f009567ac781be57"
+    },
+    "npcs_04": {
+      "status": "authored",
+      "objects_before_batching": [
+        "crowd_bench_4_seat0",
+        "crowd_bench_4_seat1",
+        "crowd_bench_4_seat2",
+        "crowd_bench_4_leg",
+        "crowd_bench_4_leg.001",
+        "crowd_bench_4_leg.002",
+        "crowd_bench_4_leg.003",
+        "npc_seated_body.003"
+      ],
+      "npc_replacement_model": "npc_seated",
+      "npc_replacement_source_sha256": "9580c0fdded4e8dd0a9c2559eeae16af2d2c8f75aa7011d3f009567ac781be57"
+    },
+    "npcs_05": {
+      "status": "authored",
+      "objects_before_batching": [
+        "crowd_bench_5_seat0",
+        "crowd_bench_5_seat1",
+        "crowd_bench_5_seat2",
+        "crowd_bench_5_leg",
+        "crowd_bench_5_leg.001",
+        "crowd_bench_5_leg.002",
+        "crowd_bench_5_leg.003",
+        "npc_seated_body.004"
+      ],
+      "npc_replacement_model": "npc_seated",
+      "npc_replacement_source_sha256": "9580c0fdded4e8dd0a9c2559eeae16af2d2c8f75aa7011d3f009567ac781be57"
+    },
+    "additional_ceilings": {
+      "status": "authored",
+      "objects_before_batching": [
+        "bath_ceiling",
+        "changing_ceiling",
+        "reception_ceiling",
+        "common_ceiling",
+        "exterior_ceiling",
+        "sauna_crowd_ceiling",
+        "sauna_entry_ceiling"
+      ]
+    },
+    "additional_narrow_hole_lid_lintel": {
+      "status": "authored",
+      "objects_before_batching": [
+        "narrow_hole_lid",
+        "narrow_hole_lintel"
+      ]
+    },
+    "additional_sauna_door": {
+      "status": "authored",
+      "objects_before_batching": [
+        "sauna_door_panel",
+        "sauna_door_window",
+        "sauna_door_handle"
+      ]
+    },
+    "additional_fuji_mural": {
+      "status": "authored",
+      "objects_before_batching": [
+        "fuji_mural_panel"
+      ]
+    }
+  },
+  "public_geometry_uses": [
+    {
+      "kind": "texture",
+      "source_file": "assets/public_sources/polyhaven/hinoki_planks/hinoki_planks_diff_1k.jpg",
+      "sha256": "a0166cad69a255971bf25f336c9947d2853b4dae5707c84a86f25f79aec347a5",
+      "material": "cedar",
+      "license": "CC0-1.0"
+    },
+    {
+      "kind": "texture",
+      "source_file": "assets/public_sources/polyhaven/hinoki_planks/hinoki_planks_nor_gl_1k.jpg",
+      "sha256": "90c97139c4a6e086c67b9e2c23c138c92df59070de0414763bcd3e7fc3c878a1",
+      "material": "cedar",
+      "license": "CC0-1.0"
+    },
+    {
+      "kind": "texture",
+      "source_file": "assets/public_sources/polyhaven/hinoki_planks/hinoki_planks_rough_1k.jpg",
+      "sha256": "20d2dc9fdbd2b76b267d68617836efb4af74397716f7ad9b5dff3752bdb097f5",
+      "material": "cedar",
+      "license": "CC0-1.0"
+    },
+    {
+      "kind": "geometry",
+      "source_file": "assets/public_sources/kenney_furniture/models/bench.glb",
+      "sha256": "ba05a6d23a5a5a44da016757632070e47ff7587ce10e2f6d6d52328b4cf5489b",
+      "placement_id": "fixtures_04",
+      "object_before_batching": "bench_4",
+      "material": "cedar",
+      "uniform_scale": 0.9574468109390757,
+      "yaw_degrees": 0,
+      "modifications": "Recentered original imported mesh, uniform scale, yaw, material replacement; zero-area source faces removed; separated end assemblies to extend bench rails without thickening legs",
+      "long_axis_extension_m": 1.817021269917542,
+      "license": "CC0-1.0"
+    },
+    {
+      "kind": "geometry",
+      "source_file": "assets/public_sources/kenney_furniture/models/bench.glb",
+      "sha256": "ba05a6d23a5a5a44da016757632070e47ff7587ce10e2f6d6d52328b4cf5489b",
+      "placement_id": "fixtures_08",
+      "object_before_batching": "bench_8",
+      "material": "cedar",
+      "uniform_scale": 0.9574468109390757,
+      "yaw_degrees": 0,
+      "modifications": "Recentered original imported mesh, uniform scale, yaw, material replacement; zero-area source faces removed; separated end assemblies to extend bench rails without thickening legs",
+      "long_axis_extension_m": 1.617021269917542,
+      "license": "CC0-1.0"
+    },
+    {
+      "kind": "geometry",
+      "source_file": "assets/public_sources/kenney_furniture/models/bench.glb",
+      "sha256": "ba05a6d23a5a5a44da016757632070e47ff7587ce10e2f6d6d52328b4cf5489b",
+      "placement_id": "fixtures_16",
+      "object_before_batching": "bench_16",
+      "material": "cedar",
+      "uniform_scale": 0.9574468109390757,
+      "yaw_degrees": 0,
+      "modifications": "Recentered original imported mesh, uniform scale, yaw, material replacement; zero-area source faces removed; separated end assemblies to extend bench rails without thickening legs",
+      "long_axis_extension_m": 1.0170212699175423,
+      "license": "CC0-1.0"
+    },
+    {
+      "kind": "geometry",
+      "source_file": "assets/public_sources/kenney_furniture/models/bench.glb",
+      "sha256": "ba05a6d23a5a5a44da016757632070e47ff7587ce10e2f6d6d52328b4cf5489b",
+      "placement_id": "fixtures_23",
+      "object_before_batching": "bench_23",
+      "material": "cedar",
+      "uniform_scale": 0.9574468109390757,
+      "yaw_degrees": 0,
+      "modifications": "Recentered original imported mesh, uniform scale, yaw, material replacement; zero-area source faces removed; separated end assemblies to extend bench rails without thickening legs",
+      "long_axis_extension_m": 1.8170212699175412,
+      "license": "CC0-1.0"
+    },
+    {
+      "kind": "geometry",
+      "source_file": "assets/public_sources/kenney_nature/models/plant_bushDetailed.glb",
+      "sha256": "2e0487020d68ccf664435db9d829c78ae00e6d2785ee3ec10b9f89cc70a10406",
+      "placement_id": "fixtures_24",
+      "object_before_batching": "shrub_24_foliage",
+      "material": "sage_foliage",
+      "uniform_scale": 1.3277045042806381,
+      "yaw_degrees": 0,
+      "modifications": "Recentered original imported mesh, uniform scale, yaw, material replacement; zero-area source faces removed",
+      "long_axis_extension_m": 0,
+      "license": "CC0-1.0"
+    },
+    {
+      "kind": "geometry",
+      "source_file": "assets/public_sources/kenney_nature/models/plant_bushDetailed.glb",
+      "sha256": "2e0487020d68ccf664435db9d829c78ae00e6d2785ee3ec10b9f89cc70a10406",
+      "placement_id": "fixtures_25",
+      "object_before_batching": "shrub_25_foliage",
+      "material": "sage_foliage",
+      "uniform_scale": 1.3277045042806368,
+      "yaw_degrees": 0,
+      "modifications": "Recentered original imported mesh, uniform scale, yaw, material replacement; zero-area source faces removed",
+      "long_axis_extension_m": 0,
+      "license": "CC0-1.0"
+    },
+    {
+      "kind": "geometry",
+      "source_file": "assets/public_sources/kenney_nature/models/rock_smallH.glb",
+      "sha256": "c798f7445350e8d79710a1d3e344b9ce4d4bcff5416a50268781d5121a353a7f",
+      "placement_id": "fixtures_26",
+      "object_before_batching": "rock_26_boulder0",
+      "material": "garden_stone",
+      "uniform_scale": 2.1592637619277935,
+      "yaw_degrees": 12,
+      "modifications": "Recentered original imported mesh, uniform scale, yaw, material replacement; zero-area source faces removed; local vertex weathering and smooth normals on original source topology",
+      "long_axis_extension_m": 0,
+      "license": "CC0-1.0"
+    },
+    {
+      "kind": "geometry",
+      "source_file": "assets/public_sources/kenney_nature/models/rock_smallI.glb",
+      "sha256": "f7bbf2f4efbfe63977c4c6520762143ede95c63bff6484b9719db5e666a618e4",
+      "placement_id": "fixtures_26",
+      "object_before_batching": "rock_26_boulder1",
+      "material": "garden_stone",
+      "uniform_scale": 2.4171963505516314,
+      "yaw_degrees": 91,
+      "modifications": "Recentered original imported mesh, uniform scale, yaw, material replacement; zero-area source faces removed; local vertex weathering and smooth normals on original source topology",
+      "long_axis_extension_m": 0,
+      "license": "CC0-1.0"
+    },
+    {
+      "kind": "geometry",
+      "source_file": "assets/public_sources/kenney_nature/models/rock_smallH.glb",
+      "sha256": "c798f7445350e8d79710a1d3e344b9ce4d4bcff5416a50268781d5121a353a7f",
+      "placement_id": "fixtures_26",
+      "object_before_batching": "rock_26_boulder2",
+      "material": "garden_stone",
+      "uniform_scale": 2.08556408455519,
+      "yaw_degrees": 173,
+      "modifications": "Recentered original imported mesh, uniform scale, yaw, material replacement; zero-area source faces removed; local vertex weathering and smooth normals on original source topology",
+      "long_axis_extension_m": 0,
+      "license": "CC0-1.0"
+    },
+    {
+      "kind": "geometry",
+      "source_file": "assets/public_sources/kenney_nature/models/rock_smallH.glb",
+      "sha256": "c798f7445350e8d79710a1d3e344b9ce4d4bcff5416a50268781d5121a353a7f",
+      "placement_id": "fixtures_26",
+      "object_before_batching": "rock_26_boulder3",
+      "material": "garden_stone",
+      "uniform_scale": 2.1013866881867003,
+      "yaw_degrees": 262,
+      "modifications": "Recentered original imported mesh, uniform scale, yaw, material replacement; zero-area source faces removed; local vertex weathering and smooth normals on original source topology",
+      "long_axis_extension_m": 0,
+      "license": "CC0-1.0"
+    },
+    {
+      "kind": "geometry",
+      "source_file": "assets/public_sources/kenney_nature/models/rock_smallI.glb",
+      "sha256": "f7bbf2f4efbfe63977c4c6520762143ede95c63bff6484b9719db5e666a618e4",
+      "placement_id": "fixtures_26",
+      "object_before_batching": "rock_26_boulder4",
+      "material": "garden_stone",
+      "uniform_scale": 2.4189345478072966,
+      "yaw_degrees": 36,
+      "modifications": "Recentered original imported mesh, uniform scale, yaw, material replacement; zero-area source faces removed; local vertex weathering and smooth normals on original source topology",
+      "long_axis_extension_m": 0,
+      "license": "CC0-1.0"
+    },
+    {
+      "kind": "geometry",
+      "source_file": "assets/public_sources/kenney_nature/models/rock_smallH.glb",
+      "sha256": "c798f7445350e8d79710a1d3e344b9ce4d4bcff5416a50268781d5121a353a7f",
+      "placement_id": "fixtures_27",
+      "object_before_batching": "rock_27_boulder0",
+      "material": "garden_stone",
+      "uniform_scale": 2.125724392997376,
+      "yaw_degrees": 12,
+      "modifications": "Recentered original imported mesh, uniform scale, yaw, material replacement; zero-area source faces removed; local vertex weathering and smooth normals on original source topology",
+      "long_axis_extension_m": 0,
+      "license": "CC0-1.0"
+    },
+    {
+      "kind": "geometry",
+      "source_file": "assets/public_sources/kenney_nature/models/rock_smallI.glb",
+      "sha256": "f7bbf2f4efbfe63977c4c6520762143ede95c63bff6484b9719db5e666a618e4",
+      "placement_id": "fixtures_27",
+      "object_before_batching": "rock_27_boulder1",
+      "material": "garden_stone",
+      "uniform_scale": 2.4171963505516314,
+      "yaw_degrees": 91,
+      "modifications": "Recentered original imported mesh, uniform scale, yaw, material replacement; zero-area source faces removed; local vertex weathering and smooth normals on original source topology",
+      "long_axis_extension_m": 0,
+      "license": "CC0-1.0"
+    },
+    {
+      "kind": "geometry",
+      "source_file": "assets/public_sources/kenney_nature/models/rock_smallH.glb",
+      "sha256": "c798f7445350e8d79710a1d3e344b9ce4d4bcff5416a50268781d5121a353a7f",
+      "placement_id": "fixtures_27",
+      "object_before_batching": "rock_27_boulder2",
+      "material": "garden_stone",
+      "uniform_scale": 2.075994630473197,
+      "yaw_degrees": 173,
+      "modifications": "Recentered original imported mesh, uniform scale, yaw, material replacement; zero-area source faces removed; local vertex weathering and smooth normals on original source topology",
+      "long_axis_extension_m": 0,
+      "license": "CC0-1.0"
+    },
+    {
+      "kind": "geometry",
+      "source_file": "assets/public_sources/kenney_nature/models/rock_smallH.glb",
+      "sha256": "c798f7445350e8d79710a1d3e344b9ce4d4bcff5416a50268781d5121a353a7f",
+      "placement_id": "fixtures_27",
+      "object_before_batching": "rock_27_boulder3",
+      "material": "garden_stone",
+      "uniform_scale": 2.1212386650415467,
+      "yaw_degrees": 262,
+      "modifications": "Recentered original imported mesh, uniform scale, yaw, material replacement; zero-area source faces removed; local vertex weathering and smooth normals on original source topology",
+      "long_axis_extension_m": 0,
+      "license": "CC0-1.0"
+    },
+    {
+      "kind": "geometry",
+      "source_file": "assets/public_sources/kenney_nature/models/rock_smallI.glb",
+      "sha256": "f7bbf2f4efbfe63977c4c6520762143ede95c63bff6484b9719db5e666a618e4",
+      "placement_id": "fixtures_27",
+      "object_before_batching": "rock_27_boulder4",
+      "material": "garden_stone",
+      "uniform_scale": 2.4301411845036713,
+      "yaw_degrees": 36,
+      "modifications": "Recentered original imported mesh, uniform scale, yaw, material replacement; zero-area source faces removed; local vertex weathering and smooth normals on original source topology",
+      "long_axis_extension_m": 0,
+      "license": "CC0-1.0"
+    }
+  ],
+  "npc_slots": [
+    {
+      "slot": "npc_slot_staff",
+      "near": "npc_high_staff",
+      "model_kind": "npc_staff",
+      "position_gltf_m": [
+        4.900000095367432,
+        0,
+        -8.625
+      ],
+      "yaw_degrees": 0,
+      "uniform_scale": 1,
+      "source_sha256": "e479a4a9012e7de52216087cd18a706376e274f15589e576e473449110eac926",
+      "placement_id": "fixtures_02",
+      "bounds_gltf_m": [
+        [
+          4.670670330524445,
+          0.0,
+          -8.762946769595146
+        ],
+        [
+          5.129329860210419,
+          1.5999999046325684,
+          -8.487053230404854
+        ]
+      ],
+      "triangles": 1593
+    },
+    {
+      "slot": "npc_slot_0",
+      "near": "npc_high_0",
+      "model_kind": "npc_seated",
+      "position_gltf_m": [
+        14.300000190734863,
+        0,
+        0.8500000238418579
+      ],
+      "yaw_degrees": 90,
+      "uniform_scale": 0.8999999761581421,
+      "source_sha256": "9580c0fdded4e8dd0a9c2559eeae16af2d2c8f75aa7011d3f009567ac781be57",
+      "placement_id": "npcs_00",
+      "bounds_gltf_m": [
+        [
+          14.322786476022715,
+          0.0,
+          0.6304056410154025
+        ],
+        [
+          14.853213968117291,
+          1.171185998885207,
+          1.0695942939367136
+        ]
+      ],
+      "triangles": 1794
+    },
+    {
+      "slot": "npc_slot_1",
+      "near": "npc_high_1",
+      "model_kind": "npc_seated",
+      "position_gltf_m": [
+        14.300000190734863,
+        0,
+        3.049999952316284
+      ],
+      "yaw_degrees": 90,
+      "uniform_scale": 0.8999999761581421,
+      "source_sha256": "9580c0fdded4e8dd0a9c2559eeae16af2d2c8f75aa7011d3f009567ac781be57",
+      "placement_id": "npcs_01",
+      "bounds_gltf_m": [
+        [
+          14.322786476022715,
+          0.0,
+          2.830405569489829
+        ],
+        [
+          14.853213968117291,
+          1.171185998885207,
+          3.26959422241114
+        ]
+      ],
+      "triangles": 1794
+    },
+    {
+      "slot": "npc_slot_2",
+      "near": "npc_high_2",
+      "model_kind": "npc_bath_standing",
+      "position_gltf_m": [
+        15.699999809265137,
+        0,
+        0.30000001192092896
+      ],
+      "yaw_degrees": 0,
+      "uniform_scale": 1,
+      "source_sha256": "0446e67bb93dbb2e0307b77732a490f96d654477d6dbf2bbae39fb753dc162cb",
+      "placement_id": "npcs_02",
+      "bounds_gltf_m": [
+        [
+          15.474412277340889,
+          0.0,
+          0.1646060347557068
+        ],
+        [
+          15.925587341189384,
+          1.600000023841858,
+          0.4353939890861511
+        ]
+      ],
+      "triangles": 1594
+    },
+    {
+      "slot": "npc_slot_3",
+      "near": "npc_high_3",
+      "model_kind": "npc_seated",
+      "position_gltf_m": [
+        15.699999809265137,
+        0,
+        2.5
+      ],
+      "yaw_degrees": 90,
+      "uniform_scale": 0.8999999761581421,
+      "source_sha256": "9580c0fdded4e8dd0a9c2559eeae16af2d2c8f75aa7011d3f009567ac781be57",
+      "placement_id": "npcs_03",
+      "bounds_gltf_m": [
+        [
+          15.722786094552989,
+          0.0,
+          2.2804056171735447
+        ],
+        [
+          16.253213586647565,
+          1.171185998885207,
+          2.7195942700948557
+        ]
+      ],
+      "triangles": 1794
+    },
+    {
+      "slot": "npc_slot_4",
+      "near": "npc_high_4",
+      "model_kind": "npc_seated",
+      "position_gltf_m": [
+        17.100000381469727,
+        0,
+        1.350000023841858
+      ],
+      "yaw_degrees": 90,
+      "uniform_scale": 0.8999999761581421,
+      "source_sha256": "9580c0fdded4e8dd0a9c2559eeae16af2d2c8f75aa7011d3f009567ac781be57",
+      "placement_id": "npcs_04",
+      "bounds_gltf_m": [
+        [
+          17.12278666675758,
+          0.0,
+          1.1304056410154026
+        ],
+        [
+          17.653214158852155,
+          1.171185998885207,
+          1.5695942939367136
+        ]
+      ],
+      "triangles": 1794
+    },
+    {
+      "slot": "npc_slot_5",
+      "near": "npc_high_5",
+      "model_kind": "npc_seated",
+      "position_gltf_m": [
+        17.100000381469727,
+        0,
+        3.549999952316284
+      ],
+      "yaw_degrees": 90,
+      "uniform_scale": 0.8999999761581421,
+      "source_sha256": "9580c0fdded4e8dd0a9c2559eeae16af2d2c8f75aa7011d3f009567ac781be57",
+      "placement_id": "npcs_05",
+      "bounds_gltf_m": [
+        [
+          17.12278666675758,
+          0.0,
+          3.330405569489829
+        ],
+        [
+          17.653214158852155,
+          1.171185998885207,
+          3.76959422241114
+        ]
+      ],
+      "triangles": 1794
+    }
+  ],
+  "source_placement_count": 111,
+  "clearances": [
+    {
+      "id": "narrow_hole",
+      "bounds_gltf_m": [
+        [
+          -2.99999,
+          0.05,
+          8.30001
+        ],
+        [
+          -1e-05,
+          0.45,
+          8.699990000000001
+        ]
+      ],
+      "intersecting_triangles": 0,
+      "intersecting_mesh_names": []
+    },
+    {
+      "id": "crowd_gap_0",
+      "bounds_gltf_m": [
+        [
+          14.00001,
+          0.05,
+          1.6000100000000002
+        ],
+        [
+          14.59999,
+          1.75,
+          2.19999
+        ]
+      ],
+      "intersecting_triangles": 0,
+      "intersecting_mesh_names": []
+    },
+    {
+      "id": "crowd_gap_1",
+      "bounds_gltf_m": [
+        [
+          15.40001,
+          0.05,
+          0.50001
+        ],
+        [
+          15.99999,
+          1.75,
+          1.09999
+        ]
+      ],
+      "intersecting_triangles": 0,
+      "intersecting_mesh_names": []
+    },
+    {
+      "id": "crowd_gap_2",
+      "bounds_gltf_m": [
+        [
+          16.80001,
+          0.05,
+          2.60001
+        ],
+        [
+          17.39999,
+          1.75,
+          3.19999
+        ]
+      ],
+      "intersecting_triangles": 0,
+      "intersecting_mesh_names": []
+    },
+    {
+      "id": "changing_reception",
+      "bounds_gltf_m": [
+        [
+          6.20001,
+          0.05,
+          -5.09999
+        ],
+        [
+          7.399990000000001,
+          1.4,
+          -4.90001
+        ]
+      ],
+      "intersecting_triangles": 0,
+      "intersecting_mesh_names": []
+    },
+    {
+      "id": "bath_changing",
+      "bounds_gltf_m": [
+        [
+          0.80001,
+          0.05,
+          -0.09999000000000001
+        ],
+        [
+          1.99999,
+          1.4,
+          0.09999000000000001
+        ]
+      ],
+      "intersecting_triangles": 0,
+      "intersecting_mesh_names": []
+    },
+    {
+      "id": "bath_sauna",
+      "bounds_gltf_m": [
+        [
+          11.90001,
+          0.05,
+          1.20001
+        ],
+        [
+          12.09999,
+          1.4,
+          2.39999
+        ]
+      ],
+      "intersecting_triangles": 0,
+      "intersecting_mesh_names": []
+    },
+    {
+      "id": "bath_open_air",
+      "bounds_gltf_m": [
+        [
+          11.90001,
+          0.05,
+          6.600009999999999
+        ],
+        [
+          12.09999,
+          1.4,
+          7.79999
+        ]
+      ],
+      "intersecting_triangles": 0,
+      "intersecting_mesh_names": []
+    },
+    {
+      "id": "open_air_pond_entrance",
+      "bounds_gltf_m": [
+        [
+          19.900009999999998,
+          0.05,
+          7.40001
+        ],
+        [
+          20.099990000000002,
+          1.4,
+          8.59999
+        ]
+      ],
+      "intersecting_triangles": 0,
+      "intersecting_mesh_names": []
+    },
+    {
+      "id": "reception_common",
+      "bounds_gltf_m": [
+        [
+          3.90001,
+          0.05,
+          -7.59999
+        ],
+        [
+          4.09999,
+          1.4,
+          -6.400009999999999
+        ]
+      ],
+      "intersecting_triangles": 0,
+      "intersecting_mesh_names": []
+    },
+    {
+      "id": "reception_exterior",
+      "bounds_gltf_m": [
+        [
+          7.90001,
+          0.05,
+          -7.59999
+        ],
+        [
+          8.09999,
+          1.4,
+          -6.400009999999999
+        ]
+      ],
+      "intersecting_triangles": 0,
+      "intersecting_mesh_names": []
+    }
+  ],
+  "scope": "Actual GLB triangle measurements; original opening AABBs reused, original intersection counts discarded; no gameplay verification.",
+  "unchanged_canonical_models": {
+    "duck": "43d385d81d6f2e1f520972db33426ddaf64b33250ca89b9f50d33a14fa17b779",
+    "hat_sauna_duck": "e6362a9bdffa39b987d30540dbc8bce061b6c867bdddee563ebd0a1bcba7bce6",
+    "child": "32e09215c68721545ff240b57927d53f29e01b896c865b04e2529d6d3034ca88",
+    "adult": "0ec65252a0554fcefcf36b55d3871788367440e215d40fb8040fbbf691bcb867",
+    "bath_stool": "1df13475185623882db1d63d99cc52f9ebff03cc40d62fb5136672a4f7515e55",
+    "wash_basin": "29196b8bc4b62edec5f81a4831b183472f34f86cc2477ae1cd7653386be80111"
+  },
+  "reference_measurements_sha256": "8a035472257158d6caa81c2267d1b0bb144f2d6953e9ed56253888795c306054",
+  "raw_degenerate_triangles": 16,
+  "raw_degenerate_npc_triangles": 0,
+  "raw_degenerate_architecture_triangles": 16,
+  "raw_degenerate_triangles_by_mesh": {
+    "Mesh bench.005": 16
+  },
+  "degenerate_measurement": "Triangle area below 1e-14 square metres from the exact GLB positions in float64 arithmetic.",
+  "seating_board_clearances": [
+    {
+      "slot": "npc_slot_0",
+      "seat_board_interiors_gltf_m": [
+        [
+          [
+            14.00801,
+            0.34001,
+            0.10001
+          ],
+          [
+            14.191989999999999,
+            0.40499,
+            1.59999
+          ]
+        ],
+        [
+          [
+            14.20801,
+            0.34001,
+            0.10001
+          ],
+          [
+            14.39199,
+            0.40499,
+            1.59999
+          ]
+        ],
+        [
+          [
+            14.40801,
+            0.34001,
+            0.10001
+          ],
+          [
+            14.59199,
+            0.40499,
+            1.59999
+          ]
+        ]
+      ],
+      "intersecting_npc_triangles": 0
+    },
+    {
+      "slot": "npc_slot_1",
+      "seat_board_interiors_gltf_m": [
+        [
+          [
+            14.00801,
+            0.34001,
+            2.2000100000000002
+          ],
+          [
+            14.191989999999999,
+            0.40499,
+            3.89999
+          ]
+        ],
+        [
+          [
+            14.20801,
+            0.34001,
+            2.2000100000000002
+          ],
+          [
+            14.39199,
+            0.40499,
+            3.89999
+          ]
+        ],
+        [
+          [
+            14.40801,
+            0.34001,
+            2.2000100000000002
+          ],
+          [
+            14.59199,
+            0.40499,
+            3.89999
+          ]
+        ]
+      ],
+      "intersecting_npc_triangles": 0
+    },
+    {
+      "slot": "npc_slot_3",
+      "seat_board_interiors_gltf_m": [
+        [
+          [
+            15.40801,
+            0.34001,
+            1.1000100000000002
+          ],
+          [
+            15.59199,
+            0.40499,
+            3.89999
+          ]
+        ],
+        [
+          [
+            15.60801,
+            0.34001,
+            1.1000100000000002
+          ],
+          [
+            15.79199,
+            0.40499,
+            3.89999
+          ]
+        ],
+        [
+          [
+            15.808010000000001,
+            0.34001,
+            1.1000100000000002
+          ],
+          [
+            15.99199,
+            0.40499,
+            3.89999
+          ]
+        ]
+      ],
+      "intersecting_npc_triangles": 0
+    },
+    {
+      "slot": "npc_slot_4",
+      "seat_board_interiors_gltf_m": [
+        [
+          [
+            16.80801,
+            0.34001,
+            0.10001
+          ],
+          [
+            16.99199,
+            0.40499,
+            2.59999
+          ]
+        ],
+        [
+          [
+            17.00801,
+            0.34001,
+            0.10001
+          ],
+          [
+            17.19199,
+            0.40499,
+            2.59999
+          ]
+        ],
+        [
+          [
+            17.208009999999998,
+            0.34001,
+            0.10001
+          ],
+          [
+            17.39199,
+            0.40499,
+            2.59999
+          ]
+        ]
+      ],
+      "intersecting_npc_triangles": 0
+    },
+    {
+      "slot": "npc_slot_5",
+      "seat_board_interiors_gltf_m": [
+        [
+          [
+            16.80801,
+            0.34001,
+            3.2000100000000002
+          ],
+          [
+            16.99199,
+            0.40499,
+            3.89999
+          ]
+        ],
+        [
+          [
+            17.00801,
+            0.34001,
+            3.2000100000000002
+          ],
+          [
+            17.19199,
+            0.40499,
+            3.89999
+          ]
+        ],
+        [
+          [
+            17.208009999999998,
+            0.34001,
+            3.2000100000000002
+          ],
+          [
+            17.39199,
+            0.40499,
+            3.89999
+          ]
+        ]
+      ],
+      "intersecting_npc_triangles": 0
+    }
+  ],
+  "all_seating_boards_clear": true,
+  "seating_measurement": "Actual NPC triangles clipped against the interiors of the three LEVEL-authored seat boards; top-surface contact is allowed.",
+  "all_clearances_open": true,
+  "blender_polygon_degenerate_faces": 16,
+  "legacy_bmesh_degenerate_faces": 0,
+  "legacy_v01_unchanged_canonical_models": {
+    "duck": "43d385d81d6f2e1f520972db33426ddaf64b33250ca89b9f50d33a14fa17b779",
+    "hat_sauna_duck": "e6362a9bdffa39b987d30540dbc8bce061b6c867bdddee563ebd0a1bcba7bce6",
+    "child": "e69c7427abf6104526ac34072c57d8775adb27da4435ab53dd0a5c5ed29ef141",
+    "adult": "61ce44be0c7547ffc58ca3c3242ff86ed564246b6ca3515c73250e2117286fd2",
+    "bath_stool": "1df13475185623882db1d63d99cc52f9ebff03cc40d62fb5136672a4f7515e55",
+    "wash_basin": "29196b8bc4b62edec5f81a4831b183472f34f86cc2477ae1cd7653386be80111"
+  },
+  "triangles_by_placement_scope": "Architecture only, totaling 7996 triangles; inherited byte-identically from v01. NPC triangles are measured separately.",
+  "npc_source_record": "assets/public_sources/quaternius_universal_base/source.json",
+  "preservation_record": "assets/sento_environment/quality/v02/replacement-proof.json",
+  "mural_uv_correction": {
+    "revision": "v03",
+    "prior_export_sha256": "39cfd9954b2de71807ecf3e860063f0569a9bd2611f322b361c10232f963950e",
+    "audit": "assets/sento_environment/quality/v03/mural-uv-audit.json",
+    "scope": "Four inward-facing U coordinates only; positions, indices, normals, transforms, material/image bytes, and all other UVs identical to v02",
+    "geometry_measurements_reused_from": "assets/sento_environment/quality/v02/measurements.json",
+    "visibility": "Upper wall: visible in normal view; intentionally hidden in Overview cutaway"
+  }
+}

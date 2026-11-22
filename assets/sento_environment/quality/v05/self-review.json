@@ -1,0 +1,60 @@
+{
+  "revision": "v05 growth architecture with independent visitors, tattoo variant and corrected Fuji mural",
+  "world_sha256": "98f43e692fa430c2595acdf7c879a004735b4d0bc1b503a00fa69889b6cdde46",
+  "blend_sha256": "caf2f9fa13aadbd3d20aa15adfac2610419521b99b07b453442f45ac2f5922b4",
+  "status": "Local composition, raw geometry, editable roundtrip and ten offline views passed; independent review and combined game verification remain separate.",
+  "parents": {
+    "growth_v02": "3c37930e66a6d27f2a32cc174b64cb54b6a713bfafd6322ef4959cbb7ec6eb00",
+    "v04": "afbea3f724255c1016b4968aac2fdacafa787c402315488c2d839c91ea31b54b"
+  },
+  "checks": {
+    "architecture_triangles": 9907,
+    "npc_triangles": 12157,
+    "total_triangles": 22064,
+    "active_meshes": 52,
+    "nodes": 89,
+    "materials": 17,
+    "packed_images": 11,
+    "raw_degenerate_triangles": 0,
+    "opening_interiors_tested": 19,
+    "opening_intersections": 0,
+    "seat_boards_tested": 5,
+    "seat_board_intersections": 0,
+    "source_placements": 125,
+    "coverage_entries": 133,
+    "full_v04_binary_prefix_preserved": true,
+    "growth_active_hierarchy_and_architecture_preserved": true,
+    "image_material_payloads_preserved": true,
+    "editable_geometry_hierarchy_uvs_pixels_roundtrip_identical": true
+  },
+  "visual_findings": [
+    "Growth route, child passage, gate and street doorway retain the reviewed architecture; closed/open states were rendered offline.",
+    "Tattooed standing visitor retains visible face details and chest art in its original slot; other six visitors are preserved byte-for-byte at their original transforms.",
+    "Fuji panorama remains upright and unmirrored on the bath wall; upper-wall visibility ownership is unchanged."
+  ],
+  "images_inspected": [
+    "growth_overview.png",
+    "water_connection.png",
+    "child_passage.png",
+    "kids_gate_closed.png",
+    "street_closed.png",
+    "street_open.png",
+    "street_outside.png",
+    "tattoo_visitor_placement_v05.png",
+    "bath_mural_context.png",
+    "bath_mural_front.png"
+  ],
+  "limitations": [
+    "Offline inspection lights differ from game lighting.",
+    "Water is a separate runtime layer; Fuji-only views omit it and growth views use explicitly inspection-only water planes.",
+    "The GLB retains eight unused superseded mesh descriptors/payloads to preserve the original binary prefix; active geometry is measured from the scene hierarchy.",
+    "Whole-scene 60000-triangle budget, runtime integration, normal-input play and publication are not claimed by these asset checks."
+  ],
+  "evidence": [
+    "assets/sento_environment/quality/v05/parent-preservation.json",
+    "assets/sento_environment/quality/v05/measurements.json",
+    "assets/sento_environment/quality/v05/blender-geometry.json",
+    "assets/sento_environment/quality/v05/editable-source-audit.json",
+    "assets/sento_environment/quality/v05/render-report.json"
+  ]
+}

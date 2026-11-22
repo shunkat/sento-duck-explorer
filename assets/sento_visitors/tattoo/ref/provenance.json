@@ -1,0 +1,14 @@
+{
+  "created_date": "2026-11-22",
+  "method": "OpenAI built-in image generation through Codex; exact model not exposed",
+  "input": "Original text prompt only; no third-party reference input",
+  "prompt": "Use case: stylized-concept. Asset type: game character tattoo texture. Create an original high-quality Japanese traditional irezumi-inspired tattoo design as flat 2D ink artwork on a genuinely transparent background. One tall, coherent oval composition for an adult character's upper back: a beautifully drawn large koi fish swimming upward in a flowing S curve through stylized curling Japanese waves and wind bars, with one deep vermilion peony near the lower side. Clear readable koi face, exactly two eyes placed anatomically on the head, graceful fins, organized crisp scale pattern. The koi dominates the design and has warm ivory and restrained burnt-orange/red markings, deep indigo-black outlines, indigo water with muted teal accents, ivory foam. The style is refined traditional hand-inked tattoo flash with strong silhouettes, broad readable linework and restrained details suitable for a stylized 3D game NPC at small screen size; sophisticated rather than childish, no photorealism, no glossy highlights. At the outer perimeter, flowing waves taper into several graceful scalloped ink edges with transparent open skin gaps, not a rectangular panel or solid colored oval. All colored areas are fully opaque inks, transparent gaps remain truly alpha transparent. Flat straight-on artwork only; no person, body, skin, limbs, mannequin, paper, backdrop, frame, lettering, kanji, text, logos, stamps, numbers or watermark. No copied artwork, identifiable tattoo artist style, brand, gang insignia, weapon or threatening imagery. Center the whole design, keep every ink stroke within the image with a small fully transparent margin. Portrait aspect ratio approximately 3:4.",
+  "file": "assets/sento_visitors/tattoo/ref/koi_waves__v01.png",
+  "transparent_background": true,
+  "rights": "Project-held original output rights under MIT to the extent permitted by law",
+  "status": "Generated artwork for tattooed visitor material; original PNG preserved",
+  "width": 1086,
+  "height": 1448,
+  "bytes": 2291299,
+  "sha256": "03f724c67b56521a174d1f9966e8285b9b2bb1bae78c95911de955307be20528"
+}

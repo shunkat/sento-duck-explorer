@@ -1,11 +1,11 @@
 import * as THREE from "three";
 import type { ModelLibrary } from "./models";
 
-export const NPC_LOD_IDS = ["npc_staff_lod_far", "npc_seated_lod_far", "npc_bath_standing_lod_far"] as const;
+export const NPC_LOD_IDS = ["npc_staff_lod_far", "npc_seated_lod_far", "npc_bath_standing_lod_far", "npc_bath_tattooed_lod_far"] as const;
 export const NPC_DETAIL_DISTANCE = 6;
 export const NPC_SLOTS = [
   ["staff", "npc_staff_lod_far"], ["0", "npc_seated_lod_far"],
-  ["1", "npc_seated_lod_far"], ["2", "npc_bath_standing_lod_far"],
+  ["1", "npc_seated_lod_far"], ["2", "npc_bath_tattooed_lod_far"],
   ["3", "npc_seated_lod_far"], ["4", "npc_seated_lod_far"], ["5", "npc_seated_lod_far"],
 ] as const;
 

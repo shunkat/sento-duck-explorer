@@ -2,7 +2,7 @@
 // .kiro/specs/shoulder-view (Req 6). A URL is listed only after the model went
 // through its approved production route, Blender/GLB and rights checks. Anything
 // not listed keeps its placeholder primitive. The full environment and small
-// props are connected; human meshes remain static, without a skeletal rig.
+// props are connected; human rigs use the distance-driven view-layer gait.
 //
 // Source-specific credits/licenses are recorded in THIRD_PARTY_NOTICES.md and
 // public/models/*.LICENSE.txt (Req 6.6); generated and free public assets differ.
@@ -43,9 +43,10 @@ export const ENVIRONMENT_MODEL_URLS: Partial<Record<EnvironmentModelId, string>>
   npc_staff_lod_far: "models/npc_staff_lod_far.glb",
   npc_seated_lod_far: "models/npc_seated_lod_far.glb",
   npc_bath_standing_lod_far: "models/npc_bath_standing_lod_far.glb",
-  // The guardian 「見守りの大人」 (2026-11-22): the existing standing bather, reused unchanged.
+  // The guardian uses the independent standing visitor, separate from the player.
   npc_bath_standing: "models/npc_bath_standing.glb",
+  npc_bath_tattooed_lod_far: "models/npc_bath_tattooed_lod_far.glb",
 };
 
-/** Model drawn for the guardian; origin at the bottom center, 1.6 m tall (manifest). */
+/** Model drawn for the guardian; the visitor retains its authored bottom-center origin. */
 export const GUARDIAN_MODEL_ID = "npc_bath_standing";

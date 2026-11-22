@@ -15,6 +15,7 @@ import { WorldEnvironment } from "./worldEnvironment";
 import { SENTO_BACKGROUND_COLOR, WaterAppearance } from "./waterAppearance";
 import { batchOpaqueMeshes } from "./staticMeshes";
 import { applyOutfit, checkHumanContract, type Clothing, TOWEL_DEPTH, TOWEL_THICKNESS, TOWEL_WIDTH, headAnchor, towelPose } from "./humanModel";
+import { bindHumanMotion, type HumanMotion } from "./humanMotion";
 import { CEILING_Y, type FacingTracker, HOLE_LID_Y, bodyOpacity, modelRotationY, WALL_HEIGHT } from "./shoulder";
 import {
   CHARACTER_LABEL_GAP,
@@ -177,8 +178,9 @@ export class GameScene {
   /** Provisional towels of the two humans. */
   private towels = {} as Record<HumanId, THREE.Object3D>;
   private towelAttempted?: THREE.Object3D;
-  /** Head top and right hand of a loaded human model, in its group's local space. */
-  private humanBody: Partial<Record<HumanId, { headTop: number; hand?: { x: number; y: number; z: number } }>> = {};
+  /** Head top in group space and the live right-hand socket of a human model. */
+  private humanBody: Partial<Record<HumanId, { headTop: number; handSocket?: THREE.Object3D }>> = {};
+  private humanMotion: Partial<Record<HumanId, HumanMotion>> = {};
   /** Last ClothingState seen per human (the game starts in the bath). */
   private clothing: Record<"child" | "adult", Clothing> = { child: "unclothed", adult: "unclothed" };
   private viewportHeight = 1;
@@ -557,7 +559,7 @@ export class GameScene {
     // Name label at the model's socket_label, if it has one (final-assets sockets).
     const sl = root.getObjectByName("socket_label");
     const label = this.chars[id].children.find((o) => o instanceof THREE.Sprite);
-    if (sl && label) label.position.set(sl.position.x, sl.position.y - centerToBottom, sl.position.z);
+    if (sl && label) label.position.setFromMatrixPosition(relativeMatrix(sl, this.chars[id]));
     if (id !== "duck") {
       // Towel anchors from the model: top of the bounds (head) and socket_hand_r, in group space.
       root.updateMatrix();
@@ -568,12 +570,11 @@ export class GameScene {
           box.union(o.geometry.boundingBox!.clone().applyMatrix4(relativeMatrix(o, this.chars[id])));
         }
       });
-      const hand = root.getObjectByName("socket_hand_r");
-      const handPos = hand ? new THREE.Vector3().setFromMatrixPosition(relativeMatrix(hand, this.chars[id])) : undefined;
       this.humanBody[id] = {
         headTop: headAnchor(BODY_HEIGHT[id], box.isEmpty() ? undefined : box.max.y),
-        hand: handPos ? { x: handPos.x, y: handPos.y, z: handPos.z } : undefined,
+        handSocket: root.getObjectByName("socket_hand_r"),
       };
+      this.humanMotion[id] = bindHumanMotion(root, BODY_HEIGHT[id]);
     }
   }
 
@@ -640,10 +641,27 @@ export class GameScene {
       this.chars[id].visible = c.visible;
       this.chars[id].position.set(c.pos.x, y, c.pos.z);
       this.chars[id].rotation.y = modelRotationY(facing.yaw(id));
-      if (id !== "duck" && c.towel) {
-        const t = towelPose(c.towel, { height: c.height, radius: c.radius, ...this.humanBody[id] });
-        this.towels[id].position.set(t.x, t.y, t.z);
-        this.towels[id].rotation.set(t.rotX, 0, 0);
+      if (id !== "duck") {
+        // Growth has one player body. Hidden stages must not accumulate a
+        // stride from another body's movement or appear already mid-step.
+        if (c.visible) this.humanMotion[id]?.update({ position: c.pos, time: timeSeconds,
+          holdRight: c.towel === "held" });
+        else this.humanMotion[id]?.reset();
+        if (c.towel) {
+          const body = this.humanBody[id];
+          // Read after posing: a cached rest hand leaves the towel floating
+          // when the arm moves or a rig's rest posture changes.
+          const hand = body?.handSocket
+            ? this.tmp.setFromMatrixPosition(relativeMatrix(body.handSocket, this.chars[id])) : undefined;
+          const bob = (this.models[id]?.position.y ?? -c.height / 2) + c.height / 2;
+          const t = towelPose(c.towel, { height: c.height, radius: c.radius,
+            headTop: body ? body.headTop + bob : undefined, hand });
+          this.towels[id].position.set(t.x, t.y, t.z);
+          this.towels[id].rotation.set(t.rotX, 0, 0);
+        }
+        const labelSocket = this.models[id]?.getObjectByName("socket_label");
+        const label = this.chars[id].children.find(o => o instanceof THREE.Sprite);
+        if (labelSocket && label) label.position.setFromMatrixPosition(relativeMatrix(labelSocket, this.chars[id]));
       }
       if (id !== "duck" && this.clothing[id] !== c.clothing) {
         this.clothing[id] = c.clothing;

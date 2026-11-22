@@ -12,7 +12,7 @@ describe("complete environment export", () => {
   it("ships every registered model with its measured bytes, embedded resources and license", () => {
     const manifest = JSON.parse(read("assets/manifest.json").toString());
     const urls = Object.values({ ...CHARACTER_MODEL_URLS, ...ITEM_MODEL_URLS, ...ENVIRONMENT_MODEL_URLS });
-    expect(urls).toHaveLength(17); // 18 before the retired coin, key and hat stopped (2026-11-21); +1 guardian NPC, +1 milk bottle (2026-11-22)
+    expect(urls).toHaveLength(18); // Growth: milk and guardian retained; distinct tattoo visitor adds its far LOD.
     let totalBytes = 0;
     for (const url of urls) {
       const id = url.slice("models/".length, -4);
@@ -41,17 +41,17 @@ describe("complete environment export", () => {
       crowdGaps: LEVEL.crowdGaps, narrowHole: LEVEL.narrowHole, duckWater: LEVEL.duckWater,
       doors: LEVEL.doors, nodes: LEVEL.nodes, highDoors: LEVEL.highDoors,
     };
-    // growth_v02 re-export (2026-11-22) from the final growth geometry: the hash matches again.
+    // The combined growth/visitor export retains the authoritative growth geometry.
     expect(sha(JSON.stringify(placement))).toBe(report.layout_sha256);
     expect(report.layout_sha256).toBe("01d4ef0eda8966fe87ec3ac4551bcce129bd697040ae6dd201a0cff50e9ceba8");
     expect(LEVEL.fixtures.filter((f) => GROWTH_FIXTURE_KINDS.has(f.kind)).length).toBe(5);
     expect(LEVEL.fixtures.filter(isStreetFixture).length).toBe(3);
     expect(sha(read("public/models/sento_environment.glb"))).toBe(report.export_sha256);
-    expect(report.export_sha256).toBe("3c37930e66a6d27f2a32cc174b64cb54b6a713bfafd6322ef4959cbb7ec6eb00");
-    expect(read("public/models/sento_environment.glb").length).toBe(6_931_636);
+    expect(report.export_sha256).toBe("98f43e692fa430c2595acdf7c879a004735b4d0bc1b503a00fa69889b6cdde46");
+    expect(read("public/models/sento_environment.glb").length).toBe(6_850_416);
     expect(report.architecture_triangles).toBe(9907);
     expect(report.architecture_triangles).toBeLessThanOrEqual(10_000); // final-assets growth budget
-    expect(report.npc_triangles).toBe(12_200);
+    expect(report.npc_triangles).toBe(12_157);
     // Every current placement (growth additions included) is covered by the export.
     for (const [category, entries] of Object.entries({ structural_walls: placement.structural_walls,
       fixtures: LEVEL.fixtures, decor: LEVEL.decor, npcs: LEVEL.npcs, zones: LEVEL.zones })) {
@@ -65,6 +65,80 @@ describe("complete environment export", () => {
     for (const id of ["growth_door_kidsGate", "growth_door_frontExit", "child_passage", "narrow_hole"]) expect(ids).toContain(id);
     for (const opening of report.clearances) expect(opening.intersecting_triangles, opening.id).toBe(0);
     expect(report.npc_slots).toHaveLength(7);
-    expect(report.degenerate_faces).toBe(0);
+    expect(report.seating_board_clearances).toHaveLength(5);
+    for (const seat of report.seating_board_clearances) {
+      expect(seat.intersecting_npc_triangles, seat.slot).toBe(0);
+    }
+    expect(report.all_seating_boards_clear).toBe(true);
+    expect(report.raw_degenerate_npc_triangles).toBe(0);
+    expect(report.raw_degenerate_architecture_triangles).toBe(0);
+    expect(report.degenerate_faces).toBe(report.raw_degenerate_architecture_triangles);
+  });
+
+  it("uses the independent adults in all seven embedded NPC slots", () => {
+    const bytes = read("public/models/sento_environment.glb");
+    const world = JSON.parse(bytes.subarray(20, 20 + bytes.readUInt32LE(12)).toString());
+    const slots = world.nodes.filter((node: { name?: string }) => node.name?.startsWith("npc_slot_"));
+    expect(slots).toHaveLength(7);
+    const roles = new Set<string>();
+    for (const slot of slots) {
+      const role = slot.extras.npc_role;
+      if (slot.name === "npc_slot_2") expect(role).toBe("npc_bath_tattooed");
+      else expect(role).not.toBe("npc_bath_tattooed");
+      roles.add(role);
+      expect(slot.extras.source_author, slot.name).toBe("Quaternius");
+      expect(slot.extras.source_sha256, slot.name).toBe(sha(read(`public/models/${role}.glb`)));
+      expect(slot.extras.source_glb, slot.name).toBe(`public/models/${role}.glb`);
+      const visit = (index: number): void => {
+        const node = world.nodes[index];
+        if (node.mesh !== undefined) {
+          expect(node.extras.source_author, node.name).toBe("Quaternius");
+          expect(node.extras.source_sha256, node.name).toBe(slot.extras.source_sha256);
+        }
+        for (const child of node.children ?? []) visit(child);
+      };
+      for (const child of slot.children ?? []) visit(child);
+    }
+    expect([...roles].sort()).toEqual(["npc_bath_tattooed", "npc_seated", "npc_staff"]);
+  });
+
+  it("embeds the full Fuji artwork on the bath wall, upright and unmirrored from inside", () => {
+    const bytes = read("public/models/sento_environment.glb");
+    const jsonLength = bytes.readUInt32LE(12);
+    const world = JSON.parse(bytes.subarray(20, 20 + jsonLength).toString());
+    const binary = bytes.subarray(28 + jsonLength);
+    const panelIndex = world.nodes.findIndex((n: { name?: string }) => n.name === "environment_upper__fuji_mural");
+    expect(panelIndex).toBeGreaterThanOrEqual(0);
+    const panel = world.nodes[panelIndex];
+    expect(world.nodes.find((n: { name?: string }) => n.name === "environment_upper").children).toContain(panelIndex);
+    const primitive = world.meshes[panel.mesh].primitives[0];
+    const material = world.materials[primitive.material];
+    const texture = world.textures[material.pbrMetallicRoughness.baseColorTexture.index];
+    const image = world.images[texture.source];
+    const imageView = world.bufferViews[image.bufferView];
+    const imageBytes = binary.subarray(imageView.byteOffset ?? 0, (imageView.byteOffset ?? 0) + imageView.byteLength);
+    expect(sha(imageBytes)).toBe(sha(read("assets/sento_mural/ref/sento_mural__v01.png")));
+    expect([imageBytes.readUInt32BE(16), imageBytes.readUInt32BE(20)]).toEqual([2172, 724]);
+    const floats = (id: number, width: number) => {
+      const accessor = world.accessors[id], view = world.bufferViews[accessor.bufferView];
+      expect(accessor.componentType).toBe(5126);
+      return Array.from({ length: accessor.count }, (_, i) => Array.from({ length: width }, (_, j) =>
+        binary.readFloatLE((view.byteOffset ?? 0) + (accessor.byteOffset ?? 0) + i * (view.byteStride ?? width * 4) + j * 4)));
+    };
+    const positions = floats(primitive.attributes.POSITION, 3);
+    const normals = floats(primitive.attributes.NORMAL, 3);
+    const uvs = floats(primitive.attributes.TEXCOORD_0, 2);
+    const inward = normals.flatMap((n, i) => n[2]! < -.99 ? [i] : []);
+    expect(inward).toHaveLength(4);
+    const xs = inward.map(i => positions[i]![0]!), ys = inward.map(i => positions[i]![1]!);
+    const minX = Math.min(...xs), maxX = Math.max(...xs), minY = Math.min(...ys), maxY = Math.max(...ys);
+    expect((maxX - minX) / (maxY - minY)).toBeCloseTo(3, 4);
+    for (const i of inward) {
+      const [x, y, z] = positions[i]!;
+      expect(z).toBeCloseTo(8.882, 4); // Just inside the existing Z=8.9 bath wall.
+      // Looking from the bath toward +Z, screen-right is -X; glTF V grows downward.
+      expect(uvs[i]![0]).toBeCloseTo((maxX - x!) / (maxX - minX), 5);
+      expect(uvs[i]![1]).toBeCloseTo((maxY - y!) / (maxY - minY), 5);
+    }
   });
 });

@@ -1,6 +1,6 @@
-# Selected public environment sources
+# Selected public asset sources
 
-This is a small, inspected selection of **19 original Kenney GLBs and six original 1K Poly Haven texture maps**, all CC0. Originals are unchanged. No purchase, registration or paid tier was used. Current provenance, file hashes, exact archive paths, bounds and triangle counts are in [inventory.json](inventory.json), the package `source.json` files and [SHA256SUMS](SHA256SUMS).
+This selection contains **19 original Kenney GLBs, six original 1K Poly Haven texture maps, and five Quaternius character/hair/eyebrow models with their dependencies**, all CC0. Originals are unchanged. No purchase, registration or paid tier was used. Current provenance, file hashes, exact archive paths, bounds and triangle counts are in [inventory.json](inventory.json), the package `source.json` files and [SHA256SUMS](SHA256SUMS).
 
 ## Kenney geometry
 
@@ -36,3 +36,27 @@ The original `rock_largeA/C/E` choices were rejected for tall onsen rock rows: s
 | `rock_smallI.glb` | 44 | 0.358331 × 0.277816 × 0.413765 | 0.671 | Lower irregular accent |
 
 Use one layer of separate rounded boulders, with rotation and modest uniform scale variation. At maximum horizontal span 1 meter, the H shape reaches about 0.882 meters high, so it does not promise an exact 1-meter top while remaining inside that footprint. Exact collider fit remains the world builder's job. Native palette/metallic correction is still required. No new service or download was used for this supplement.
+
+## Quaternius Universal Base Characters — free Standard
+
+[Official pack](https://quaternius.com/packs/universalbasecharacters) and
+[free Standard contents](https://quaternius.com/assets/images/fullres/universalbasecharacters/standard.jpg)
+identify two superhero bodies and five hairstyles under CC0. The paid Source
+edition was not used. Selected originals include the male body, buzzed/parted
+hair, beard and eyebrows, plus their declared texture/BIN dependencies and
+original author license. The 20 retained files total 21,647,457 bytes.
+
+These are a different source from the playable father/Adult's Meshy model.
+The ZIP came from the identified CC0 redistribution
+[WaviestSun/atelier-packs](https://github.com/WaviestSun/atelier-packs), with
+its archive SHA matching that distributor's manifest. This does not claim a
+byte comparison with a current author-hosted ZIP. Exact archive hash, paths,
+file hashes and official evidence are in [source.json](quaternius_universal_base/source.json).
+
+The original body glTF has two image-URI spelling mismatches. They are recorded
+in source.json; producers may resolve aliases in a private import copy while
+leaving the original files unchanged. The original roughness PNG retains an
+54-byte eXIf chunk with X/Y resolution tags only; see [metadata inspection](quality/quaternius-source-metadata.json). Final embedded derivative textures have a separate audit;
+source retention is not a claim of clean runtime metadata or final quality.
+
+The upstream `License_Standard.txt` is retained byte-for-byte, including its CRLF line endings and trailing spaces. Its SHA is verified with the other original files; authored-file whitespace checks exclude this exact original license only. Publication scanning is unchanged and still includes the file.

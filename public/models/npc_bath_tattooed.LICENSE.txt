@@ -1,0 +1,23 @@
+Tattooed sento visitor — Quaternius CC0 source; project modifications MIT
+
+Geometry source: Quaternius, Universal Base Characters — Free Standard.
+https://quaternius.com/packs/universalbasecharacters
+https://creativecommons.org/publicdomain/zero/1.0/
+
+The project's independent standing visitor supplies the body, eyes, eyebrows
+and hairstyle. This appearance variant retains its exact oriented geometry,
+normals, pose and bounds, with vertex splits only for new UV charts.
+It contains no geometry or textures from the playable father.
+
+Original koi, wave and peony tattoo artwork was generated from a project text
+prompt with the built-in OpenAI image tool through Codex. No third-party image
+was supplied. Blender material composition creates a 1024px atlas retaining
+the original eye's native pixel resolution. Project-held rights in the art and
+UV/material modifications are released under MIT to the extent permitted by law.
+
+Keep the repository MIT copyright/permission notice with project modifications.
+Original sources, exact prompt, hashes and changes are recorded in:
+assets/sento_visitors/tattoo/README.md
+assets/sento_visitors/tattoo/ref/provenance.json
+assets/ledger.csv
+No new Image-to-3D generation, paid source pack or subscription was used.

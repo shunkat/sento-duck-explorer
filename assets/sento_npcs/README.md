@@ -1,3 +1,5 @@
+> Historical father-derived NPC production. Current independent background adults use [sento_visitors](../sento_visitors/README.md). The six former runtime exports and their original licenses are preserved in [archive/pre-independent-v03](archive/pre-independent-v03/). The records below describe those historical versions.
+
 # Sento NPC source-derived candidates
 
 The reception staff and sauna crowd replace generic background body shapes with derivatives of the actual image → Meshy → Blender Adult asset. These are static scenery candidates, not independently generated humans or animated characters. Parent reference, generated raw output and detailed masters are preserved; no new service spending is involved. See [attribution](ATTRIBUTION.md).

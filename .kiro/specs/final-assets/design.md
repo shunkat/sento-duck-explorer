@@ -131,7 +131,7 @@ Hat GLB origin: center of the inner base, so attaching it to `socket_hat` needs 
 ### Characters, rig, outfits
 
 - **Duck**: no skeleton. Motion from whole-model bob, tilt, and yaw as in `KIRO_HANDOFF.md`.
-- **Child and Adult** (stage 3): shared bone names and hierarchy, at most 40 bones. Shared clips: idle, walk, run, hold, dry, carry. Retarget by bone name.
+- **Child and Adult** (stage 3): shared bone names and hierarchy, at most 40 bones. Target motion set: idle, walk, run, hold, dry, carry. Retarget by bone name. The 2026-11-21 walking correction uses the same 13 named bones in both outfits and applies distance-driven poses in the view layer; it does not require bundled glTF animation clips. Rest-to-walk blending and held-arm constraints are part of this correction. Separate authored drying, pickup and carry-transition clips remain open.
 - **Bathing representation** (`KIRO_HANDOFF.md` leaves this to the design stage): two body variants per human on the same skeleton. The renderer picks the variant from `ClothingState`, and logic is unchanged. *(Provisional; chosen for a child-friendly public demo.)*
   - `clothed`: everyday clothes.
   - `bath`: an abstract toy-figure body, like a wooden kokeshi or a capsule doll. It has a smooth, single-color body with no anatomical detail and **no towel on the body**, so no towel ever touches the bathwater. That would contradict F1, because towels must not go in the bath.
@@ -216,10 +216,19 @@ partitions and storage shelf, the curb, two dynamic doors (`growth_kids_gate`,
 `growth_front_exit`) and the street stub with its threshold. The architecture
 allocation for the re-exported world is raised to **at most 10,000 triangles**;
 the growth_v02 export (2026-11-22) measures **9,907** architecture triangles
-(plus the unchanged 12,200 near NPC triangles), and that measured value is the
-allocation. The near NPC, material, image and size allocations above are
-unchanged, and the whole-scene limits still apply. This round does not rebuild
+(plus 12,157 independent near NPC triangles in the combined v05 world), and that measured value is the
+allocation. The material, image and size allocations above are
+unchanged; combined world geometry is capped at 22,200 triangles, and the whole-scene limits still apply. This round does not rebuild
 existing assets or produce other old provisional items.
+
+The 2026-11-22 tattooed-visitor request adds one material variant of the free
+Quaternius standing adult. Its near/far models keep the original 1,594/594
+triangles, pose and occupied space. A role-specific 1024² single atlas and
+0.5 MB per-model allowance reserve native pixel density for the existing face
+and readable space for the original koi/wave tattoo. The ordinary three roles
+retain their 512² and 0.25 MB limits. Only the existing standing slot uses the
+variant; no collision, crowd placement or game behavior changes. The world
+retains its existing material/image counts and all global limits above.
 
 Small-item allocations are soap 300, towel 350, coin 650 and key 500 triangles,
 up to two materials and 0.05 MB each. Their selected exports use 236 / 296 /

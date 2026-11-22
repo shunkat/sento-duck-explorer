@@ -1,4 +1,4 @@
-Sento environment growth v02 — composite asset, CC BY 4.0
+Sento environment v05 — composite asset, CC BY 4.0
 https://creativecommons.org/licenses/by/4.0/
 
 Assembled and modified by this project in Blender. Preserve this credit,
@@ -16,12 +16,27 @@ https://polyhaven.com/a/hinoki_planks
 https://polyhaven.com/license
 Diffuse, normal and roughness maps used for the wood material.
 
-Meshy — CC BY 4.0:
-https://www.meshy.ai/
-https://www.meshy.ai/terms-of-use
-The background NPCs are posed and reduced modifications of the project's
-Meshy 6 Lite Adult model, with the source texture and authored frame retained.
-Meshy does not endorse this project. See assets/sento_npcs/ATTRIBUTION.md.
+Quaternius Universal Base Characters - Free Standard — CC0 1.0:
+https://quaternius.com/packs/universalbasecharacters
+https://creativecommons.org/publicdomain/zero/1.0/
+The seven background NPC placements use three independently sourced and posed
+adult models. Project modifications are MIT. The father/Adult geometry is not
+used for these NPCs. See assets/sento_visitors/README.md.
+
+v02 replaces only the NPC payloads in the v01 composite, retaining architecture,
+non-NPC materials/images and all placement transforms. The prior v01 export and
+its Meshy attribution remain preserved beside the original editable source.
+
+v03 corrects four inward-facing UV coordinates on the Fuji wall mural to show
+the original artwork without horizontal reflection from the bath. All other
+v02 bytes, including the full original image and all geometry, are unchanged.
+
+v04 uses the tattooed standing visitor in the existing slot2. The Quaternius
+standing geometry and normals remain unchanged; UV seam splits and a new
+1024px atlas add original koi/wave/peony art generated through OpenAI and
+composed in Blender. Project-held art/material/UV rights are MIT to the extent
+permitted by law. Other visitors, architecture, images and corrected Fuji
+mural retain v03 data. See assets/sento_visitors/tattoo/README.md.
 
 Rooms, fixtures and tile materials were authored for this project. Project-held
 rights are MIT. The mural was generated from an original prompt through OpenAI;
@@ -34,3 +49,8 @@ Growth-route modification, 2026-11-22: localized water/floor and doorway cuts,
 child-area partitions/storage, street boundary, threshold and two dynamic doors.
 Existing public geometry, NPCs, mural and all source material/image data retained.
 The geometry-only patch and editable source context retain these credits.
+
+Combined v05, 2026-11-22: applies the reviewed growth_v02 geometry patch to
+the v04 visitor/mural composite. Both parent revisions are archived. The latest
+growth architecture and dynamic doors coexist with independent visitors,
+original tattoo art and inward-facing Fuji UVs. No source image is recompressed.

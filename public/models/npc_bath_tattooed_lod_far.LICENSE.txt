@@ -1,0 +1,21 @@
+Tattooed sento visitor, distant detail — CC0 source; project modifications MIT
+
+Geometry source: Quaternius, Universal Base Characters — Free Standard.
+https://quaternius.com/packs/universalbasecharacters
+https://creativecommons.org/publicdomain/zero/1.0/
+
+Derived from the project's independent standing visitor distance model.
+The original distant geometry, oriented normals, pose and bounds are preserved;
+vertices split only for new UV charts. Intended beyond 6m camera-to-center or
+in Overview, with the same tattoo atlas as the near visitor.
+
+The original koi, wave and peony artwork was generated from a project text
+prompt with the built-in OpenAI image tool through Codex, without third-party
+image inputs. Blender composes it into a 1024px atlas with the existing eye
+region retained at native resolution. Project-held art and modification rights
+are MIT to the extent permitted by law. The original geometry remains CC0.
+
+Keep the repository MIT copyright/permission notice with project modifications.
+See assets/sento_visitors/tattoo/README.md, its ref/provenance.json,
+assets/ledger.csv and npc_bath_tattooed.LICENSE.txt for exact provenance.
+No father geometry, new Image-to-3D generation or paid source pack was used.

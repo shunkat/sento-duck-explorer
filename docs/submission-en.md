@@ -2,7 +2,11 @@
 
 Draft for the Kiroween 2026 English description. It is a working draft, not a submitted entry.
 
-## Status (2026-11-20 merge integration)
+## Current visual update (2026-11-22)
+
+The current game has one active character growing from Duck to Child to Adult through two milk pickups, with a final street exit. Independent visitors, a correctly oriented Fuji mural and an original tattooed visitor are combined with the current growth architecture. See [combined verification](combined-assets-release-verification.md). The complete environment and small props now use reviewed GLBs from approved free public sources and project-authored Blender geometry. Human v03 adds a corrected Adult face atlas and shared skeletal walking; detailed revision and verification boundaries are in [the human release record](human-face-walk-verification.md). The older route results below remain historical and are not claimed to validate this revision.
+
+## Historical status (2026-11-20 merge integration)
 
 - Duck, Child, Adult and the sauna hat are real GLBs from original reference images → Meshy Free / Meshy 6 Lite → Blender adjustment. Clothing variants and item/carrier attachments follow game state. The reference, generated, Blender and final stages are recorded in the asset ledger.
 - Humans have static poses. The environment and props other than the hat remain provisional; skeletal animation and a finished visual presentation remain open.
@@ -104,6 +108,6 @@ Controls are listed in the English section of `README.md`.
 ## Not yet done
 
 - Remaining visual checks identified in the verification record, including held-hat/key alignment; an exclusively shoulder-view route has not been demonstrated.
-- Skeletal animation, finished environment and remaining prop assets; minor held-item overlap polish.
+- Separate authored drying/pickup/carry-transition motion clips and the deferred normal-input verification of the current asset batch.
 - Costume Contest presentation remains a proposal, not a user-adopted feature.
 - A demo video under 3 minutes in English or with English subtitles, and Devpost submission. Freeze the public demo at the submitted version as described in [deployment](deployment.md).

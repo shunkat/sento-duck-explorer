@@ -219,3 +219,29 @@ uses the existing authorized Pages path, public commit identity and deadline
 checks; see [the complete release record](../../../docs/environment-release-verification.md)
 for evidence and authoritative production version/workflow links. Normal-input
 play, animation and competition submission remain separate and unclaimed.
+
+## Mount Fuji bath-wall inspection (2026-11-21)
+
+The requested Fuji painting uses the existing original panoramic artwork above
+the indoor bath. Environment v03 corrects four inward-facing U values so the
+picture matches the original orientation. All geometry, image bytes and other
+GLB data remain identical to the independent-NPC v02. Actual GLB reimport views,
+six relevant asset/visibility tests, three producer regressions and the Pages
+build passed; independent review has no required findings. See the
+[mural record](../../../assets/sento_mural/README.md). Main/production integration
+remains held for the concurrent growth/exit work; normal-input bath viewing and
+game lighting are included in the single combined final verification.
+
+## Tattooed visitor appearance (2026-11-22)
+
+The user-requested Japanese-inspired tattooed adult uses the independent CC0
+standing visitor with original generated koi/wave/peony art. Its back/chest/arm
+projection was revised after actual-export review caught stretched stripes,
+neck fragments and a far-LOD flower cutoff. The accepted near/far retain exact
+source triangle positions and normals, native face pixels and shared 1024² art.
+The new appearance uses existing slot2; other visitors and the corrected Fuji
+mural are preserved. See [production evidence](../../../assets/sento_visitors/tattoo/README.md).
+Thirteen relevant tests and Pages-base build pass; four producer regressions
+and independent review have no required findings. No normal-input play or
+production change is claimed. The concurrent growth/exit architecture must be
+retained when these asset changes are integrated into the final fixed batch.

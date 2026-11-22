@@ -1,0 +1,2415 @@
+{
+  "layout_sha256": "01d4ef0eda8966fe87ec3ac4551bcce129bd697040ae6dd201a0cff50e9ceba8",
+  "export_sha256": "98f43e692fa430c2595acdf7c879a004735b4d0bc1b503a00fa69889b6cdde46",
+  "export_bytes": 6850416,
+  "reference_measurements_sha256": "b663d9d857b4bfacd46dbe2ba2160c7d39700f9b2fc86cf11ef6d2ec3f0ec663",
+  "architecture_triangles": 9907,
+  "npc_triangles": 12157,
+  "export_triangles": 22064,
+  "mesh_count": 52,
+  "materials": [
+    "bath_floor",
+    "brushed_metal",
+    "cedar",
+    "ceramic_cream",
+    "ceramic_teal",
+    "dark_cedar",
+    "fuji_mural",
+    "garden_stone",
+    "mirror_glass",
+    "navy_cloth",
+    "npc_bath_tattooed_single_atlas",
+    "npc_seated_single_atlas",
+    "npc_staff_single_atlas",
+    "rose_cloth",
+    "sage_foliage",
+    "straw",
+    "warm_plaster"
+  ],
+  "bounds_gltf_m": [
+    [
+      -3.200000047683716,
+      -0.28999999165534973,
+      -9.100000381469727
+    ],
+    [
+      36.099998474121094,
+      2.75,
+      12.100000381469727
+    ]
+  ],
+  "finite_vertices": true,
+  "degenerate_faces": 0,
+  "raw_degenerate_triangles": 0,
+  "raw_degenerate_npc_triangles": 0,
+  "raw_degenerate_architecture_triangles": 0,
+  "raw_degenerate_triangles_by_mesh": {},
+  "degenerate_measurement": "Triangle area below 1e-14 square metres from the exact GLB positions in float64 arithmetic.",
+  "npc_slots": [
+    {
+      "slot": "npc_slot_staff",
+      "near": "npc_high_staff",
+      "model_kind": "npc_staff",
+      "position_gltf_m": [
+        4.900000095367432,
+        0,
+        -8.625
+      ],
+      "yaw_degrees": 0,
+      "uniform_scale": 1,
+      "source_sha256": "e479a4a9012e7de52216087cd18a706376e274f15589e576e473449110eac926",
+      "placement_id": "fixtures_02",
+      "bounds_gltf_m": [
+        [
+          4.670670330524445,
+          0.0,
+          -8.762946769595146
+        ],
+        [
+          5.129329860210419,
+          1.5999999046325684,
+          -8.487053230404854
+        ]
+      ],
+      "triangles": 1593
+    },
+    {
+      "slot": "npc_slot_0",
+      "near": "npc_high_0",
+      "model_kind": "npc_seated",
+      "position_gltf_m": [
+        14.300000190734863,
+        0,
+        0.8500000238418579
+      ],
+      "yaw_degrees": 90,
+      "uniform_scale": 0.8999999761581421,
+      "source_sha256": "9580c0fdded4e8dd0a9c2559eeae16af2d2c8f75aa7011d3f009567ac781be57",
+      "placement_id": "npcs_00",
+      "bounds_gltf_m": [
+        [
+          14.322786476022715,
+          0.0,
+          0.6304056410154025
+        ],
+        [
+          14.853213968117291,
+          1.171185998885207,
+          1.0695942939367136
+        ]
+      ],
+      "triangles": 1794
+    },
+    {
+      "slot": "npc_slot_1",
+      "near": "npc_high_1",
+      "model_kind": "npc_seated",
+      "position_gltf_m": [
+        14.300000190734863,
+        0,
+        3.049999952316284
+      ],
+      "yaw_degrees": 90,
+      "uniform_scale": 0.8999999761581421,
+      "source_sha256": "9580c0fdded4e8dd0a9c2559eeae16af2d2c8f75aa7011d3f009567ac781be57",
+      "placement_id": "npcs_01",
+      "bounds_gltf_m": [
+        [
+          14.322786476022715,
+          0.0,
+          2.830405569489829
+        ],
+        [
+          14.853213968117291,
+          1.171185998885207,
+          3.26959422241114
+        ]
+      ],
+      "triangles": 1794
+    },
+    {
+      "slot": "npc_slot_2",
+      "near": "npc_high_2",
+      "model_kind": "npc_bath_tattooed",
+      "position_gltf_m": [
+        15.699999809265137,
+        0,
+        0.30000001192092896
+      ],
+      "yaw_degrees": 0,
+      "uniform_scale": 1,
+      "source_sha256": "83f2ea50218978cac3f16e78483ff04e4b187b822fc89308ea7094b7e3d8d040",
+      "placement_id": "npcs_02",
+      "bounds_gltf_m": [
+        [
+          15.474412277340889,
+          0.0,
+          0.1646060347557068
+        ],
+        [
+          15.925587341189384,
+          1.600000023841858,
+          0.4353939890861511
+        ]
+      ],
+      "triangles": 1594
+    },
+    {
+      "slot": "npc_slot_3",
+      "near": "npc_high_3",
+      "model_kind": "npc_seated",
+      "position_gltf_m": [
+        15.699999809265137,
+        0,
+        2.5
+      ],
+      "yaw_degrees": 90,
+      "uniform_scale": 0.8999999761581421,
+      "source_sha256": "9580c0fdded4e8dd0a9c2559eeae16af2d2c8f75aa7011d3f009567ac781be57",
+      "placement_id": "npcs_03",
+      "bounds_gltf_m": [
+        [
+          15.722786094552989,
+          0.0,
+          2.2804056171735447
+        ],
+        [
+          16.253213586647565,
+          1.171185998885207,
+          2.7195942700948557
+        ]
+      ],
+      "triangles": 1794
+    },
+    {
+      "slot": "npc_slot_4",
+      "near": "npc_high_4",
+      "model_kind": "npc_seated",
+      "position_gltf_m": [
+        17.100000381469727,
+        0,
+        1.350000023841858
+      ],
+      "yaw_degrees": 90,
+      "uniform_scale": 0.8999999761581421,
+      "source_sha256": "9580c0fdded4e8dd0a9c2559eeae16af2d2c8f75aa7011d3f009567ac781be57",
+      "placement_id": "npcs_04",
+      "bounds_gltf_m": [
+        [
+          17.12278666675758,
+          0.0,
+          1.1304056410154026
+        ],
+        [
+          17.653214158852155,
+          1.171185998885207,
+          1.5695942939367136
+        ]
+      ],
+      "triangles": 1794
+    },
+    {
+      "slot": "npc_slot_5",
+      "near": "npc_high_5",
+      "model_kind": "npc_seated",
+      "position_gltf_m": [
+        17.100000381469727,
+        0,
+        3.549999952316284
+      ],
+      "yaw_degrees": 90,
+      "uniform_scale": 0.8999999761581421,
+      "source_sha256": "9580c0fdded4e8dd0a9c2559eeae16af2d2c8f75aa7011d3f009567ac781be57",
+      "placement_id": "npcs_05",
+      "bounds_gltf_m": [
+        [
+          17.12278666675758,
+          0.0,
+          3.330405569489829
+        ],
+        [
+          17.653214158852155,
+          1.171185998885207,
+          3.76959422241114
+        ]
+      ],
+      "triangles": 1794
+    }
+  ],
+  "seating_board_clearances": [
+    {
+      "slot": "npc_slot_0",
+      "seat_board_interiors_gltf_m": [
+        [
+          [
+            14.00801,
+            0.34001,
+            0.10001
+          ],
+          [
+            14.191989999999999,
+            0.40499,
+            1.59999
+          ]
+        ],
+        [
+          [
+            14.20801,
+            0.34001,
+            0.10001
+          ],
+          [
+            14.39199,
+            0.40499,
+            1.59999
+          ]
+        ],
+        [
+          [
+            14.40801,
+            0.34001,
+            0.10001
+          ],
+          [
+            14.59199,
+            0.40499,
+            1.59999
+          ]
+        ]
+      ],
+      "intersecting_npc_triangles": 0
+    },
+    {
+      "slot": "npc_slot_1",
+      "seat_board_interiors_gltf_m": [
+        [
+          [
+            14.00801,
+            0.34001,
+            2.2000100000000002
+          ],
+          [
+            14.191989999999999,
+            0.40499,
+            3.89999
+          ]
+        ],
+        [
+          [
+            14.20801,
+            0.34001,
+            2.2000100000000002
+          ],
+          [
+            14.39199,
+            0.40499,
+            3.89999
+          ]
+        ],
+        [
+          [
+            14.40801,
+            0.34001,
+            2.2000100000000002
+          ],
+          [
+            14.59199,
+            0.40499,
+            3.89999
+          ]
+        ]
+      ],
+      "intersecting_npc_triangles": 0
+    },
+    {
+      "slot": "npc_slot_3",
+      "seat_board_interiors_gltf_m": [
+        [
+          [
+            15.40801,
+            0.34001,
+            1.1000100000000002
+          ],
+          [
+            15.59199,
+            0.40499,
+            3.89999
+          ]
+        ],
+        [
+          [
+            15.60801,
+            0.34001,
+            1.1000100000000002
+          ],
+          [
+            15.79199,
+            0.40499,
+            3.89999
+          ]
+        ],
+        [
+          [
+            15.808010000000001,
+            0.34001,
+            1.1000100000000002
+          ],
+          [
+            15.99199,
+            0.40499,
+            3.89999
+          ]
+        ]
+      ],
+      "intersecting_npc_triangles": 0
+    },
+    {
+      "slot": "npc_slot_4",
+      "seat_board_interiors_gltf_m": [
+        [
+          [
+            16.80801,
+            0.34001,
+            0.10001
+          ],
+          [
+            16.99199,
+            0.40499,
+            2.59999
+          ]
+        ],
+        [
+          [
+            17.00801,
+            0.34001,
+            0.10001
+          ],
+          [
+            17.19199,
+            0.40499,
+            2.59999
+          ]
+        ],
+        [
+          [
+            17.208009999999998,
+            0.34001,
+            0.10001
+          ],
+          [
+            17.39199,
+            0.40499,
+            2.59999
+          ]
+        ]
+      ],
+      "intersecting_npc_triangles": 0
+    },
+    {
+      "slot": "npc_slot_5",
+      "seat_board_interiors_gltf_m": [
+        [
+          [
+            16.80801,
+            0.34001,
+            3.2000100000000002
+          ],
+          [
+            16.99199,
+            0.40499,
+            3.89999
+          ]
+        ],
+        [
+          [
+            17.00801,
+            0.34001,
+            3.2000100000000002
+          ],
+          [
+            17.19199,
+            0.40499,
+            3.89999
+          ]
+        ],
+        [
+          [
+            17.208009999999998,
+            0.34001,
+            3.2000100000000002
+          ],
+          [
+            17.39199,
+            0.40499,
+            3.89999
+          ]
+        ]
+      ],
+      "intersecting_npc_triangles": 0
+    }
+  ],
+  "all_seating_boards_clear": true,
+  "seating_measurement": "Actual NPC triangles clipped against the interiors of the three LEVEL-authored seat boards; top-surface contact is allowed.",
+  "clearances": [
+    {
+      "id": "narrow_hole",
+      "bounds_gltf_m": [
+        [
+          -2.9999899864196777,
+          0.05000000074505806,
+          8.300009727478027
+        ],
+        [
+          -9.999999747378752e-06,
+          0.44999998807907104,
+          8.699990272521973
+        ]
+      ],
+      "intersecting_triangles": 0,
+      "intersecting_mesh_names": []
+    },
+    {
+      "id": "crowd_gap_0",
+      "bounds_gltf_m": [
+        [
+          14.000009536743164,
+          0.05000000074505806,
+          1.6000100374221802
+        ],
+        [
+          14.599989891052246,
+          1.75,
+          2.1999900341033936
+        ]
+      ],
+      "intersecting_triangles": 0,
+      "intersecting_mesh_names": []
+    },
+    {
+      "id": "crowd_gap_1",
+      "bounds_gltf_m": [
+        [
+          15.400010108947754,
+          0.05000000074505806,
+          0.5000100135803223
+        ],
+        [
+          15.999990463256836,
+          1.75,
+          1.0999900102615356
+        ]
+      ],
+      "intersecting_triangles": 0,
+      "intersecting_mesh_names": []
+    },
+    {
+      "id": "crowd_gap_2",
+      "bounds_gltf_m": [
+        [
+          16.800010681152344,
+          0.05000000074505806,
+          2.6000099182128906
+        ],
+        [
+          17.39999008178711,
+          1.75,
+          3.1999900341033936
+        ]
+      ],
+      "intersecting_triangles": 0,
+      "intersecting_mesh_names": []
+    },
+    {
+      "id": "changing_reception",
+      "bounds_gltf_m": [
+        [
+          6.200009822845459,
+          0.05000000074505806,
+          -5.099989891052246
+        ],
+        [
+          7.399990081787109,
+          1.75,
+          -4.900010108947754
+        ]
+      ],
+      "intersecting_triangles": 0,
+      "intersecting_mesh_names": []
+    },
+    {
+      "id": "bath_changing",
+      "bounds_gltf_m": [
+        [
+          0.8000100255012512,
+          0.05000000074505806,
+          -0.09999000281095505
+        ],
+        [
+          1.9999899864196777,
+          1.75,
+          0.09999000281095505
+        ]
+      ],
+      "intersecting_triangles": 0,
+      "intersecting_mesh_names": []
+    },
+    {
+      "id": "bath_sauna",
+      "bounds_gltf_m": [
+        [
+          11.900010108947754,
+          0.05000000074505806,
+          1.2000099420547485
+        ],
+        [
+          12.099989891052246,
+          1.75,
+          2.3999900817871094
+        ]
+      ],
+      "intersecting_triangles": 0,
+      "intersecting_mesh_names": []
+    },
+    {
+      "id": "bath_open_air",
+      "bounds_gltf_m": [
+        [
+          11.900010108947754,
+          0.05000000074505806,
+          6.600009918212891
+        ],
+        [
+          12.099989891052246,
+          1.75,
+          7.799990177154541
+        ]
+      ],
+      "intersecting_triangles": 0,
+      "intersecting_mesh_names": []
+    },
+    {
+      "id": "open_air_pond_entrance",
+      "bounds_gltf_m": [
+        [
+          19.900009155273438,
+          0.05000000074505806,
+          7.400010108947754
+        ],
+        [
+          20.099990844726562,
+          1.75,
+          8.599989891052246
+        ]
+      ],
+      "intersecting_triangles": 0,
+      "intersecting_mesh_names": []
+    },
+    {
+      "id": "reception_common",
+      "bounds_gltf_m": [
+        [
+          3.900010108947754,
+          0.05000000074505806,
+          -7.599989891052246
+        ],
+        [
+          4.099989891052246,
+          1.75,
+          -6.400010108947754
+        ]
+      ],
+      "intersecting_triangles": 0,
+      "intersecting_mesh_names": []
+    },
+    {
+      "id": "reception_genkan",
+      "bounds_gltf_m": [
+        [
+          7.900010108947754,
+          0.05000000074505806,
+          -7.599989891052246
+        ],
+        [
+          8.099989891052246,
+          1.75,
+          -6.400010108947754
+        ]
+      ],
+      "intersecting_triangles": 0,
+      "intersecting_mesh_names": []
+    },
+    {
+      "id": "genkan_street",
+      "bounds_gltf_m": [
+        [
+          10.900010108947754,
+          0.05000000074505806,
+          -7.599989891052246
+        ],
+        [
+          11.099989891052246,
+          1.75,
+          -6.400010108947754
+        ]
+      ],
+      "intersecting_triangles": 0,
+      "intersecting_mesh_names": []
+    },
+    {
+      "id": "growth_door_kidsGate",
+      "bounds_gltf_m": [
+        [
+          0.6000099778175354,
+          0.05000000074505806,
+          2.8000099658966064
+        ],
+        [
+          1.5999900102615356,
+          1.75,
+          2.9999899864196777
+        ]
+      ],
+      "intersecting_triangles": 0,
+      "intersecting_mesh_names": []
+    },
+    {
+      "id": "growth_door_frontExit",
+      "bounds_gltf_m": [
+        [
+          10.900010108947754,
+          0.05000000074505806,
+          -7.599989891052246
+        ],
+        [
+          11.099989891052246,
+          1.75,
+          -6.400010108947754
+        ]
+      ],
+      "intersecting_triangles": 0,
+      "intersecting_mesh_names": []
+    },
+    {
+      "id": "child_passage",
+      "bounds_gltf_m": [
+        [
+          0.10001000016927719,
+          0.05000000074505806,
+          4.500010013580322
+        ],
+        [
+          0.6999899744987488,
+          1.25,
+          6.6999897956848145
+        ]
+      ],
+      "intersecting_triangles": 0,
+      "intersecting_mesh_names": []
+    },
+    {
+      "id": "duck_water_0",
+      "bounds_gltf_m": [
+        [
+          4.600009918212891,
+          0.05000000074505806,
+          5.400010108947754
+        ],
+        [
+          10.599989891052246,
+          0.3499999940395355,
+          8.799989700317383
+        ]
+      ],
+      "intersecting_triangles": 0,
+      "intersecting_mesh_names": []
+    },
+    {
+      "id": "duck_water_1",
+      "bounds_gltf_m": [
+        [
+          -0.09999000281095505,
+          0.05000000074505806,
+          8.300009727478027
+        ],
+        [
+          4.6999897956848145,
+          0.3499999940395355,
+          8.699990272521973
+        ]
+      ],
+      "intersecting_triangles": 0,
+      "intersecting_mesh_names": []
+    },
+    {
+      "id": "duck_water_2",
+      "bounds_gltf_m": [
+        [
+          0.30000999569892883,
+          0.05000000074505806,
+          7.3000102043151855
+        ],
+        [
+          2.099989891052246,
+          0.3499999940395355,
+          8.699990272521973
+        ]
+      ],
+      "intersecting_triangles": 0,
+      "intersecting_mesh_names": []
+    },
+    {
+      "id": "duck_water_3",
+      "bounds_gltf_m": [
+        [
+          -2.9999899864196777,
+          0.05000000074505806,
+          8.300009727478027
+        ],
+        [
+          -9.999999747378752e-06,
+          0.3499999940395355,
+          8.699990272521973
+        ]
+      ],
+      "intersecting_triangles": 0,
+      "intersecting_mesh_names": []
+    }
+  ],
+  "all_clearances_open": true,
+  "clearance_excluded_dynamic_roots": [
+    "sauna_door",
+    "growth_kids_gate",
+    "growth_front_exit"
+  ],
+  "scope": "Actual combined GLB geometry. All 19 opening interiors exclude the three moving door subtrees; five seat-board interiors tested. Gameplay and game lighting separate.",
+  "coverage": {
+    "zones_00": {
+      "status": "authored",
+      "objects_before_batching": [
+        "narrow_hole_recessed_bed"
+      ],
+      "base_placement_id": "zones_00"
+    },
+    "zones_01": {
+      "status": "authored",
+      "objects_before_batching": [
+        "growth_bath_floor_piece_*",
+        "growth_water_bed_*"
+      ],
+      "note": "Localized growth-route patch in reviewed world coordinates."
+    },
+    "zones_02": {
+      "status": "authored",
+      "objects_before_batching": [
+        "growth_bath_floor_piece_*",
+        "growth_water_bed_*"
+      ],
+      "note": "Localized growth-route patch in reviewed world coordinates."
+    },
+    "zones_03": {
+      "status": "authored",
+      "objects_before_batching": [
+        "growth_bath_floor_piece_*",
+        "growth_water_bed_*"
+      ],
+      "note": "Localized growth-route patch in reviewed world coordinates."
+    },
+    "zones_04": {
+      "status": "authored",
+      "objects_before_batching": [
+        "bathwater_recessed_bed"
+      ],
+      "base_placement_id": "zones_01",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "zones_05": {
+      "status": "independent_runtime_overlay",
+      "base_placement_id": "zones_02",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "zones_06": {
+      "status": "authored",
+      "objects_before_batching": [
+        "growth_bath_floor_piece_*"
+      ],
+      "note": "Original bath_floor material and UV density, new water recesses."
+    },
+    "zones_07": {
+      "status": "authored",
+      "objects_before_batching": [
+        "changing_floor_0"
+      ],
+      "base_placement_id": "zones_04",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "zones_08": {
+      "status": "authored",
+      "objects_before_batching": [
+        "reception_floor_0"
+      ],
+      "base_placement_id": "zones_05",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "zones_09": {
+      "status": "authored",
+      "objects_before_batching": [
+        "common_floor_0"
+      ],
+      "base_placement_id": "zones_06",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "zones_10": {
+      "status": "authored",
+      "objects_before_batching": [
+        "exterior_floor_0"
+      ],
+      "base_placement_id": "zones_07",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "zones_11": {
+      "status": "authored",
+      "objects_before_batching": [
+        "growth_street_floor"
+      ],
+      "note": "Localized growth-route patch in reviewed world coordinates."
+    },
+    "zones_12": {
+      "status": "authored",
+      "objects_before_batching": [
+        "sauna_crowd_floor_0"
+      ],
+      "base_placement_id": "zones_08",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "zones_13": {
+      "status": "authored",
+      "objects_before_batching": [
+        "sauna_entry_floor_0"
+      ],
+      "base_placement_id": "zones_09",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "zones_14": {
+      "status": "authored",
+      "objects_before_batching": [
+        "open_air_floor_0"
+      ],
+      "base_placement_id": "zones_10",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "zones_15": {
+      "status": "authored",
+      "objects_before_batching": [
+        "pond_entrance_floor_0"
+      ],
+      "base_placement_id": "zones_11",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "zones_16": {
+      "status": "authored",
+      "objects_before_batching": [
+        "pond_recessed_bed"
+      ],
+      "base_placement_id": "zones_13",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "structural_walls_00": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_0_0_lower",
+        "wall_0_0_upper",
+        "wall_0_0_cap",
+        "wall_0_0_skirting"
+      ],
+      "base_placement_id": "structural_walls_00"
+    },
+    "structural_walls_01": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_1_0_lower",
+        "wall_1_0_upper",
+        "wall_1_0_cap",
+        "wall_1_0_skirting"
+      ],
+      "base_placement_id": "structural_walls_01"
+    },
+    "structural_walls_02": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_2_0_lower",
+        "wall_2_0_upper",
+        "wall_2_0_cap",
+        "wall_2_0_skirting"
+      ],
+      "base_placement_id": "structural_walls_02"
+    },
+    "structural_walls_03": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_3_0_lower",
+        "wall_3_0_upper",
+        "wall_3_0_cap",
+        "wall_3_0_skirting"
+      ],
+      "base_placement_id": "structural_walls_03"
+    },
+    "structural_walls_04": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_4_0_lower",
+        "wall_4_0_upper",
+        "wall_4_0_cap",
+        "wall_4_0_skirting"
+      ],
+      "base_placement_id": "structural_walls_04"
+    },
+    "structural_walls_05": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_5_0_lower",
+        "wall_5_0_upper",
+        "wall_5_0_cap",
+        "wall_5_0_skirting"
+      ],
+      "base_placement_id": "structural_walls_05"
+    },
+    "structural_walls_06": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_6_0_lower",
+        "wall_6_0_upper",
+        "wall_6_0_cap",
+        "wall_6_0_skirting"
+      ],
+      "base_placement_id": "structural_walls_06"
+    },
+    "structural_walls_07": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_7_0_lower",
+        "wall_7_0_upper",
+        "wall_7_0_cap",
+        "wall_7_0_skirting"
+      ],
+      "base_placement_id": "structural_walls_07"
+    },
+    "structural_walls_08": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_8_0_lower",
+        "wall_8_0_upper",
+        "wall_8_0_cap",
+        "wall_8_0_skirting"
+      ],
+      "base_placement_id": "structural_walls_08"
+    },
+    "structural_walls_09": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_9_0_lower",
+        "wall_9_0_upper",
+        "wall_9_0_cap",
+        "wall_9_0_skirting"
+      ],
+      "base_placement_id": "structural_walls_09"
+    },
+    "structural_walls_10": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_10_0_lower",
+        "wall_10_0_upper",
+        "wall_10_0_cap",
+        "wall_10_0_skirting"
+      ],
+      "base_placement_id": "structural_walls_10"
+    },
+    "structural_walls_11": {
+      "status": "authored",
+      "objects_before_batching": [
+        "environment_static__warm_plaster",
+        "environment_upper__warm_plaster"
+      ],
+      "note": "Preserved wall material batches clipped only at the new front-door aperture."
+    },
+    "structural_walls_12": {
+      "status": "authored",
+      "objects_before_batching": [
+        "environment_static__warm_plaster",
+        "environment_upper__warm_plaster"
+      ],
+      "note": "Preserved wall material batches clipped only at the new front-door aperture."
+    },
+    "structural_walls_13": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_12_0_lower",
+        "wall_12_0_upper",
+        "wall_12_0_cap",
+        "wall_12_0_skirting"
+      ],
+      "base_placement_id": "structural_walls_12",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "structural_walls_14": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_13_0_lower",
+        "wall_13_0_upper",
+        "wall_13_0_cap",
+        "wall_13_0_skirting"
+      ],
+      "base_placement_id": "structural_walls_13",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "structural_walls_15": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_14_0_lower",
+        "wall_14_0_upper",
+        "wall_14_0_cap",
+        "wall_14_0_skirting"
+      ],
+      "base_placement_id": "structural_walls_14",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "structural_walls_16": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_15_0_lower",
+        "wall_15_0_upper",
+        "wall_15_0_cap",
+        "wall_15_0_skirting"
+      ],
+      "base_placement_id": "structural_walls_15",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "structural_walls_17": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_16_0_lower",
+        "wall_16_0_upper",
+        "wall_16_0_cap"
+      ],
+      "base_placement_id": "structural_walls_16",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "structural_walls_18": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_17_0_lower",
+        "wall_17_0_upper",
+        "wall_17_0_cap",
+        "wall_17_1_lower",
+        "wall_17_1_upper",
+        "wall_17_1_cap"
+      ],
+      "base_placement_id": "structural_walls_17",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "structural_walls_19": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_18_0_lower",
+        "wall_18_0_upper",
+        "wall_18_0_cap"
+      ],
+      "base_placement_id": "structural_walls_18",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "structural_walls_20": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_19_0_lower",
+        "wall_19_0_upper",
+        "wall_19_0_cap"
+      ],
+      "base_placement_id": "structural_walls_19",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "structural_walls_21": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_20_0_lower",
+        "wall_20_0_upper",
+        "wall_20_0_cap"
+      ],
+      "base_placement_id": "structural_walls_20",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "structural_walls_22": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_21_0_lower",
+        "wall_21_0_upper",
+        "wall_21_0_cap",
+        "wall_21_1_lower",
+        "wall_21_1_upper",
+        "wall_21_1_cap"
+      ],
+      "base_placement_id": "structural_walls_21",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "structural_walls_23": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_22_0_lower",
+        "wall_22_0_upper",
+        "wall_22_0_cap",
+        "wall_22_1_lower",
+        "wall_22_1_upper",
+        "wall_22_1_cap"
+      ],
+      "base_placement_id": "structural_walls_22",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "structural_walls_24": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_23_0_lower",
+        "wall_23_0_upper",
+        "wall_23_0_cap",
+        "wall_23_1_lower",
+        "wall_23_1_upper",
+        "wall_23_1_cap"
+      ],
+      "base_placement_id": "structural_walls_23",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "structural_walls_25": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_24_0_lower",
+        "wall_24_0_upper",
+        "wall_24_0_cap"
+      ],
+      "base_placement_id": "structural_walls_24",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "structural_walls_26": {
+      "status": "authored",
+      "objects_before_batching": [
+        "wall_25_0_lower",
+        "wall_25_0_upper",
+        "wall_25_0_cap"
+      ],
+      "base_placement_id": "structural_walls_25",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "fixtures_00": {
+      "status": "authored",
+      "objects_before_batching": [
+        "shoeLocker_0_carcass_lower",
+        "shoeLocker_0_carcass_upper",
+        "shoeLocker_0_door0_0_lower",
+        "shoeLocker_0_pull",
+        "shoeLocker_0_door0_1_lower",
+        "shoeLocker_0_pull.001",
+        "shoeLocker_0_door0_2_lower",
+        "shoeLocker_0_pull.002",
+        "shoeLocker_0_door0_3_lower",
+        "shoeLocker_0_pull.003",
+        "shoeLocker_0_door0_4_lower",
+        "shoeLocker_0_pull.004",
+        "shoeLocker_0_door0_5_lower",
+        "shoeLocker_0_pull.005",
+        "shoeLocker_0_door1_0_lower",
+        "shoeLocker_0_pull.006",
+        "shoeLocker_0_door1_1_lower",
+        "shoeLocker_0_pull.007",
+        "shoeLocker_0_door1_2_lower",
+        "shoeLocker_0_pull.008",
+        "shoeLocker_0_door1_3_lower",
+        "shoeLocker_0_pull.009",
+        "shoeLocker_0_door1_4_lower",
+        "shoeLocker_0_pull.010",
+        "shoeLocker_0_door1_5_lower",
+        "shoeLocker_0_pull.011",
+        "shoeLocker_0_door2_0_lower",
+        "shoeLocker_0_door2_0_upper",
+        "shoeLocker_0_pull.012",
+        "shoeLocker_0_door2_1_lower",
+        "shoeLocker_0_door2_1_upper",
+        "shoeLocker_0_pull.013",
+        "shoeLocker_0_door2_2_lower",
+        "shoeLocker_0_door2_2_upper",
+        "shoeLocker_0_pull.014",
+        "shoeLocker_0_door2_3_lower",
+        "shoeLocker_0_door2_3_upper",
+        "shoeLocker_0_pull.015",
+        "shoeLocker_0_door2_4_lower",
+        "shoeLocker_0_door2_4_upper",
+        "shoeLocker_0_pull.016",
+        "shoeLocker_0_door2_5_lower",
+        "shoeLocker_0_door2_5_upper",
+        "shoeLocker_0_pull.017"
+      ],
+      "base_placement_id": "fixtures_00"
+    },
+    "fixtures_01": {
+      "status": "authored",
+      "objects_before_batching": [
+        "desk_1_body",
+        "desk_1_counter",
+        "desk_1_inlay"
+      ],
+      "base_placement_id": "fixtures_01"
+    },
+    "fixtures_02": {
+      "status": "authored",
+      "objects_before_batching": [
+        "npc_staff_body"
+      ],
+      "npc_replacement_model": "npc_staff",
+      "npc_replacement_source_sha256": "e479a4a9012e7de52216087cd18a706376e274f15589e576e473449110eac926"
+    },
+    "fixtures_03": {
+      "status": "authored",
+      "objects_before_batching": [
+        "desk_3_body",
+        "desk_3_counter"
+      ],
+      "base_placement_id": "fixtures_03"
+    },
+    "fixtures_04": {
+      "status": "authored",
+      "objects_before_batching": [
+        "bench_4"
+      ],
+      "base_placement_id": "fixtures_04"
+    },
+    "fixtures_05": {
+      "status": "authored",
+      "objects_before_batching": [
+        "step_5"
+      ],
+      "base_placement_id": "fixtures_05"
+    },
+    "fixtures_06": {
+      "status": "authored",
+      "objects_before_batching": [
+        "screen_6_panel_lower",
+        "screen_6_panel_upper",
+        "screen_6_post_lower",
+        "screen_6_post_upper",
+        "screen_6_post_lower.001",
+        "screen_6_post_upper.001",
+        "screen_6_crossbar",
+        "screen_6_crossbar.001",
+        "screen_6_crossbar.002"
+      ],
+      "base_placement_id": "fixtures_06"
+    },
+    "fixtures_07": {
+      "status": "authored",
+      "objects_before_batching": [
+        "locker_7_carcass_lower",
+        "locker_7_carcass_upper",
+        "locker_7_door0_0_lower",
+        "locker_7_pull",
+        "locker_7_door0_1_lower",
+        "locker_7_pull.001",
+        "locker_7_door0_2_lower",
+        "locker_7_pull.002",
+        "locker_7_door0_3_lower",
+        "locker_7_pull.003",
+        "locker_7_door0_4_lower",
+        "locker_7_pull.004",
+        "locker_7_door0_5_lower",
+        "locker_7_pull.005",
+        "locker_7_door1_0_lower",
+        "locker_7_door1_0_upper",
+        "locker_7_pull.006",
+        "locker_7_door1_1_lower",
+        "locker_7_door1_1_upper",
+        "locker_7_pull.007",
+        "locker_7_door1_2_lower",
+        "locker_7_door1_2_upper",
+        "locker_7_pull.008",
+        "locker_7_door1_3_lower",
+        "locker_7_door1_3_upper",
+        "locker_7_pull.009",
+        "locker_7_door1_4_lower",
+        "locker_7_door1_4_upper",
+        "locker_7_pull.010",
+        "locker_7_door1_5_lower",
+        "locker_7_door1_5_upper",
+        "locker_7_pull.011"
+      ],
+      "base_placement_id": "fixtures_07"
+    },
+    "fixtures_08": {
+      "status": "authored",
+      "objects_before_batching": [
+        "bench_8"
+      ],
+      "base_placement_id": "fixtures_08"
+    },
+    "fixtures_09": {
+      "status": "authored",
+      "objects_before_batching": [
+        "basin_9_wall_0",
+        "basin_9_wall_1",
+        "basin_9_wall_2",
+        "basin_9_wall_3",
+        "basin_9_rolled_rim_0",
+        "basin_9_rolled_rim_1",
+        "basin_9_rolled_rim_2",
+        "basin_9_rolled_rim_3",
+        "basin_9_inside_floor"
+      ],
+      "base_placement_id": "fixtures_09"
+    },
+    "fixtures_10": {
+      "status": "independent_existing_bath_stool",
+      "base_placement_id": "fixtures_10"
+    },
+    "fixtures_11": {
+      "status": "independent_existing_bath_stool",
+      "base_placement_id": "fixtures_11"
+    },
+    "fixtures_12": {
+      "status": "independent_existing_bath_stool",
+      "base_placement_id": "fixtures_12"
+    },
+    "fixtures_13": {
+      "status": "independent_existing_bath_stool",
+      "base_placement_id": "fixtures_13"
+    },
+    "fixtures_14": {
+      "status": "independent_existing_bath_stool",
+      "base_placement_id": "fixtures_14"
+    },
+    "fixtures_15": {
+      "status": "authored",
+      "objects_before_batching": [
+        "plunge_15_wall_0",
+        "plunge_15_wall_1",
+        "plunge_15_wall_2",
+        "plunge_15_wall_3",
+        "plunge_15_rolled_rim_0",
+        "plunge_15_rolled_rim_1",
+        "plunge_15_rolled_rim_2",
+        "plunge_15_rolled_rim_3",
+        "plunge_15_inside_floor"
+      ],
+      "base_placement_id": "fixtures_15"
+    },
+    "fixtures_16": {
+      "status": "authored",
+      "objects_before_batching": [
+        "bench_16"
+      ],
+      "base_placement_id": "fixtures_16"
+    },
+    "fixtures_17": {
+      "status": "authored",
+      "objects_before_batching": [
+        "holeSide_17"
+      ],
+      "base_placement_id": "fixtures_17"
+    },
+    "fixtures_18": {
+      "status": "authored",
+      "objects_before_batching": [
+        "holeSide_18"
+      ],
+      "base_placement_id": "fixtures_18"
+    },
+    "fixtures_19": {
+      "status": "authored",
+      "objects_before_batching": [
+        "holeSide_19"
+      ],
+      "base_placement_id": "fixtures_19"
+    },
+    "fixtures_20": {
+      "status": "authored",
+      "objects_before_batching": [
+        "growth_partition_0_*"
+      ],
+      "note": "Localized growth-route patch in reviewed world coordinates."
+    },
+    "fixtures_21": {
+      "status": "authored",
+      "objects_before_batching": [
+        "growth_curb_1_*"
+      ],
+      "note": "Localized growth-route patch in reviewed world coordinates."
+    },
+    "fixtures_22": {
+      "status": "authored",
+      "objects_before_batching": [
+        "growth_storage_2_*"
+      ],
+      "note": "Localized growth-route patch in reviewed world coordinates."
+    },
+    "fixtures_23": {
+      "status": "authored",
+      "objects_before_batching": [
+        "growth_partition_3_*"
+      ],
+      "note": "Localized growth-route patch in reviewed world coordinates."
+    },
+    "fixtures_24": {
+      "status": "authored",
+      "objects_before_batching": [
+        "growth_partition_4_*"
+      ],
+      "note": "Localized growth-route patch in reviewed world coordinates."
+    },
+    "fixtures_25": {
+      "status": "authored",
+      "objects_before_batching": [
+        "heater_20_body",
+        "heater_20_heater_stone",
+        "heater_20_heater_stone.001",
+        "heater_20_heater_stone.002",
+        "heater_20_heater_stone.003",
+        "heater_20_heater_stone.004",
+        "heater_20_heater_stone.005",
+        "heater_20_guard",
+        "heater_20_guard.001"
+      ],
+      "base_placement_id": "fixtures_20",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "fixtures_26": {
+      "status": "authored",
+      "objects_before_batching": [
+        "shelf_21_shelf",
+        "shelf_21_shelf.001",
+        "shelf_21_upright",
+        "shelf_21_upright.001"
+      ],
+      "base_placement_id": "fixtures_21",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "fixtures_27": {
+      "status": "authored",
+      "objects_before_batching": [
+        "outdoorBath_22_wall_0",
+        "outdoorBath_22_wall_1",
+        "outdoorBath_22_wall_2",
+        "outdoorBath_22_wall_3",
+        "outdoorBath_22_rolled_rim_0",
+        "outdoorBath_22_rolled_rim_1",
+        "outdoorBath_22_rolled_rim_2",
+        "outdoorBath_22_rolled_rim_3",
+        "outdoorBath_22_inside_floor"
+      ],
+      "base_placement_id": "fixtures_22",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "fixtures_28": {
+      "status": "authored",
+      "objects_before_batching": [
+        "bench_23"
+      ],
+      "base_placement_id": "fixtures_23",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "fixtures_29": {
+      "status": "authored",
+      "objects_before_batching": [
+        "shrub_24_stem",
+        "shrub_24_foliage"
+      ],
+      "base_placement_id": "fixtures_24",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "fixtures_30": {
+      "status": "authored",
+      "objects_before_batching": [
+        "shrub_25_stem",
+        "shrub_25_foliage"
+      ],
+      "base_placement_id": "fixtures_25",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "fixtures_31": {
+      "status": "authored",
+      "objects_before_batching": [
+        "rock_26_boulder0",
+        "rock_26_boulder1",
+        "rock_26_boulder2",
+        "rock_26_boulder3",
+        "rock_26_boulder4"
+      ],
+      "base_placement_id": "fixtures_26",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "fixtures_32": {
+      "status": "authored",
+      "objects_before_batching": [
+        "rock_27_boulder0",
+        "rock_27_boulder1",
+        "rock_27_boulder2",
+        "rock_27_boulder3",
+        "rock_27_boulder4"
+      ],
+      "base_placement_id": "fixtures_27",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "fixtures_33": {
+      "status": "authored",
+      "objects_before_batching": [
+        "growth_street_fence_*"
+      ],
+      "note": "Localized growth-route patch in reviewed world coordinates."
+    },
+    "fixtures_34": {
+      "status": "authored",
+      "objects_before_batching": [
+        "growth_street_fence_*"
+      ],
+      "note": "Localized growth-route patch in reviewed world coordinates."
+    },
+    "fixtures_35": {
+      "status": "authored",
+      "objects_before_batching": [
+        "growth_street_fence_*"
+      ],
+      "note": "Localized growth-route patch in reviewed world coordinates."
+    },
+    "fixtures_36": {
+      "status": "authored",
+      "objects_before_batching": [
+        "fence_28_hinoki_panel_lower",
+        "fence_28_hinoki_panel_upper",
+        "fence_28_post0_lower",
+        "fence_28_post0_upper",
+        "fence_28_post1_lower",
+        "fence_28_post1_upper",
+        "fence_28_post2_lower",
+        "fence_28_post2_upper",
+        "fence_28_post3_lower",
+        "fence_28_post3_upper",
+        "fence_28_rail",
+        "fence_28_rail.001",
+        "fence_28_rail.002"
+      ],
+      "base_placement_id": "fixtures_28",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "fixtures_37": {
+      "status": "authored",
+      "objects_before_batching": [
+        "fence_29_hinoki_panel_lower",
+        "fence_29_hinoki_panel_upper",
+        "fence_29_post0_lower",
+        "fence_29_post0_upper",
+        "fence_29_post1_lower",
+        "fence_29_post1_upper",
+        "fence_29_post2_lower",
+        "fence_29_post2_upper",
+        "fence_29_post3_lower",
+        "fence_29_post3_upper",
+        "fence_29_post4_lower",
+        "fence_29_post4_upper",
+        "fence_29_post5_lower",
+        "fence_29_post5_upper",
+        "fence_29_post6_lower",
+        "fence_29_post6_upper",
+        "fence_29_post7_lower",
+        "fence_29_post7_upper",
+        "fence_29_post8_lower",
+        "fence_29_post8_upper",
+        "fence_29_rail",
+        "fence_29_rail.001",
+        "fence_29_rail.002"
+      ],
+      "base_placement_id": "fixtures_29",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "fixtures_38": {
+      "status": "authored",
+      "objects_before_batching": [
+        "hedge_30_clipped_body"
+      ],
+      "base_placement_id": "fixtures_30",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "fixtures_39": {
+      "status": "authored",
+      "objects_before_batching": [
+        "hedge_31_clipped_body"
+      ],
+      "base_placement_id": "fixtures_31",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "fixtures_40": {
+      "status": "authored",
+      "objects_before_batching": [
+        "pondEdge_32_bank",
+        "pondEdge_32_cap"
+      ],
+      "base_placement_id": "fixtures_32",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "fixtures_41": {
+      "status": "authored",
+      "objects_before_batching": [
+        "pondEdge_33_bank",
+        "pondEdge_33_cap"
+      ],
+      "base_placement_id": "fixtures_33",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "fixtures_42": {
+      "status": "authored",
+      "objects_before_batching": [
+        "pondEdge_34_bank",
+        "pondEdge_34_cap"
+      ],
+      "base_placement_id": "fixtures_34",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "fixtures_43": {
+      "status": "authored",
+      "objects_before_batching": [
+        "pondEdge_35_bank",
+        "pondEdge_35_cap"
+      ],
+      "base_placement_id": "fixtures_35",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "decor_00": {
+      "status": "authored",
+      "objects_before_batching": [
+        "norenWomen_0_fabric0",
+        "norenWomen_0_fabric1",
+        "norenWomen_0_fabric2",
+        "norenWomen_0_rail"
+      ],
+      "base_placement_id": "decor_00"
+    },
+    "decor_01": {
+      "status": "authored",
+      "objects_before_batching": [
+        "norenMen_1_fabric0",
+        "norenMen_1_fabric1",
+        "norenMen_1_fabric2",
+        "norenMen_1_rail"
+      ],
+      "base_placement_id": "decor_01"
+    },
+    "decor_02": {
+      "status": "authored",
+      "objects_before_batching": [
+        "growth_noren_*"
+      ],
+      "note": "Localized growth-route patch in reviewed world coordinates."
+    },
+    "decor_03": {
+      "status": "authored",
+      "objects_before_batching": [
+        "growth_detail_3_*"
+      ],
+      "note": "Localized growth-route patch in reviewed world coordinates."
+    },
+    "decor_04": {
+      "status": "authored",
+      "objects_before_batching": [
+        "mirror_3_glass_lower",
+        "mirror_3_glass_upper",
+        "mirror_3_frame0_lower",
+        "mirror_3_frame0_upper",
+        "mirror_3_frame1_lower",
+        "mirror_3_frame1_upper",
+        "mirror_3_bottom_lower",
+        "mirror_3_top_upper"
+      ],
+      "base_placement_id": "decor_03",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "decor_05": {
+      "status": "authored",
+      "objects_before_batching": [
+        "mat_4"
+      ],
+      "base_placement_id": "decor_04",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "decor_06": {
+      "status": "authored",
+      "objects_before_batching": [
+        "shower_5_stem",
+        "shower_5_neck",
+        "shower_5_head"
+      ],
+      "base_placement_id": "decor_05",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "decor_07": {
+      "status": "authored",
+      "objects_before_batching": [
+        "shower_6_stem",
+        "shower_6_neck",
+        "shower_6_head"
+      ],
+      "base_placement_id": "decor_06",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "decor_08": {
+      "status": "authored",
+      "objects_before_batching": [
+        "shelf_7"
+      ],
+      "base_placement_id": "decor_07",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "decor_09": {
+      "status": "authored",
+      "objects_before_batching": [
+        "mirror_8_glass_lower",
+        "mirror_8_glass_upper",
+        "mirror_8_frame0_lower",
+        "mirror_8_frame0_upper",
+        "mirror_8_frame1_lower",
+        "mirror_8_frame1_upper",
+        "mirror_8_bottom_lower",
+        "mirror_8_top_upper"
+      ],
+      "base_placement_id": "decor_08",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "decor_10": {
+      "status": "authored",
+      "objects_before_batching": [
+        "tap_9_base",
+        "tap_9_spout",
+        "tap_9_lever"
+      ],
+      "base_placement_id": "decor_09",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "decor_11": {
+      "status": "independent_existing_wash_basin",
+      "base_placement_id": "decor_10",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "decor_12": {
+      "status": "authored",
+      "objects_before_batching": [
+        "mirror_11_glass_lower",
+        "mirror_11_glass_upper",
+        "mirror_11_frame0_lower",
+        "mirror_11_frame0_upper",
+        "mirror_11_frame1_lower",
+        "mirror_11_frame1_upper",
+        "mirror_11_bottom_lower",
+        "mirror_11_top_upper"
+      ],
+      "base_placement_id": "decor_11",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "decor_13": {
+      "status": "authored",
+      "objects_before_batching": [
+        "tap_12_base",
+        "tap_12_spout",
+        "tap_12_lever"
+      ],
+      "base_placement_id": "decor_12",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "decor_14": {
+      "status": "independent_existing_wash_basin",
+      "base_placement_id": "decor_13",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "decor_15": {
+      "status": "authored",
+      "objects_before_batching": [
+        "mirror_14_glass_lower",
+        "mirror_14_glass_upper",
+        "mirror_14_frame0_lower",
+        "mirror_14_frame0_upper",
+        "mirror_14_frame1_lower",
+        "mirror_14_frame1_upper",
+        "mirror_14_bottom_lower",
+        "mirror_14_top_upper"
+      ],
+      "base_placement_id": "decor_14",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "decor_16": {
+      "status": "authored",
+      "objects_before_batching": [
+        "tap_15_base",
+        "tap_15_spout",
+        "tap_15_lever"
+      ],
+      "base_placement_id": "decor_15",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "decor_17": {
+      "status": "independent_existing_wash_basin",
+      "base_placement_id": "decor_16",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "decor_18": {
+      "status": "authored",
+      "objects_before_batching": [
+        "mirror_17_glass_lower",
+        "mirror_17_glass_upper",
+        "mirror_17_frame0_lower",
+        "mirror_17_frame0_upper",
+        "mirror_17_frame1_lower",
+        "mirror_17_frame1_upper",
+        "mirror_17_bottom_lower",
+        "mirror_17_top_upper"
+      ],
+      "base_placement_id": "decor_17",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "decor_19": {
+      "status": "authored",
+      "objects_before_batching": [
+        "tap_18_base",
+        "tap_18_spout",
+        "tap_18_lever"
+      ],
+      "base_placement_id": "decor_18",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "decor_20": {
+      "status": "independent_existing_wash_basin",
+      "base_placement_id": "decor_19",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "decor_21": {
+      "status": "authored",
+      "objects_before_batching": [
+        "mirror_20_glass_lower",
+        "mirror_20_glass_upper",
+        "mirror_20_frame0_lower",
+        "mirror_20_frame0_upper",
+        "mirror_20_frame1_lower",
+        "mirror_20_frame1_upper",
+        "mirror_20_bottom_lower",
+        "mirror_20_top_upper"
+      ],
+      "base_placement_id": "decor_20",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "decor_22": {
+      "status": "authored",
+      "objects_before_batching": [
+        "tap_21_base",
+        "tap_21_spout",
+        "tap_21_lever"
+      ],
+      "base_placement_id": "decor_21",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "decor_23": {
+      "status": "independent_existing_wash_basin",
+      "base_placement_id": "decor_22",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "decor_24": {
+      "status": "authored",
+      "objects_before_batching": [
+        "border_23_rim_0",
+        "border_23_rim_1",
+        "border_23_rim_2",
+        "border_23_recess_0",
+        "border_23_recess_1",
+        "border_23_recess_2",
+        "border_23_recess_3"
+      ],
+      "base_placement_id": "decor_23",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "decor_25": {
+      "status": "authored",
+      "objects_before_batching": [
+        "growth_border_25_*"
+      ],
+      "note": "Localized growth-route patch in reviewed world coordinates."
+    },
+    "decor_26": {
+      "status": "authored",
+      "objects_before_batching": [
+        "shower_25_stem",
+        "shower_25_neck",
+        "shower_25_head"
+      ],
+      "base_placement_id": "decor_25",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "decor_27": {
+      "status": "authored",
+      "objects_before_batching": [
+        "growth_detail_27_*"
+      ],
+      "note": "Localized growth-route patch in reviewed world coordinates."
+    },
+    "decor_28": {
+      "status": "authored",
+      "objects_before_batching": [
+        "deck_26"
+      ],
+      "base_placement_id": "decor_26",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "decor_29": {
+      "status": "authored",
+      "objects_before_batching": [
+        "stone_27"
+      ],
+      "base_placement_id": "decor_27",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "decor_30": {
+      "status": "authored",
+      "objects_before_batching": [
+        "stone_28"
+      ],
+      "base_placement_id": "decor_28",
+      "note": "Preserved geometry; LEVEL placement index remapped from v01."
+    },
+    "npcs_00": {
+      "status": "authored",
+      "objects_before_batching": [
+        "crowd_bench_0_seat0",
+        "crowd_bench_0_seat1",
+        "crowd_bench_0_seat2",
+        "crowd_bench_0_leg",
+        "crowd_bench_0_leg.001",
+        "crowd_bench_0_leg.002",
+        "crowd_bench_0_leg.003",
+        "npc_seated_body"
+      ],
+      "npc_replacement_model": "npc_seated",
+      "npc_replacement_source_sha256": "9580c0fdded4e8dd0a9c2559eeae16af2d2c8f75aa7011d3f009567ac781be57"
+    },
+    "npcs_01": {
+      "status": "authored",
+      "objects_before_batching": [
+        "crowd_bench_1_seat0",
+        "crowd_bench_1_seat1",
+        "crowd_bench_1_seat2",
+        "crowd_bench_1_leg",
+        "crowd_bench_1_leg.001",
+        "crowd_bench_1_leg.002",
+        "crowd_bench_1_leg.003",
+        "npc_seated_body.001"
+      ],
+      "npc_replacement_model": "npc_seated",
+      "npc_replacement_source_sha256": "9580c0fdded4e8dd0a9c2559eeae16af2d2c8f75aa7011d3f009567ac781be57"
+    },
+    "npcs_02": {
+      "status": "authored",
+      "objects_before_batching": [
+        "npc_bath_standing_body"
+      ],
+      "npc_replacement_model": "npc_bath_tattooed",
+      "npc_replacement_source_sha256": "83f2ea50218978cac3f16e78483ff04e4b187b822fc89308ea7094b7e3d8d040"
+    },
+    "npcs_03": {
+      "status": "authored",
+      "objects_before_batching": [
+        "crowd_bench_3_seat0",
+        "crowd_bench_3_seat1",
+        "crowd_bench_3_seat2",
+        "crowd_bench_3_leg",
+        "crowd_bench_3_leg.001",
+        "crowd_bench_3_leg.002",
+        "crowd_bench_3_leg.003",
+        "npc_seated_body.002"
+      ],
+      "npc_replacement_model": "npc_seated",
+      "npc_replacement_source_sha256": "9580c0fdded4e8dd0a9c2559eeae16af2d2c8f75aa7011d3f009567ac781be57"
+    },
+    "npcs_04": {
+      "status": "authored",
+      "objects_before_batching": [
+        "crowd_bench_4_seat0",
+        "crowd_bench_4_seat1",
+        "crowd_bench_4_seat2",
+        "crowd_bench_4_leg",
+        "crowd_bench_4_leg.001",
+        "crowd_bench_4_leg.002",
+        "crowd_bench_4_leg.003",
+        "npc_seated_body.003"
+      ],
+      "npc_replacement_model": "npc_seated",
+      "npc_replacement_source_sha256": "9580c0fdded4e8dd0a9c2559eeae16af2d2c8f75aa7011d3f009567ac781be57"
+    },
+    "npcs_05": {
+      "status": "authored",
+      "objects_before_batching": [
+        "crowd_bench_5_seat0",
+        "crowd_bench_5_seat1",
+        "crowd_bench_5_seat2",
+        "crowd_bench_5_leg",
+        "crowd_bench_5_leg.001",
+        "crowd_bench_5_leg.002",
+        "crowd_bench_5_leg.003",
+        "npc_seated_body.004"
+      ],
+      "npc_replacement_model": "npc_seated",
+      "npc_replacement_source_sha256": "9580c0fdded4e8dd0a9c2559eeae16af2d2c8f75aa7011d3f009567ac781be57"
+    },
+    "additional_door_frames": {
+      "status": "authored",
+      "objects_before_batching": [
+        "door_header_0",
+        "door_header_1",
+        "door_header_2",
+        "door_header_3",
+        "door_header_5",
+        "door_header_6"
+      ]
+    },
+    "additional_ceilings": {
+      "status": "authored",
+      "objects_before_batching": [
+        "bath_ceiling",
+        "changing_ceiling",
+        "reception_ceiling",
+        "common_ceiling",
+        "exterior_ceiling",
+        "sauna_crowd_ceiling",
+        "sauna_entry_ceiling"
+      ]
+    },
+    "additional_narrow_hole_lid_lintel": {
+      "status": "authored",
+      "objects_before_batching": [
+        "narrow_hole_lid",
+        "narrow_hole_lintel"
+      ]
+    },
+    "additional_sauna_door": {
+      "status": "authored",
+      "objects_before_batching": [
+        "sauna_door_panel",
+        "sauna_door_window",
+        "sauna_door_handle"
+      ]
+    },
+    "additional_fuji_mural": {
+      "status": "authored",
+      "objects_before_batching": [
+        "fuji_mural_panel"
+      ]
+    },
+    "additional_growth_water_beds": {
+      "status": "authored",
+      "objects_before_batching": [
+        "growth_water_bed_*"
+      ]
+    },
+    "additional_growth_kids_gate": {
+      "status": "authored",
+      "objects_before_batching": [
+        "growth_kids_gate"
+      ],
+      "note": "Identity dynamic root, separately hideable upper child; hide root on opening."
+    },
+    "additional_growth_front_exit": {
+      "status": "authored",
+      "objects_before_batching": [
+        "growth_front_exit"
+      ],
+      "note": "Identity dynamic root, separately hideable upper child; hide root on opening."
+    }
+  },
+  "source_placement_count": 125,
+  "vertices": 29834,
+  "public_geometry_uses": [
+    {
+      "kind": "texture",
+      "source_file": "assets/public_sources/polyhaven/hinoki_planks/hinoki_planks_diff_1k.jpg",
+      "sha256": "a0166cad69a255971bf25f336c9947d2853b4dae5707c84a86f25f79aec347a5",
+      "material": "cedar",
+      "license": "CC0-1.0"
+    },
+    {
+      "kind": "texture",
+      "source_file": "assets/public_sources/polyhaven/hinoki_planks/hinoki_planks_nor_gl_1k.jpg",
+      "sha256": "90c97139c4a6e086c67b9e2c23c138c92df59070de0414763bcd3e7fc3c878a1",
+      "material": "cedar",
+      "license": "CC0-1.0"
+    },
+    {
+      "kind": "texture",
+      "source_file": "assets/public_sources/polyhaven/hinoki_planks/hinoki_planks_rough_1k.jpg",
+      "sha256": "20d2dc9fdbd2b76b267d68617836efb4af74397716f7ad9b5dff3752bdb097f5",
+      "material": "cedar",
+      "license": "CC0-1.0"
+    },
+    {
+      "kind": "geometry",
+      "source_file": "assets/public_sources/kenney_furniture/models/bench.glb",
+      "sha256": "ba05a6d23a5a5a44da016757632070e47ff7587ce10e2f6d6d52328b4cf5489b",
+      "placement_id": "fixtures_04",
+      "object_before_batching": "bench_4",
+      "material": "cedar",
+      "uniform_scale": 0.9574468109390757,
+      "yaw_degrees": 0,
+      "modifications": "Recentered original imported mesh, uniform scale, yaw, material replacement; zero-area source faces removed; separated end assemblies to extend bench rails without thickening legs",
+      "long_axis_extension_m": 1.817021269917542,
+      "license": "CC0-1.0"
+    },
+    {
+      "kind": "geometry",
+      "source_file": "assets/public_sources/kenney_furniture/models/bench.glb",
+      "sha256": "ba05a6d23a5a5a44da016757632070e47ff7587ce10e2f6d6d52328b4cf5489b",
+      "placement_id": "fixtures_08",
+      "object_before_batching": "bench_8",
+      "material": "cedar",
+      "uniform_scale": 0.9574468109390757,
+      "yaw_degrees": 0,
+      "modifications": "Recentered original imported mesh, uniform scale, yaw, material replacement; zero-area source faces removed; separated end assemblies to extend bench rails without thickening legs",
+      "long_axis_extension_m": 1.617021269917542,
+      "license": "CC0-1.0"
+    },
+    {
+      "kind": "geometry",
+      "source_file": "assets/public_sources/kenney_furniture/models/bench.glb",
+      "sha256": "ba05a6d23a5a5a44da016757632070e47ff7587ce10e2f6d6d52328b4cf5489b",
+      "placement_id": "fixtures_16",
+      "object_before_batching": "bench_16",
+      "material": "cedar",
+      "uniform_scale": 0.9574468109390757,
+      "yaw_degrees": 0,
+      "modifications": "Recentered original imported mesh, uniform scale, yaw, material replacement; zero-area source faces removed; separated end assemblies to extend bench rails without thickening legs",
+      "long_axis_extension_m": 1.0170212699175423,
+      "license": "CC0-1.0"
+    },
+    {
+      "kind": "geometry",
+      "source_file": "assets/public_sources/kenney_furniture/models/bench.glb",
+      "sha256": "ba05a6d23a5a5a44da016757632070e47ff7587ce10e2f6d6d52328b4cf5489b",
+      "placement_id": "fixtures_28",
+      "object_before_batching": "bench_23",
+      "material": "cedar",
+      "uniform_scale": 0.9574468109390757,
+      "yaw_degrees": 0,
+      "modifications": "Recentered original imported mesh, uniform scale, yaw, material replacement; zero-area source faces removed; separated end assemblies to extend bench rails without thickening legs",
+      "long_axis_extension_m": 1.8170212699175412,
+      "license": "CC0-1.0"
+    },
+    {
+      "kind": "geometry",
+      "source_file": "assets/public_sources/kenney_nature/models/plant_bushDetailed.glb",
+      "sha256": "2e0487020d68ccf664435db9d829c78ae00e6d2785ee3ec10b9f89cc70a10406",
+      "placement_id": "fixtures_29",
+      "object_before_batching": "shrub_24_foliage",
+      "material": "sage_foliage",
+      "uniform_scale": 1.3277045042806381,
+      "yaw_degrees": 0,
+      "modifications": "Recentered original imported mesh, uniform scale, yaw, material replacement; zero-area source faces removed",
+      "long_axis_extension_m": 0,
+      "license": "CC0-1.0"
+    },
+    {
+      "kind": "geometry",
+      "source_file": "assets/public_sources/kenney_nature/models/plant_bushDetailed.glb",
+      "sha256": "2e0487020d68ccf664435db9d829c78ae00e6d2785ee3ec10b9f89cc70a10406",
+      "placement_id": "fixtures_30",
+      "object_before_batching": "shrub_25_foliage",
+      "material": "sage_foliage",
+      "uniform_scale": 1.3277045042806368,
+      "yaw_degrees": 0,
+      "modifications": "Recentered original imported mesh, uniform scale, yaw, material replacement; zero-area source faces removed",
+      "long_axis_extension_m": 0,
+      "license": "CC0-1.0"
+    },
+    {
+      "kind": "geometry",
+      "source_file": "assets/public_sources/kenney_nature/models/rock_smallH.glb",
+      "sha256": "c798f7445350e8d79710a1d3e344b9ce4d4bcff5416a50268781d5121a353a7f",
+      "placement_id": "fixtures_31",
+      "object_before_batching": "rock_26_boulder0",
+      "material": "garden_stone",
+      "uniform_scale": 2.1592637619277935,
+      "yaw_degrees": 12,
+      "modifications": "Recentered original imported mesh, uniform scale, yaw, material replacement; zero-area source faces removed; local vertex weathering and smooth normals on original source topology",
+      "long_axis_extension_m": 0,
+      "license": "CC0-1.0"
+    },
+    {
+      "kind": "geometry",
+      "source_file": "assets/public_sources/kenney_nature/models/rock_smallI.glb",
+      "sha256": "f7bbf2f4efbfe63977c4c6520762143ede95c63bff6484b9719db5e666a618e4",
+      "placement_id": "fixtures_31",
+      "object_before_batching": "rock_26_boulder1",
+      "material": "garden_stone",
+      "uniform_scale": 2.4171963505516314,
+      "yaw_degrees": 91,
+      "modifications": "Recentered original imported mesh, uniform scale, yaw, material replacement; zero-area source faces removed; local vertex weathering and smooth normals on original source topology",
+      "long_axis_extension_m": 0,
+      "license": "CC0-1.0"
+    },
+    {
+      "kind": "geometry",
+      "source_file": "assets/public_sources/kenney_nature/models/rock_smallH.glb",
+      "sha256": "c798f7445350e8d79710a1d3e344b9ce4d4bcff5416a50268781d5121a353a7f",
+      "placement_id": "fixtures_31",
+      "object_before_batching": "rock_26_boulder2",
+      "material": "garden_stone",
+      "uniform_scale": 2.08556408455519,
+      "yaw_degrees": 173,
+      "modifications": "Recentered original imported mesh, uniform scale, yaw, material replacement; zero-area source faces removed; local vertex weathering and smooth normals on original source topology",
+      "long_axis_extension_m": 0,
+      "license": "CC0-1.0"
+    },
+    {
+      "kind": "geometry",
+      "source_file": "assets/public_sources/kenney_nature/models/rock_smallH.glb",
+      "sha256": "c798f7445350e8d79710a1d3e344b9ce4d4bcff5416a50268781d5121a353a7f",
+      "placement_id": "fixtures_31",
+      "object_before_batching": "rock_26_boulder3",
+      "material": "garden_stone",
+      "uniform_scale": 2.1013866881867003,
+      "yaw_degrees": 262,
+      "modifications": "Recentered original imported mesh, uniform scale, yaw, material replacement; zero-area source faces removed; local vertex weathering and smooth normals on original source topology",
+      "long_axis_extension_m": 0,
+      "license": "CC0-1.0"
+    },
+    {
+      "kind": "geometry",
+      "source_file": "assets/public_sources/kenney_nature/models/rock_smallI.glb",
+      "sha256": "f7bbf2f4efbfe63977c4c6520762143ede95c63bff6484b9719db5e666a618e4",
+      "placement_id": "fixtures_31",
+      "object_before_batching": "rock_26_boulder4",
+      "material": "garden_stone",
+      "uniform_scale": 2.4189345478072966,
+      "yaw_degrees": 36,
+      "modifications": "Recentered original imported mesh, uniform scale, yaw, material replacement; zero-area source faces removed; local vertex weathering and smooth normals on original source topology",
+      "long_axis_extension_m": 0,
+      "license": "CC0-1.0"
+    },
+    {
+      "kind": "geometry",
+      "source_file": "assets/public_sources/kenney_nature/models/rock_smallH.glb",
+      "sha256": "c798f7445350e8d79710a1d3e344b9ce4d4bcff5416a50268781d5121a353a7f",
+      "placement_id": "fixtures_32",
+      "object_before_batching": "rock_27_boulder0",
+      "material": "garden_stone",
+      "uniform_scale": 2.125724392997376,
+      "yaw_degrees": 12,
+      "modifications": "Recentered original imported mesh, uniform scale, yaw, material replacement; zero-area source faces removed; local vertex weathering and smooth normals on original source topology",
+      "long_axis_extension_m": 0,
+      "license": "CC0-1.0"
+    },
+    {
+      "kind": "geometry",
+      "source_file": "assets/public_sources/kenney_nature/models/rock_smallI.glb",
+      "sha256": "f7bbf2f4efbfe63977c4c6520762143ede95c63bff6484b9719db5e666a618e4",
+      "placement_id": "fixtures_32",
+      "object_before_batching": "rock_27_boulder1",
+      "material": "garden_stone",
+      "uniform_scale": 2.4171963505516314,
+      "yaw_degrees": 91,
+      "modifications": "Recentered original imported mesh, uniform scale, yaw, material replacement; zero-area source faces removed; local vertex weathering and smooth normals on original source topology",
+      "long_axis_extension_m": 0,
+      "license": "CC0-1.0"
+    },
+    {
+      "kind": "geometry",
+      "source_file": "assets/public_sources/kenney_nature/models/rock_smallH.glb",
+      "sha256": "c798f7445350e8d79710a1d3e344b9ce4d4bcff5416a50268781d5121a353a7f",
+      "placement_id": "fixtures_32",
+      "object_before_batching": "rock_27_boulder2",
+      "material": "garden_stone",
+      "uniform_scale": 2.075994630473197,
+      "yaw_degrees": 173,
+      "modifications": "Recentered original imported mesh, uniform scale, yaw, material replacement; zero-area source faces removed; local vertex weathering and smooth normals on original source topology",
+      "long_axis_extension_m": 0,
+      "license": "CC0-1.0"
+    },
+    {
+      "kind": "geometry",
+      "source_file": "assets/public_sources/kenney_nature/models/rock_smallH.glb",
+      "sha256": "c798f7445350e8d79710a1d3e344b9ce4d4bcff5416a50268781d5121a353a7f",
+      "placement_id": "fixtures_32",
+      "object_before_batching": "rock_27_boulder3",
+      "material": "garden_stone",
+      "uniform_scale": 2.1212386650415467,
+      "yaw_degrees": 262,
+      "modifications": "Recentered original imported mesh, uniform scale, yaw, material replacement; zero-area source faces removed; local vertex weathering and smooth normals on original source topology",
+      "long_axis_extension_m": 0,
+      "license": "CC0-1.0"
+    },
+    {
+      "kind": "geometry",
+      "source_file": "assets/public_sources/kenney_nature/models/rock_smallI.glb",
+      "sha256": "f7bbf2f4efbfe63977c4c6520762143ede95c63bff6484b9719db5e666a618e4",
+      "placement_id": "fixtures_32",
+      "object_before_batching": "rock_27_boulder4",
+      "material": "garden_stone",
+      "uniform_scale": 2.4301411845036713,
+      "yaw_degrees": 36,
+      "modifications": "Recentered original imported mesh, uniform scale, yaw, material replacement; zero-area source faces removed; local vertex weathering and smooth normals on original source topology",
+      "long_axis_extension_m": 0,
+      "license": "CC0-1.0"
+    }
+  ],
+  "base_layout_sha256": "8bee95aa4ad7e753f521c4327e7586d3df4717e6c1aa9072790a0c40ecc52ab5",
+  "base_export_sha256": "afbea3f724255c1016b4968aac2fdacafa787c402315488c2d839c91ea31b54b",
+  "growth_parent_sha256": "3c37930e66a6d27f2a32cc174b64cb54b6a713bfafd6322ef4959cbb7ec6eb00",
+  "growth_node_bounds_gltf_m": {
+    "growth_kids_gate": [
+      [
+        0.6000000238418579,
+        0.02499997615814209,
+        2.799999952316284
+      ],
+      [
+        1.600000023841858,
+        1.5999999046325684,
+        2.9179999828338623
+      ]
+    ],
+    "growth_front_exit": [
+      [
+        10.881999969482422,
+        0.02499997615814209,
+        -7.599999904632568
+      ],
+      [
+        11.100000381469727,
+        2.200000047683716,
+        -6.400000095367432
+      ]
+    ],
+    "growth_fixed_static": [
+      [
+        -0.10000014305114746,
+        -0.28999996185302734,
+        -9.100000381469727
+      ],
+      [
+        13.100000381469727,
+        1.0,
+        8.90000057220459
+      ]
+    ],
+    "growth_fixed_upper": [
+      [
+        0.09999990463256836,
+        1.0,
+        -9.100000381469727
+      ],
+      [
+        13.100000381469727,
+        2.3000001907348633,
+        8.300000190734863
+      ]
+    ]
+  },
+  "growth_bounds_scope": "Copied from the growth parent only after exact named hierarchy/TRS and architecture payload equivalence passed.",
+  "npc_source_record": "assets/sento_visitors/quality/measurements.json",
+  "preservation_record": "assets/sento_environment/quality/v05/parent-preservation.json",
+  "blend_sha256": "caf2f9fa13aadbd3d20aa15adfac2610419521b99b07b453442f45ac2f5922b4",
+  "blender_polygon_degenerate_faces": 0,
+  "legacy_bmesh_degenerate_faces": 0,
+  "blender_reimport_geometry_record": "assets/sento_environment/quality/v05/blender-geometry.json",
+  "editable_source_record": "assets/sento_environment/quality/v05/editable-source-audit.json"
+}

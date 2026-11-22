@@ -1,0 +1,81 @@
+{
+  "source_world_sha256": "98f43e692fa430c2595acdf7c879a004735b4d0bc1b503a00fa69889b6cdde46",
+  "views": [
+    {
+      "file": "growth_overview.png",
+      "sha256": "8094d4c52f42a11c839366dc7a0a17845d9001e8d07dbaa3b3f1a45eadc95aef",
+      "source_world_sha256": "98f43e692fa430c2595acdf7c879a004735b4d0bc1b503a00fa69889b6cdde46",
+      "inspection": "visually inspected actual v05 GLB reimport",
+      "png_text_exif_chunks": []
+    },
+    {
+      "file": "water_connection.png",
+      "sha256": "6886899e041ce403caf5b3050166b6163fcc81f38d94bc5616b71b1645860977",
+      "source_world_sha256": "98f43e692fa430c2595acdf7c879a004735b4d0bc1b503a00fa69889b6cdde46",
+      "inspection": "visually inspected actual v05 GLB reimport",
+      "png_text_exif_chunks": []
+    },
+    {
+      "file": "child_passage.png",
+      "sha256": "957c6bc0c393b047ca6d0a210293513caa55ec77ad685dac0e60997689f19a72",
+      "source_world_sha256": "98f43e692fa430c2595acdf7c879a004735b4d0bc1b503a00fa69889b6cdde46",
+      "inspection": "visually inspected actual v05 GLB reimport",
+      "png_text_exif_chunks": []
+    },
+    {
+      "file": "kids_gate_closed.png",
+      "sha256": "d366d473e5833d64362039f2465e320b0c91b52d345aa1e458bd0f51b2fc06f1",
+      "source_world_sha256": "98f43e692fa430c2595acdf7c879a004735b4d0bc1b503a00fa69889b6cdde46",
+      "inspection": "visually inspected actual v05 GLB reimport",
+      "png_text_exif_chunks": []
+    },
+    {
+      "file": "street_closed.png",
+      "sha256": "57138134af4f8020c50594a9ce646b18d0122fef3be77e1f4a5a3a00128370c0",
+      "source_world_sha256": "98f43e692fa430c2595acdf7c879a004735b4d0bc1b503a00fa69889b6cdde46",
+      "inspection": "visually inspected actual v05 GLB reimport",
+      "png_text_exif_chunks": []
+    },
+    {
+      "file": "street_open.png",
+      "sha256": "c849050d3fed36ab099470752f81c1ba06fb94a5ad6ee292385b1f4392bdfdcf",
+      "source_world_sha256": "98f43e692fa430c2595acdf7c879a004735b4d0bc1b503a00fa69889b6cdde46",
+      "inspection": "visually inspected actual v05 GLB reimport",
+      "png_text_exif_chunks": []
+    },
+    {
+      "file": "street_outside.png",
+      "sha256": "ec4681b67c38528253554098411ec7d20a648de0d7f354b1e49cbaa550bd4aa9",
+      "source_world_sha256": "98f43e692fa430c2595acdf7c879a004735b4d0bc1b503a00fa69889b6cdde46",
+      "inspection": "visually inspected actual v05 GLB reimport",
+      "png_text_exif_chunks": []
+    },
+    {
+      "file": "tattoo_visitor_placement_v05.png",
+      "sha256": "844b85bab94002243577e669078627d6fa9a8be67d904a8dbf9bbb9b7bae5227",
+      "source_world_sha256": "98f43e692fa430c2595acdf7c879a004735b4d0bc1b503a00fa69889b6cdde46",
+      "inspection": "visually inspected actual v05 GLB reimport",
+      "png_text_exif_chunks": []
+    },
+    {
+      "file": "bath_mural_context.png",
+      "sha256": "c817640d6dc205af5152e813bd13bd2fa6b9b5f3a83f35a71d8c092274961496",
+      "source_world_sha256": "98f43e692fa430c2595acdf7c879a004735b4d0bc1b503a00fa69889b6cdde46",
+      "inspection": "visually inspected actual v05 GLB reimport",
+      "png_text_exif_chunks": []
+    },
+    {
+      "file": "bath_mural_front.png",
+      "sha256": "9c1274499fec77ae89f67612083e497c043842e1d287243dbf5c6f9140f06fbb",
+      "source_world_sha256": "98f43e692fa430c2595acdf7c879a004735b4d0bc1b503a00fa69889b6cdde46",
+      "inspection": "visually inspected actual v05 GLB reimport",
+      "png_text_exif_chunks": []
+    }
+  ],
+  "producer_scripts": [
+    "scripts/review-growth-environment.py",
+    "scripts/render-replaced-world.py --tattoo",
+    "scripts/render-fuji-mural.py"
+  ],
+  "scope": "Actual v05 GLB reimport with inspection-only lighting. Growth views include QA runtime-water planes and open/closed door visibility; these are not game or normal-input results."
+}

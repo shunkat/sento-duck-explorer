@@ -10,7 +10,6 @@ import { LEVEL } from "../src/level/layout";
 import { GameScene, setBodyOpacity } from "../src/view/scene";
 import { ModelLibrary } from "../src/view/models";
 import { CHARACTER_MODEL_URLS, ENVIRONMENT_MODEL_URLS, ITEM_MODEL_URLS } from "../src/view/modelEntry";
-import { applyOutfit } from "../src/view/humanModel";
 import type { EnvironmentModels } from "../src/view/environmentModels";
 import type { WorldEnvironment } from "../src/view/worldEnvironment";
 import { NPC_SLOTS } from "../src/view/backgroundNpcs";
@@ -77,13 +76,13 @@ function cameraPose(sample: Sample): Pose {
   return sample.overview ? OVERVIEW : { eye: { x, y, z }, target: { x, y: Math.max(.1, y - .15), z: z - 1 } };
 }
 
-// Camera selection only affects background/washing geometry. Character outfits,
-// towel attachments and fade masks add a camera-independent bound when every
+// Camera selection only affects background/washing geometry. The single growth
+// body, its outfit, towel and fade add a camera-independent bound when every
 // potential overlay is retained. Sweep the level and a denser washing region,
 // then check every material/outfit combination at each height's maximum and
 // the actual overview pose. Finite grids do not prove every continuous pose.
 describe("connected scene geometry budget", () => {
-  it("keeps the final GLB scene within 60k across camera LODs, outfits and fade/restore combinations", async () => {
+  it("keeps the final GLB scene within 60k across camera LODs, growth bodies, outfits and fade/restore", async () => {
     vi.stubGlobal("window", { devicePixelRatio: 1 });
     vi.stubGlobal("document", { createElement: () => ({
       getContext: () => ({ measureText: () => ({ width: 100 }), fillRect() {}, fillText() {} }),
@@ -95,7 +94,7 @@ describe("connected scene geometry budget", () => {
     expect(Object.keys(ITEM_MODEL_URLS)).toEqual(["milk_bottle"]);
     for (const id of ["sento_environment", "soap", "towel", "bath_stool", "wash_basin",
       "bath_stool_lod_medium", "bath_stool_lod_far", "wash_basin_lod_medium", "wash_basin_lod_far",
-      "npc_staff_lod_far", "npc_seated_lod_far", "npc_bath_standing_lod_far"] as const) {
+      "npc_staff_lod_far", "npc_seated_lod_far", "npc_bath_standing_lod_far", "npc_bath_tattooed_lod_far", "npc_bath_standing"] as const) {
       expect(ENVIRONMENT_MODEL_URLS[id], id).toBeTruthy();
     }
     const game = new GameScene({ appendChild() {} } as unknown as HTMLElement, LEVEL);
@@ -135,10 +134,10 @@ describe("connected scene geometry budget", () => {
       expect(library.get(id)!.root.parent, `${id} uses its real GLB`).toBe(internal.chars[id]);
       expect(library.get(id)!.root.visible, `${id} GLB is visible`).toBe(true);
     }
-    const view = deriveView(createInitialState(LEVEL), LEVEL);
+    const state = createInitialState(LEVEL);
+    const view = deriveView(state, LEVEL);
     game.positionCharacters(view, 0, new FacingTracker());
     game.render(view, cameraPose({ eye: [9, .45, .5], overview: false, triangles: 0 }), false);
-    for (const id of ["child", "adult"] as const) expect(applyOutfit(library.get(id)!.root, "clothed")).toBe(true);
     for (const id of CHARACTERS) setBodyOpacity(internal.chars[id], 1);
     showPotentialOverlays(internal);
     const opaqueMaterials = new Map<THREE.Material, object>();
@@ -225,27 +224,31 @@ describe("connected scene geometry budget", () => {
       expect(triangleCounter(scene)(), `full-render parity at ${sample.eye}`).toBe(sample.triangles);
     }
     const totals: Record<string, { opaque: number; fade: number; restore: number }> = {};
-    for (const child of ["clothed", "unclothed"] as const) for (const adult of ["clothed", "unclothed"] as const) {
-      applyOutfit(library.get("child")!.root, child);
-      applyOutfit(library.get("adult")!.root, adult);
+    for (const stage of CHARACTERS) for (const clothing of stage === "duck" ? ["unclothed"] as const : ["clothed", "unclothed"] as const) {
+      state.player.stage = stage;
+      state.player.clothing = clothing;
+      state.player.towel = stage === "duck" ? "none" : "held";
+      game.positionCharacters(deriveView(state, LEVEL), 1, new FacingTracker());
+      expect(CHARACTERS.filter(id => internal.chars[id].visible)).toEqual([stage]);
+      showPotentialOverlays(internal);
       const maximum = (count: () => number) => Math.max(...candidates.map(sample => { applyCamera(sample); return count(); }));
       const summary = { opaque: maximum(triangleCounter(scene)), fade: 0, restore: 0 };
-      expect(summary.opaque, `${child}/${adult}/opaque`).toBeLessThanOrEqual(LIMIT);
-      // Include each subset, including all three faded (more conservative than
-      // actual play). Fading chars also covers their two attached towel clones.
+      expect(summary.opaque, `${stage}/${clothing}/opaque`).toBeLessThanOrEqual(LIMIT);
+      // Keep every material mask covered without making hidden growth bodies
+      // visible. The active body's attached towel is included in its pass cost.
       for (let mask = 0; mask < 1 << CHARACTERS.length; mask++) {
         CHARACTERS.forEach((id, i) => setBodyOpacity(internal.chars[id], mask & (1 << i) ? .3 : 1));
         const faded = maximum(triangleCounter(scene));
-        expect(faded, `${child}/${adult}/fade-${mask}`).toBeLessThanOrEqual(LIMIT);
+        expect(faded, `${stage}/${clothing}/fade-${mask}`).toBeLessThanOrEqual(LIMIT);
         summary.fade = Math.max(summary.fade, faded);
         for (const id of CHARACTERS) setBodyOpacity(internal.chars[id], 1);
         for (const [material, original] of opaqueMaterials) expect(materialState(material)).toEqual(original);
         const restored = maximum(triangleCounter(scene));
-        expect(restored, `${child}/${adult}/restore-${mask}`).toBeLessThanOrEqual(LIMIT);
+        expect(restored, `${stage}/${clothing}/restore-${mask}`).toBeLessThanOrEqual(LIMIT);
         summary.restore = Math.max(summary.restore, restored);
       }
       expect(summary.restore).toBe(summary.opaque);
-      totals[`${child}/${adult}`] = summary;
+      totals[`${stage}/${clothing}`] = summary;
     }
     console.info("All-visible submitted triangles (material passes; no frustum culling):",
       JSON.stringify({ gridSamples, bounds, nearSamples, nearBounds, nearMaxima, candidates, totals }));
