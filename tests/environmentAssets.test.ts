@@ -12,7 +12,7 @@ describe("complete environment export", () => {
   it("ships every registered model with its measured bytes, embedded resources and license", () => {
     const manifest = JSON.parse(read("assets/manifest.json").toString());
     const urls = Object.values({ ...CHARACTER_MODEL_URLS, ...ITEM_MODEL_URLS, ...ENVIRONMENT_MODEL_URLS });
-    expect(urls).toHaveLength(16); // 18 before the retired coin, key and hat stopped (2026-11-21); +1 guardian NPC (2026-11-22)
+    expect(urls).toHaveLength(17); // 18 before the retired coin, key and hat stopped (2026-11-21); +1 guardian NPC, +1 milk bottle (2026-11-22)
     let totalBytes = 0;
     for (const url of urls) {
       const id = url.slice("models/".length, -4);

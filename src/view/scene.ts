@@ -441,8 +441,8 @@ export class GameScene {
       this.rings[id] = ring;
     }
 
-    // Milk bottles: provisional primitive (white bottle, blue cap) until the
-    // final GLB passes the milk bottle asset contract. Group origin = bottle base.
+    // Milk bottles: the final GLB (models/milk_bottle.glb) replaces this primitive
+    // once loaded; the primitive stays as the load-failure fallback. Group origin = bottle base.
     for (const id of ["milk1", "milk2"] as const) {
       const g = new THREE.Group();
       const bottle = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.035, 0.17, 20), new THREE.MeshStandardMaterial({ color: 0xfbfbf5, roughness: 0.4 }));

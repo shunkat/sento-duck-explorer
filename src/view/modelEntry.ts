@@ -15,16 +15,18 @@ export const CHARACTER_MODEL_URLS: Partial<Record<CharacterId, string>> = {
   adult: "models/adult.glb",
 };
 
-/** Planned path of the milk bottle (design "Milk bottle asset contract"); listed below only once delivered and checked. */
+/** The milk bottle (design "Milk bottle asset contract"), delivered 2026-11-22 and checked against it. */
 export const MILK_MODEL_URL = "models/milk_bottle.glb";
 
 /**
  * Item models in play. Growth and exit (2026-11-21): the only item is the milk
- * bottle; until its final GLB passes the contract the provisional primitive is
- * drawn. The retired coin, key and hat GLBs stay in public/models with their
- * records but are no longer loaded.
+ * bottle, one model shared by milk1 and milk2. A failed load keeps the small
+ * primitive placeholder. The retired coin, key and hat GLBs stay in
+ * public/models with their records but are no longer loaded.
  */
-export const ITEM_MODEL_URLS: Partial<Record<"milk_bottle", string>> = {};
+export const ITEM_MODEL_URLS: Partial<Record<"milk_bottle", string>> = {
+  milk_bottle: MILK_MODEL_URL,
+};
 
 // Add URLs only after the real pipeline, measurements and rights checks finish.
 export const ENVIRONMENT_MODEL_URLS: Partial<Record<EnvironmentModelId, string>> = {

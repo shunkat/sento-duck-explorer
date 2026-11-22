@@ -91,8 +91,8 @@ describe("connected scene geometry budget", () => {
     const manifest = JSON.parse(readFileSync(new URL("../assets/manifest.json", import.meta.url), "utf8"));
     expect(manifest.scene_limits.stage2_triangles_drawn).toBe(LIMIT);
     // Fail rather than silently count placeholder geometry if promotion regresses.
-    // Growth version: no item GLB is listed yet (the milk bottle uses a small primitive until delivered).
-    expect(Object.keys(ITEM_MODEL_URLS)).toEqual([]);
+    // Growth version: the only item GLB is the milk bottle, drawn twice (milk1, milk2).
+    expect(Object.keys(ITEM_MODEL_URLS)).toEqual(["milk_bottle"]);
     for (const id of ["sento_environment", "soap", "towel", "bath_stool", "wash_basin",
       "bath_stool_lod_medium", "bath_stool_lod_far", "wash_basin_lod_medium", "wash_basin_lod_far",
       "npc_staff_lod_far", "npc_seated_lod_far", "npc_bath_standing_lod_far"] as const) {

@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { readFileSync } from "node:fs";
 import * as THREE from "three";
 import { LEVEL } from "../src/level/layout";
 import { GameScene, setBodyOpacity } from "../src/view/scene";
@@ -215,5 +216,52 @@ describe("guardian model (2026-11-22)", () => {
     expect(models).toHaveLength(1);
     expect(models[0]!.position.y).toBeCloseTo(-1.7 / 2);
     expect(g.guardianCapsule.visible).toBe(false);
+  });
+});
+
+describe("milk bottle model (2026-11-22)", () => {
+  type M = { items: Record<"milk1" | "milk2", THREE.Group> };
+  const real = () => {
+    const b = readFileSync(new URL("../public/models/milk_bottle.glb", import.meta.url));
+    return b.buffer.slice(b.byteOffset, b.byteOffset + b.byteLength) as ArrayBuffer;
+  };
+
+  it("one real GLB is drawn at scale 1 on the floor at both bottles; collected bottles are hidden", async () => {
+    const game = new GameScene({ appendChild() {} } as unknown as HTMLElement, LEVEL);
+    const g = game as unknown as M;
+    const lib = new ModelLibrary();
+    await lib.parse("milk_bottle", real());
+    game.useModels(lib);
+    const state = createInitialState(LEVEL);
+    let view = deriveView(state, LEVEL);
+    game.positionCharacters(view, 0, new FacingTracker());
+    game.render(view, { eye: { x: 2, y: 1, z: 6 }, target: { x: 1.2, y: 0.1, z: 7 } }, false);
+    for (const id of ["milk1", "milk2"] as const) {
+      const group = g.items[id];
+      const model = group.children.find((o) => o.userData.source === lib.get("milk_bottle")!.root)!;
+      expect(model, id).toBeTruthy();
+      expect(model.scale.toArray()).toEqual([1, 1, 1]);
+      expect(group.position.toArray()).toEqual([LEVEL.nodes[id].x, 0, LEVEL.nodes[id].z]);
+      const box = new THREE.Box3().setFromObject(model);
+      expect(box.min.y).toBeCloseTo(0, 6);
+      expect(group.children.filter((o) => o instanceof THREE.Mesh && o.visible)).toHaveLength(0); // primitive hidden
+      expect(group.visible).toBe(true);
+    }
+    state.milk.milk1 = "collected";
+    view = deriveView(state, LEVEL);
+    game.render(view, { eye: { x: 2, y: 1, z: 6 }, target: { x: 1.2, y: 0.1, z: 7 } }, false);
+    expect([g.items.milk1.visible, g.items.milk2.visible]).toEqual([false, true]);
+  });
+
+  it("a failed load keeps the primitive placeholder", async () => {
+    const game = new GameScene({ appendChild() {} } as unknown as HTMLElement, LEVEL);
+    const g = game as unknown as M;
+    const lib = new ModelLibrary();
+    vi.spyOn(console, "warn").mockImplementation(() => {});
+    await lib.parse("milk_bottle", new ArrayBuffer(4));
+    game.useModels(lib);
+    for (const id of ["milk1", "milk2"] as const) {
+      expect(g.items[id].children.filter((o) => o instanceof THREE.Mesh && o.visible).length, id).toBe(2); // bottle + cap
+    }
   });
 });

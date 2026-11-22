@@ -101,10 +101,39 @@ describe("production washing-station assets", () => {
 });
 
 describe("connected models (shoulder-view Req 6)", () => {
-  it("lists all three stage models; the retired coin/key/hat are not loaded and the milk bottle waits for its final asset", () => {
+  it("lists all three stage models and the milk bottle; the retired coin/key/hat are not loaded", () => {
     expect(Object.keys(CHARACTER_MODEL_URLS)).toEqual(["duck", "child", "adult"]);
-    expect(Object.keys(ITEM_MODEL_URLS)).toEqual([]); // add milk_bottle once it passes the milk bottle asset contract
+    expect(ITEM_MODEL_URLS).toEqual({ milk_bottle: MILK_MODEL_URL });
     expect(MILK_MODEL_URL).toBe("models/milk_bottle.glb");
+  });
+
+  it("the milk bottle GLB meets its asset contract: size, origin, triangles, materials, hash", async () => {
+    const b = file(MILK_MODEL_URL);
+    expect(b.length).toBe(43916);
+    expect(createHash("sha256").update(b).digest("hex")).toBe("cdc89960e175a49a8402b2e279eee0a245fd272096efc0c5c3712c0e5d7a8f93");
+    const root = await parse(b);
+    const box = new Box3().setFromObject(root);
+    const s = box.getSize(new Vector3());
+    expect(s.y).toBeGreaterThanOrEqual(0.18);
+    expect(s.y).toBeLessThanOrEqual(0.22);
+    for (const w of [s.x, s.z]) {
+      expect(w).toBeGreaterThanOrEqual(0.06);
+      expect(w).toBeLessThanOrEqual(0.08);
+    }
+    expect(box.min.y).toBeCloseTo(0, 6); // bottom-center origin on the floor
+    expect((box.min.x + box.max.x) / 2).toBeCloseTo(0, 6);
+    expect((box.min.z + box.max.z) / 2).toBeCloseTo(0, 6);
+    let triangles = 0;
+    const materials = new Set<unknown>();
+    root.traverse((o) => {
+      if (o instanceof Mesh) {
+        triangles += (o.geometry.index?.count ?? o.geometry.getAttribute("position").count) / 3;
+        for (const m of Array.isArray(o.material) ? o.material : [o.material]) materials.add(m);
+      }
+    });
+    expect(triangles).toBeLessThanOrEqual(1500);
+    expect(materials.size).toBeLessThanOrEqual(2);
+    expect(s.y).toBeLessThan(MILK_LABEL_Y); // the label sits wholly above the bottle
   });
 
   it("files match the confirmed SHA-256 and size", () => {

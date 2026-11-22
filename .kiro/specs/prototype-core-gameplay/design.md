@@ -74,7 +74,7 @@ Unchanged rules, applied to the one player when human: F1 towel in bath water (i
 | Bounds | Height 0.18–0.22 m, width and depth 0.06–0.08 m |
 | Look | A classic glass milk bottle with a paper cap: opaque white milk body (readable without transparency), a colored cap band; at most 2 materials, at most 1,500 triangles, textures at most 512 px |
 | View | Drawn at scale 1, standing on the floor at its node (or on a fixture top), one model shared by both bottles; hidden once collected; label 「牛乳びん」 bottom-anchored 0.32 m above the base |
-| Until delivered | A primitive placeholder (white cylinder with a blue cap, labelled provisional in code) is drawn; `ITEM_MODEL_URLS` lists the file only after it passes these checks. A failed load keeps the placeholder |
+| Delivered | 2026-11-22: `milk_bottle.glb` 0.072 × 0.200 × 0.072 m, 1,340 triangles, 2 materials, no textures, 43,916 bytes; listed in `ITEM_MODEL_URLS`. A failed load keeps the primitive placeholder (white cylinder with a blue cap) |
 
 ## Overview
 
