@@ -45,7 +45,7 @@ The official [Kiroween rules](https://kiroween.devpost.com/rules) were rechecked
 
 ## Help appearance follow-up — 2026-11-23
 
-Base: `9c710ea`, branch `fix/help-text-affordance`. Codex addressed the user's
+Base: `9c710ea`, implementation: `3953c4f`, branch `fix/help-text-affordance`. Codex addressed the user's
 report that help looked like a button. World target text and the HUD target and
 secondary-action hints now use outlined/shadowed caption text without a filled
 panel or border. PC target text says `Eキーで…`; touch labels retain their action
@@ -56,7 +56,9 @@ wording. Actual settings, map, touch and restart buttons are unchanged.
   bundle-size advisory remains. No new tests were added for this appearance edit.
 - This changes presentation only: target selection, depth testing, prompt
   placement, help preferences, input and game rules are unchanged.
-- Independent review and source/distribution publication checks are pending.
+- Independent review of `3953c4f`: no required findings. Source/index and
+  distribution publication checks passed with zero findings. These scans are
+  heuristic; they do not establish binary metadata or asset-rights clearance.
 - Final visual confirmation belongs to the designated supervisor's combined
   verification batch: check world text and HUD fallback against bright tiles
   and dark rooms, narrow-screen wrapping of the longer PC wording, and clear
