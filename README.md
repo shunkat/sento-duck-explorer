@@ -20,11 +20,12 @@ npm run check:publication # 公開候補ファイルとGit indexの機密情報�
 
 | キー | 操作 |
 | --- | --- |
-| WASD / 矢印 | カメラに合わせて移動。全体マップではW／上がマップの上方向 |
+| WASD / 矢印 | 肩越しカメラに合わせて移動 |
 | J / L・マウスドラッグ | 肩越しカメラを左右に回す |
 | Shift | 走る（石鹸を踏むとゲームオーバー） |
 | E / Enter | その場でできること1つ（画面の「E: …」と同じ）。牛乳びんを飲んで育つ／浴室の出口（更衣室の扉）かサウナの扉の前で体を拭く／ロッカー前で服を着る・脱ぐ／高い取っ手の戸を開ける（大人だけ）／他に何もなければタオルを頭にのせる・手に持つ（アヒルは不可） |
-| C | 全体マップ視点の切替 |
+| 右上のマップをタップ / C | 常時表示のミニマップを全画面に拡大。マップ表示中は一時停止 |
+| 閉じる / Esc / C | 全画面マップを閉じ、肩越し視点の探検に戻る |
 | R | ゲームオーバー時：直前の再開地点から再開。クリア後：最初から |
 | Q / V / F | 条件を満たすとゲームオーバー。Q：人間が水中で手持ちタオルを湯船へつける（頭のタオルは対象外）／V：人間がサウナで大声を出す／F：サウナで届く距離の人を押す。アヒルでは発動せず、マイクは使いません |
 
@@ -76,7 +77,8 @@ Use the npm commands above to run, test and build. See the [English submission d
 | J / L or mouse drag | Turn the shoulder camera |
 | Shift | Run; stepping on soap causes F3 |
 | E / Enter | Perform the displayed contextual action: drink a milk bottle and grow, dry at a bath-side exit, change clothes at the locker, open a door with a high handle (Adult only). Otherwise move the human's towel between hand and head. |
-| C | Toggle the overview |
+| Tap the top-right map / C | Expand the always-visible minimap; gameplay pauses while the map is open |
+| Close / Esc / C | Close the map and return to the same shoulder view |
 | R | Resume the last checkpoint after failure; start again after clearing |
 | Q / V / F | Conditional rule-break actions: a human dips a held towel in bath water, shouts in the sauna, or pushes a nearby person in the sauna. No microphone is used. |
 

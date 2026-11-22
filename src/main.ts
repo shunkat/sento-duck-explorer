@@ -8,6 +8,7 @@ import { advance } from "./loop";
 import { FollowCamera } from "./view/camera";
 import { deriveView } from "./view/deriveView";
 import { Hud } from "./view/hud";
+import { MiniMap } from "./view/minimap";
 import { CHARACTER_MODEL_URLS, ITEM_MODEL_URLS, ENVIRONMENT_MODEL_URLS } from "./view/modelEntry";
 import { GameScene } from "./view/scene";
 import { CHECKPOINT_VIEW_YAW, cameraRelativeMove, FacingTracker, ORBIT_DRAG_RATE, ORBIT_KEY_RATE, obstaclesFor } from "./view/shoulder";
@@ -20,23 +21,31 @@ const hud = new Hud(hudRoot);
 const camera = new FollowCamera();
 const facing = new FacingTracker();
 const kb = new KeyboardState();
-attachKeyboard(kb);
 
 // Mouse drag turns the view (view only).
 let dragX: number | null = null;
+let dragPointer: number | null = null;
 const canvas = scene.renderer.domElement;
 canvas.addEventListener("pointerdown", (e) => {
+  if (minimap.expanded) return;
   dragX = e.clientX;
+  dragPointer = e.pointerId;
   canvas.setPointerCapture(e.pointerId);
 });
 canvas.addEventListener("pointermove", (e) => {
-  if (dragX === null) return;
+  if (dragX === null || minimap.expanded) return;
   camera.orbit((e.clientX - dragX) * ORBIT_DRAG_RATE);
   dragX = e.clientX;
 });
-const endDrag = () => (dragX = null);
+const endDrag = () => {
+  if (dragPointer !== null && canvas.hasPointerCapture(dragPointer)) canvas.releasePointerCapture(dragPointer);
+  dragX = null;
+  dragPointer = null;
+};
 canvas.addEventListener("pointerup", endDrag);
 canvas.addEventListener("pointercancel", endDrag);
+canvas.addEventListener("lostpointercapture", endDrag);
+window.addEventListener("blur", endDrag);
 
 // Final models, when any are listed. A failure keeps the primitive.
 const charEntries = Object.entries(CHARACTER_MODEL_URLS) as [CharacterId, string][];
@@ -54,6 +63,14 @@ if (modelEntries.length > 0) {
 let state: GameState = createInitialState(LEVEL);
 let accumulator = 0;
 let last = performance.now();
+const minimap = new MiniMap(document.getElementById("map")!, LEVEL, () => {
+  kb.blur();
+  endDrag();
+  camera.setMoveHeld(false);
+  accumulator = 0;
+  last = performance.now();
+});
+attachKeyboard(kb, window, () => !minimap.expanded);
 
 const resize = () => scene.resize(window.innerWidth, window.innerHeight);
 window.addEventListener("resize", resize);
@@ -65,7 +82,7 @@ document.addEventListener("visibilitychange", () => {
   accumulator = 0;
 });
 
-/** WASD is relative to the camera's yaw; in the fixed overview W is up the map (shoulder-view Req 3.1, 3.2). */
+/** WASD remains relative to the shoulder camera; the map never changes that camera. */
 const takeFrame = () => {
   const f = kb.takeFrame();
   return { ...f, move: cameraRelativeMove(f.move, camera.moveYaw) };
@@ -84,7 +101,15 @@ function frame(nowMs: number): void {
   const now = nowMs / 1000;
   const dt = Math.min(frameSeconds, 0.1);
 
-  if (kb.takeOverview()) camera.toggleOverview();
+  const wasExpanded = minimap.expanded;
+  if (kb.takeOverview()) minimap.toggle();
+  if (minimap.expanded || wasExpanded) {
+    // Discard elapsed time and all gameplay input while reading the map.
+    // The close frame is also quiet; only a new input can resume movement.
+    accumulator = 0;
+    minimap.update(state, facing.yaw(state.player.stage));
+    return;
+  }
   camera.orbit(kb.orbit() * ORBIT_KEY_RATE * dt);
   camera.setMoveHeld(kb.moveHeld());
 
@@ -111,8 +136,9 @@ function frame(nowMs: number): void {
   facing.update(view);
   const focus = scene.positionCharacters(view, now, facing);
   const pose = camera.update(view.active, focus, dt, facing.yaw(view.active), obstaclesFor(LEVEL, state.doors), facing.moving(view.active));
-  scene.render(view, pose, camera.isOverview);
-  hud.update(state, LEVEL, now, camera.isOverview);
+  scene.render(view, pose, false);
+  hud.update(state, LEVEL, now);
+  minimap.update(state, facing.yaw(view.active));
 }
 
 scene.renderer.setAnimationLoop(frame);

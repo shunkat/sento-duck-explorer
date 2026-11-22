@@ -60,7 +60,8 @@ describe("view and guide along the full route", () => {
     expect(statusLines(sim.state)[0]).toContain("子ども");
     expect(statusLines(sim.state)).toContain("牛乳びん：1 / 2 本");
     expect(toastFor({ kind: "grew", milk: "milk1", from: "duck", to: "child" })).toBe("牛乳を飲んで子どもに育った！");
-    for (const line of KEY_HELP) expect(line).not.toMatch(/Tab|渡す|Esc/);
+    for (const line of KEY_HELP) expect(line).not.toMatch(/Tab|渡す/);
+    expect(KEY_HELP.find(line => line.includes("Esc"))).toContain("全画面マップ");
   });
 
   it("near a high handle, a Child is told it cannot reach; the Adult is offered to open it", () => {

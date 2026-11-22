@@ -11,7 +11,7 @@ export const KEY_HELP = [
   "J / L・マウスドラッグ：視点を左右に回す",
   "E / Enter：その場でできること（牛乳びんを飲む・体を拭く・服・高い取っ手の戸・タオルを頭へ）",
   "体を拭く：浴室の出口かサウナの扉の前でE　服：ロッカーの前でE",
-  "C：全体マップ視点の切替",
+  "右上のマップをタップ / C：全画面マップ　閉じる / Esc：探検に戻る",
   "マナー違反の行動（試すとゲームオーバー）：Q 手のタオルを湯船へ／V 大声／F 押す",
 ];
 
@@ -72,11 +72,11 @@ export class Hud {
     this.devWarn.textContent = lines.length ? `開発用チェック：${lines.join(" / ")}` : "";
   }
 
-  update(s: GameState, level: Level, now: number, overview: boolean): void {
+  update(s: GameState, level: Level, now: number): void {
     this.status.textContent = statusLines(s).join("\n");
     this.goal.textContent = `目的：${objective(s)}`;
     const hints = nearbyHints(s, level);
-    this.hints.textContent = (overview ? ["（全体マップ視点：Cで戻る）", ...hints] : hints).join("\n");
+    this.hints.textContent = hints.join("\n");
     this.toast.style.opacity = now < this.toastUntil ? "1" : "0";
     this.renderOverlay(s);
   }

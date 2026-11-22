@@ -58,12 +58,26 @@ describe("KeyboardState", () => {
     expect(f.interact).toBe(false);
   });
 
-  it("the overview key is for the camera only and survives takeFrame", () => {
+  it("the map key stays view-only and survives takeFrame", () => {
     const kb = new KeyboardState();
     kb.keyDown("KeyC");
     kb.takeFrame();
     expect(kb.takeOverview()).toBe(true);
     expect(kb.takeOverview()).toBe(false);
+  });
+
+  it("does not revive held movement, camera or actions from orphan repeats after a map closes", () => {
+    const kb = new KeyboardState();
+    for (const code of ["KeyW", "KeyJ", "ShiftLeft", "KeyE", "KeyC"]) kb.keyDown(code);
+    kb.blur();
+    for (const code of ["KeyW", "KeyJ", "ShiftLeft", "KeyE", "KeyC"]) kb.keyDown(code, true);
+    expect(kb.moveHeld()).toBe(false);
+    expect(kb.orbit()).toBe(0);
+    expect(kb.takeOverview()).toBe(false);
+    expect(kb.takeFrame()).toMatchObject({ move: { x: 0, z: 0 }, run: false, interact: false });
+    kb.keyUp("KeyW");
+    kb.keyDown("KeyW");
+    expect(kb.takeFrame().move).toEqual({ x: 0, z: -1 });
   });
 });
 
@@ -77,25 +91,54 @@ describe("attached keyboard events", () => {
   });
 
   // Node EventTargets exercise the real listeners without a browser or WebGL.
-  function attached() {
+  function attached(enabled: () => boolean = () => true) {
     const target = new EventTarget();
     const doc = Object.assign(new EventTarget(), { visibilityState: "visible" });
     vi.stubGlobal("document", doc);
     const kb = new KeyboardState();
-    const stop = attachKeyboard(kb, target as unknown as Window);
+    const stop = attachKeyboard(kb, target as unknown as Window, enabled);
     detach = stop;
-    const key = (type: "keydown" | "keyup", code: string, shiftKey = false) => {
+    const key = (type: "keydown" | "keyup", code: string, shiftKey = false, button = false) => {
       const event = new Event(type, { cancelable: true });
       Object.defineProperties(event, {
         code: { value: code },
         repeat: { value: false },
         shiftKey: { value: shiftKey },
+        ...(button ? { target: { value: { closest: (selector: string) => selector === "button, a, summary" ? {} : null } } } : {}),
       });
       target.dispatchEvent(event);
       return event;
     };
     return { kb, target, doc, key, stop };
   }
+
+  it("allows only the map shortcut while the map owns input, without queued gameplay on resume", () => {
+    let enabled = false;
+    const { kb, key } = attached(() => enabled);
+    for (const code of ["KeyW", "KeyJ", "KeyE", "KeyQ", "KeyR", "ShiftLeft"]) key("keydown", code, true);
+    expect(kb.moveHeld()).toBe(false);
+    expect(kb.orbit()).toBe(0);
+    expect(kb.takeFrame()).toMatchObject({ move: { x: 0, z: 0 }, interact: false, dipTowel: false, restart: false, run: false });
+    key("keydown", "KeyC");
+    expect(kb.takeOverview()).toBe(true);
+    kb.blur(); // the map's close boundary clears pending/held state
+    enabled = true;
+    expect(kb.takeFrame()).toMatchObject({ move: { x: 0, z: 0 }, interact: false, restart: false });
+    key("keyup", "KeyW");
+    key("keydown", "KeyW");
+    expect(kb.moveHeld()).toBe(true);
+  });
+
+  it.each([true, false])("keeps Enter/Space native for map buttons (game input enabled=%s)", enabled => {
+    const { kb, key } = attached(() => enabled);
+    for (const code of ["Enter", "Space"]) {
+      expect(key("keydown", code, false, true).defaultPrevented).toBe(false);
+      expect(kb.takeFrame().interact).toBe(false);
+      key("keyup", code);
+    }
+    key("keydown", "KeyC", false, true);
+    expect(kb.takeOverview()).toBe(true);
+  });
 
   it("real key events → frame → tick: Tab/T/G inert, E drinks milk once while held, the next E after release moves the towel", () => {
     const { kb, key } = attached();

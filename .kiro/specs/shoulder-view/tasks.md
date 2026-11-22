@@ -91,3 +91,15 @@ A/B stopped editing after repeated network errors, preserving `72bdbe8` and A's 
 ## Final input follow-up
 
 `461ca315` accepts Shift modifiers on movement events as well as independent ShiftLeft/ShiftRight events and clears that fallback on release/focus loss/detach. Actual CUA Shift+D produced F3; R restored start; a subsequent ordinary walk crossed the same soap without F3. Final automated count: **136 passed**, with production build and publication checks passing. The full route and other failure/recovery cases were observed on `a72b765`; the input follow-up is recorded separately.
+
+
+## Persistent minimap — 2026-11-22
+
+- [x] Always-visible north-up map and expanded native dialog, authored by Kiro Crew; LEVEL geometry, current position/facing, remaining milk and door state.
+- [x] Codex integration: C opens the map without changing the shoulder camera; open/close boundaries clear held/pending input and mouse capture, pause the fixed-step loop and discard elapsed time; responsive HUD/CSS and current Japanese/English instructions.
+- [x] Independent implementation review: no Required finding; narrow-screen safe-area advisory applied.
+- [x] Integrated automatic checks: 278 cases across 30 files accounted for after the targeted HUD expectation correction; TypeScript/production build passed. See `docs/minimap-verification.md`.
+- [ ] One final normal-input verification slot for the whole minimap batch, including map open/close, input pause/resume, compact/fullscreen layouts and the growth-to-street route.
+- [ ] Publish the checked revision through the existing main/Pages workflow.
+
+The separate outdoor-bath WIP is not included in this branch. Its unfinished bathing logic and verification remain recorded on that branch; this map change does not mark them complete. This feature changes no assets or licensing and does not claim hackathon submission or category acceptance.

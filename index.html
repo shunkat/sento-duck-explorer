@@ -2,13 +2,13 @@
 <html lang="ja">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>アヒルと子どもと大人の銭湯探検</title>
     <style>
       html, body { margin: 0; height: 100%; overflow: hidden; background: #1d2330; font-family: system-ui, "Hiragino Sans", sans-serif; }
       #app { position: fixed; inset: 0; }
       #hud { position: fixed; inset: 0; pointer-events: none; color: #fff; font-size: 13px; line-height: 1.55; }
-      #hud > div { position: absolute; background: rgba(0,0,0,0.62); border-radius: 6px; padding: 8px 12px; white-space: pre-wrap; }
+      #hud > div { position: absolute; box-sizing: border-box; background: rgba(0,0,0,0.62); border-radius: 6px; padding: 8px 12px; white-space: pre-wrap; }
       .hud-status { top: 10px; left: 10px; max-width: 360px; }
       .hud-guide { top: 10px; left: 50%; transform: translateX(-50%); max-width: 640px; text-align: center; }
       .hud-goal { font-size: 15px; font-weight: bold; color: #ffe27a; }
@@ -27,11 +27,66 @@
       .hud-overlay .key { margin-top: 16px; font-size: 18px; color: #ffe27a; }
       .hud-overlay.cleared h2 { color: #ffe27a; }
       .credits { position: fixed; top: 10px; right: 10px; z-index: 1; padding: 4px 8px; border-radius: 4px; background: rgba(0,0,0,0.72); color: #ddd; font-size: 11px; }
+      #map { position: fixed; inset: 0; pointer-events: none; z-index: 3; }
+      .minimap-button { position: absolute; top: max(44px, env(safe-area-inset-top)); right: max(12px, env(safe-area-inset-right)); width: clamp(180px, 23vw, 260px); padding: 10px; border: 1px solid #9fc4b8; border-radius: 12px; background: rgba(20,42,46,.94); color: #f0faf6; box-shadow: 0 4px 18px #0004; font: inherit; cursor: pointer; pointer-events: auto; touch-action: manipulation; }
+      .minimap-button:hover { background: #234e50; border-color: #fff4bc; }
+      .minimap-button:focus-visible, .minimap-close:focus-visible { outline: 3px solid #ffdd71; outline-offset: 3px; }
+      .minimap-button .minimap-title { display: block; font-size: 13px; font-weight: 700; text-align: left; }
+      .minimap-north { position: absolute; top: 10px; right: 10px; font-size: 11px; font-weight: 400; color: #bcd9d2; }
+      .minimap-caption { display: block; font-size: 11px; line-height: 1.5; color: #c7e5df; text-align: right; }
+      .minimap-svg { display: block; width: 100%; height: auto; min-height: 0; border-radius: 7px; background: #edf3e8; }
+      .minimap-button .minimap-svg { margin: 7px 0; pointer-events: none; }
+      .minimap-button .minimap-labels { display: none; }
+      .minimap-dialog { position: fixed; inset: 0; box-sizing: border-box; width: 100vw; height: 100vh; height: 100dvh; max-width: none; max-height: none; margin: 0; border: 0; padding: max(18px, env(safe-area-inset-top)) max(24px, env(safe-area-inset-right)) max(18px, env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-left)); background: #122a30; color: #eff7ef; pointer-events: auto; }
+      .minimap-dialog[open] { display: flex; flex-direction: column; gap: 14px; }
+      .minimap-dialog::backdrop { background: #122a30; }
+      .minimap-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex: 0 0 auto; }
+      .minimap-header .minimap-title { font-size: clamp(18px, 3vw, 26px); font-weight: 700; margin: 0; }
+      .minimap-close { min-height: 44px; padding: 10px 18px; flex-shrink: 0; border: 1px solid #c6ded2; border-radius: 8px; color: #f4f8ed; background: #315651; font: inherit; font-weight: 700; cursor: pointer; touch-action: manipulation; }
+      .minimap-close:hover { background: #426c62; }
+      .minimap-dialog > .minimap-svg, .minimap-body { flex: 1 1 0; min-height: 0; width: 100%; }
+      .minimap-body { display: flex; }
+      .minimap-body > .minimap-svg { flex: 1; height: 100%; }
+      .minimap-dialog > .minimap-svg { height: 100%; }
+      .minimap-legend { flex: 0 0 auto; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 20px; margin: 0; padding: 0; list-style: none; font-size: 13px; line-height: 1.6; color: #d9e9df; }
+      .minimap-legend-item { display: flex; align-items: center; gap: 7px; }
+      .minimap-swatch { display: inline-block; box-sizing: border-box; width: 12px; height: 12px; border: 1px solid #ffffff80; border-radius: 2px; }
+      .minimap-legend-player { background: #e0442c; clip-path: polygon(50% 0,100% 100%,50% 76%,0 100%); }
+      .minimap-legend-milk { background: #fff; border: 3px solid #1f6fb2; border-radius: 50%; }
+      .minimap-legend-indoor { background: #f3e7cf; }
+      .minimap-legend-outdoor { background: #cfe3c4; }
+      .minimap-legend-water { background: #9acfd9; }
+      .minimap-legend-door { background: #b0413e; }
+      .minimap-note { margin: 0; flex: 0 0 auto; text-align: center; color: #bcd9d2; font-size: 12px; }
+      @media (max-width: 900px) {
+        .hud-status { max-width: calc(100vw - 215px); font-size: 11px; }
+        .hud-guide { top: auto; bottom: 100px; width: calc(100% - 44px); box-sizing: border-box; }
+        .hud-keys { max-width: calc(100vw - 44px); font-size: 10px; }
+        .hud-keys { max-height: 75px; overflow: auto; }
+        .minimap-button { width: 178px; }
+      }
+      @media (max-width: 520px) {
+        .credits { max-width: 130px; font-size: 9px; }
+        .minimap-button { top: max(42px, env(safe-area-inset-top)); right: max(8px, env(safe-area-inset-right)); width: 142px; padding: 7px; }
+        .minimap-button .minimap-title { font-size: 11px; }
+        .minimap-north { top: 7px; right: 7px; font-size: 9px; }
+        .minimap-caption { font-size: 9px; }
+        .hud-status { max-width: calc(100vw - 182px); max-height: 160px; overflow: hidden; font-size: 10px; }
+        .hud-guide { bottom: max(18px, env(safe-area-inset-bottom)); width: calc(100% - 20px); }
+        .hud-goal { font-size: 13px; }
+        .hud-keys { display: none; }
+        .hud-toast { bottom: 110px; width: calc(100% - 44px); text-align: center; }
+        .minimap-dialog { padding-left: max(12px, env(safe-area-inset-left)); padding-right: max(12px, env(safe-area-inset-right)); }
+        .minimap-dialog[open] { gap: 10px; }
+        .minimap-legend { font-size: 11px; }
+        .minimap-label { font-size: 1.2px; }
+      }
     </style>
   </head>
   <body>
     <div id="app"></div>
     <div id="hud"></div>
+    <div id="map"></div>
     <a class="credits" href="%BASE_URL%THIRD_PARTY_NOTICES.md" target="_blank" rel="noopener">素材・ライセンス / Credits</a>
     <script type="module" src="/src/main.ts"></script>
   </body>

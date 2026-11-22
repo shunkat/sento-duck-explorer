@@ -39,6 +39,9 @@ export class KeyboardState {
   private shiftFromModifier = false;
 
   keyDown(code: string, repeat = false): void {
+    // After a map/focus pause, a physically held key must be released before
+    // it can move the player again. An orphan repeat is not a fresh press.
+    if (repeat && !this.held.has(code)) return;
     this.held.add(code);
     const action = PRESS_KEYS[code];
     if (action && !repeat) this.pressed.add(action);
@@ -78,7 +81,7 @@ export class KeyboardState {
     return o;
   }
 
-  /** View-only press (camera overview); consumed by the renderer, not the core. */
+  /** View-only map press; consumed by the map overlay, not the core. */
   takeOverview(): boolean {
     const had = this.pressed.has("overview");
     this.pressed.delete("overview");
@@ -118,8 +121,21 @@ export class KeyboardState {
 }
 
 /** Wire a KeyboardState to the window. Returns a detach function. */
-export function attachKeyboard(kb: KeyboardState, target: Window = window): () => void {
+export function attachKeyboard(kb: KeyboardState, target: Window = window,
+  gameplayEnabled: () => boolean = () => true): () => void {
   const down = (e: KeyboardEvent) => {
+    if (e.defaultPrevented) return;
+    const element = e.target as HTMLElement | null;
+    if (element?.closest?.("input, textarea, select, [contenteditable=true]")) return;
+    // Native button/link activation must not also interact with the game.
+    if ((e.code === "Enter" || e.code === "Space") && element?.closest?.("button, a, summary")) {
+      if (e.repeat) e.preventDefault();
+      return;
+    }
+    if (!gameplayEnabled() && e.code !== "KeyC") {
+      if (HANDLED_KEYS.has(e.code)) e.preventDefault();
+      return;
+    }
     if (HANDLED_KEYS.has(e.code)) e.preventDefault();
     kb.keyDown(e.code, e.repeat);
     kb.syncShiftModifier(e.shiftKey);

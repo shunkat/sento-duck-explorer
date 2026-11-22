@@ -133,3 +133,29 @@ export function followYaw(yaw, heading, moving, sinceOrbit, dt): number;        
 ## PR #3 merge integration (2026-11-20)
 
 The earlier integration plan above is now implemented: `ModelLibrary` is the single runtime GLB loader and `GameScene.useModels` delegates to `setCharacterModel` / `setItemModel`. As each load completes, existing roots are left in place and missing or invalid human models keep their current display. Crew facing, clothing, labels, held-item sockets, Child/Adult carry placement, hat rotation and camera behavior are retained; the older PR #3 movement and Adult-only carry paths are removed during conflict resolution. Core rules, assets and dependencies are unchanged. ModelLibrary fixture/real-GLB checks and renderer-free scene integration tests cover this boundary. No new normal-input/browser result is claimed.
+
+## Persistent minimap (2026-11-22)
+
+Supersedes the C-toggle moving 3D Overview described above (history kept). Requirements: "Update 2026-11-22: Persistent minimap".
+
+```ts
+// src/view/minimap.ts
+export class MiniMap {
+  constructor(root: HTMLElement, level: Level, onExpandedChange: (open: boolean) => void);
+  get expanded(): boolean;
+  setExpanded(open: boolean): void;   // reports transitions only
+  toggle(): void;                     // root calls this once for C
+  update(state: GameState, yaw: number): void; // display only
+  dispose(): void;
+}
+export function levelBounds(level, pad?): MapBounds;
+export function headingOnMap(yaw): Vec2;      // yaw 0 → (0,-1), π/2 → (1,0)
+export function playerTransform(pos, yaw): string;
+export function mapLabels(level): MapLabel[]; // grouped labels, kept off the milk bottles
+```
+
+DOM: `button.minimap-button` (`.minimap-title` 館内マップ, `.minimap-north`, mini `svg.minimap-svg`, `.minimap-caption` タップで拡大) and `dialog.minimap-dialog` (`header.minimap-header` with `.minimap-title` and `button.minimap-close`; `.minimap-body` around the large `svg.minimap-svg`; `.minimap-legend`; `.minimap-note`). SVG layers in order: zones (reverse of `LEVEL.zones`, small zones on top), `.minimap-water` (`LEVEL.duckWater`), `.minimap-wall`, `.minimap-fixtures` (water fixtures get a rim plus inner water), `.minimap-doors`, `.minimap-labels` (large only), `.minimap-milks`, `.minimap-player`. Static geometry is built once; `update` changes only the player transform, milk `display` and high-door state.
+
+Behavior: native `showModal()` gives focus containment and background inertness. The close button takes focus on open; closing restores the previous focus, or the mini button. Close button, `cancel` and Escape keydown all close through one path with one callback. A `close` event that arrives after a reopen is ignored (acts only when `dialog.open` is false). Pointer, mouse, touch and click events from the button and dialog stop propagating. `dispose()` closes an open map first so the root resumes the game.
+
+Verification: `tests/minimap.test.ts` uses a small fake DOM (the test environment is Node) for module event/state behaviour. All 18 cases passed in the integrated suite. Native Escape, modal inertness and layout are separate browser acceptance items. Exact validation and scope: `docs/minimap-verification.md`.
