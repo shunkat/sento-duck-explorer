@@ -162,7 +162,7 @@ document.addEventListener("pointerlockchange", () => session.onLockChange());
 // Pointer lock may fail (not allowed, no gesture): play on, never retry by itself.
 document.addEventListener("pointerlockerror", () => session.onLockError());
 // Escape in ordinary play (nothing captured) pauses into settings too.
-window.addEventListener("keydown", (e) => { session.onEscape(e); });
+window.addEventListener("keydown", (e) => { if (session.onEscape(e)) e.preventDefault(); });
 // Page leave: stop, clear every input including run, and wait for 「続ける」.
 function goAway(): void {
   life.away();
