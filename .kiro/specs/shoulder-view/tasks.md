@@ -113,5 +113,6 @@ The separate outdoor-bath WIP is not included in this branch. Its unfinished bat
 - [x] Restart buttons (game over / clear), pause overlay with 「続ける」, WebGL context-loss pause and explanation.
 - [x] Pixel ratio caps (2 / 1.5 / 1.25) with a 軽量描画 setting; model load progress and failure line.
 - [x] Automatic tests: `tests/touch.test.ts`, `look.test.ts`, `lifecycle.test.ts`, `target.test.ts`, `touch-ui.test.ts` plus updated camera, E, HUD and input tests.
-- [ ] Real-device checks (iPhone Safari, Android Chrome) and the one combined normal-input pass are owned by the existing supervisor and are NOT done. Frame-rate target (about 30 fps) is unmeasured.
+- [x] The designated supervisor completed one combined normal-input clear on `2ac57ea` and the Esc-only follow-up on `9697b71`; see `docs/controls-verification.md` for version boundaries and the Codex-authored, user-approved Esc repair.
+- [ ] Real-device checks (iPhone Safari, Android Chrome) remain unverified. Chrome touch-UI emulation is not physical multitouch; the frame-rate target (about 30 fps) is unmeasured.
 - Deferred: persistent save, key rebinding, gamepad, PWA/offline, auto-centering.
