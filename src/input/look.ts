@@ -23,8 +23,19 @@ export class MouseLook {
    * A request remembers its epoch; a grant from an older epoch is always given back.
    */
   private epoch = 0;
-  /** Epoch of the request still waiting for its grant or error (void and Promise APIs alike). */
-  private pending: number | null = null;
+  /**
+   * The one Pointer Lock request that has not finished. Neither a boundary nor
+   * elapsed time clears it: the browser's events carry no request id, so a newer
+   * request issued while this one is open would be mistaken for it. It finishes by:
+   * - its grant (`pointerlockchange` to locked), for any API;
+   * - Promise API: its own Promise rejection only (`pointerlockerror` is a notice);
+   * - void API: `pointerlockerror`;
+   * - a synchronous throw from `requestPointerLock`.
+   * Every completion checks the request's own token, so an old completion never
+   * ends a later request, even within the same epoch.
+   */
+  private inflight: LockRequest | null = null;
+  private nextToken = 0;
   private wasLocked = false;
   private weReleased = false;
   private drag: { id: number; x: number; y: number; startX: number; startY: number; startT: number; moved: number; button: number } | null = null;
@@ -35,11 +46,15 @@ export class MouseLook {
     if (this.captureAllowed && !allowed) this.invalidate();
     this.captureAllowed = allowed;
   }
-  /** Boundary reset (modal, blur, rotation, outcome, restart): no drag, no pending grant survives. */
+  /** Boundary reset (modal, blur, rotation, outcome, restart): drops the drag; an open request stays open but its grant becomes stale. */
   invalidate(): void {
     this.epoch++;
-    this.pending = null;
     this.drag = null;
+  }
+  /** True while a request waits for its completion (new requests are not issued). */
+  get requestOpen(): boolean { return this.inflight !== null; }
+  private finish(token: number): void {
+    if (this.inflight?.token === token) this.inflight = null;
   }
   /** The pointer id of a drag in progress (so the caller can release its DOM capture). */
   get dragPointer(): number | null { return this.drag?.id ?? null; }
@@ -49,8 +64,10 @@ export class MouseLook {
   /** `pointerlockchange`. The caller exits the lock on "release" and opens settings on "pause". */
   onLockChange(locked: boolean): LockOutcome {
     if (locked) {
-      const fresh = this.pending !== null && this.pending === this.epoch && this.captureAllowed;
-      this.pending = null;
+      // A grant completes the one open request. Only one exists at a time, so it is that one's.
+      const req = this.inflight;
+      const fresh = req !== null && req.epoch === this.epoch && this.captureAllowed;
+      if (req) this.finish(req.token);
       if (!fresh) {
         this.weReleased = true; // the give-back below is ours, not an Escape
         this.wasLocked = true;
@@ -67,10 +84,18 @@ export class MouseLook {
     }
     return was && this.captureAllowed ? "pause" : "none";
   }
-  /** `pointerlockerror`: the request ended; nothing is retried by itself. */
+  /**
+   * `pointerlockerror`. Ends the open request only for the void API. For a
+   * Promise API the rejection decides; the event is a notice and never ends a
+   * request (it may be the echo of an older, already rejected one). An error
+   * during the `requestPointerLock` call itself is kept until the return value
+   * shows which API it was. Nothing is retried by itself.
+   */
   onLockError(): void {
-    this.pending = null;
-    this.weReleased = false;
+    const req = this.inflight;
+    if (!req) return;
+    if (req.api === "calling") req.errorDuringCall = true;
+    else if (req.api === "void") this.finish(req.token);
   }
   private apply(dx: number, dy: number): void {
     const s = this.settings();
@@ -111,23 +136,40 @@ export class MouseLook {
     if (this.drag?.id === id) this.drag = null;
   }
   /**
-   * Ask for Pointer Lock once per input boundary. Never throws; never loops.
-   * The request stays pending until the grant or the error, whatever the API returns.
+   * Ask for Pointer Lock. Never throws, never loops, never stacks: while an
+   * earlier request is open no new one is issued, at any age and in any epoch.
+   * Once it completed, the next deliberate click may request again.
    */
   requestLock(): boolean {
-    if (!this.captureAllowed || this.pending === this.epoch || this.isLocked() || this.settings().dragOnly) return false;
-    const mine = this.epoch;
-    this.pending = mine;
+    if (!this.captureAllowed || this.inflight || this.isLocked() || this.settings().dragOnly) return false;
+    const req: LockRequest = { token: ++this.nextToken, epoch: this.epoch, api: "calling", errorDuringCall: false };
+    this.inflight = req;
+    let r: Promise<void> | void;
     try {
-      const r = this.lockTarget.requestPointerLock();
-      if (r && typeof (r as Promise<void>).then === "function") {
-        // A rejection ends the request; a grant is confirmed by pointerlockchange.
-        (r as Promise<void>).then(undefined, () => { if (this.pending === mine) this.pending = null; });
-      }
+      r = this.lockTarget.requestPointerLock();
     } catch {
-      if (this.pending === mine) this.pending = null;
+      this.finish(req.token);
       return false;
+    }
+    if (r && typeof (r as Promise<void>).then === "function") {
+      req.api = "promise";
+      (r as Promise<void>).then(
+        // Resolved without a lock (should not happen): end it so the next click can retry.
+        () => { if (!this.isLocked()) this.finish(req.token); },
+        () => this.finish(req.token),
+      );
+    } else {
+      req.api = "void";
+      if (req.errorDuringCall) this.finish(req.token);
     }
     return true;
   }
+}
+interface LockRequest {
+  token: number;
+  epoch: number;
+  /** "calling" until `requestPointerLock` returns. */
+  api: "calling" | "promise" | "void";
+  /** `pointerlockerror` arrived synchronously inside the call. */
+  errorDuringCall: boolean;
 }

@@ -206,3 +206,132 @@ describe("R8: Escape pauses ordinary play without a capture", () => {
     expect(r.deps.openSettings).toHaveBeenCalledTimes(1);
   });
 });
+describe("R4 follow-up: open requests are never stacked and completions are matched by token", () => {
+  /** A Promise API whose requests are settled by the test, in any order. */
+  function promiseRig() {
+    const settles: { resolve: () => void; reject: () => void }[] = [];
+    const r = rig(() => new Promise<void>((resolve, reject) => { settles.push({ resolve, reject: () => reject(new Error("denied")) }); }));
+    return { ...r, settles };
+  }
+  const flush = async () => { for (let i = 0; i < 4; i++) await Promise.resolve(); };
+  const boundary = (r: ReturnType<typeof rig>) => {
+    r.session.setState({ modal: true });
+    r.session.clearInputs();
+    r.session.setState({ modal: false });
+  };
+  it("void: A open -> settings open/close -> click B is not issued -> A's late grant is given back -> click C locks", () => {
+    const r = rig(() => undefined);
+    expect(r.click()).toBe(true); // A
+    boundary(r);
+    expect(r.click()).toBe(false); // B: A still open
+    expect(r.target.requestPointerLock).toHaveBeenCalledTimes(1);
+    r.grant(); // A's grant, stale epoch
+    expect(r.isLocked()).toBe(false);
+    r.drop();
+    expect(r.deps.openSettings).not.toHaveBeenCalled();
+    expect(r.click()).toBe(true); // C
+    r.grant();
+    expect(r.isLocked()).toBe(true);
+  });
+  it("Promise: the same order; A's grant is given back and C locks after it", async () => {
+    const r = promiseRig();
+    expect(r.click()).toBe(true);
+    boundary(r);
+    expect(r.click()).toBe(false);
+    r.grant();
+    r.settles[0]!.resolve();
+    await flush();
+    expect(r.isLocked()).toBe(false);
+    r.drop();
+    expect(r.click()).toBe(true);
+    r.grant();
+    expect(r.isLocked()).toBe(true);
+    expect(r.target.requestPointerLock).toHaveBeenCalledTimes(2);
+  });
+  it("an open request is not overwritten after more than 10 s; its grant is still the old one", () => {
+    vi.useFakeTimers();
+    try {
+      const r = rig(() => undefined);
+      expect(r.click()).toBe(true);
+      boundary(r);
+      vi.advanceTimersByTime(60_000);
+      expect(r.click()).toBe(false);
+      expect(r.target.requestPointerLock).toHaveBeenCalledTimes(1);
+      r.grant();
+      expect(r.isLocked()).toBe(false);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+  it("same epoch: a second click while the first request is open is not issued", () => {
+    const r = rig(() => undefined);
+    expect(r.click()).toBe(true);
+    expect(r.click()).toBe(false);
+    expect(r.mouse.requestOpen).toBe(true);
+    r.session.onLockError(); // void: the error completes it
+    expect(r.mouse.requestOpen).toBe(false);
+    expect(r.click()).toBe(true);
+    expect(r.target.requestPointerLock).toHaveBeenCalledTimes(2);
+  });
+  it("Promise: reject A -> new request B -> A's late pointerlockerror does not end B; B's grant is kept", async () => {
+    const r = promiseRig();
+    expect(r.click()).toBe(true); // A
+    r.settles[0]!.reject();
+    await flush();
+    expect(r.click()).toBe(true); // B, same epoch
+    r.session.onLockError(); // A's echo
+    expect(r.mouse.requestOpen).toBe(true);
+    expect(r.click()).toBe(false); // B still open: no stacking
+    r.grant(); // B's grant
+    expect(r.isLocked()).toBe(true);
+    expect(r.deps.exitLock).not.toHaveBeenCalled();
+  });
+  it("Promise: error first -> click suppressed while A's Promise is unsettled -> reject -> next click succeeds", async () => {
+    const r = promiseRig();
+    expect(r.click()).toBe(true);
+    r.session.onLockError();
+    expect(r.click()).toBe(false);
+    expect(r.target.requestPointerLock).toHaveBeenCalledTimes(1);
+    r.settles[0]!.reject();
+    await flush();
+    expect(r.click()).toBe(true);
+    expect(r.target.requestPointerLock).toHaveBeenCalledTimes(2);
+  });
+  it("Promise: an old rejection in the same epoch does not end the next request (token, not epoch)", async () => {
+    const r = promiseRig();
+    expect(r.click()).toBe(true); // A
+    r.grant(); // A granted
+    r.drop(); // Escape: unlock (opens settings once)
+    r.session.setState({ modal: false }); // settings closed again without a boundary
+    expect(r.click()).toBe(true); // B in a new or same epoch
+    r.settles[0]!.reject(); // a late rejection for A (never happens with a resolved A, but must not touch B)
+    await flush();
+    expect(r.mouse.requestOpen).toBe(true);
+    r.grant();
+    expect(r.isLocked()).toBe(true);
+  });
+  it("a synchronous throw ends only that request", () => {
+    let throwNext = true;
+    const r = rig(() => { if (throwNext) throw new Error("SecurityError"); });
+    expect(r.click()).toBe(false);
+    expect(r.mouse.requestOpen).toBe(false);
+    throwNext = false;
+    expect(r.click()).toBe(true);
+    expect(r.mouse.requestOpen).toBe(true);
+  });
+  it("an error delivered synchronously inside the call ends a void request, but not a Promise request", async () => {
+    let session!: InputSession;
+    const v = rig(() => { session.onLockError(); });
+    session = v.session;
+    expect(v.click()).toBe(true);
+    expect(v.mouse.requestOpen).toBe(false);
+    let reject!: () => void;
+    const p = rig(() => { session.onLockError(); return new Promise<void>((_, rj) => { reject = () => rj(new Error("x")); }); });
+    session = p.session;
+    expect(p.click()).toBe(true);
+    expect(p.mouse.requestOpen).toBe(true);
+    reject();
+    await flush();
+    expect(p.mouse.requestOpen).toBe(false);
+  });
+});
