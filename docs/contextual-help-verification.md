@@ -59,11 +59,16 @@ wording. Actual settings, map, touch and restart buttons are unchanged.
 - Independent review of `3953c4f`: no required findings. Source/index and
   distribution publication checks passed with zero findings. These scans are
   heuristic; they do not establish binary metadata or asset-rights clearance.
+- The first publication workflow passed 368 of 369 tests; the scene-budget
+  test's Canvas stub lacked the standard `strokeText` method now used by help.
+  Adding that stub method made the existing scene-budget test pass locally.
+  Its geometry measurements and 60,000-triangle assertions are unchanged.
 - Final visual confirmation belongs to the designated supervisor's combined
   verification batch: check world text and HUD fallback against bright tiles
   and dark rooms, narrow-screen wrapping of the longer PC wording, and clear
   distinction from usable touch/settings buttons. No browser or playthrough was
   performed for this follow-up, and earlier route results retain their revisions.
-- No assets, dependencies or licensing terms changed. This local follow-up does
-  not establish contest acceptance or publication; submission matters in
-  `kiroween-review.md` remain open.
+- The user requested production publication on 2026-11-23 through the existing
+  main/Pages workflow. The deployed revision is recorded by `version.json` and
+  its corresponding Actions run. No assets, dependencies or licensing terms
+  changed; submission matters in `kiroween-review.md` remain open.
