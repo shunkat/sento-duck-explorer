@@ -215,8 +215,9 @@ limits. Those require actual integrated measurements before publication.
 partitions and storage shelf, the curb, two dynamic doors (`growth_kids_gate`,
 `growth_front_exit`) and the street stub with its threshold. The architecture
 allocation for the re-exported world is raised to **at most 10,000 triangles**;
-once the environment asset lands it is set to the final measured value (the
-minimum needed). The near NPC, material, image and size allocations above are
+the growth_v02 export (2026-11-22) measures **9,907** architecture triangles
+(plus the unchanged 12,200 near NPC triangles), and that measured value is the
+allocation. The near NPC, material, image and size allocations above are
 unchanged, and the whole-scene limits still apply. This round does not rebuild
 existing assets or produce other old provisional items.
 

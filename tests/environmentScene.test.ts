@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { readFileSync } from "node:fs";
 import * as THREE from "three";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { LEVEL } from "../src/level/layout";
 import { GameScene, setBodyOpacity } from "../src/view/scene";
 import { ModelLibrary } from "../src/view/models";
@@ -263,5 +264,46 @@ describe("milk bottle model (2026-11-22)", () => {
     for (const id of ["milk1", "milk2"] as const) {
       expect(g.items[id].children.filter((o) => o instanceof THREE.Mesh && o.visible).length, id).toBe(2); // bottle + cap
     }
+  });
+});
+
+describe("growth_v02 environment export in the scene (2026-11-22)", () => {
+  const bytes = (url: string) => {
+    const b = readFileSync(new URL(`../public/${url}`, import.meta.url));
+    return b.buffer.slice(b.byteOffset, b.byteOffset + b.byteLength) as ArrayBuffer;
+  };
+
+  it("the real export is accepted with both growth doors; the game's growth primitives hide; door nodes follow the door state", async () => {
+    const game = new GameScene({ appendChild() {} } as unknown as HTMLElement, LEVEL);
+    // Only image decoding is stubbed (no DOM image decoder in Node); meshes and nodes are real.
+    const loader = new GLTFLoader().register(() => ({ name: "skip_image_decode", loadTexture: async () => new THREE.Texture() }));
+    const lib = new ModelLibrary(loader);
+    await lib.parse("sento_environment", bytes("models/sento_environment.glb"));
+    for (const id of NPC_LOD_IDS) await lib.parse(id, bytes(`models/${id}.glb`));
+    for (const id of ["bath_stool", "wash_basin", "bath_stool_lod_medium", "bath_stool_lod_far", "wash_basin_lod_medium", "wash_basin_lod_far"]) {
+      await lib.parse(id, bytes(`models/${id}.glb`));
+    }
+    game.useModels(lib);
+    const internal = game as unknown as { scene: THREE.Scene; worldEnvironment: { active: boolean; hasGrowthDoors: boolean } };
+    expect(internal.worldEnvironment.active).toBe(true);
+    expect(internal.worldEnvironment.hasGrowthDoors).toBe(true);
+    const world = internal.scene.getObjectByName("sento_environment")!;
+    const gate = world.getObjectByName("growth_kids_gate")!;
+    const exit = world.getObjectByName("growth_front_exit")!;
+    const exitUpper = world.getObjectByName("growth_front_exit_upper")!;
+    const state = createInitialState(LEVEL);
+    const pose = { eye: { x: 9, y: 1.4, z: -6 }, target: { x: 11, y: 1, z: -7 } };
+    let view = deriveView(state, LEVEL);
+    game.positionCharacters(view, 0, new FacingTracker());
+    game.render(view, pose, false);
+    expect(internal.scene.getObjectByName("growth_fallback")!.visible).toBe(false);
+    expect([gate.visible, exit.visible, exitUpper.visible]).toEqual([true, true, true]);
+    game.render(view, pose, true);
+    expect([exit.visible, exitUpper.visible]).toEqual([true, false]);
+    state.doors = { kidsGate: "open", frontExit: "open" };
+    view = deriveView(state, LEVEL);
+    game.render(view, pose, false);
+    expect([gate.visible, exit.visible]).toEqual([false, false]);
+    expect(world.getObjectByName("sauna_door")!.visible).toBe(false);
   });
 });

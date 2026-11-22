@@ -9,7 +9,7 @@ export const WORLD_ENVIRONMENT_NODES = ["environment_static", "environment_upper
 type Part = typeof WORLD_ENVIRONMENT_NODES[number];
 type Parts = Record<Part, THREE.Object3D>;
 /**
- * Optional dynamic doors of the growth export (2026-11-22, `.local` level export
+ * Optional dynamic doors of the growth export (2026-11-22, design "Growth and exit" door
  * contract): direct children of the root with identity transform, hidden while
  * open; their `<name>_upper` child is hidden in the Overview. Both or neither.
  */
@@ -20,8 +20,12 @@ type Doors = Record<DoorId, { node: THREE.Object3D; upper: THREE.Object3D | null
 const isIdentity = (o: THREE.Object3D) => o.position.lengthSq() <= 1e-12 &&
   o.quaternion.angleTo(new THREE.Quaternion()) <= 1e-6 && o.scale.distanceTo(new THREE.Vector3(1, 1, 1)) <= 1e-6;
 
-/** The door pair, null when absent, or "invalid" when it breaks the contract. */
-function inspectDoors(root: THREE.Object3D): Doors | null | "invalid" {
+/**
+ * The door pair, null when absent, or "invalid" when it breaks the contract.
+ * `home` is the environment's own root node (the parent of the four parts,
+ * `sento_environment` in the export): the doors are its direct children.
+ */
+function inspectDoors(root: THREE.Object3D, home: THREE.Object3D): Doors | null | "invalid" {
   const found: Partial<Doors> = {};
   for (const [id, name] of Object.entries(WORLD_DOOR_NODES) as [DoorId, string][]) {
     const matches: THREE.Object3D[] = [];
@@ -31,7 +35,7 @@ function inspectDoors(root: THREE.Object3D): Doors | null | "invalid" {
     if (!node) continue;
     let meshes = 0;
     node.traverse(o => { if (o instanceof THREE.Mesh) meshes++; });
-    if (node.parent !== root || !isIdentity(node) || !meshes) return "invalid";
+    if (node.parent !== home || !isIdentity(node) || !meshes) return "invalid";
     found[id] = { node, upper: node.getObjectByName(`${name}_upper`) ?? null };
   }
   const n = Object.keys(found).length;
@@ -41,8 +45,6 @@ function inspectDoors(root: THREE.Object3D): Doors | null | "invalid" {
 
 function inspect(root: THREE.Object3D): { parts: Parts; doors: Doors | null } | null {
   if (!isIdentity(root)) return null;
-  const doors = inspectDoors(root);
-  if (doors === "invalid") return null;
   const found = {} as Parts;
   for (const name of WORLD_ENVIRONMENT_NODES) {
     const matches: THREE.Object3D[] = [];
@@ -53,6 +55,12 @@ function inspect(root: THREE.Object3D): { parts: Parts; doors: Doors | null } | 
     matches[0]!.traverse(o => { if (o instanceof THREE.Mesh) meshes++; });
     if (!meshes) return null;
   }
+  // The doors sit beside the parts, under an untransformed environment root.
+  const home = found.environment_static.parent;
+  for (let a = home; a; a = a.parent) if (!isIdentity(a)) return null;
+  if (!home) return null;
+  const doors = inspectDoors(root, home);
+  if (doors === "invalid") return null;
   // A part must not own another part: otherwise hiding upper walls could
   // accidentally hide the entire building or the locked door.
   for (const part of Object.values(found)) {

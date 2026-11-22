@@ -3,7 +3,7 @@ import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { CHARACTER_MODEL_URLS, ENVIRONMENT_MODEL_URLS, ITEM_MODEL_URLS } from "../src/view/modelEntry";
-import { GROWTH_DECOR_KINDS, GROWTH_FIXTURE_KINDS, isStreetFixture, LEVEL } from "../src/level/layout";
+import { GROWTH_FIXTURE_KINDS, isStreetFixture, LEVEL } from "../src/level/layout";
 
 const read = (path: string) => readFileSync(new URL(`../${path}`, import.meta.url));
 const sha = (data: Buffer | string) => createHash("sha256").update(data).digest("hex");
@@ -41,28 +41,28 @@ describe("complete environment export", () => {
       crowdGaps: LEVEL.crowdGaps, narrowHole: LEVEL.narrowHole, duckWater: LEVEL.duckWater,
       doors: LEVEL.doors, nodes: LEVEL.nodes, highDoors: LEVEL.highDoors,
     };
-    // Growth and exit (2026-11-21) changed the layout after this export: trough joined to the tub, the
-    // kids' corner, removed pond goal and sauna lock, front-exit door. The authored world is still the
-    // 3f57ed2 export; the additions are always-drawn provisional primitives. Re-export is an open asset item.
-    expect(sha(JSON.stringify(placement))).not.toBe(report.layout_sha256);
-    expect(report.layout_sha256).toMatch(/^[0-9a-f]{64}$/);
+    // growth_v02 re-export (2026-11-22) from the final growth geometry: the hash matches again.
+    expect(sha(JSON.stringify(placement))).toBe(report.layout_sha256);
+    expect(report.layout_sha256).toBe("01d4ef0eda8966fe87ec3ac4551bcce129bd697040ae6dd201a0cff50e9ceba8");
     expect(LEVEL.fixtures.filter((f) => GROWTH_FIXTURE_KINDS.has(f.kind)).length).toBe(5);
     expect(LEVEL.fixtures.filter(isStreetFixture).length).toBe(3);
     expect(sha(read("public/models/sento_environment.glb"))).toBe(report.export_sha256);
-    expect(report.source_placement_count).toBe(111);
-    // Coverage is keyed by the authored export's order: leave out the growth additions.
-    const authoredFixtures = LEVEL.fixtures.filter((f) => !GROWTH_FIXTURE_KINDS.has(f.kind) && !isStreetFixture(f));
-    const authoredDecor = LEVEL.decor.filter((d) => !GROWTH_DECOR_KINDS.has(d.kind));
-    const authoredZones = LEVEL.zones.filter((z) => !z.id.startsWith("kids_") && z.id !== "street");
-    // The street door splits the x = 11 wall into two segments: one more structural wall than the export.
-    const exportedWalls = Object.keys(report.coverage).filter((k) => k.startsWith("structural_walls_")).length;
-    expect(placement.structural_walls.length).toBe(exportedWalls + 1);
-    for (const [category, entries] of Object.entries({ structural_walls: placement.structural_walls.slice(0, exportedWalls),
-      fixtures: authoredFixtures, decor: authoredDecor, npcs: LEVEL.npcs, zones: authoredZones })) {
+    expect(report.export_sha256).toBe("3c37930e66a6d27f2a32cc174b64cb54b6a713bfafd6322ef4959cbb7ec6eb00");
+    expect(read("public/models/sento_environment.glb").length).toBe(6_931_636);
+    expect(report.architecture_triangles).toBe(9907);
+    expect(report.architecture_triangles).toBeLessThanOrEqual(10_000); // final-assets growth budget
+    expect(report.npc_triangles).toBe(12_200);
+    // Every current placement (growth additions included) is covered by the export.
+    for (const [category, entries] of Object.entries({ structural_walls: placement.structural_walls,
+      fixtures: LEVEL.fixtures, decor: LEVEL.decor, npcs: LEVEL.npcs, zones: LEVEL.zones })) {
       entries.forEach((_, i) => expect(report.coverage[`${category}_${String(i).padStart(2, "0")}`],
         `${category} placement ${i}`).toBeTruthy());
+      expect(Object.keys(report.coverage).filter((k) => k.startsWith(`${category}_`) && /_\d\d$/.test(k)).length, category).toBe(entries.length);
     }
-    expect(report.clearances).toHaveLength(11);
+    // Every doorway, the child passage, both growth doors and the water joints are clear of geometry.
+    const ids = report.clearances.map((c: { id: string }) => c.id);
+    for (const d of LEVEL.doors) expect(ids, d.id).toContain(d.id);
+    for (const id of ["growth_door_kidsGate", "growth_door_frontExit", "child_passage", "narrow_hole"]) expect(ids).toContain(id);
     for (const opening of report.clearances) expect(opening.intersecting_triangles, opening.id).toBe(0);
     expect(report.npc_slots).toHaveLength(7);
     expect(report.degenerate_faces).toBe(0);
