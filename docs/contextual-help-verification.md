@@ -15,8 +15,17 @@ Base: `2538208`, branch `feat/contextual-help`. User-requested presentation work
 - Focused help guidance and E regression checks: 14 passed. Help preferences/settings/input checks: 23 passed. These overlap existing input tests and are not additional unique test totals.
 - Production build with the Pages base path passed. The existing bundle-size advisory remains.
 - The initial full run passed 265 cases and exposed four old-test failures after labels were removed and textured notices added. The affected rig, texture-surface and scene-budget assumptions were updated without weakening their contracts; the targeted three-file run then passed all 12 cases. Together these runs account for all 269 tests across 32 files. The full suite was not unnecessarily repeated.
-- Independent reviewer checked the full presentation/input/signage diff. One required issue was fixed: disabling help must hide an already-visible prompt immediately while the settings loop is paused. The targeted help/settings/view run passed all 17 cases after the fix. The reviewer rechecked the fix and affected test updates and reported no remaining required findings.
+- Independent reviewer checked the full presentation/input/signage diff. The first required issue was fixed: disabling help must hide an already-visible prompt immediately while the settings loop is paused. The targeted help/settings/view run passed all 17 cases after the fix. The reviewer rechecked the fix and affected test updates and reported no remaining required findings.
 - Sign placement tests sample nine points per board against the actual published environment GLB. Faces are outside the supporting surface with ordinary depth testing. This is placement evidence, not camera readability or ordinary-input play.
+
+## Concurrent minimap integration
+
+The reviewed help implementation `2c5467c` was merged locally with the completed minimap implementation `89f6d18`. Four conflicts (`index.html`, keyboard, main loop and HUD) were resolved in the isolated help worktree; the supervisor's minimap worktree, HEAD, server and browser were not modified.
+
+- Preserve the persistent/tappable map and its pause/resume behavior. C can close the full map but is blocked inside settings; a separate map-key gate expresses that distinction.
+- Preserve the compact contextual HUD, settings, persistent preference and physical notices. The on-demand large map retains its navigation labels.
+- Integrated full suite: **291 tests passed across 33 files**. The reviewer then found and fixed the queued native close/reopen edge in settings; the matching regression and settings/minimap tests passed **23/23** afterward. The final source contains **292 cases**, all covered by these runs. Final production build passed with the pre-existing bundle-size advisory.
+- Source/index and distribution publication scans passed with zero findings. The scanner is heuristic and does not audit binary metadata or rights; no binary or third-party asset is introduced here.
 
 ## Final normal-input checks (designated supervisor)
 

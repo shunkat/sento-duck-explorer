@@ -63,6 +63,25 @@ class ElementStub extends EventTarget {
 }
 
 describe("settings HUD", () => {
+  it("stays paused if a queued close event arrives after settings were reopened", () => {
+    vi.stubGlobal("document", { createElement: () => new ElementStub() });
+    const root = new ElementStub();
+    const pauseChanged = vi.fn();
+    const hud = new Hud(root as unknown as HTMLElement, pauseChanged, new HelpSettings(memoryStorage()));
+    const button = root.find("hud-settings-button")!;
+    const dialog = root.find("hud-settings-dialog")!;
+    button.dispatchEvent(new Event("click"));
+    dialog.open = false; // Native close() queues the close event instead of firing synchronously.
+    button.dispatchEvent(new Event("click"));
+    dialog.dispatchEvent(new Event("close"));
+    expect(dialog.open).toBe(true);
+    expect(hud.isSettingsOpen).toBe(true);
+    expect(pauseChanged).toHaveBeenCalledTimes(1);
+    dialog.close();
+    expect(hud.isSettingsOpen).toBe(false);
+    expect(pauseChanged).toHaveBeenCalledTimes(2);
+  });
+
   it("hides contextual help immediately, saves the choice, and retains outcome and action feedback", () => {
     vi.stubGlobal("document", { createElement: () => new ElementStub() });
     const root = new ElementStub();
@@ -115,7 +134,7 @@ describe("settings input boundary", () => {
     vi.stubGlobal("document", Object.assign(new EventTarget(), { visibilityState: "visible" }));
     let playing = true;
     const kb = new KeyboardState();
-    const detach = attachKeyboard(kb, target as unknown as Window, () => playing);
+    const detach = attachKeyboard(kb, target as unknown as Window, () => playing, () => playing);
     const press = (code: string, repeat = false, element?: { closest: (selector: string) => boolean }) => {
       const event = new Event("keydown", { cancelable: true });
       Object.defineProperties(event, { code: { value: code }, repeat: { value: repeat }, shiftKey: { value: false },
@@ -133,6 +152,8 @@ describe("settings input boundary", () => {
     kb.blur();
     press("KeyW", true);
     press("KeyE");
+    press("KeyC");
+    expect(kb.takeOverview()).toBe(false);
     expect(press("Space", false, { closest: () => true }).defaultPrevented).toBe(false);
     expect(kb.takeFrame()).toMatchObject({ move: { x: 0, z: 0 }, interact: false });
     playing = true;

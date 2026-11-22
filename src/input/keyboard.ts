@@ -81,7 +81,7 @@ export class KeyboardState {
     return o;
   }
 
-  /** View-only press (camera overview); consumed by the renderer, not the core. */
+  /** View-only map press; consumed by the map overlay, not the core. */
   takeOverview(): boolean {
     const had = this.pressed.has("overview");
     this.pressed.delete("overview");
@@ -122,7 +122,8 @@ export class KeyboardState {
 
 /** Wire a KeyboardState to the window. Returns a detach function. */
 export function attachKeyboard(kb: KeyboardState, target: Window = window,
-  gameplayEnabled: () => boolean = () => true): () => void {
+  gameplayEnabled: () => boolean = () => true,
+  mapEnabled: () => boolean = () => true): () => void {
   const down = (e: KeyboardEvent) => {
     if (e.defaultPrevented) return;
     const element = e.target as HTMLElement | null;
@@ -132,7 +133,8 @@ export function attachKeyboard(kb: KeyboardState, target: Window = window,
       if (e.repeat) e.preventDefault();
       return;
     }
-    if (!gameplayEnabled()) {
+    // The map key can close an open map, but must stay inert inside settings.
+    if (e.code === "KeyC" ? !mapEnabled() : !gameplayEnabled()) {
       if (HANDLED_KEYS.has(e.code)) e.preventDefault();
       return;
     }

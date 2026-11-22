@@ -12,7 +12,7 @@ export const KEY_HELP = [
   "J / L・マウスドラッグ：視点を左右に回す",
   "E / Enter：近くのものを使う",
   "Shift：走る（子ども・大人）",
-  "C：全体マップ視点の切替",
+  "右上のマップをタップ / C：全画面マップ　閉じる / Esc：探検に戻る",
 ];
 
 const TOAST_SECONDS = 2.5;
@@ -98,6 +98,8 @@ export class Hud {
     close.addEventListener("click", () => this.settingsDialog.close());
     // Native dialog cancel handles Escape and its modal focus trap.
     this.settingsDialog.addEventListener("close", () => {
+      // Native close is queued: an older close must not resume a reopened dialog.
+      if (this.settingsDialog.open) return;
       changed(false);
       this.settingsButton.focus();
     });
@@ -131,10 +133,10 @@ export class Hud {
     this.devWarn.textContent = lines.length ? `開発用チェック：${lines.join(" / ")}` : "";
   }
 
-  update(s: GameState, level: Level, now: number, overview = false): void {
+  update(s: GameState, level: Level, now: number): void {
     this.status.textContent = statusLines(s).join(" · ");
     const showHelp = this.settings.enabled && !this.settingsOpen && s.outcome.kind === "playing";
-    this.hints.textContent = showHelp ? (overview ? ["C: 探検に戻る"] : nearbyHints(s, level)).join("\n") : "";
+    this.hints.textContent = showHelp ? nearbyHints(s, level).join("\n") : "";
     this.hints.hidden = !this.hints.textContent;
     this.toast.style.opacity = now < this.toastUntil ? "1" : "0";
     this.renderOverlay(s);
