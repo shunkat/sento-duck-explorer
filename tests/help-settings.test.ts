@@ -91,7 +91,9 @@ describe("settings HUD", () => {
     const state = createInitialState(LEVEL);
     state.player.pos = { ...LEVEL.nodes.milk1 };
     hud.update(state, LEVEL, 1);
-    expect(root.find("hud-hints")!.textContent).toContain("牛乳");
+    hud.setPrompt("E：牛乳びんを飲む（子どもに育つ）");
+    expect(root.find("hud-prompt")!.textContent).toContain("牛乳");
+    expect(root.find("hud-prompt")!.hidden).toBe(false);
     expect(root.find("hud-guide")).toBeUndefined();
     expect(root.find("hud-keys")).toBeUndefined();
     hud.onEvents([{ kind: "prompt", text: "操作ヒント" }], 1);
@@ -107,6 +109,8 @@ describe("settings HUD", () => {
     checkbox.checked = false;
     checkbox.dispatchEvent(new Event("change"));
     // The animation loop is paused while the native settings dialog is open.
+    expect(root.find("hud-prompt")!.hidden).toBe(true);
+    expect(root.find("hud-prompt")!.textContent).toBe("");
     expect(root.find("hud-toast")!.style.opacity).toBe("0");
     expect(root.find("hud-toast")!.textContent).toBe("");
     root.find("hud-settings-close")!.dispatchEvent(new Event("click"));
@@ -121,7 +125,8 @@ describe("settings HUD", () => {
     expect(root.find("hud-toast")!.textContent).toContain("育った");
     state.outcome = { kind: "gameOver", reason: "F2" };
     hud.update(state, LEVEL, 3);
-    expect(root.find("hud-overlay over")!.innerHTML).toContain("Rキー");
+    expect(root.find("hud-overlay over")!.innerHTML).toContain("data-action=\"restart\"");
+    expect(root.find("hud-overlay over")!.innerHTML).toContain("から再開");
     state.outcome = { kind: "cleared" };
     hud.update(state, LEVEL, 4);
     expect(root.find("hud-overlay cleared")!.innerHTML).toContain("クリア");

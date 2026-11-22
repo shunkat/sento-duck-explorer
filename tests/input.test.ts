@@ -140,7 +140,7 @@ describe("attached keyboard events", () => {
     expect(kb.takeOverview()).toBe(true);
   });
 
-  it("real key events → frame → tick: Tab/T/G inert, E drinks milk once while held, the next E after release moves the towel", () => {
+  it("real key events → frame → tick: Tab/G inert, E drinks milk once while held, the next E after release does nothing, T moves the towel", () => {
     const { kb, key } = attached();
     const run = (s: GameState) => advance(s, 0, DT, () => kb.takeFrame(), LEVEL).state;
     const tap = (s: GameState, code: string) => {
@@ -153,7 +153,7 @@ describe("attached keyboard events", () => {
     sim.walk([W.tubWestDeep, W.troughGap, W.poolIn, W.milk1Swim]);
     let s = sim.state;
     const before = structuredClone(s.player);
-    for (const code of ["Tab", "KeyT", "KeyG"]) s = tap(s, code);
+    for (const code of ["Tab", "KeyG"]) s = tap(s, code);
     expect(s.player).toEqual(before);
     key("keydown", "KeyE");
     s = run(s);
@@ -161,7 +161,9 @@ describe("attached keyboard events", () => {
     s = run(s); // still held: no second action
     expect(s.player.towel).toBe("head");
     key("keyup", "KeyE");
-    s = tap(s, "KeyE"); // next E after release: the towel toggle
+    s = tap(s, "KeyE"); // next E after release: no target, so no towel change
+    expect(s.player.towel).toBe("head");
+    s = tap(s, "KeyT"); // explicit towel toggle
     expect(s.player.towel).toBe("held");
   });
 
@@ -260,12 +262,12 @@ describe("fixed-step loop", () => {
     const kb = new KeyboardState();
     const sim = new Sim();
     R.duckDrinksMilk1(sim); // Child, towel on the head
-    kb.keyDown("KeyE");
+    kb.keyDown("KeyT");
     let r = advance(sim.state, 0, DT * 3, () => kb.takeFrame(), LEVEL);
     expect(r.ticks).toBe(3);
     expect(r.state.player.towel).toBe("held");
-    kb.keyUp("KeyE");
-    kb.keyDown("KeyE");
+    kb.keyUp("KeyT");
+    kb.keyDown("KeyT");
     r = advance(r.state, 0, DT / 2, () => kb.takeFrame(), LEVEL); // 120 Hz frame: no tick yet
     expect(r.ticks).toBe(0);
     expect(r.state.player.towel).toBe("held");

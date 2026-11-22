@@ -1,5 +1,6 @@
 // View, HUD and camera for the one growing player (2026-11-21).
 import { describe, expect, it } from "vitest";
+import { interactHint, interactTarget } from "../src/core/actions";
 import { nearbyHints } from "../src/core/guide";
 import { DT } from "../src/core/tuning";
 import type { GameState } from "../src/core/types";
@@ -49,7 +50,9 @@ describe("view and guide along the full route", () => {
     expect(statusLines(sim.state)[0]).toContain("アヒル");
     expect(statusLines(sim.state)).toEqual(["アヒル · 牛乳 0/2"]);
     sim.walk([W.tubWestDeep, W.troughGap, W.poolIn, W.milk1Swim]);
-    expect(nearbyHints(sim.state, LEVEL)).toContain("E: 牛乳びんを飲む（子どもに育つ）");
+    expect(interactHint(sim.state, LEVEL)).toBe("牛乳びんを飲む（子どもに育つ）");
+    expect(interactTarget(sim.state, LEVEL)).toMatchObject({ kind: "milk", id: "milk1", label: "牛乳びんを飲む（子どもに育つ）" });
+    expect(nearbyHints(sim.state, LEVEL)).toEqual([]); // E is shown on its target, not in the list
     sim.press("interact");
     expect(statusLines(sim.state)[0]).toContain("子ども");
     expect(statusLines(sim.state)).toEqual(["子ども · 牛乳 1/2"]);
@@ -62,11 +65,13 @@ describe("view and guide along the full route", () => {
     const sim = new Sim();
     R.duckDrinksMilk1(sim);
     sim.walk([W.passageSouth, W.passageNorth, { x: 0.9, z: 3.4 }]);
-    expect(nearbyHints(sim.state, LEVEL)).toEqual([]);
+    expect(interactHint(sim.state, LEVEL)).toBeNull();
+    expect(interactTarget(sim.state, LEVEL)).toBeNull();
     sim.walk([W.milk2Stand]);
     sim.press("interact");
     sim.walk([W.gateIn]);
-    expect(nearbyHints(sim.state, LEVEL)).toContain("E: 高い掛け金を外して戸を開ける");
+    expect(interactHint(sim.state, LEVEL)).toBe("高い掛け金を外して戸を開ける");
+    expect(interactTarget(sim.state, LEVEL)).toMatchObject({ kind: "highDoor", id: "kidsGate" });
   });
 
   it("doors are drawn closed until opened; the guardian is drawn at its state position", () => {
@@ -100,20 +105,21 @@ describe("camera", () => {
     sim.walk([W.tubWestDeep, W.troughGap, W.poolIn, W.milk1Swim]);
     const facing = new FacingTracker();
     const cam = new FollowCamera();
+    cam.lookAlong(0.3); // the view angle is set by input only, and growth keeps it
     let v = deriveView(sim.state, LEVEL);
     facing.update(v);
     facing.lookAlong(0.3);
-    const duckPose = cam.update(v.active, v.focus, 0.016, facing.yaw(v.active), obs);
+    const duckPose = cam.update(v.active, v.focus, 0.016, obs);
     sim.press("interact");
     v = deriveView(sim.state, LEVEL);
     facing.update(v);
     expect(facing.yaw(v.active)).toBe(0.3); // growth keeps the facing
-    const first = cam.update(v.active, v.focus, 0.1, facing.yaw(v.active), obs);
+    const first = cam.update(v.active, v.focus, 0.1, obs);
     const goal = shoulderPose("child", v.focus, 0.3, obs);
     expect(first.eye.y).toBeGreaterThan(duckPose.eye.y);
     expect(first.eye.y).toBeLessThan(goal.eye.y);
     let p = first;
-    for (let t = 0; t < 0.4; t += 0.1) p = cam.update(v.active, v.focus, 0.1, facing.yaw(v.active), obs);
+    for (let t = 0; t < 0.4; t += 0.1) p = cam.update(v.active, v.focus, 0.1, obs);
     expect(p).toEqual(goal);
     const a = pose("duck", 4, 0.15, 5);
     const b = pose("adult", 10, 0.85, 4);

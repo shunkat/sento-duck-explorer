@@ -91,6 +91,8 @@ export interface InputFrame {
   run: boolean;
   interact: boolean;
   dipTowel: boolean;
+  /** Move the towel between hand and head (humans only; never part of E). */
+  toggleTowel: boolean;
   shout: boolean;
   push: boolean;
   restart: boolean;
@@ -116,6 +118,7 @@ export const EMPTY_INPUT: InputFrame = Object.freeze({
   run: false,
   interact: false,
   dipTowel: false,
+  toggleTowel: false,
   shout: false,
   push: false,
   restart: false,

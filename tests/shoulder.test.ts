@@ -12,12 +12,13 @@ import {
   CEILING_Y,
   CHECKPOINT_VIEW_YAW,
   angleDiff,
+  clampPitch,
+  PITCH_MAX,
+  PITCH_MIN,
   bodyOpacity,
   cameraRelativeMove,
   clipSegment,
   FacingTracker,
-  FOLLOW_HOLD_SECONDS,
-  followYaw,
   forwardOf,
   HOLE_LID_Y,
   modelRotationY,
@@ -101,10 +102,10 @@ describe("shoulder pose (Req 1, 4)", () => {
 
   it("checkpoint reset discards the old pose before the first update, even when active character changes", () => {
     const camera = new FollowCamera();
-    camera.update("adult", { x: 12, y: 0.85, z: 5 }, 1, 0, obs);
+    camera.update("adult", { x: 12, y: 0.85, z: 5 }, 1, obs);
     camera.lookAlong(CHECKPOINT_VIEW_YAW.start);
     const focus = { x: 4, y: 0.15, z: 5 };
-    expect(camera.update("duck", focus, 1 / 60, CHECKPOINT_VIEW_YAW.start, obs))
+    expect(camera.update("duck", focus, 1 / 60, obs))
       .toEqual(shoulderPose("duck", focus, CHECKPOINT_VIEW_YAW.start, obs));
   });
 
@@ -227,43 +228,56 @@ describe("facing and orbit (Req 2, 3.4)", () => {
   });
 });
 
-describe("camera follows behind the moving character (Req 1.5)", () => {
+describe("the camera yaw changes only by explicit input", () => {
   const obs = obstaclesFor(LEVEL, { kidsGate: "closed", frontExit: "closed" });
   const focus = { x: 8, y: 0.85, z: 4 };
-
-  it("eases toward the heading while moving; holds when standing, walking toward the camera, or just after orbit", () => {
-    const h = 0.8;
-    const y1 = followYaw(0, h, true, 5, 1 / 60);
-    expect(y1).toBeGreaterThan(0);
-    expect(y1).toBeLessThan(h);
-    expect(followYaw(0, h, false, 5, 1 / 60)).toBe(0);
-    expect(followYaw(0, Math.PI, true, 5, 1 / 60)).toBe(0);
-    expect(followYaw(0, h, true, FOLLOW_HOLD_SECONDS - 0.01, 1 / 60)).toBe(0);
-    // Takes the short way round across ±π.
-    expect(followYaw(3.0, -3.0, true, 5, 0.1)).toBeGreaterThan(3.0);
-    expect(angleDiff(3.0, -3.0)).toBeCloseTo(2 * Math.PI - 6, 9);
-  });
-
-  it("walking ahead brings the camera behind the back within about 1.5 s", () => {
+  it("walking in any direction for seconds never turns the view, and growth keeps the angles", () => {
     const cam = new FollowCamera();
-    const heading = 1.0;
-    for (let i = 0; i < 90; i++) cam.update("adult", focus, 1 / 60, heading, obs, true);
-    expect(Math.abs(angleDiff(cam.yaw, heading))).toBeLessThan(0.02);
+    cam.orbit(0.9);
+    cam.tilt(0.2);
+    for (let i = 0; i < 300; i++) cam.update("adult", { x: 20 + i * 0.01, y: 0.85, z: 4 }, 1 / 60, obs);
+    expect(cam.yaw).toBe(0.9);
+    expect(cam.pitch).toBe(0.2);
+    cam.update("child", focus, 1 / 60, obs); // a stage change blends the profile only
+    expect(cam.yaw).toBe(0.9);
+    expect(cam.pitch).toBe(0.2);
+    expect(cam.moveYaw).toBe(0.9);
   });
-
-  it("manual orbit overrides, then the camera eases back once the player walks after the hold", () => {
+  it("pitch is bounded, recenter levels it and takes the given yaw, a checkpoint reset clears it", () => {
     const cam = new FollowCamera();
-    cam.update("adult", focus, 1 / 60, 0, obs, false);
-    cam.orbit(1.2);
-    for (let i = 0; i < 30; i++) cam.update("adult", focus, 1 / 60, 0, obs, true); // 0.5 s: still held
-    expect(cam.yaw).toBeCloseTo(1.2, 9);
-    for (let i = 0; i < 60; i++) cam.update("adult", focus, 1 / 60, 0, obs, false); // standing: kept
-    expect(cam.yaw).toBeCloseTo(1.2, 9);
-    for (let i = 0; i < 120; i++) cam.update("adult", focus, 1 / 60, 0, obs, true);
-    expect(Math.abs(cam.yaw)).toBeLessThan(0.05);
+    cam.tilt(5);
+    expect(cam.pitch).toBe(PITCH_MAX);
+    cam.tilt(-50);
+    expect(cam.pitch).toBe(PITCH_MIN);
+    cam.orbit(2);
+    cam.recenter(0.4);
+    expect([cam.yaw, cam.pitch]).toEqual([0.4, 0]);
+    cam.tilt(0.3);
+    cam.lookAlong(0);
+    expect(cam.pitch).toBe(0);
+    expect(clampPitch(Number.NaN)).toBe(0);
+  });
+  it("pitch moves only the look-at point; the eye keeps its wall, ceiling and hole safety", () => {
+    const cases = [
+      { id: "adult" as const, f: { x: 1.5, y: 0.85, z: -3.0 } },
+      { id: "duck" as const, f: { x: -1.5, y: 0.15, z: 8.5 } }, // inside the NarrowHole
+      { id: "child" as const, f: { x: 15.0, y: 0.6, z: 1.9 } },
+    ];
+    for (const { id, f } of cases) {
+      for (let yaw = -3; yaw <= 3; yaw += 0.5) {
+        const flat = shoulderPose(id, f, yaw, obs, 0);
+        for (const pitch of [PITCH_MIN, PITCH_MAX]) {
+          const p = shoulderPose(id, f, yaw, obs, pitch);
+          expect(p.eye).toEqual(flat.eye);
+          expect(p.eye.y).toBeLessThanOrEqual(CEILING_Y - 0.15 + 1e-9);
+          for (const b of blockersAt(obs, p.eye.y)) expect(crosses(f, p.eye, b)).toBe(false);
+        }
+        expect(shoulderPose(id, f, yaw, obs, PITCH_MAX).target.y).toBeGreaterThan(flat.target.y);
+        expect(shoulderPose(id, f, yaw, obs, PITCH_MIN).target.y).toBeLessThan(flat.target.y);
+      }
+    }
   });
 });
-
 describe("hat at the Duck model's socket (Req 6.5)", () => {
   it("copies the socket's world position and rotation, not only the position", () => {
     const duck = new Group();
@@ -308,9 +322,9 @@ describe("every pose FollowCamera.update returns is safe (Req 4.1, 4.2, 4.5)", (
     ] as const;
     for (const [a, b] of pairs) {
       const cam = new FollowCamera();
-      for (let i = 0; i < 5; i++) cam.update(a.id, a.focus, 1 / 60, 0, obs);
+      for (let i = 0; i < 5; i++) cam.update(a.id, a.focus, 1 / 60, obs);
       for (let i = 0; i < 40; i++) {
-        const p = cam.update(b.id, b.focus, 1 / 60, 0.7, obs);
+        const p = cam.update(b.id, b.focus, 1 / 60, obs);
         check(b.id, b.focus, p.eye);
       }
     }
@@ -319,77 +333,57 @@ describe("every pose FollowCamera.update returns is safe (Req 4.1, 4.2, 4.5)", (
   it("C to the overview and back cuts at once; no frame is above the ceiling", () => {
     const a = at("adult", 8, 4);
     const cam = new FollowCamera();
-    for (let i = 0; i < 5; i++) cam.update(a.id, a.focus, 1 / 60, 0, obs);
+    for (let i = 0; i < 5; i++) cam.update(a.id, a.focus, 1 / 60, obs);
     cam.toggleOverview();
-    const o = cam.update(a.id, a.focus, 1 / 60, 0, obs);
+    const o = cam.update(a.id, a.focus, 1 / 60, obs);
     expect(o.eye.y).toBeGreaterThan(20); // the overview itself
     cam.toggleOverview(); // Codex repro b: 0.1 s later the eye was at 28.99 m
-    for (let i = 0; i < 30; i++) check(a.id, a.focus, cam.update(a.id, a.focus, 1 / 60, 0, obs).eye);
+    for (let i = 0; i < 30; i++) check(a.id, a.focus, cam.update(a.id, a.focus, 1 / 60, obs).eye);
   });
 });
 
-describe("held A/D with the follow camera is stable (review N-1)", () => {
+describe("movement direction follows the manual view (review N-1 redesign)", () => {
   const obs = obstaclesFor(LEVEL, { kidsGate: "closed", frontExit: "closed" });
-  /** Walk in open space with keys held, like main.ts does each frame. */
-  function walk(keys: { x: number; z: number }[], frames: number[], cam = new FollowCamera()) {
-    let pos = { x: 20, z: 4 }; // open-air bath, no walls near (camera clip irrelevant here)
-    let heading = cam.yaw;
-    const yaws: number[] = [];
+  /** Walk in open space with a key held, like main.ts does, for `frames` frames. */
+  function walk(key: { x: number; z: number }, frames: number, cam = new FollowCamera()) {
+    let pos = { x: 20, z: 4 }; // open-air bath, no walls near
     const dirs: number[] = [];
-    keys.forEach((k, seg) => {
-      for (let i = 0; i < (frames[seg] ?? 0); i++) {
-        cam.setMoveHeld(true);
-        const m = cameraRelativeMove(k, cam.moveYaw);
-        pos = { x: pos.x + m.x * 0.04, z: pos.z + m.z * 0.04 };
-        heading = yawFromDirection(m);
-        dirs.push(heading);
-        cam.update("adult", { x: pos.x, y: 0.85, z: pos.z }, 1 / 60, heading, obs, true);
-        yaws.push(cam.yaw);
-      }
-    });
-    return { cam, yaws, dirs };
+    for (let i = 0; i < frames; i++) {
+      const m = cameraRelativeMove(key, cam.moveYaw);
+      pos = { x: pos.x + m.x * 0.04, z: pos.z + m.z * 0.04 };
+      dirs.push(yawFromDirection(m));
+      cam.update("adult", { x: pos.x, y: 0.85, z: pos.z }, 1 / 60, obs);
+    }
+    return { cam, dirs };
   }
   const span = (a: number[]) => Math.max(...a) - Math.min(...a);
-
-  it("holding D walks straight and the camera settles behind, without spinning", () => {
-    const { yaws, dirs } = walk([D], [600]);
-    expect(span(dirs)).toBeLessThan(1e-9); // straight line
-    expect(span(yaws)).toBeLessThan(Math.PI / 2 + 1e-6); // turned at most a quarter, never round and round
-    expect(Math.abs(angleDiff(yaws.at(-1)!, dirs.at(-1)!))).toBeLessThan(0.02); // ends behind the back
-  });
-
-  it("holding A behaves the same, mirrored", () => {
-    const { yaws, dirs } = walk([{ x: -1, z: 0 }], [600]);
+  it("holding D walks one straight line, and releasing then pressing D again goes the same way", () => {
+    const { cam, dirs } = walk(D, 600);
     expect(span(dirs)).toBeLessThan(1e-9);
-    expect(Math.abs(angleDiff(yaws.at(-1)!, dirs.at(-1)!))).toBeLessThan(0.02);
-    expect(Math.abs(angleDiff(0, yaws.at(-1)!))).toBeCloseTo(Math.PI / 2, 2);
+    const again = walk(D, 10, cam);
+    expect(Math.abs(angleDiff(again.dirs[0]!, dirs[0]!))).toBeLessThan(1e-9);
+    expect(cam.yaw).toBe(0);
   });
-
-  it("W, then W+D held: one bounded turn, then straight", () => {
-    const diag = { x: Math.SQRT1_2, z: -Math.SQRT1_2 };
-    const { yaws, dirs } = walk([W, diag], [120, 600]);
-    expect(span(dirs.slice(120))).toBeLessThan(1e-9);
-    expect(span(yaws)).toBeLessThan(Math.PI / 4 + 1e-6);
+  it("only an explicit turn changes where W goes", () => {
+    const cam = new FollowCamera();
+    close(cameraRelativeMove(W, cam.moveYaw), forwardOf(0));
+    cam.orbit(0.6);
+    close(cameraRelativeMove(W, cam.moveYaw), forwardOf(0.6));
+    cam.recenter(1.5);
+    close(cameraRelativeMove(W, cam.moveYaw), forwardOf(1.5));
   });
-
-  it("releasing the keys latches the new view: W then goes where the camera now looks", () => {
-    const { cam } = walk([D], [300]);
-    cam.setMoveHeld(false);
-    cam.setMoveHeld(true);
-    close(cameraRelativeMove(W, cam.moveYaw), forwardOf(cam.yaw));
-  });
-
-  it("a checkpoint load drops stale yaw, latch and facing", () => {
-    const { cam } = walk([D], [300]);
+  it("a checkpoint load drops stale yaw, pitch and facing", () => {
+    const { cam } = walk(D, 300);
+    cam.tilt(0.4);
     cam.lookAlong(CHECKPOINT_VIEW_YAW.start);
     expect(cam.yaw).toBe(-Math.PI / 2);
     expect(cam.moveYaw).toBe(-Math.PI / 2);
+    expect(cam.pitch).toBe(0);
     const f = new FacingTracker();
     f.lookAlong(CHECKPOINT_VIEW_YAW.adultGrown);
     expect(f.yaw("adult")).toBe(0);
     expect(f.moving("duck")).toBe(false);
   });
-
   it("the start view looks west along the tub toward the trough; growth checkpoints look north", () => {
     const d0 = LEVEL.start;
     const p = shoulderPose("duck", { x: d0.x, y: 0.15, z: d0.z }, CHECKPOINT_VIEW_YAW.start, obs);
@@ -413,18 +407,6 @@ describe("held A/D with the follow camera is stable (review N-1)", () => {
 
 describe("review round 3: N-4 orbit steers a walk, N-6 Adult hiding Child", () => {
   const obs = obstaclesFor(LEVEL, { kidsGate: "closed", frontExit: "closed" });
-
-  it("orbit while a move key is held turns the walk with the camera (N-4)", () => {
-    const cam = new FollowCamera();
-    cam.setMoveHeld(true);
-    const before = cameraRelativeMove(W, cam.moveYaw);
-    cam.orbit(0.6);
-    close(cameraRelativeMove(W, cam.moveYaw), forwardOf(0.6));
-    expect(before.x).toBeCloseTo(0, 9);
-    // The automatic follow still does not touch the latch (N-1 stays fixed).
-    for (let i = 0; i < 200; i++) cam.update("adult", { x: 20, y: 0.85, z: 4 }, 1 / 60, 1.5, obs, true);
-    expect(cam.moveYaw).toBeCloseTo(0.6, 9);
-  });
 
   it("a body between the camera and the player fades (N-6; the guardian beside the kids' corner)", () => {
     const c = { x: 3.1, z: 6.0 }; // a player south of the guardian's room spot, looking north

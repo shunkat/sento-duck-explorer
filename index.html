@@ -3,10 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#1d2330" />
     <title>アヒルと子どもと大人の銭湯探検</title>
     <style>
       html, body { margin: 0; height: 100%; overflow: hidden; background: #1d2330; font-family: system-ui, "Hiragino Sans", sans-serif; }
-      #app { position: fixed; inset: 0; }
+      #app { position: fixed; inset: 0; width: 100vw; height: 100vh; height: 100dvh; touch-action: none; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+      #app canvas { display: block; touch-action: none; }
       #hud { position: fixed; inset: 0; pointer-events: none; color: #fff; font-size: 13px; line-height: 1.55; }
       #hud > div { position: absolute; box-sizing: border-box; background: rgba(0,0,0,0.62); border-radius: 6px; padding: 8px 12px; white-space: pre-wrap; }
       .hud-status { top: max(10px, env(safe-area-inset-top)); left: max(10px, env(safe-area-inset-left)); font-size: 12px; }
@@ -39,6 +41,52 @@
         .hud-hints { bottom: max(70px, env(safe-area-inset-bottom)); max-width: calc(100% - 24px); font-size: 12px; }
         .hud-overlay { box-sizing: border-box; padding: 20px; }
         .hud-overlay p { margin: 8px 0; }
+      }
+
+      /* Prompt, load status and pause overlay */
+      .hud-prompt { bottom: max(64px, calc(env(safe-area-inset-bottom) + 12px)); left: 50%; transform: translateX(-50%); width: max-content; max-width: calc(100% - 24px); text-align: center; color: #fff6c8; border: 1px solid #ffe27a; }
+      .hud-prompt[hidden], .hud-load[hidden] { display: none; }
+      .hud-load { top: max(44px, calc(env(safe-area-inset-top) + 32px)); left: 50%; transform: translateX(-50%); width: max-content; max-width: calc(100% - 24px); font-size: 12px; text-align: center; }
+      .hud-load:empty { display: none; }
+      #hud > .hud-pause { inset: 0; display: none; align-items: center; justify-content: center; flex-direction: column; text-align: center; background: rgba(10,15,25,0.82); border-radius: 0; font-size: 16px; padding: 24px; pointer-events: auto; z-index: 5; }
+      .hud-pause h2 { margin: 0 0 12px; font-size: 24px; }
+      .hud-pause p { max-width: 28em; margin: 6px 0 16px; }
+      .hud-big-button { min-width: 160px; min-height: 56px; padding: 12px 24px; margin-top: 12px; border: 2px solid #ffe27a; border-radius: 12px; background: #183b36; color: #fff; font: inherit; font-size: 18px; font-weight: 700; cursor: pointer; pointer-events: auto; touch-action: manipulation; }
+      .hud-big-button:focus-visible { outline: 3px solid #ffe27a; outline-offset: 4px; }
+      .hud-overlay { pointer-events: none; }
+      #hud > .hud-overlay[style*="flex"] { pointer-events: auto; }
+      .hud-sensitivity { gap: 12px; }
+      .hud-sensitivity input[type="range"] { flex: 1; min-width: 0; width: auto; height: 32px; }
+      .hud-settings-dialog { touch-action: pan-y; overscroll-behavior: contain; }
+      /* Touch controls. Game surface is touch-action:none; dialogs scroll. */
+      #touch { position: fixed; inset: 0; pointer-events: none; z-index: 2; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+      #touch[hidden] { display: none; }
+      .touch-pad { position: absolute; left: max(12px, calc(env(safe-area-inset-left) + 12px)); bottom: max(12px, calc(env(safe-area-inset-bottom) + 12px)); width: 112px; height: 112px; border-radius: 50%; border: 2px solid #ffffffa0; background: rgba(15,35,38,0.45); pointer-events: auto; touch-action: none; display: flex; align-items: center; justify-content: center; }
+      .touch-knob { width: 52px; height: 52px; border-radius: 50%; background: rgba(255,246,200,0.85); box-shadow: 0 2px 8px #0006; pointer-events: none; }
+      .touch-actions { position: absolute; right: max(12px, calc(env(safe-area-inset-right) + 12px)); bottom: max(12px, calc(env(safe-area-inset-bottom) + 12px)); display: flex; flex-direction: column-reverse; align-items: flex-end; gap: 8px; pointer-events: none; }
+      .touch-btn { min-width: 48px; min-height: 48px; padding: 8px 14px; border: 1px solid #abc8bb; border-radius: 12px; background: #183b36ee; color: #fff; font: inherit; font-size: 14px; line-height: 1.2; cursor: pointer; pointer-events: auto; touch-action: manipulation; }
+      .touch-btn[hidden] { display: none; }
+      .touch-btn:focus-visible { outline: 3px solid #ffe27a; outline-offset: 3px; }
+      .touch-primary { min-width: 64px; min-height: 64px; max-width: 150px; font-size: 15px; font-weight: 700; border-color: #ffe27a; }
+      .touch-primary[data-has-target="false"] { opacity: 0.8; border-color: #abc8bb; }
+      .touch-run[aria-pressed="true"] { background: #7a4a12; border-color: #ffe27a; }
+      .touch-menu { box-sizing: border-box; width: min(360px, calc(100vw - 32px)); max-height: calc(100vh - 48px); max-height: calc(100dvh - 48px); overflow: auto; touch-action: pan-y; overscroll-behavior: contain; border: 1px solid #abc8bb; border-radius: 16px; padding: 16px; background: #16322f; color: #f2f7f2; pointer-events: auto; }
+      .touch-menu::backdrop { background: #081c20b8; }
+      .touch-menu-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 8px; }
+      .touch-menu .touch-btn { width: 100%; }
+      @media (orientation: landscape) { .touch-actions { flex-direction: row-reverse; align-items: flex-end; } }
+      body.touch .hud-hints { display: none; }
+      body.touch .hud-settings-button { left: max(12px, calc(env(safe-area-inset-left) + 12px)); bottom: auto; top: max(52px, calc(env(safe-area-inset-top) + 52px)); min-width: 48px; min-height: 48px; }
+      body.touch .hud-toast { bottom: max(300px, calc(env(safe-area-inset-bottom) + 300px)); }
+      body.touch .hud-prompt { bottom: max(256px, calc(env(safe-area-inset-bottom) + 256px)); }
+      body.touch .minimap-close, body.touch .hud-settings-close { min-height: 48px; }
+      @media (orientation: landscape) and (max-height: 450px) {
+        body.touch .hud-prompt { bottom: max(92px, calc(env(safe-area-inset-bottom) + 92px)); }
+        body.touch .hud-toast { bottom: max(136px, calc(env(safe-area-inset-bottom) + 136px)); }
+        .touch-pad { width: 104px; height: 104px; }
+      }
+      @media (orientation: landscape) and (max-height: 450px) and (max-width: 640px) {
+        .touch-btn { padding: 6px 10px; font-size: 13px; }
       }
       .credits { position: fixed; top: 10px; right: 10px; z-index: 1; padding: 4px 8px; border-radius: 4px; background: rgba(0,0,0,0.72); color: #ddd; font-size: 11px; }
       #map { position: fixed; inset: 0; pointer-events: none; z-index: 3; }
@@ -95,6 +143,7 @@
     <div id="app"></div>
     <div id="hud"></div>
     <div id="map"></div>
+    <div id="touch" hidden></div>
     <a class="credits" href="%BASE_URL%THIRD_PARTY_NOTICES.md" target="_blank" rel="noopener">素材・ライセンス / Credits</a>
     <script type="module" src="/src/main.ts"></script>
   </body>

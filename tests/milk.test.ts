@@ -111,7 +111,7 @@ describe("atomic growth", () => {
   it("Child → Adult keeps wetness, clothing and towel", () => {
     const sim = new Sim();
     R.duckDrinksMilk1(sim);
-    sim.press("interact"); // towel head → hand
+    sim.press("toggleTowel"); // towel head → hand
     expect(sim.state.player.towel).toBe("held");
     sim.walk([W.passageSouth, W.passageNorth, W.milk2Stand]);
     sim.press("interact");

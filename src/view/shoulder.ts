@@ -35,7 +35,11 @@ export const CAMERA_MARGIN = 0.12;
 const LOOK_AHEAD = 4;
 /** Orbit rates. */
 export const ORBIT_KEY_RATE = 2.2; // rad/s while J / L is held
-export const ORBIT_DRAG_RATE = 0.005; // rad per CSS px of horizontal drag
+export const ORBIT_DRAG_RATE = 0.005; // rad per CSS px of drag (horizontal and vertical)
+/** Vertical look bounds (rad): the eye never moves with the pitch, only the look-at point. */
+export const PITCH_MIN = -0.45;
+export const PITCH_MAX = 0.6;
+export const clampPitch = (p: number): number => Math.min(PITCH_MAX, Math.max(PITCH_MIN, Number.isFinite(p) ? p : 0));
 
 export const forwardOf = (yaw: number): Vec2 => ({ x: Math.sin(yaw), z: -Math.cos(yaw) });
 export const rightOf = (yaw: number): Vec2 => ({ x: Math.cos(yaw), z: Math.sin(yaw) });
@@ -134,7 +138,7 @@ export const obstaclesFor = (level: Level, doors: CoreState["doors"]): Obstacles
 };
 
 /** Boxes that block a camera eye at height `eyeY`. */
-const blockingAt = (obs: Obstacles, eyeY: number): readonly AABB[] => [
+export const blockingAt = (obs: Obstacles, eyeY: number): readonly AABB[] => [
   ...obs.boxes,
   ...obs.low.filter((l) => l.top > eyeY - CAMERA_MARGIN).map((l) => l.box),
 ];
@@ -142,7 +146,7 @@ const blockingAt = (obs: Obstacles, eyeY: number): readonly AABB[] => [
 const inBox = (b: AABB, p: Vec2) => p.x >= b.minX && p.x <= b.maxX && p.z >= b.minZ && p.z <= b.maxZ;
 
 /** Camera pose behind and right of the character at `focus`, clipped by obstacles. */
-export function shoulderPose(id: CharacterId, focus: Vec3, yaw: number, obs: Obstacles): Pose {
+export function shoulderPose(id: CharacterId, focus: Vec3, yaw: number, obs: Obstacles, pitch = 0): Pose {
   const p = CAMERA_PROFILE[id];
   const f = forwardOf(yaw);
   const r = rightOf(yaw);
@@ -152,10 +156,12 @@ export function shoulderPose(id: CharacterId, focus: Vec3, yaw: number, obs: Obs
   const shoulder = clipSegment(base, { x: base.x + r.x * p.side, z: base.z + r.z * p.side }, blocks);
   const back = clipSegment(shoulder, { x: shoulder.x - f.x * p.dist, z: shoulder.z - f.z * p.dist }, blocks);
   const eye = safeEye(base, { x: back.x, y: p.eye + footHeight, z: back.z }, obs);
+  // The level view never looks above the eye; pitch then tilts the look-at point
+  // only. The eye (already wall/ceiling/hole safe) is not moved by pitch.
   const lookY = Math.min(p.look + footHeight, eye.y);
   return {
     eye,
-    target: { x: shoulder.x + f.x * LOOK_AHEAD, y: lookY, z: shoulder.z + f.z * LOOK_AHEAD },
+    target: { x: shoulder.x + f.x * LOOK_AHEAD, y: lookY + Math.tan(clampPitch(pitch)) * LOOK_AHEAD, z: shoulder.z + f.z * LOOK_AHEAD },
   };
 }
 
@@ -271,31 +277,10 @@ export function bodyOpacity(eye: Vec2, active: Vec2, other: Vec2, r: number): nu
   return blocks ? Math.min(near, OCCLUDER_OPACITY) : near;
 }
 
-/** Camera follow: after manual orbit, wait this long before easing back (s). */
-export const FOLLOW_HOLD_SECONDS = 1.0;
-/** Ease rate toward the heading (1/s); about 95 % of the gap closes in 1 s. */
-export const FOLLOW_RATE = 3.0;
-/** While moving, do not follow a heading more than this far from the view (walking toward the camera). */
-export const FOLLOW_MAX_TURN = (100 * Math.PI) / 180;
-
 /** Signed smallest angle from `a` to `b`, in (−π, π]. */
 export function angleDiff(a: number, b: number): number {
   let d = (b - a) % (2 * Math.PI);
   if (d > Math.PI) d -= 2 * Math.PI;
   if (d <= -Math.PI) d += 2 * Math.PI;
   return d;
-}
-
-/**
- * While the character moves, ease the camera yaw back behind its heading
- * (shoulder-view Req 1.5). Manual orbit wins for FOLLOW_HOLD_SECONDS after the
- * last orbit input. Standing still keeps the yaw, so the player can look
- * around a corner. Walking toward the camera (more than FOLLOW_MAX_TURN off)
- * also keeps it, so S does not spin the view.
- */
-export function followYaw(yaw: number, heading: number, moving: boolean, sinceOrbit: number, dt: number): number {
-  if (!moving || sinceOrbit < FOLLOW_HOLD_SECONDS) return yaw;
-  const d = angleDiff(yaw, heading);
-  if (Math.abs(d) > FOLLOW_MAX_TURN) return yaw;
-  return yaw + d * (1 - Math.exp(-FOLLOW_RATE * dt));
 }

@@ -29,7 +29,7 @@ export const MSG = {
   milkWrongStage: (needs: Stage) => `この牛乳びんは${CHARACTER_NAME[needs]}のときに飲めます`,
   handleTooHigh: "取っ手が高くて届かない（大人になったら開けられる）",
   shoutOutsideSauna: "大声は周りの迷惑になります",
-  towelOnHead: "タオルは頭の上にあります（Eで手に持てます）",
+  towelOnHead: "タオルは頭の上にあります（手に持つ操作で持てます）",
   duckStepTooHigh: "段差が高くて、アヒルでは越えられない",
   grew: (to: Stage) => `牛乳を飲んで${CHARACTER_NAME[to]}に育った！`,
 } as const;

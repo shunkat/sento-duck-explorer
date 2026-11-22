@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { interactHint } from "../src/core/actions";
+import { interactHint, interactTarget } from "../src/core/actions";
 import { nearbyHints } from "../src/core/guide";
 import { createInitialState } from "../src/core/initialState";
 import { tick } from "../src/core/tick";
@@ -25,7 +25,8 @@ describe("place-specific control hints", () => {
     const s = createInitialState(LEVEL);
     s.player.pos = { ...LEVEL.nodes.milk1 };
     s.player.zone = zoneAt(LEVEL, s.player.pos)!;
-    expect(nearbyHints(s, LEVEL)).toEqual(["E: 牛乳びんを飲む（子どもに育つ）"]);
+    expect(interactHint(s, LEVEL)).toBe("牛乳びんを飲む（子どもに育つ）");
+    expect(nearbyHints(s, LEVEL)).toEqual([]); // the E action is shown on its target
     expect(interact(s).state.player.stage).toBe("child");
     s.player.stage = "adult";
     s.player.towel = "head";
@@ -35,17 +36,19 @@ describe("place-specific control hints", () => {
 
   it("matches drying and dressing priority and updates after each action", () => {
     let s = human(LEVEL.waypoints.bathDoorDry);
-    expect(nearbyHints(s, LEVEL)).toEqual(["E: タオルで体を拭く"]);
+    expect(interactHint(s, LEVEL)).toBe("タオルで体を拭く");
+    expect(interactTarget(s, LEVEL)).toMatchObject({ kind: "dry" });
     s = interact(s).state;
     expect(s.player.wet).toBe("dry");
-    expect(nearbyHints(s, LEVEL)).toEqual(["E: タオルを手に持つ"]);
+    expect(interactHint(s, LEVEL)).toBeNull(); // no towel fallback
+    expect(interactTarget(s, LEVEL)).toBeNull();
     s = human({ x: LEVEL.locker.x + .6, z: LEVEL.locker.z }, { wet: "dry" });
-    expect(nearbyHints(s, LEVEL)).toEqual(["E: 服を着る"]);
+    expect(interactHint(s, LEVEL)).toBe("服を着る");
     s = interact(s).state;
-    expect(nearbyHints(s, LEVEL)).toEqual(["E: 服を脱ぐ"]);
+    expect(interactHint(s, LEVEL)).toBe("服を脱ぐ");
     s.player.pos = { ...LEVEL.waypoints.bathMid };
     s.player.zone = "bath";
-    expect(nearbyHints(s, LEVEL)).toEqual(["E: タオルを手に持つ"]);
+    expect(interactHint(s, LEVEL)).toBeNull();
   });
 
   it("offers Q only for a human holding a towel in water", () => {

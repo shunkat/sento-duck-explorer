@@ -35,9 +35,9 @@ describe("F1–F8 for the human player", () => {
     const sim = new Sim();
     R.duckDrinksMilk1(sim); // towel on the head, standing in the pool
     const ev = sim.press("dipTowel");
-    expect(ev).toContainEqual({ kind: "prompt", text: "タオルは頭の上にあります（Eで手に持てます）" });
+    expect(ev).toContainEqual({ kind: "prompt", text: "タオルは頭の上にあります（手に持つ操作で持てます）" });
     sim.expectPlaying();
-    sim.press("interact"); // towel to the hand
+    sim.press("toggleTowel"); // towel to the hand
     sim.press("dipTowel");
     over(sim, "F1");
   });

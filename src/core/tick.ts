@@ -35,7 +35,10 @@ export function tick(state: GameState, input: InputFrame, level: Level): TickRes
 
   // 2. Action stage: one discrete action per tick.
   if (input.interact) interact(c);
-  else if (input.dipTowel) {
+  else if (input.toggleTowel) {
+    // Explicit towel move (T or the action menu). Duck has no towel.
+    if (human) p.towel = p.towel === "head" ? "held" : "head";
+  } else if (input.dipTowel) {
     // F1 only when the towel actually goes into the water: it must be in the hand.
     if (human && inBathWater(level, p.pos)) {
       if (p.towel === "held") c.pending.push("F1");

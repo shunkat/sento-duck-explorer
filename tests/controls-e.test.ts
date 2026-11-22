@@ -55,10 +55,13 @@ describe("drying (E at a bath-side exit)", () => {
     expect(atDryingSpot(duck, LEVEL)).toBe(false);
   });
 
-  it("a dry human at the drying spot only moves the towel (E's last choice)", () => {
+  it("a dry human at the drying spot: E has no action and does not switch the towel; T does", () => {
     const c = doorCenter("bath_changing");
-    const r = step(human({ x: c.x, z: c.z + 1.0 }, { wet: "dry", towel: "head" }), { interact: true });
-    expect(r.state.player).toMatchObject({ wet: "dry", towel: "held" });
+    const s = human({ x: c.x, z: c.z + 1.0 }, { wet: "dry", towel: "head" });
+    const r = step(s, { interact: true });
+    expect(r.state.player).toMatchObject({ wet: "dry", towel: "head" });
+    expect(r.events).toContainEqual({ kind: "rejected", reason: "ここではできることがありません" });
+    expect(step(s, { toggleTowel: true }).state.player).toMatchObject({ wet: "dry", towel: "held" });
   });
 
   it("the towel on the head does not dry: walking into the changing room wet with the towel on the head is still F2", () => {
@@ -66,7 +69,7 @@ describe("drying (E at a bath-side exit)", () => {
     R.duckDrinksMilk1(sim);
     R.childDrinksMilk2(sim);
     sim.walk([W.gateIn]);
-    sim.press("interact");
+    sim.press("interact"); // opens the high-handle gate; the towel stays on the head
     expect(sim.state.player.towel).toBe("head");
     sim.walk([W.gateOut, W.bathDoorDry, W.changingIn], { allowEnd: true });
     expect(sim.state.outcome).toEqual({ kind: "gameOver", reason: "F2" });
@@ -85,9 +88,9 @@ describe("dressing (E at the locker)", () => {
     // A wet body in the changing room (state only): dressing does not dry it.
     const wet = step(human({ x: L.x + 0.6, z: L.z }), { interact: true });
     expect(wet.state.player).toMatchObject({ clothing: "clothed", wet: "wet" });
-    // Too far from the locker: E moves the towel instead.
-    const far = step(human({ x: L.x + REACH.locker + 0.4, z: L.z }, { wet: "dry" }), { interact: true });
-    expect(far.state.player).toMatchObject({ clothing: "unclothed", towel: "head" });
+    // Too far from the locker: E does nothing (it never moves the towel).
+    const far = step(human({ x: L.x + REACH.locker + 0.4, z: L.z }, { wet: "dry", towel: "held" }), { interact: true });
+    expect(far.state.player).toMatchObject({ clothing: "unclothed", towel: "held" });
   });
 
   it("Duck has no clothing action and no towel", () => {
@@ -100,14 +103,14 @@ describe("towel and F1", () => {
   it("walking through water with a held towel is not F1; Q with it held in water is F1; Q with it on the head is a hint", () => {
     const sim = new Sim();
     R.duckDrinksMilk1(sim);
-    sim.press("interact"); // towel to the hand
+    sim.press("toggleTowel"); // towel to the hand
     expect(sim.state.player.towel).toBe("held");
     sim.walk([{ x: 0.6, z: 8.0 }, { x: 1.8, z: 7.6 }, LEVEL.growthSpots.milk1]); // through the pool
     sim.expectPlaying();
-    sim.press("interact"); // back on the head
+    sim.press("toggleTowel"); // back on the head
     const ev = sim.press("dipTowel");
-    expect(ev).toContainEqual({ kind: "prompt", text: "タオルは頭の上にあります（Eで手に持てます）" });
-    sim.press("interact");
+    expect(ev).toContainEqual({ kind: "prompt", text: "タオルは頭の上にあります（手に持つ操作で持てます）" });
+    sim.press("toggleTowel");
     sim.press("dipTowel");
     expect(sim.state.outcome).toEqual({ kind: "gameOver", reason: "F1" });
   });

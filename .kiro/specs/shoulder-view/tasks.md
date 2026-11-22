@@ -103,3 +103,15 @@ A/B stopped editing after repeated network errors, preserving `72bdbe8` and A's 
 - [ ] Publish the checked revision through the existing main/Pages workflow.
 
 The separate outdoor-bath WIP is not included in this branch. Its unfinished bathing logic and verification remain recorded on that branch; this map change does not mark them complete. This feature changes no assets or licensing and does not claim hackathon submission or category acceptance.
+
+## Control usability and phone support — 2026-11-22 (Kiro implementation)
+- [x] Manual-only camera yaw, bounded pitch, recenter; WASD and stick map against the current yaw (no latch, no automatic follow).
+- [x] E restricted to milk / drying / clothing / high door; explicit T and menu towel toggle; shared target for hint, outline, prompt and action; high handle line check.
+- [x] World target text with depth testing, compact HUD fallback, full-rectangle viewport check, door-side placement; help off removes it immediately.
+- [x] PC look: optional Pointer Lock, right-drag, J/L, sensitivity, invert-Y, drag-only, Escape pause.
+- [x] Touch: stick, independent look, contextual action, recenter, tap-toggled run, human action menu; pointer-owned release; inputs cleared on every modal, hide, blur, rotation, outcome, restart.
+- [x] Restart buttons (game over / clear), pause overlay with 「続ける」, WebGL context-loss pause and explanation.
+- [x] Pixel ratio caps (2 / 1.5 / 1.25) with a 軽量描画 setting; model load progress and failure line.
+- [x] Automatic tests: `tests/touch.test.ts`, `look.test.ts`, `lifecycle.test.ts`, `target.test.ts`, `touch-ui.test.ts` plus updated camera, E, HUD and input tests.
+- [ ] Real-device checks (iPhone Safari, Android Chrome) and the one combined normal-input pass are owned by the existing supervisor and are NOT done. Frame-rate target (about 30 fps) is unmeasured.
+- Deferred: persistent save, key rebinding, gamepad, PWA/offline, auto-centering.

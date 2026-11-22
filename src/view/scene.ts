@@ -17,6 +17,11 @@ import { applyOutfit, checkHumanContract, type Clothing, TOWEL_DEPTH, TOWEL_THIC
 import { bindHumanMotion, type HumanMotion } from "./humanMotion";
 import { CEILING_Y, type FacingTracker, HOLE_LID_Y, bodyOpacity, modelRotationY, WALL_HEIGHT } from "./shoulder";
 import { createSentoSigns } from "./signs";
+import { effectivePixelRatio, DESKTOP_PIXEL_RATIO_CAP } from "./renderQuality";
+import { TargetFeedback } from "./targetFeedback";
+import type { InteractTarget } from "../core/actions";
+import type { Margin, PromptPlace } from "./targetPlacement";
+import type { Obstacles } from "./shoulder";
 
 const ZONE_COLORS: Record<string, number> = {
   bath: 0x6fa8dc, bathwater: 0x2f6fb3, splash: 0x9fc5e8, narrow_hole: 0x8e7cc3,
@@ -132,10 +137,12 @@ export class GameScene {
   /** Last ClothingState seen per human (the game starts in the bath). */
   private clothing: Record<"child" | "adult", Clothing> = { child: "unclothed", adult: "unclothed" };
   private tmp = new THREE.Vector3();
+  private feedback = new TargetFeedback(this.scene);
+  private pixelRatioCap = DESKTOP_PIXEL_RATIO_CAP;
 
   constructor(container: HTMLElement, level: Level) {
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    this.renderer.setPixelRatio(effectivePixelRatio(window.devicePixelRatio, this.pixelRatioCap));
     container.appendChild(this.renderer.domElement);
     this.scene.background = new THREE.Color(SENTO_BACKGROUND_COLOR);
     this.scene.environment = createEnvironmentLight();
@@ -479,7 +486,15 @@ export class GameScene {
     this.signs.visible = !on;
   }
 
+  /** Presentation only: CSS size, physics and rules are untouched. */
+  setPixelRatioCap(cap: number): void {
+    this.pixelRatioCap = cap;
+  }
+  /** `w`/`h` are the actual CSS size of the canvas container. */
   resize(w: number, h: number): void {
+    w = Math.max(1, w);
+    h = Math.max(1, h);
+    this.renderer.setPixelRatio(effectivePixelRatio(window.devicePixelRatio, this.pixelRatioCap));
     this.renderer.setSize(w, h);
     this.camera.aspect = w / h;
     this.camera.updateProjectionMatrix();
@@ -535,7 +550,12 @@ export class GameScene {
     return { x: focus.x, y: focus.y, z: focus.z };
   }
 
-  render(view: View, pose: Pose, overview: boolean): void {
+  /**
+   * Draw one frame. `feedback` is the E target (null for none) with the
+   * obstacles used to decide whether its text is visible; it returns where the
+   * prompt should be shown ("world", compact "hud", or "none").
+   */
+  render(view: View, pose: Pose, overview: boolean, feedback?: { target: InteractTarget | null; enabled: boolean; margin: Margin; obstacles: Obstacles }): PromptPlace {
     this.setOverview(overview);
     const act = this.chars[view.active].position;
     for (const id of ["duck", "child", "adult"] as const) {
@@ -557,6 +577,18 @@ export class GameScene {
     this.environmentModels.updateDetail(this.camera.position, overview);
     this.worldEnvironment.updateDetail(this.camera.position);
     this.camera.updateMatrixWorld();
+    let place: PromptPlace = "none";
+    if (feedback && !overview) {
+      const size = this.renderer.getSize(this.size);
+      place = this.feedback.update(feedback.target, feedback.enabled, this.camera, { w: size.x, h: size.y }, feedback.margin, feedback.obstacles);
+    } else this.feedback.hide();
+    this.renderer.render(this.scene, this.camera);
+    return place;
+  }
+  private size = new THREE.Vector2();
+  /** Remove the target outline and text at once and redraw the last frame (help turned off while paused). */
+  hideFeedback(): void {
+    this.feedback.hide();
     this.renderer.render(this.scene, this.camera);
   }
 }

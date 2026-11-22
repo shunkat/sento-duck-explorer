@@ -3,7 +3,7 @@
 // by exactly one tick, so they work at any display rate.
 import { EMPTY_INPUT, type InputFrame } from "../core/types";
 
-type PressAction = "interact" | "dipTowel" | "shout" | "push" | "restart" | "overview";
+export type PressAction = "interact" | "toggleTowel" | "dipTowel" | "shout" | "push" | "restart" | "overview" | "recenter";
 
 const MOVE_KEYS: Record<string, { x: number; z: number }> = {
   KeyW: { x: 0, z: -1 }, ArrowUp: { x: 0, z: -1 },
@@ -17,11 +17,13 @@ const ORBIT_KEYS: Record<string, number> = { KeyJ: -1, KeyL: 1 };
 const PRESS_KEYS: Record<string, PressAction> = {
   KeyE: "interact",
   Enter: "interact",
+  KeyT: "toggleTowel",
   KeyQ: "dipTowel",
   KeyV: "shout",
   KeyF: "push",
   KeyR: "restart",
   KeyC: "overview",
+  Space: "recenter",
 };
 
 /** Keys whose browser default (focus change, scrolling) should be suppressed. */
@@ -30,7 +32,6 @@ export const HANDLED_KEYS = new Set([
   ...RUN_KEYS,
   ...Object.keys(PRESS_KEYS),
   ...Object.keys(ORBIT_KEYS),
-  "Space",
 ]);
 
 export class KeyboardState {
@@ -47,6 +48,22 @@ export class KeyboardState {
     if (action && !repeat) this.pressed.add(action);
   }
 
+  /** Queue a single press from a non-keyboard source (touch buttons, on-screen restart). */
+  press(action: PressAction): void {
+    this.pressed.add(action);
+  }
+  /** View-only recenter press; consumed by the camera, not the core. */
+  takeRecenter(): boolean {
+    const had = this.pressed.has("recenter");
+    this.pressed.delete("recenter");
+    return had;
+  }
+  /** Consume only the restart press (the cleared screen starts a new game in the view layer). */
+  takeRestart(): boolean {
+    const had = this.pressed.has("restart");
+    this.pressed.delete("restart");
+    return had;
+  }
   keyUp(code: string): void {
     this.held.delete(code);
     if (!this.moveHeld()) this.shiftFromModifier = false;
@@ -108,14 +125,18 @@ export class KeyboardState {
       move: len > 0 ? { x: x / len, z: z / len } : { x: 0, z: 0 },
       run: this.shiftFromModifier || [...RUN_KEYS].some((k) => this.held.has(k)),
       interact: p.has("interact"),
+      toggleTowel: p.has("toggleTowel"),
       dipTowel: p.has("dipTowel"),
       shout: p.has("shout"),
       push: p.has("push"),
       restart: p.has("restart"),
     };
+    // View-only presses stay queued until the frame loop consumes them.
     const keepOverview = p.has("overview");
+    const keepRecenter = p.has("recenter");
     p.clear();
     if (keepOverview) p.add("overview");
+    if (keepRecenter) p.add("recenter");
     return frame;
   }
 }

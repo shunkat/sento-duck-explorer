@@ -63,8 +63,15 @@ export function milkInReach(s: GameState, level: Level): MilkId | null {
 
 /** The closed high door whose handle is within reach, if any. */
 export function highDoorInReach(s: GameState, level: Level): HighDoorId | null {
+  const walls = wallsFor(level, s.doors);
   for (const id of ["kidsGate", "frontExit"] as const) {
-    if (s.doors[id] === "closed" && distance(s.player.pos, level.highDoors[id].handle) <= REACH.handle) return id;
+    if (s.doors[id] !== "closed") continue;
+    const handle = level.highDoors[id].handle;
+    if (distance(s.player.pos, handle) > REACH.handle) continue;
+    // The door's own closed panel never hides its handle; any other wall does.
+    const own = level.highDoors[id].blocker;
+    if (segmentBlocked(s.player.pos, handle, walls.filter((w) => w !== own))) continue;
+    return id;
   }
   return null;
 }
@@ -109,8 +116,9 @@ interface Candidate {
 }
 
 /**
- * The E action, in priority order. The HUD hint and the action both read this
- * one list, so the hint always names what E will do.
+ * The E action, in priority order: milk, drying, clothing, high door. The
+ * hint, the on-screen target and the action all read this one list. The
+ * towel is deliberately not here (explicit `toggleTowel` input instead).
  */
 const CANDIDATES: Candidate[] = [
   {
@@ -168,17 +176,9 @@ const CANDIDATES: Candidate[] = [
       events.push({ kind: "doorOpened", id: d });
     },
   },
-  {
-    // 5. Lowest: move the towel between hand and head. Humans only; Duck has no towel.
-    label: ({ s }) => (s.player.towel === "head" ? "タオルを手に持つ" : "タオルを頭にのせる"),
-    applies: ({ s }) => isHuman(s),
-    run: ({ s }) => {
-      s.player.towel = s.player.towel === "head" ? "held" : "head";
-    },
-  },
 ];
 
-/** The `interact` input: run the first applicable candidate. */
+/** The `interact` input: run the first applicable candidate. Without one nothing else happens. */
 export function interact(c: Ctx): void {
   const cand = CANDIDATES.find((x) => x.applies(c));
   if (cand) cand.run(c);
@@ -193,4 +193,48 @@ export function interactHint(s: GameState, level: Level): string | null {
   return cand && (!cand.available || cand.available(c)) ? cand.label(c) : null;
 }
 
+/** What E would act on right now: identity, label and where it is (for outline and prompt). */
+export interface InteractTarget {
+  kind: "milk" | "dry" | "clothing" | "highDoor";
+  /** Stable identity: changes when the target changes. */
+  id: string;
+  label: string;
+  /** Ground position of the target and the height of its prompt above the floor (m). */
+  pos: Vec2;
+  y: number;
+}
+const CANDIDATE_KIND = ["milk", "dry", "clothing", "highDoor"] as const;
+/**
+ * The immediate available E target, chosen by the same list as `interact`.
+ * A rejected interaction (wrong-stage bottle, unreachable handle) is not a target.
+ */
+export function interactTarget(s: GameState, level: Level): InteractTarget | null {
+  if (s.outcome.kind !== "playing") return null;
+  const c: Ctx = { s, level, events: [], pending: [], grew: false };
+  const i = CANDIDATES.findIndex((x) => x.applies(c));
+  const cand = CANDIDATES[i];
+  if (!cand || (cand.available && !cand.available(c))) return null;
+  const kind = CANDIDATE_KIND[i]!;
+  const label = cand.label(c);
+  if (kind === "milk") {
+    const m = milkInReach(s, level)!;
+    return { kind, id: m, label, pos: { ...level.nodes[m] }, y: 0.6 };
+  }
+  if (kind === "highDoor") {
+    const d = highDoorInReach(s, level)!;
+    return { kind, id: d, label, pos: towardPlayer(level.highDoors[d].handle, s.player.pos), y: level.highDoors[d].handleY };
+  }
+  if (kind === "clothing") return { kind, id: "locker", label, pos: { ...level.locker }, y: 1.2 };
+  const door = DRYING_DOORS.map((id) => ({ id, at: doorCenter(level, id) })).sort(
+    (a, b) => distance(s.player.pos, a.at) - distance(s.player.pos, b.at))[0]!;
+  return { kind, id: door.id, label, pos: towardPlayer(door.at, s.player.pos), y: 1.2 };
+}
+/** Door text sits on the side of the door the player stands on, so it is not drawn inside the panel. */
+const DOOR_TEXT_OFFSET = 0.3;
+function towardPlayer(at: Vec2, player: Vec2): Vec2 {
+  const d = distance(at, player);
+  if (d < 1e-6) return { ...at };
+  const k = Math.min(DOOR_TEXT_OFFSET, d) / d;
+  return { x: at.x + (player.x - at.x) * k, z: at.z + (player.z - at.z) * k };
+}
 export type { Ctx };

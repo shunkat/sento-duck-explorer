@@ -22,7 +22,7 @@ describe("checkpoints", () => {
     const sim = new Sim();
     R.duckDrinksMilk1(sim);
     sim.walk([W.passageSouth]);
-    sim.press("interact"); // towel to the hand
+    sim.press("toggleTowel"); // towel to the hand
     sim.walk([W.passageSouth, { x: 0.6, z: 7.6 }]); // back into the pool
     sim.press("dipTowel");
     expect(sim.state.outcome).toEqual({ kind: "gameOver", reason: "F1" });

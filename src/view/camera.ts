@@ -3,7 +3,7 @@
 import type { CharacterId } from "../core/types";
 import { LEVEL, type Level } from "../level/layout";
 import type { Vec3 } from "./deriveView";
-import { followYaw, type Obstacles, safeEye, shoulderPose } from "./shoulder";
+import { clampPitch, type Obstacles, safeEye, shoulderPose } from "./shoulder";
 
 export const SWITCH_SECONDS = 0.4;
 
@@ -49,16 +49,8 @@ export class FollowCamera {
   private overview = false;
   /** Horizontal view angle; 0 looks toward −Z. Movement input is rotated by it. */
   yaw = 0;
-  /** Seconds since the last manual orbit input. */
-  private sinceOrbit = Infinity;
-  /**
-   * Yaw that WASD maps against, latched when a move key goes down and kept
-   * until all move keys are up. The follow camera turns behind the walk, but
-   * the input direction does not turn with it, so there is no feedback loop
-   * (review N-1: held A/D used to spin the camera and circle the character).
-   */
-  private latched: number | null = null;
-
+  /** Vertical look angle (rad, up is positive), bounded by `clampPitch`. View only. */
+  pitch = 0;
   /**
    * C cuts straight to or from the overview (no blend). The overview eye is
    * far above the roof, so any in-between pose would show the ceiling or a
@@ -74,65 +66,59 @@ export class FollowCamera {
     return this.overview;
   }
 
-  /** Yaw used to map WASD: the latched view yaw, or 0 (W = up the map) in the fixed overview. */
+  /**
+   * Yaw that WASD and the touch stick map against: always the current
+   * manually controlled view yaw (0 in the fixed overview). Releasing and
+   * pressing a key never changes the direction, and the camera never turns by
+   * itself, so there is no feedback loop between walking and the view.
+   */
   get moveYaw(): number {
-    if (this.overview) return 0;
-    return this.latched ?? this.yaw;
+    return this.overview ? 0 : this.yaw;
   }
-
-  /** Call once per frame with whether any move key is held. */
-  setMoveHeld(held: boolean): void {
-    if (!held) this.latched = null;
-    else if (this.latched === null) this.latched = this.yaw;
-  }
-
   /** After a checkpoint load or a new game: drop stale view state and look along `yaw`. */
   lookAlong(yaw: number): void {
     this.yaw = yaw;
-    this.latched = null;
-    this.sinceOrbit = Infinity;
+    this.pitch = 0;
     this.from = null;
     this.current = null;
     this.lastId = null;
     this.elapsed = SWITCH_SECONDS;
   }
-
-  /** Turn the view; ignored in the overview so the move mapping stays put. */
+  /** Turn the view left/right; ignored in the overview so the move mapping stays put. */
   orbit(delta: number): void {
     if (this.overview || delta === 0) return;
     this.yaw += delta;
-    // Manual orbit also steers a walk in progress (review N-4); only the
-    // automatic follow is kept out of the input, which is what stops N-1.
-    if (this.latched !== null) this.latched += delta;
-    this.sinceOrbit = 0;
   }
-
+  /** Look up (positive) or down within the bounded range. */
+  tilt(delta: number): void {
+    if (this.overview || delta === 0) return;
+    this.pitch = clampPitch(this.pitch + delta);
+  }
+  /** Explicit recenter: look along `yaw` (the character's facing) and level the pitch. */
+  recenter(yaw: number): void {
+    if (this.overview) return;
+    this.yaw = yaw;
+    this.pitch = 0;
+  }
   private startBlend(): void {
     this.from = this.current;
     this.elapsed = 0;
   }
 
   /**
-   * `facingYaw` is the active character's facing; on a switch the camera turns
-   * behind the new character (shoulder-view Req 1.3). While it moves, the yaw
-   * eases back behind it unless the player orbited just now (Req 1.5).
+   * The camera position follows the character; the yaw and pitch change only
+   * by explicit input (orbit, tilt, recenter, checkpoint reset). A growth keeps
+   * the view angles: only the body profile (distance, height, shoulder) blends.
    */
-  update(id: CharacterId, focus: Vec3, dt: number, facingYaw: number, obstacles: Obstacles, moving = false): Pose {
-    this.sinceOrbit += dt;
-    if (this.lastId !== null && this.lastId !== id) {
-      this.startBlend();
-      this.yaw = facingYaw;
-      this.latched = null; // latch again to the new character's view
-    } else if (!this.overview) {
-      this.yaw = followYaw(this.yaw, facingYaw, moving, this.sinceOrbit, dt);
-    }
+  update(id: CharacterId, focus: Vec3, dt: number, obstacles: Obstacles): Pose {
+    if (this.lastId !== null && this.lastId !== id) this.startBlend();
     this.lastId = id;
     if (this.overview) {
       this.from = null;
       this.current = OVERVIEW;
       return this.current;
     }
-    const goal = shoulderPose(id, focus, this.yaw, obstacles);
+    const goal = shoulderPose(id, focus, this.yaw, obstacles, this.pitch);
     this.elapsed += dt;
     if (!this.from || this.elapsed >= SWITCH_SECONDS) {
       this.current = goal;
