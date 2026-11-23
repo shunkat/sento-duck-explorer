@@ -92,3 +92,28 @@ file comparison against the deployed Actions artifact. The published revision
 is recorded in [version.json](https://shunkat.github.io/sento-duck-explorer/version.json).
 This remains a development release, not a hackathon submission or physical-phone
 performance certification.
+
+## Touch direction follow-up — 2026-11-23
+
+On user feedback, Codex changed only touch look direction in `35f3bf7`: right/left
+finger motion looks left/right, and up/down looks down/up by default. The existing
+invert-Y preference reverses only the vertical mapping. Mouse, stick and camera
+profile paths are unchanged. Existing touch assertions were updated, including
+relative movement and fresh-drag behavior. Focused touch/look/session/main/view
+checks passed 52 tests in five files; TypeScript and the production-base build
+passed, source/index and distribution scans had zero findings, and the same
+independent reviewer reported no required defect.
+
+The designated supervisor confirmed the four default directions and a diagonal
+on fixed `35f3bf7`, using Chrome iPhone SE emulation and native Mac drag input.
+Invert-Y reversed up/down while a rightward drag retained its horizontal mapping.
+Short drags from separate starting points, stick forward/right movement and stop,
+and PC left-button rightward/upward drags also passed. Original settings and
+emulation were restored and the task tab/server closed. Inventories confirmed
+unchanged source, HEAD and build. The earlier full route was not replayed for
+this localized feedback correction.
+
+Some emulated input attempts produced no visible movement; direction conclusions
+use only attempts with confirmed landmark movement. This is not physical-phone
+or simultaneous-two-finger evidence, and it does not establish every release
+frame, pointer cancellation or Pointer Lock behavior.

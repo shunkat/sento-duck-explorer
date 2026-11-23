@@ -129,4 +129,4 @@ The separate outdoor-bath WIP is not included in this branch. Its unfinished bat
 
 ### Touch-look direction follow-up
 - [x] Reverse touch yaw/pitch by default as requested; keep invert-Y as a vertical override. Update existing touch-owner/delta regressions and player instructions.
-- [ ] Focused automatic checks, independent review and the designated supervisor's local direction check; preserve the completed `f62bb5b` route as versioned evidence rather than replaying it for this sign-only correction.
+- [x] Fixed `35f3bf7`: 52 focused tests, TypeScript/build and publication checks passed; same B reported no required findings. The designated supervisor confirmed touch directions, invert-Y, re-drag, stick and PC mouse locally. The completed `f62bb5b` route retains its original revision and was not replayed. See `docs/mobile-camera-verification.md`.
