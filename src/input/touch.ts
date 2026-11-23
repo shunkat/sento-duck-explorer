@@ -59,13 +59,13 @@ export class TouchInput {
     this.lookAt = { x, z: y };
     return true;
   }
-  /** Look delta in radians for the owner's move; null for any other pointer. */
+  /** Drag the scene: view turns opposite to the owner's finger; other pointers are ignored. */
   lookMove(id: number, x: number, y: number): { yaw: number; pitch: number } | null {
     if (id !== this.lookId) return null;
     const dx = x - this.lookAt.x;
     const dy = y - this.lookAt.z;
     this.lookAt = { x, z: y };
-    return { yaw: dx * TOUCH_LOOK_RATE, pitch: -dy * TOUCH_LOOK_RATE };
+    return { yaw: -dx * TOUCH_LOOK_RATE, pitch: dy * TOUCH_LOOK_RATE };
   }
   /** Pointer up / cancel / lost capture: release only what this pointer owns. */
   release(id: number): "stick" | "look" | null {

@@ -126,3 +126,7 @@ The separate outdoor-bath WIP is not included in this branch. Its unfinished bat
 - [x] Designated supervisor completed one normal-input CLEAR route, F1/F8 recovery and four-size camera checks on `f62bb5b`. Compression and device limits remain recorded in `docs/mobile-camera-verification.md`.
 - Publication uses the existing main/Pages workflow; the deployed revision is identified by its run and `version.json`.
 - [ ] Physical iPhone Safari/Android Chrome multitouch and performance remain unverified.
+
+### Touch-look direction follow-up
+- [x] Reverse touch yaw/pitch by default as requested; keep invert-Y as a vertical override. Update existing touch-owner/delta regressions and player instructions.
+- [ ] Focused automatic checks, independent review and the designated supervisor's local direction check; preserve the completed `f62bb5b` route as versioned evidence rather than replaying it for this sign-only correction.

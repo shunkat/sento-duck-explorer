@@ -41,7 +41,7 @@ describe("two fingers stay independent", () => {
     expect(t.release(1)).toBe("stick");
     expect(t.stick).toEqual({ x: 0, z: 0 });
     expect(t.lookOwner).toBe(2);
-    expect(t.lookMove(2, 610, 300)!.yaw).toBeGreaterThan(0);
+    expect(t.lookMove(2, 610, 300)!.yaw).toBeLessThan(0);
     expect(t.release(99)).toBeNull(); // an unknown pointer owns nothing
   });
   it("a second finger never takes over an owned control, and a released control is not handed on", () => {
@@ -56,15 +56,18 @@ describe("two fingers stay independent", () => {
     t.stickMove(3, 110, 500); // finger 3 stays a non-owner after finger 1 left
     expect(t.stick).toEqual({ x: 0, z: 0 });
   });
-  it("look deltas are relative to the owner's own last point and a fresh drag starts without a jump", () => {
+  it("look turns opposite to the owner's finger and a fresh drag starts without a jump", () => {
     const t = new TouchInput();
     t.lookDown(7, 500, 200);
     const a = t.lookMove(7, 520, 190)!;
-    expect(a.yaw).toBeGreaterThan(0);
-    expect(a.pitch).toBeGreaterThan(0); // dragging up looks up
+    expect(a.yaw).toBeLessThan(0); // dragging right looks left
+    expect(a.pitch).toBeLessThan(0); // dragging up looks down
+    const back = t.lookMove(7, 500, 200)!;
+    expect(back.yaw).toBeCloseTo(-a.yaw); // left looks right, from the last point
+    expect(back.pitch).toBeCloseTo(-a.pitch); // down looks up
     t.release(7);
     t.lookDown(8, 100, 100);
-    expect(t.lookMove(8, 100, 100)).toEqual({ yaw: 0, pitch: -0 });
+    expect(t.lookMove(8, 100, 100)).toEqual({ yaw: -0, pitch: 0 });
   });
 });
 describe("run is a tap toggle", () => {

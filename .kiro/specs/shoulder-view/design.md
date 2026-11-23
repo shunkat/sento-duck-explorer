@@ -200,3 +200,13 @@ at its monthly usage limit. This is separate from the earlier Kiro controls work
   changes. Automated production-geometry projections and renderer/entry-point
   integration are complemented by the designated supervisor's final fixed-version
   check; physical phone multitouch and performance remain separate, unverified work.
+
+### Touch-look direction follow-up (2026-11-23)
+
+After the mobile camera release, the user requested a view direction opposite
+to finger movement. `TouchInput.lookMove` now supplies yaw `-dx * rate` and
+pitch `dy * rate`. `main` still applies sensitivity and the existing invert-Y
+preference once. This changes only touch look; desktop mouse, J/L, stick movement,
+manual camera framing and pitch bounds retain their existing paths. Codex made
+this user-directed follow-up to the approved mobile-camera work. No new assets,
+dependencies, service settings or gameplay rules are involved.
