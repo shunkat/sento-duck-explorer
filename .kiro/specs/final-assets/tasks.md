@@ -87,6 +87,8 @@ Production status updated by Codex on 2026-11-20. Codex operates the image → M
 - [x] Pass targeted automatic checks and production build, including the unchanged geometry ceiling.
 - [x] Complete independent review and resolve required findings (one Codex reviewer; no required findings, conservative moving-contact budget coverage added).
 - [x] Fixed-batch sampled visual comparison, GPU console check and one normal-input growth-to-exit route, with F1/checkpoint/new-game spot checks on `2bd01d8`.
+- [x] Correct the reported dark atmosphere with pale room/ceiling bounce and soft window illumination, preserving exposure and asset detail (`48e8b61`).
+- [x] Validate the daylight correction with 411 tests, production build, independent code/image reviews and scoped bath/person/changing-room views; no repeated full route.
 - [ ] Measure GPU frame times/performance and the remaining optional-area/high-window/wake details; see the exact coverage limits in the release record.
 - [ ] Evaluate the visual standard before extending the treatment to other facilities.
 

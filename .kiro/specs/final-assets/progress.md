@@ -264,3 +264,19 @@ Thirteen relevant tests and Pages-base build pass; four producer regressions
 and independent review have no required findings. No normal-input play or
 production change is claimed. The concurrent growth/exit architecture must be
 retained when these asset changes are integrated into the final fixed batch.
+
+## Bath daylight feedback correction — 2026-11-23
+
+After the user reported that published `59c3e42` felt dark, Codex implemented
+`48e8b61`: brighter warm room bounce, a soft emitting window and gentler ceiling
+lights, with ACES exposure unchanged. The user authorized temporary Codex
+implementation and production publication. There are no new third-party assets,
+dependencies, rights changes or new Kiro execution claims.
+
+411 tests, the Pages-base build and publication scans pass. Independent code
+and saved-image reviews found no required changes. The fixed-version scoped
+visual check covered Duck, window/water/tiles, human skin/white towel and the
+changing room; it did not repeat the earlier full route. See
+[the verification record](../../../docs/bath-realism-verification.md) for exact
+scope, the added LTC bundle cost and remaining phone/GPU limitations. Production
+completion still requires workflow success and comparison with its artifact.

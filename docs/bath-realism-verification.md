@@ -122,6 +122,39 @@ separate; only F1 was repeated here. The existing door toast briefly persisted
 after new game, as already documented in the mobile-camera record. These limits
 remain visible rather than being counted as completed acceptance criteria.
 
+## Daylight correction after feedback — 2026-11-23
+
+The user reported a dark atmosphere in published `59c3e42` and requested an
+adjustment. Codex raised the static room-probe bounce and changed the hemisphere
+ground contribution from blue-gray to pale warm tile. The high window now emits
+soft light using one Three.js RectAreaLight; the two local ceiling lights are
+lower and gentler. ACES exposure remains 1.12. Geometry, GLBs, game rules, input
+and dependencies are unchanged. Existing Three.js LTC lookup data increases the
+main bundle from 700.32 to 949.50 kB (gzip 187.75 to 293.44 kB); there is no new
+shadow-map or reflection pass. Phone/GPU performance has not been measured.
+
+The correction passed **411 tests across 45 files**, the repository-base build,
+source/distribution publication scans and whitespace checks. One independent
+code reviewer reported no required findings. The added lighting test checks
+the emitting direction against the window, placement, and shared LTC ownership.
+
+Codex then performed a scoped visual check on fixed
+`48e8b61edcc1f43348c513824d840e781df5391a`, comparing the published and corrected
+bath at 1280×720 in Mac Chrome. This is feedback correction after the prior
+release route, not another complete playthrough. Native movement/action/orbit
+keys were used, with no injected game state. Main-bath and window views showed
+a lighter ceiling while retaining Duck's yellow shading, water color and tile
+grout. An independent reviewer of five saved comparison views found no required
+visual correction. The supervisor additionally inspected Child's face and white
+towel, Adult and the changing-room wood, pale wall and clothing. Their colors
+and contours remained discernible; captured warning/error logs were empty.
+
+Source/public/build hashes matched for all 153 recorded files before and after
+the scoped check, and Git/HEAD stayed fixed. Both temporary tabs, viewport
+overrides and the task's preview server were closed/reset. No game setting was
+changed. Optional sauna/outdoor checks, continuous GPU metrics and physical-phone
+behavior remain unverified; the older route result retains its original revision.
+
 ## Publication
 
 This release uses the existing [Pages workflow](deployment.md). Production
