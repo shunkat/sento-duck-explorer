@@ -152,8 +152,8 @@ describe("realistic layout: dry routes after drying", () => {
     expect(crossesWet([W.gateOut, { x: 3.0, z: 2.3 }, W.bathMid, W.saunaDoorDry], CHARACTER_RADIUS.adult)).toBe(false);
   });
 
-  it("the Adult growth spot and the dry-route waypoints are clear of fixtures, water and the splash", () => {
-    for (const p of [LEVEL.growthSpots.milk2, W.gateIn, W.gateOut, W.bathDoorDry, W.changingIn, W.receptionIn, W.frontExitIn]) {
+  it("both Adult growth spots and the dry-route waypoints are clear of fixtures, water and the splash", () => {
+    for (const p of [LEVEL.growthSpots.milk3, LEVEL.growthSpots.milk4, W.gateIn, W.gateOut, W.bathDoorDry, W.changingIn, W.receptionIn, W.frontExitIn]) {
       for (const w of LEVEL.walls) expect(circleOverlapsBox(p, CHARACTER_RADIUS.adult, w), JSON.stringify(p)).toBe(false);
       expect(wetBoxes.some((w) => p.x > w.minX && p.x < w.maxX && p.z > w.minZ && p.z < w.maxZ)).toBe(false);
     }

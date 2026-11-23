@@ -12,20 +12,20 @@ import { Sim } from "./helpers/sim";
 const W = LEVEL.waypoints;
 
 describe("growth route by normal inputs", () => {
-  it("starts as Duck in the tub with both bottles and both high doors closed", () => {
+  it("starts as Duck in the tub with four bottles and both high doors closed", () => {
     const s = createInitialState(LEVEL);
     expect(s.player).toMatchObject({ stage: "duck", zone: "bathwater", wet: "wet", clothing: "unclothed", towel: "none" });
-    expect(s.milk).toEqual({ milk1: "available", milk2: "available" });
+    expect(s.milk).toEqual({ milk1: "available", milk2: "available", milk3: "available", milk4: "available" });
     expect(s.doors).toEqual({ kidsGate: "closed", frontExit: "closed" });
     expect(Object.keys(s.checkpoints)).toEqual(["start"]);
   });
 
-  it("Duck → milk1 → Child → passage → milk2 → Adult → dry → dress → front exit: clear", () => {
+  it("Duck → two bottles → Child → ask adult → sauna/open air → Adult → dry/dress/exit: clear", () => {
     const sim = new Sim();
     R.fullRoute(sim);
     expect(sim.state.player).toMatchObject({ stage: "adult", zone: "street", wet: "dry", clothing: "clothed" });
     expect(sim.log.filter((e) => e.kind === "grew").map((e) => e.kind === "grew" && e.to)).toEqual(["child", "adult"]);
-    expect(sim.log.filter((e) => e.kind === "checkpointSaved").map((e) => e.kind === "checkpointSaved" && e.id)).toEqual(["childGrown", "adultGrown"]);
+    expect(sim.log.filter((e) => e.kind === "checkpointSaved").map((e) => e.kind === "checkpointSaved" && e.id)).toEqual(["duckMilkFound", "childGrown", "escortJoined", "childMilkFound", "adultGrown"]);
     expect(sim.log.some((e) => e.kind === "gameOver")).toBe(false);
   });
 
@@ -72,10 +72,11 @@ describe("growth route by normal inputs", () => {
 describe("early exit is blocked by the high handle", () => {
   it("the front door does not open for a dressed Child: hint only, and the Child cannot pass", () => {
     // Direct state: a dressed, dry Child in reception (not reachable by the
-    // normal route, where the Child is kept in the kids' corner by the gate).
+    // normal route, where the Child may explore after asking the guardian).
     const sim = new Sim();
     const p = sim.state.player;
     sim.state.milk.milk1 = "collected";
+    sim.state.milk.milk2 = "collected";
     Object.assign(p, { stage: "child", wet: "dry", clothing: "clothed", towel: "head", pos: { ...W.frontExitIn }, zone: "genkan" });
     const ev = sim.press("interact");
     expect(sim.state.doors.frontExit).toBe("closed");

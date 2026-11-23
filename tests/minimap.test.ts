@@ -139,7 +139,7 @@ describe("levelBounds", () => {
     const far: Level = {
       ...LEVEL,
       start: { x: -50, z: 40 },
-      nodes: { milk1: { x: 99, z: -70 }, milk2: LEVEL.nodes.milk2 },
+      nodes: { ...LEVEL.nodes, milk1: { x: 99, z: -70 } },
     };
     const b = levelBounds(far, 0);
     expect(b).toMatchObject({ minX: -50, maxX: 99, minZ: -70, maxZ: 40 });
@@ -242,10 +242,15 @@ describe("MiniMap DOM", () => {
     const players = byClass(host, "minimap-player");
     expect(players).toHaveLength(2);
     expect(players[0]!.getAttribute("transform")).toBe(playerTransform(state.player.pos, 0));
+    for (const id of ["milk1", "milk2", "milk3", "milk4"]) {
+      const markers = byClass(host, `minimap-${id}`);
+      expect(markers).toHaveLength(2);
+      expect(markers.every(m => m.getAttribute("display") === null)).toBe(true);
+    }
     const milk1 = byClass(host, "minimap-milk1");
     expect(milk1.every((m) => m.getAttribute("display") === null)).toBe(true);
 
-    const next = { ...state, milk: { milk1: "collected", milk2: "available" }, doors: { ...state.doors, frontExit: "open" } } as GameState;
+    const next = { ...state, milk: { ...state.milk, milk1: "collected" }, doors: { ...state.doors, frontExit: "open" } } as GameState;
     map.update(next, Math.PI / 2);
     expect(milk1.every((m) => m.getAttribute("display") === "none")).toBe(true);
     expect(byClass(host, "minimap-milk2").every((m) => m.getAttribute("display") === null)).toBe(true);

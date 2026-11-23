@@ -182,13 +182,13 @@ describe("growth view in the scene (2026-11-21)", () => {
     game.positionCharacters(view, 0, new FacingTracker());
     game.render(view, pose, false);
     expect(["duck", "child", "adult"].filter((id) => g.chars[id]!.visible)).toEqual(["duck"]);
-    expect([g.items.milk1!.visible, g.items.milk2!.visible]).toEqual([true, true]);
+    expect(Object.values(g.items).map(m => m.visible)).toEqual([true, true, true, true]);
     expect(g.items.milk1!.position.toArray()).toEqual([LEVEL.nodes.milk1.x, 0, LEVEL.nodes.milk1.z]);
     expect([g.highDoors.kidsGate!.visible, g.highDoors.frontExit!.visible]).toEqual([true, true]);
     expect(g.guardian.position.x).toBe(LEVEL.guardianPath[0]!.x);
 
     Object.assign(state.player, { stage: "adult", towel: "head" });
-    state.milk = { milk1: "collected", milk2: "collected" };
+    state.milk = { milk1: "collected", milk2: "collected", milk3: "collected", milk4: "collected" };
     state.doors.kidsGate = "open";
     view = deriveView(state, LEVEL);
     game.growthCue(1);

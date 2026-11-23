@@ -153,3 +153,22 @@ Integrated validation: 219 tests passed across 16 files; the production build pa
   - [x] 17.3 Fixed facility notices and removal of descriptive floating labels
   - [x] 17.4 Focused regressions, full automated checks/build, independent review and publication checks
   - [ ] 17.5 Final normal-input/visual check in the designated supervisor's combined verification batch (not duplicated by this session)
+
+
+- [ ] 18. Explore the sauna and open-air bath before Adult growth (2026-11-23 user request; Codex implementation)
+  - [x] 18.1 Update Requirement 11 and current design, handoff, Japanese/English route descriptions; distinguish two-per-transition interpretation and provisional positions from explicit requests
+  - [x] 18.2 Four unique bottles, two per transition, partial progress feedback, safe growth and consistent checkpoint restoration
+  - [x] 18.3 Child requests adult accompaniment; guardian opens the kids' gate, walks to the sauna, and enters with Child; no solo-child entry or F5 bypass
+  - [x] 18.4 Mandatory sauna/open-air pickups, both Child-bottle orders, no Adult growth trap; reuse existing model assets
+  - [x] 18.5 Focused automated regression, production build, publication checks and one independent review
+  - [ ] 18.6 Designated supervisor's one final normal-input playthrough on the fixed reviewed batch, plus scoped entry/refusal/recovery/visual checks; not duplicated by implementation or review agents
+
+
+- [ ] 19. Populate the bath hall and react to growth (2026-11-23 user follow-up; same verification batch as task 18)
+  - [x] 19.1 Record Requirement 13 and visual design; reuse existing credited human models and preserve playable clearance
+  - [x] 19.2 Place bath-hall visitors and animate brief nearby surprise on genuine growth events only; ordinary pose restored afterward
+  - [x] 19.3 Focused event/proximity/recovery tests, scene-budget validation and independent review with task 18
+  - [ ] 19.4 Designated supervisor's combined final check: visible bath-hall population, nearby surprise, distant/first-pickup non-reaction and unchanged route clearance
+
+Validation for tasks 18–19 is recorded in `docs/exploration-growth-verification.md`;
+the normal-input items remain pending with the designated supervisor.

@@ -57,6 +57,7 @@ describe("world notices replace floating descriptions", () => {
     expect(signs.map(s => s.id)).toEqual(expect.arrayContaining([
       "dry-before-changing", "dry-before-sauna", "sauna-manners", "walk-in-bath", "towel-out-of-water", "dress-before-reception",
     ]));
+    expect(signs.find(s => s.id === "dry-before-sauna")!.lines).toContain("子どもは大人と一緒に");
     for (const sign of signs) expect([sign.title, ...sign.lines].join(" ")).not.toMatch(/\b[EQRVF]\b|キー|ゲームオーバー|操作/);
   });
 

@@ -13,7 +13,7 @@ import { Sim } from "./helpers/sim";
 const W = LEVEL.waypoints;
 function adult(pos: Vec2, extra: Partial<GameState["player"]> = {}): GameState {
   const s = createInitialState(LEVEL);
-  s.milk = { milk1: "collected", milk2: "collected" };
+  s.milk = { milk1: "collected", milk2: "collected", milk3: "collected", milk4: "collected" };
   Object.assign(s.player, { stage: "adult", pos, zone: zoneAt(LEVEL, pos)!, wet: "dry", clothing: "unclothed", towel: "head" }, extra);
   return s;
 }
@@ -22,7 +22,7 @@ describe("E target selection is one list for hint, target and action", () => {
     const sim = new Sim();
     R.duckDrinksMilk1(sim);
     const duck = new Sim();
-    duck.walk([W.tubWestDeep, W.troughGap, W.poolIn, W.milk1Swim]);
+    duck.walk([W.tubMilkSwim]);
     const t = interactTarget(duck.state, LEVEL)!;
     expect(t).toMatchObject({ kind: "milk", id: "milk1", label: interactHint(duck.state, LEVEL) });
     const dry = adult(W.bathDoorDry, { wet: "wet" });

@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { interactHint, interactTarget } from "../src/core/actions";
 import { nearbyHints } from "../src/core/guide";
 import { DT } from "../src/core/tuning";
-import type { GameState } from "../src/core/types";
+import { MILK_IDS, type GameState } from "../src/core/types";
 import { KeyboardState } from "../src/input/keyboard";
 import { LEVEL } from "../src/level/layout";
 import { advance } from "../src/loop";
@@ -30,7 +30,7 @@ describe("view and guide along the full route", () => {
       }
       expect(v.active).toBe(s.player.stage);
       expect(v.focus.y).toBe(v.characters[s.player.stage].pos.y);
-      for (const m of ["milk1", "milk2"] as const) expect(v.milk[m].visible).toBe(s.milk[m] === "available");
+      for (const m of MILK_IDS) expect(v.milk[m].visible).toBe(s.milk[m] === "available");
       for (const h of nearbyHints(s, LEVEL)) expect(h).not.toMatch(STALE);
       for (const l of statusLines(s)) expect(l).not.toMatch(STALE);
     };
@@ -45,33 +45,37 @@ describe("view and guide along the full route", () => {
     expect(nearbyHints(sim.state, LEVEL)).toEqual([]);
   });
 
-  it("the HUD shows the stage, the bottle count and the E action", () => {
+  it("shows each two-bottle growth and total exploration progress", () => {
     const sim = new Sim();
-    expect(statusLines(sim.state)[0]).toContain("アヒル");
-    expect(statusLines(sim.state)).toEqual(["アヒル · 牛乳 0/2"]);
-    sim.walk([W.tubWestDeep, W.troughGap, W.poolIn, W.milk1Swim]);
-    expect(interactHint(sim.state, LEVEL)).toBe("牛乳びんを飲む（子どもに育つ）");
-    expect(interactTarget(sim.state, LEVEL)).toMatchObject({ kind: "milk", id: "milk1", label: "牛乳びんを飲む（子どもに育つ）" });
-    expect(nearbyHints(sim.state, LEVEL)).toEqual([]); // E is shown on its target, not in the list
+    expect(statusLines(sim.state)).toEqual(["アヒル · 成長 0/2 · 牛乳 0/4"]);
+    sim.walk([W.tubMilkSwim]);
+    expect(interactHint(sim.state, LEVEL)).toContain("1/2");
+    expect(interactTarget(sim.state, LEVEL)).toMatchObject({ kind: "milk", id: "milk1" });
+    expect(nearbyHints(sim.state, LEVEL)).toEqual([]);
     sim.press("interact");
-    expect(statusLines(sim.state)[0]).toContain("子ども");
-    expect(statusLines(sim.state)).toEqual(["子ども · 牛乳 1/2"]);
-    expect(toastFor({ kind: "grew", milk: "milk1", from: "duck", to: "child" })).toBe("牛乳を飲んで子どもに育った！");
+    expect(statusLines(sim.state)).toEqual(["アヒル · 成長 1/2 · 牛乳 1/4"]);
+    sim.walk([W.tubWestDeep, W.troughGap, W.poolIn, W.milk1Swim]);
+    expect(interactHint(sim.state, LEVEL)).toContain("子どもに育つ");
+    sim.press("interact");
+    expect(statusLines(sim.state)).toEqual(["子ども · 成長 0/2 · 牛乳 2/4"]);
+    R.childDrinksMilk2(sim);
+    expect(statusLines(sim.state)).toEqual(["大人 · 牛乳 4/4"]);
+    expect(toastFor({ kind: "milkCollected", milk: "milk1", collected: 1, required: 2 })).toContain("1/2");
+    expect(toastFor({ kind: "grew", milk: "milk2", from: "duck", to: "child" })).toBe("牛乳を飲んで子どもに育った！");
     for (const line of KEY_HELP) expect(line).not.toMatch(/Tab|渡す/);
     expect(KEY_HELP.find(line => line.includes("Esc"))).toContain("全画面マップ");
   });
 
-  it("near a high handle, only the Adult is offered the available open action", () => {
+  it("offers the nearby guardian's escort request and draws the opened gate", () => {
     const sim = new Sim();
     R.duckDrinksMilk1(sim);
-    sim.walk([W.passageSouth, W.passageNorth, { x: 0.9, z: 3.4 }]);
-    expect(interactHint(sim.state, LEVEL)).toBeNull();
-    expect(interactTarget(sim.state, LEVEL)).toBeNull();
-    sim.walk([W.milk2Stand]);
+    sim.walk([W.passageSouth, W.passageNorth, W.gateIn]);
+    sim.idle(300);
+    expect(interactHint(sim.state, LEVEL)).toContain("サウナ");
+    expect(interactTarget(sim.state, LEVEL)).toMatchObject({ kind: "guardian" });
     sim.press("interact");
-    sim.walk([W.gateIn]);
-    expect(interactHint(sim.state, LEVEL)).toBe("高い掛け金を外して戸を開ける");
-    expect(interactTarget(sim.state, LEVEL)).toMatchObject({ kind: "highDoor", id: "kidsGate" });
+    expect(sim.state.guardian.escortRequested).toBe(true);
+    expect(deriveView(sim.state, LEVEL).doorsOpen.kidsGate).toBe(true);
   });
 
   it("doors are drawn closed until opened; the guardian is drawn at its state position", () => {
@@ -102,6 +106,8 @@ describe("camera", () => {
   it("growth blends height and distance over 0.4 s at the same place and facing", () => {
     expect(SWITCH_SECONDS).toBe(0.4);
     const sim = new Sim();
+    sim.walk([W.tubMilkSwim]);
+    sim.press("interact");
     sim.walk([W.tubWestDeep, W.troughGap, W.poolIn, W.milk1Swim]);
     const facing = new FacingTracker();
     const cam = new FollowCamera();
@@ -153,15 +159,15 @@ describe("keyboard-driven route start", () => {
     return r;
   };
 
-  it("Duck swims to the pool and grows; the Child walks the passage and grows into the Adult, keys only", () => {
+  it("collects two bottles using keyboard input before Child growth", () => {
     const kb = new KeyboardState();
     let s = new Sim().state;
+    s = keyWalk(kb, s, W.tubMilkSwim);
+    s = press(kb, s, "KeyE");
+    expect(s.player.stage).toBe("duck");
     for (const p of [W.tubWestDeep, W.troughGap, W.poolIn, W.milk1Swim]) s = keyWalk(kb, s, p);
     s = press(kb, s, "KeyE");
     expect(s.player.stage).toBe("child");
-    for (const p of [W.passageSouth, W.passageNorth, W.milk2Stand]) s = keyWalk(kb, s, p);
-    s = press(kb, s, "KeyE");
-    expect(s.player.stage).toBe("adult");
     expect(s.outcome).toEqual({ kind: "playing" });
   });
 });

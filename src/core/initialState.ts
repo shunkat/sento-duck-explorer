@@ -14,7 +14,7 @@ export function toCore(state: GameState | CoreState): CoreState {
   return structuredClone(core);
 }
 
-/** Start of the game: the player is Duck in the tub; both bottles available, both high doors closed. */
+/** Start of the game: the player is Duck in the tub; all four bottles available, both high doors closed. */
 export function createInitialState(level: Level): GameState {
   const core: CoreState = {
     player: {
@@ -26,9 +26,9 @@ export function createInitialState(level: Level): GameState {
       clothing: "unclothed",
       towel: "none",
     },
-    milk: { milk1: "available", milk2: "available" },
+    milk: { milk1: "available", milk2: "available", milk3: "available", milk4: "available" },
     doors: { kidsGate: "closed", frontExit: "closed" },
-    guardian: { pos: { ...level.guardianPath[0]! }, at: 0 },
+    guardian: { pos: { ...level.guardianPath[0]! }, at: 0, escortRequested: false },
     outcome: { kind: "playing" },
     lastCheckpoint: "start",
     tickCount: 0,

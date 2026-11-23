@@ -1,69 +1,63 @@
 # Design Document
 
-## Growth and exit (2026-11-21, current; provisional geometry)
+## Growth and exit (2026-11-21; exploration update 2026-11-23, current)
 
-**This section supersedes, for current behavior, the character switching, item transfers, carrying, payment/key/hat chain, pair doors, the 10-step route, the pond goal and the four checkpoints described earlier in this design. The earlier sections stay as the record of the versions they describe.**
+**This section supersedes, for current behavior, the character switching, item transfers, carrying, payment/key/hat chain, legacy pair doors, the 10-step route, the pond goal and their checkpoints described below. The older sections remain version history.**
 
-User request (2026-11-21): 「アヒルと子供と大人を切り替えるのではなく最初はアヒル、子供、大人とだんだんキャラが成長していく形」「各ポイントの牛乳瓶を取って成長」「銭湯から出たらクリア」; then 「対応を開始してほしい／kiroを使うようになってるよね？」. Decided by the user: one player who grows Duck → Child → Adult by taking milk bottles, and clears by leaving the sento. Everything else below (two bottles, E, positions, sizes, guardian, high handles, checkpoint points) is a provisional design adopted by Kiro.
+The 2026-11-21 user decision is one player growing Duck → Child → Adult through milk, then leaving the sento to clear. The 2026-11-23 correction requires two bottles before growth, bottles inside the sauna and at the open-air bath, and Child asking an adult to enter the sauna together. The adopted interpretation is two bottles per transition, four in total. The positions, order flexibility, gate assistance, escort path and checkpoint points below are provisional design choices. This revision is implemented by Codex; the earlier implementation remains credited to Kiro.
 
 ### Player and stages
 
 | Item | Contract |
 | --- | --- |
-| Player | One entity `CoreState.player` with `stage` (`duck` / `child` / `adult`), `pos`, `vel`, `zone`, `wet`, `clothing`, `towel`. No Tab, no inactive bodies, no transfers, no carrying, no reverse growth |
-| Collider | Stage radius as before: Duck 0.15, Child 0.25, Adult 0.35 (pass widths 0.30 / 0.50 / 0.70) |
-| Duck | Moves only on `LEVEL.duckWater` (`stepDuckWater`), always wet, no clothing, `towel: "none"`. Never walks on floor |
-| Child / Adult | Walk and run on land; wetness, clothing, towel and F1–F8 apply as before to the one player |
-| Milk bottles | Two unique bottles `milk1` (Duck → Child) and `milk2` (Child → Adult) at `LEVEL.nodes`. E within `REACH.milk` 0.6 m, with a clear straight line (no wall or fixture between), picks one up and grows the player at once. The wrong stage, a second pickup or out-of-order pickup is refused with a hint |
-| Growth (atomic, one tick) | Mark the bottle collected, set the next stage, keep position when the new collider fits there, else move to `LEVEL.growthSpots[milk]` (a checked safe spot); keep facing (view); reset velocity. Duck → Child: `wet`, `unclothed`, `towel: "head"`. Child → Adult: keep wetness, clothing and towel. No movement that tick, no entry rules from growth, then the checkpoint |
+| Player | One `CoreState.player`, with `stage`, position/velocity, zone, wetness, clothing and towel; no switching, inactive player bodies, transfers, carrying or reverse growth |
+| Collider | Duck radius 0.15 m, Child 0.25 m, Adult 0.35 m; pass widths 0.30 / 0.50 / 0.70 m |
+| Duck | Moves only on connected `LEVEL.duckWater`, always wet, unclothed and without a towel |
+| Child / Adult | Walk and run; wetness, clothing, towel and F1–F8 retain their meanings |
+| Bottles | Four unique IDs at `LEVEL.nodes`. `milk1` and `milk2` belong to Duck; `milk3` and `milk4` belong to Child. E within `REACH.milk` (0.6 m), with a clear segment to the bottle, collects it exactly once. The first bottle in a pair records progress without growth; the second grows the player. The two bottles in either pair may be taken in either order |
+| Growth | Atomic collection plus next stage; keep position if the new collider fits, otherwise use that bottle's safe `LEVEL.growthSpots` point. Reset velocity and keep facing. Duck → Child sets wet, unclothed, towel on head; Child → Adult preserves wetness/clothing/towel. No movement or entry violation during the growth tick; save the checkpoint |
 
-### Route (coordinates in meters, bath hall west part)
+### Route and placements
 
-```
-x:  0   0.7      2.3 2.5      4.6
-z=2.8 +--+GATE+--+                  GATE = high-latch gate x 0.6–1.6 (Adult opens with E)
-      | 広い休憩所 |  milk2 (1.7,3.5)
-z=4.5 |  +--------+  storage block (0.7,4.5)–(2.3,6.7) h 1.2
-      |P |########|  P = child passage x 0.1–0.7 (clear 0.6)
-z=6.7 |  +--------+
-      | 湯だまり   |  milk1 (1.2,7.05); pool (0.3,7.3)–(2.1,8.7)
-z=8.3 |        ~~~|~~~~~~~~~~~~~ trough (−0.1,8.3)–(4.7,8.7) joined to the tub
-z=8.9 +-----------+curb              Duck-only gap 0.4 between partition end and curb
-          partition x 2.3–2.5, z 2.8–8.3 (h 1.2)        tub (4.6,5.4)–(10.6,8.8)
-```
-
-| Step | Stage | Path and clearance |
-| --- | --- | --- |
-| 1 | Duck | Start in the tub (6.0, 6.8). Swim west along the trough (0.40 m wide, now joined to the tub) through the 0.40 m gap between the partition end and the curb into the shallow pool of the 湯だまり. E at milk1 |
-| 2 | Child | 湯だまり (2.2 × 2.2 m) fits the 0.50 m Child. Its only exit for Child is the child passage (0.60 m clear, 2.2 m long) to the 広い休憩所; the trough gap (0.40 m) and the hole (0.40 m) do not fit Child. E at milk2 |
-| 3 | Adult | 広い休憩所 (2.2 × 1.5 m) fits the 0.70 m Adult; the passage (0.60 m) does not, so Adult leaves by the separate 1.0 m gate with a high latch (E, Adult only). Then dry on the mat (E), enter the changing room, dress at the locker (E), go round the privacy screen to reception |
-| 4 | Adult | Reception → genkan through the ordinary open doorway (x 8). The street door of the genkan (x 11, z −7.6 to −6.4; review R-1, 2026-11-22) has a high handle at 1.6 m (`LEVEL.highDoors.frontExit`, handle (10.9, −7.0)). E opens it for Adult only; Duck/Child get the hint 「取っ手が高くて届かない（大人になったら開けられる）」. A flush threshold stone marks the line. Clear when the player crosses from `genkan` into `street` (zone (11, −9)–(13, −5), 「外」, a 2 m street stub with a low fence) |
-
-- Clear needs the Adult stage and that boundary crossing (the drawn street door, the zone edge and the clear line are the same line x = 11). Reception, the genkan, the sauna, open air, garden and pond never clear. The zone formerly called `exterior` is `genkan`. A failure on the same tick wins over clear. The cleared state is frozen; R (view layer) starts a new game.
-- Retired from required progress: coin, payment, key, hat, carrying, transfer dialogs, the pond goal and Duck's pond physics. The coin hole, hat shelf and pond remain as scenery; humans may explore the sauna, open air and garden. The sauna door is never locked: in this fictional facility the sauna is included in the bath admission (not a claim about real sento).
-- New fixtures (partition, storage block, curb, gate, street door, handles, street fences, threshold) are provisional shapes drawn over the authored environment; they are not final assets. The environment re-export follows the dynamic door contract: optional root children `growth_kids_gate` / `growth_front_exit` (identity transform, world coordinates, hidden while open) with `_upper` children hidden in the Overview; fixed frames and growth fixtures in `environment_static` / `environment_upper`. The loader accepts both door nodes or neither; with them it hides the game's own growth primitives. The growth_v02 export (2026-11-22, 9,907 architecture triangles) follows this contract: doors under the `sento_environment` root node, fixed growth geometry in `growth_fixed_static` / `growth_fixed_upper` inside the static / upper parts; the layout hash matches again. The game primitives remain only as the load-failure fallback.
-
-### Guardian (non-player)
-
-A scripted adult NPC 「見守りの大人」 watches the Child from the bath hall, outside the kids' corner. It is drawn with the existing standing-bather model `npc_bath_standing.glb` (reused unchanged, bottom-center origin, 1.6 m); the capsule remains the fallback. It walks (Adult speed and radius, wall collision) along a fixed chain of checked dry-floor spots and never enters water, the kids' corner, the passage or the women's entrance. It does not block the player and has no inventory, switching, drying or distance rule.
-
-| Player | Guardian target |
+| Bottle / step | Place and route |
 | --- | --- |
-| Duck, or Child in the 湯だまり | `pool` (3.1, 7.6), beside the pool |
-| Child in the passage or 広い休憩所 | `room` (3.1, 3.9), beside the room |
-| Adult | `rest` (3.6, 2.3), out of the Adult's way |
+| `milk1` (Duck) | Main tub, node (9.8, 5.15), reached from the water beside the north edge. One pickup alone leaves Duck unchanged |
+| `milk2` (Duck) | Shallow kids' pool, node (1.2, 7.05), reached through the connected rear trough and 0.40 m Duck-only opening. With both Duck bottles, grow into Child |
+| Leave the kids' corner | If the pool bottle is second, Child takes the 0.60 m passage into the kids' room and asks the nearby adult for company. The guardian opens the high-latch kids' gate; Child cannot open it alone. If the tub bottle is second, Child is already in the main hall and can approach the same guardian there. Both orders remain playable |
+| Ask and accompany | E near the adult explicitly requests company. The adult walks along the safe bath-floor route to the sauna doorway. Child dries at the bath-side mat, waits for the adult, and enters together |
+| `milk3` (Child) | Inside sauna, node (13.2, 0.8), before the first crowd row. The doorway and pickup space fit Adult, so taking this bottle after the open-air bottle does not strand the grown player behind a Child-only gap |
+| `milk4` (Child) | Far side of the open-air bath rim, node (18.8, 10.6), reached by walking around the bath. The bottle lies in the open-air area on accessible floor, outside the solid bath rim. Both this visit and the sauna visit are required for Adult growth |
+| Exit (Adult) | Return to the bath-side drying mat, dry, enter changing, dress at the locker, walk around the privacy screen through reception and the genkan. E opens the street door's high handle; crossing x = 11 from genkan to street clears |
+
+The recommended route takes tub → shallow pool → Child passage → guardian → sauna → open-air bath → changing → street. Bottle order flexibility does not remove the four required locations. The street door, zone boundary and clear line remain the same line. Reception, genkan, sauna, open air, garden and pond never clear; game over wins if simultaneous. A cleared state is frozen until the view starts a fresh game.
+
+Coin, payment, keys, hat, transfers, carrying and pond navigation remain retired from required progress. Garden and pond remain optional. Sauna access is included in this fictional facility's admission; there is no payment/key puzzle. The architecture and existing dynamic-door asset contract are reused, including `growth_kids_gate` and `growth_front_exit`; the existing loaded gate hides when opened by the guardian, just as when opened by Adult. No new asset provenance is claimed by repositioning instances.
+
+### Guardian and sauna entry
+
+The guardian uses the existing standing-bather model, is non-player and never blocks the player. Its state includes actual position, path index and `escortRequested`. Before a request it watches the player and approaches the outside of the kids' gate when Child is inside. A nearby contextual E action requests company. A request through the kids' gate is allowed only when both are close to that gate and the adult is actually present; unrelated walls still block interaction. On acceptance the guardian opens the gate and walks a checked dry-floor path toward the sauna.
+
+An escort request flag is not an entry permit by itself. When Child approaches within 1.0 m of the sauna doorway, the requested adult physically walks through first while Child waits at the threshold. Child is admitted only after the adult's full collider is across the inner doorway face, inside a sauna zone and within 1.6 m of the doorway center. Otherwise movement stops on the bath side with an explanation to ask or wait. This prevents a running Child from collecting the final bottle and ending the escort before the adult ever enters. The adult stays inside while Child is in or beside the doorway and remains available for the return. Its route respects Adult collision clearance and avoids water, the kids' passage, the women's entrance, heaters and crowd bodies. Adult-player entry needs no escort. Requesting company never dries the player: wet sauna entry retains F5; towel, voice and pushing rules also remain active.
+
+This is a fictional facility rule. It is not a statement that accompaniment makes sauna use appropriate for every child or facility.
 
 ### Checkpoints
 
-`start`, `childGrown` (saved in the tick milk1 is taken), `adultGrown` (milk2). A snapshot stores stage, collected bottles, the safe growth spot, wetness, clothing, towel, door states and the guardian at its target spot, all together. Restoring never duplicates a bottle, reverses growth, repeats a failure at once (the spots are dry or in the pool, away from every trigger) or overlaps a wall. The view faces north (yaw 0) after `childGrown` and `adultGrown`, west at `start`. The old in-memory checkpoints (`paidReturned`, `hatEquipped`, `duckInPond`) are removed; there is no persistent save, so no migration exists.
+Six checkpoint IDs preserve the longer route: `start`, `duckMilkFound`, `childGrown`, `escortJoined`, `childMilkFound`, `adultGrown`. The first bottle in each pair saves partial progress; the second saves growth; the request saves escort acceptance. Each snapshot keeps stage, every bottle's collected state, wetness, clothing, towel, doors, the guardian's actual position/path index and the request flag together. Pickup recovery uses a checked safe spot for that bottle and stage; escort recovery keeps both in a safe location. Restoring does not silently teleport the guardian to a requested future target or lose/recreate a bottle. An idle tick after restore must be safe. Saves remain in memory, so reload starts a new game; no persistent-save migration is needed.
 
 ### HUD and camera
 
-The HUD shows the stage, the next objective and the contextual E action; Tab, transfers and pond guidance are removed. On growth a toast and a short ring pulse mark the change. The camera blends height and distance to the new stage's profile over the existing switch blend (0.4 s), keeps the facing (also when growth moved the player to its safe spot) and the shoulder controls and the overview.
+Keep the compact stage/milk badge, accurate progress toward the next growth, contextual E target and transient collection/growth feedback. A first bottle says progress was made and must not claim growth. The escort request is available only where the actual interaction is possible. Help-off hides action instructions as before, while progress, growth feedback and physical facility notices remain visible. Do not reintroduce a permanent route walkthrough or floating room labels. Growth retains the existing camera-profile blend and facing.
+
+### Bath-hall visitors and surprise (2026-11-23 follow-up)
+
+The user's additional request is to populate the otherwise empty bath hall with human models and let nearby people react to growth. Reuse the existing independently authored visitor GLBs and credits; this change does not create or claim new assets. Place visitors on checked bath-floor locations outside the water route, narrow passage, guardian path, door approaches, drying mats and milk interaction space. The provisional view configuration adds four standing visitors: pool-side (4.05, 7.55), tub-side (8.4, 4.1), washing area (5.8, 1.45) and bench area (6.5, 3.55). Placement checks reserve clearance for both the guardian and the scripted player route; these visitors do not add gameplay collision boxes.
+
+The view consumes genuine `grew` events to start a 1.6-second surprise pose only for visitors within 3.0 m and without a tall opaque barrier between them and growth. The low kids' partition does not hide the transformation from standing adults. The pose turns toward the player, briefly jolts and leans, then returns to rest. The first bottle in a stage is collection without growth and causes no surprise. Distance checks use the player's growth location; distant visitors stay in their ordinary pose. The one-shot motion returns to rest and may restart only for a later genuine growth event, never from repeatedly rendering a frame or restoring a checkpoint. Keep the visitor anchored at its safe location, with bounded pose changes; do not alter gameplay state or path clearance. Only up to two visitors within 4.0 m of the camera use detailed models; the others and the expanded map use existing far models. Existing scene budget checks cover the added model instances. These visuals join the same final play/visual verification batch as the new milk and escort route.
 
 ### F1–F8
 
-Unchanged rules, applied to the one player when human: F1 towel in bath water (incl. trough and pool), F2 wet into changing, F3 run over soap, F4 unclothed out of changing, F5 wet into sauna, F6 shout in sauna, F7 push in sauna, F8 attempt into the women's entrance. Order F1 … F8; game over beats clear. Duck triggers none.
+Unchanged for the human player: F1 held towel in bath water, F2 wet into changing, F3 run over soap, F4 unclothed from changing into common areas, F5 wet into sauna, F6 nuisance shout in sauna, F7 deliberately push in sauna, F8 attempt into the women's entrance. Order F1 … F8; game over beats clear. Duck triggers none. Escort refusal is guidance, not a ninth game-over rule.
 
 ### Milk bottle asset contract (for the asset production role)
 
@@ -73,7 +67,7 @@ Unchanged rules, applied to the one player when human: F1 towel in bath water (i
 | Units / axes | Meters, +Y up, front +Z, origin at the bottom center (base on y = 0, centered in x and z) |
 | Bounds | Height 0.18–0.22 m, width and depth 0.06–0.08 m |
 | Look | A classic glass milk bottle with a paper cap: opaque white milk body (readable without transparency), a colored cap band; at most 2 materials, at most 1,500 triangles, textures at most 512 px |
-| View | Drawn at scale 1, standing on the floor at its node (or on a fixture top), one model shared by both bottles; hidden once collected; label 「牛乳びん」 bottom-anchored 0.32 m above the base |
+| View | Drawn at scale 1, standing on the floor at its node (or on a fixture top), one model shared by all four bottles; hidden once collected; contextual target feedback follows Requirement 12 rather than permanent labels |
 | Delivered | 2026-11-22: `milk_bottle.glb` 0.072 × 0.200 × 0.072 m, 1,340 triangles, 2 materials, no textures, 43,916 bytes; listed in `ITEM_MODEL_URLS`. A failed load keeps the primitive placeholder (white cylinder with a blue cap) |
 
 ## Overview

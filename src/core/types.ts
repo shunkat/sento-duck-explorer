@@ -33,8 +33,9 @@ export type ZoneId =
   | "pond_entrance"
   | "pond";
 
-/** The two unique milk bottles: milk1 grows Duck into Child, milk2 grows Child into Adult. */
-export type MilkId = "milk1" | "milk2";
+/** Two bottles per growth: tub/pool for Duck, sauna/open air for Child. */
+export const MILK_IDS = ["milk1", "milk2", "milk3", "milk4"] as const;
+export type MilkId = typeof MILK_IDS[number];
 export type NodeId = MilkId;
 
 /** Doors with a handle only the Adult can reach. */
@@ -58,11 +59,13 @@ export interface GuardianState {
   pos: Vec2;
   /** Index of the spot in `LEVEL.guardianPath` it stands at or walks toward next. */
   at: number;
+  /** Set only by asking the adult in person; preserved by checkpoints. */
+  escortRequested: boolean;
 }
 
 export type ViolationId = "F1" | "F2" | "F3" | "F4" | "F5" | "F6" | "F7" | "F8";
 
-export type CheckpointId = "start" | "childGrown" | "adultGrown";
+export type CheckpointId = "start" | "duckMilkFound" | "childGrown" | "escortJoined" | "childMilkFound" | "adultGrown";
 
 export type Outcome =
   | { kind: "playing" }
@@ -101,6 +104,8 @@ export interface InputFrame {
 export type GameEvent =
   | { kind: "rejected"; reason: string }
   | { kind: "prompt"; text: string }
+  | { kind: "milkCollected"; milk: MilkId; collected: number; required: 2 }
+  | { kind: "guardianJoined" }
   | { kind: "grew"; milk: MilkId; from: Stage; to: Stage }
   | { kind: "doorOpened"; id: HighDoorId }
   | { kind: "checkpointSaved"; id: CheckpointId }

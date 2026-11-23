@@ -27,6 +27,9 @@ export const VIOLATION_TEXT: Record<ViolationId, { reason: string; manner: strin
 export const MSG = {
   nothingHere: "ここではできることがありません",
   milkWrongStage: (needs: Stage) => `この牛乳びんは${CHARACTER_NAME[needs]}のときに飲めます`,
+  guardianAsked: "いっしょにサウナへ行こう。入口で体を拭いてから入ろう。",
+  guardianNeeded: "サウナへは大人といっしょに入ろう。見守りの大人にお願いしてね。",
+  guardianWait: "大人がサウナの入口に来るまで待とう。",
   handleTooHigh: "取っ手が高くて届かない（大人になったら開けられる）",
   shoutOutsideSauna: "大声は周りの迷惑になります",
   towelOnHead: "タオルは頭の上にあります（手に持つ操作で持てます）",
@@ -54,10 +57,16 @@ export const ZONE_NAME: Record<ZoneId, string> = {
   pond: "池",
 };
 
-export const MILK_NAME: Record<MilkId, string> = { milk1: "牛乳びん（1本目）", milk2: "牛乳びん（2本目）" };
+export const MILK_NAME: Record<MilkId, string> = {
+  milk1: "牛乳びん（湯船）", milk2: "牛乳びん（浅い湯だまり）",
+  milk3: "牛乳びん（サウナ）", milk4: "牛乳びん（露天風呂）",
+};
 
 export const CHECKPOINT_NAME: Record<CheckpointId, string> = {
   start: "スタート",
+  duckMilkFound: "アヒルで牛乳を1本飲んだ所",
   childGrown: "子どもに育った所",
+  escortJoined: "大人に同行をお願いした所",
+  childMilkFound: "子どもで牛乳を1本飲んだ所",
   adultGrown: "大人に育った所",
 };

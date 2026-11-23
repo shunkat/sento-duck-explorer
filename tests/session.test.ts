@@ -61,7 +61,7 @@ describe("R1: a restart is an input boundary inside the same update", () => {
     expect(r.ticks).toBe(1);
     expect(r.accumulator).toBe(0);
     expect(r.state.outcome.kind).toBe("playing");
-    expect(r.state.player.pos).toEqual(LEVEL.growthSpots.milk1);
+    expect(r.state.player.pos).toEqual(LEVEL.growthSpots.milk2);
     expect(r.state.tickCount).toBe(over.tickCount + 1);
   });
   it("without the fix path a stale stick would have moved on; with it, the same update leaves the spot exactly and later fresh input works", () => {
@@ -79,10 +79,10 @@ describe("R1: a restart is an input boundary inside the same update", () => {
       return { ...f, move: cameraRelativeMove(t.move, 0) };
     };
     const r = advance(over, 0, 0.1, frame, LEVEL);
-    expect(r.state.player.pos).toEqual(LEVEL.growthSpots.milk1);
+    expect(r.state.player.pos).toEqual(LEVEL.growthSpots.milk2);
     touch.clear(); // main's clear after the restored event
     const next = advance(r.state, 0, DT * 3, () => ({ ...EMPTY_INPUT, move: { x: 0, z: -1 } }), LEVEL);
-    expect(next.state.player.pos).not.toEqual(LEVEL.growthSpots.milk1);
+    expect(next.state.player.pos).not.toEqual(LEVEL.growthSpots.milk2);
   });
   it("gateRestartFrame only strips input on a game-over restart", () => {
     const f = { ...EMPTY_INPUT, move: { x: 1, z: 0 }, run: true, restart: true };

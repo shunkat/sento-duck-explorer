@@ -41,8 +41,11 @@ describe("complete environment export", () => {
       crowdGaps: LEVEL.crowdGaps, narrowHole: LEVEL.narrowHole, duckWater: LEVEL.duckWater,
       doors: LEVEL.doors, nodes: LEVEL.nodes, highDoors: LEVEL.highDoors,
     };
-    // The combined growth/visitor export retains the authoritative growth geometry.
-    expect(sha(JSON.stringify(placement))).toBe(report.layout_sha256);
+    // Milk nodes are runtime objects, not baked environment geometry. Compare
+    // every baked placement to its preserved export, using that export's old
+    // item nodes only to reproduce its historical whole-layout digest.
+    const authored = JSON.parse(read("assets/sento_environment/patch/growth_v02/layout.json").toString());
+    expect(sha(JSON.stringify({ ...placement, nodes: authored.nodes }))).toBe(report.layout_sha256);
     expect(report.layout_sha256).toBe("01d4ef0eda8966fe87ec3ac4551bcce129bd697040ae6dd201a0cff50e9ceba8");
     expect(LEVEL.fixtures.filter((f) => GROWTH_FIXTURE_KINDS.has(f.kind)).length).toBe(5);
     expect(LEVEL.fixtures.filter(isStreetFixture).length).toBe(3);

@@ -1,4 +1,4 @@
-// Growth route geometry (Requirement 11.4): Duck reaches milk1 on connected
+// Growth route geometry (Requirement 11.4): Duck reaches two bottles on connected
 // water only; each growth place fits the new body and has an exit wide enough
 // for it, and no stage can skip ahead. Flood fills on a 5 cm grid with the
 // real collision boxes.
@@ -76,22 +76,24 @@ describe("Duck: connected water only", () => {
     ![...LEVEL.walls, ...shore].some((b) => circleOverlapsBox(p, r - 1e-3, b));
   const cells = flood(LEVEL.start, swim);
 
-  it("from the tub Duck reaches a spot within reach of milk1, swimming only", () => {
+  it("from the tub Duck reaches both tub and pool bottles by swimming only", () => {
     expect(reaches(cells, LEVEL.nodes.milk1, REACH.milk)).toBe(true);
+    expect(reaches(cells, LEVEL.nodes.milk2, REACH.milk)).toBe(true);
     expect(zonesOf(cells)).toEqual(new Set<ZoneId | null>(["bathwater", "bath", "kids_pool", "narrow_hole"]));
   });
 
-  it("Duck never reaches milk2", () => {
-    expect(reaches(cells, LEVEL.nodes.milk2, REACH.milk + 0.5)).toBe(false);
+  it("Duck never reaches the sauna or open-air bottles", () => {
+    expect(reaches(cells, LEVEL.nodes.milk3, REACH.milk + 0.5)).toBe(false);
+    expect(reaches(cells, LEVEL.nodes.milk4, REACH.milk + 0.5)).toBe(false);
   });
 });
 
-describe("Child: kept in the kids' corner until it grows", () => {
-  const cells = flood(LEVEL.growthSpots.milk1, walker(CHARACTER_RADIUS.child, doors("closed", "closed")));
+describe("Child: pool exit requires the narrow passage and adult-assisted gate", () => {
+  const cells = flood(LEVEL.growthSpots.milk2, walker(CHARACTER_RADIUS.child, doors("closed", "closed")));
 
-  it("fits the landing, walks the passage and reaches milk2", () => {
+  it("fits the landing, walks the passage and reaches the guardian meeting gate", () => {
     expect(cells.size).toBeGreaterThan(100);
-    expect(reaches(cells, LEVEL.nodes.milk2, REACH.milk)).toBe(true);
+    expect(reaches(cells, LEVEL.highDoors.kidsGate.handle, REACH.handle)).toBe(true);
   });
 
   it("cannot leave: only the pool, the passage and the room (no way along the trough, through the hole or the gate)", () => {
@@ -99,26 +101,19 @@ describe("Child: kept in the kids' corner until it grows", () => {
   });
 });
 
-describe("Adult: room fits, passage does not, the gate is the exit", () => {
-  it("with the gate closed the Adult stays in the room (the passage is too narrow)", () => {
-    const cells = flood(LEVEL.growthSpots.milk2, walker(CHARACTER_RADIUS.adult, doors("closed", "closed")));
-    expect(cells.size).toBeGreaterThan(100);
-    expect(zonesOf(cells)).toEqual(new Set<ZoneId | null>(["kids_room"]));
-    expect(reaches(cells, LEVEL.highDoors.kidsGate.handle, REACH.handle)).toBe(true);
-  });
-
-  it("with the gate open the Adult reaches the drying mat, the locker, reception, the genkan and the street-door handle, not the street", () => {
-    const cells = flood(LEVEL.growthSpots.milk2, walker(CHARACTER_RADIUS.adult, doors("open", "closed")));
+describe("Adult: either Child bottle order leaves a usable exit", () => {
+  it.each(["milk3", "milk4"] as const)("after growing at %s reaches drying, locker and front handle, not the street", (milk) => {
+    const cells = flood(LEVEL.growthSpots[milk], walker(CHARACTER_RADIUS.adult, doors("open", "closed")));
     const z = zonesOf(cells);
-    for (const id of ["bath", "changing", "reception", "common", "genkan"] as const) expect(z.has(id), id).toBe(true);
+    for (const id of ["bath", "changing", "reception", "common", "genkan", "sauna_entry", "open_air"] as const) expect(z.has(id), id).toBe(true);
     expect(z.has("street")).toBe(false);
     expect(z.has("kids_passage")).toBe(false);
     expect(reaches(cells, LEVEL.locker, REACH.locker)).toBe(true);
     expect(reaches(cells, LEVEL.highDoors.frontExit.handle, REACH.handle)).toBe(true);
   });
 
-  it("with both doors open the Adult reaches the street", () => {
-    const cells = flood(LEVEL.growthSpots.milk2, walker(CHARACTER_RADIUS.adult, doors("open", "open")));
+  it("opening the front door lets Adult reach the street", () => {
+    const cells = flood(LEVEL.growthSpots.milk4, walker(CHARACTER_RADIUS.adult, doors("open", "open")));
     expect(zonesOf(cells).has("street")).toBe(true);
   });
 });

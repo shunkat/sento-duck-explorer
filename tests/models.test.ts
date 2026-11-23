@@ -24,7 +24,7 @@ function sceneHarness() {
   const chars = { duck: new THREE.Group(), child: new THREE.Group(), adult: new THREE.Group() };
   const primitives = { duck: [new THREE.Object3D()], child: [new THREE.Object3D()], adult: [new THREE.Object3D()] };
   for (const id of ["duck", "child", "adult"] as const) chars[id].add(...primitives[id]);
-  const items = { milk1: new THREE.Group(), milk2: new THREE.Group() };
+  const items = { milk1: new THREE.Group(), milk2: new THREE.Group(), milk3: new THREE.Group(), milk4: new THREE.Group() };
   const hatPrimitive = new THREE.Mesh(new THREE.CylinderGeometry(), new THREE.MeshBasicMaterial()); // the milk1 placeholder
   items.milk1.add(hatPrimitive);
   Object.assign(scene, { chars, primitives, items, models: {}, itemModels: {}, fixtureWater: [],
@@ -50,8 +50,8 @@ describe("ModelLibrary integration with the shoulder-view scene", () => {
       expect(lib.get("duck")!.root.position.y).toBeCloseTo(-0.15);
       expect(h.chars.duck.children.filter((o) => o === lib.get("duck")!.root)).toHaveLength(1);
       expect(h.hatPrimitive.visible).toBe(false);
-      const bottles = [h.items.milk1, h.items.milk2].map((g) => g.children.filter((o) => o.userData.source === lib.get("milk_bottle")!.root));
-      expect(bottles.map((b) => b.length)).toEqual([1, 1]); // a clone per bottle, installed once
+      const bottles = Object.values(h.items).map((g) => g.children.filter((o) => o.userData.source === lib.get("milk_bottle")!.root));
+      expect(bottles.map((b) => b.length)).toEqual([1, 1, 1, 1]); // a clone per bottle, installed once
       expect(h.primitives.child[0]!.visible).toBe(true);
       expect(lib.get("child")!.root.parent).toBeNull();
       expect(h.primitives.adult[0]!.visible).toBe(true);

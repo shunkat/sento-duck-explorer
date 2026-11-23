@@ -10,7 +10,7 @@ import { zoneAt } from "../src/sim/zones";
 // Deliberate state fixtures isolate reach and availability; no browser play claim.
 function human(pos: Vec2, extra: Partial<GameState["player"]> = {}): GameState {
   const s = createInitialState(LEVEL);
-  s.milk = { milk1: "collected", milk2: "collected" };
+  s.milk = { milk1: "collected", milk2: "collected", milk3: "collected", milk4: "collected" };
   Object.assign(s.player, { stage: "adult", pos, zone: zoneAt(LEVEL, pos)!, wet: "wet", towel: "head" }, extra);
   return s;
 }
@@ -25,9 +25,9 @@ describe("place-specific control hints", () => {
     const s = createInitialState(LEVEL);
     s.player.pos = { ...LEVEL.nodes.milk1 };
     s.player.zone = zoneAt(LEVEL, s.player.pos)!;
-    expect(interactHint(s, LEVEL)).toBe("牛乳びんを飲む（子どもに育つ）");
+    expect(interactHint(s, LEVEL)).toContain("1/2");
     expect(nearbyHints(s, LEVEL)).toEqual([]); // the E action is shown on its target
-    expect(interact(s).state.player.stage).toBe("child");
+    expect(interact(s).state.player.stage).toBe("duck");
     s.player.stage = "adult";
     s.player.towel = "head";
     expect(interactHint(s, LEVEL)).toBeNull();

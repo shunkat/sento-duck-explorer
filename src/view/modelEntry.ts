@@ -20,7 +20,7 @@ export const MILK_MODEL_URL = "models/milk_bottle.glb";
 
 /**
  * Item models in play. Growth and exit (2026-11-21): the only item is the milk
- * bottle, one model shared by milk1 and milk2. A failed load keeps the small
+ * bottle, one model shared by all four bottles. A failed load keeps the small
  * primitive placeholder. The retired coin, key and hat GLBs stay in
  * public/models with their records but are no longer loaded.
  */

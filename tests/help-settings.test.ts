@@ -82,6 +82,28 @@ describe("settings HUD", () => {
     expect(pauseChanged).toHaveBeenCalledTimes(2);
   });
 
+  it("keeps bottle and growth feedback visible when a checkpoint is saved in the same tick", () => {
+    vi.stubGlobal("document", { createElement: () => new ElementStub() });
+    const root = new ElementStub();
+    const hud = new Hud(root as unknown as HTMLElement);
+    hud.onEvents([
+      { kind: "milkCollected", milk: "milk1", collected: 1, required: 2 },
+      { kind: "checkpointSaved", id: "duckMilkFound" },
+    ], 1);
+    expect(root.find("hud-toast")!.textContent).toContain("1/2");
+    hud.onEvents([
+      { kind: "milkCollected", milk: "milk2", collected: 2, required: 2 },
+      { kind: "grew", milk: "milk2", from: "duck", to: "child" },
+      { kind: "checkpointSaved", id: "childGrown" },
+    ], 2);
+    expect(root.find("hud-toast")!.textContent).toContain("子どもに育った");
+    hud.onEvents([
+      { kind: "guardianJoined" },
+      { kind: "checkpointSaved", id: "escortJoined" },
+    ], 3);
+    expect(root.find("hud-toast")!.textContent).toContain("大人がいっしょに");
+  });
+
   it("hides contextual help immediately, saves the choice, and retains outcome and action feedback", () => {
     vi.stubGlobal("document", { createElement: () => new ElementStub() });
     const root = new ElementStub();

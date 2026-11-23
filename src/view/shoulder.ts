@@ -237,7 +237,10 @@ export class FacingTracker {
  */
 export const CHECKPOINT_VIEW_YAW: Record<CheckpointId, number> = {
   start: -Math.PI / 2,
+  duckMilkFound: 0,
   childGrown: 0,
+  escortJoined: Math.PI / 2,
+  childMilkFound: 0,
   adultGrown: 0,
 };
 

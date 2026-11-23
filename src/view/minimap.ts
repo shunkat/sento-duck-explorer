@@ -3,12 +3,11 @@
 // at viewport size, Japanese room labels and a legend. View-only: reads Level and
 // GameState, never mutates them, and never handles C (the root routes C to toggle()).
 // North is up: x → right, z → down. Yaw 0 faces -Z (north), π/2 faces +X (east).
-import type { GameState, HighDoorId, MilkId, Vec2, ZoneId } from "../core/types";
+import { MILK_IDS, type GameState, type HighDoorId, type MilkId, type Vec2, type ZoneId } from "../core/types";
 import type { FixtureKind, Level } from "../level/layout";
 import type { AABB } from "../sim/geometry";
 
 const SVG_NS = "http://www.w3.org/2000/svg";
-const MILK_IDS: readonly MilkId[] = ["milk1", "milk2"];
 const WATER_FILL = "#8cc8ea";
 /** Fixtures that hold water: drawn as a rim with water inside. */
 const WATER_FIXTURES: ReadonlySet<FixtureKind> = new Set<FixtureKind>(["outdoorBath", "plunge", "basin"]);

@@ -303,7 +303,7 @@ function frame(nowMs: number): void {
       clearInputs();
     }
     // Growth keeps the facing and the view angles; the camera blends to the new stage's profile.
-    if (r.events.some((e) => e.kind === "grew")) scene.growthCue(now);
+    if (r.events.some((e) => e.kind === "grew")) scene.growthCue(now, state.player.pos);
   }
   if (state.outcome.kind !== lastOutcome) {
     lastOutcome = state.outcome.kind;

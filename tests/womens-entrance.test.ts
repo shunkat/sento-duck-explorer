@@ -48,8 +48,8 @@ function hold(sim: Sim, move: Vec2, n: number, run = false): number {
 /** Direct state: the player clothed and dry in the lobby at `pos` as `stage` (not reachable as Child by normal play). */
 function inLobby(stage: HumanId, pos: Vec2): GameState {
   const s = createInitialState(LEVEL);
-  s.milk.milk1 = "collected";
-  if (stage === "adult") s.milk.milk2 = "collected";
+  s.milk.milk1 = s.milk.milk2 = "collected";
+  if (stage === "adult") s.milk.milk3 = s.milk.milk4 = "collected";
   Object.assign(s.player, { stage, pos, zone: "common", clothing: "clothed", wet: "dry", towel: "head" });
   return s;
 }
@@ -163,7 +163,7 @@ describe("women's entrance: F8 with real input", () => {
     expect(sim.state.player.pos).toEqual(frozen);
     sim.press("restart");
     expect(sim.state.outcome).toEqual({ kind: "playing" });
-    expect(sim.state.player.zone).toBe("kids_room");
+    expect(sim.state.player.zone).toBe("open_air");
     hold(sim, IN, 120);
     expect(sim.state.outcome).toEqual({ kind: "playing" });
   });

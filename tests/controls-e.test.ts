@@ -20,8 +20,8 @@ const doorCenter = (id: string) => {
 /** Direct state: a human player at `pos` with the given body state. */
 function human(pos: Vec2, extra: Partial<GameState["player"]> = {}, stage: Stage = "adult"): GameState {
   const s = createInitialState(LEVEL);
-  s.milk.milk1 = "collected";
-  if (stage === "adult") s.milk.milk2 = "collected";
+  s.milk.milk1 = s.milk.milk2 = "collected";
+  if (stage === "adult") s.milk.milk3 = s.milk.milk4 = "collected";
   Object.assign(s.player, { stage, pos, zone: zoneAt(LEVEL, pos)!, wet: "wet", clothing: "unclothed", towel: "held" }, extra);
   return s;
 }
@@ -105,7 +105,7 @@ describe("towel and F1", () => {
     R.duckDrinksMilk1(sim);
     sim.press("toggleTowel"); // towel to the hand
     expect(sim.state.player.towel).toBe("held");
-    sim.walk([{ x: 0.6, z: 8.0 }, { x: 1.8, z: 7.6 }, LEVEL.growthSpots.milk1]); // through the pool
+    sim.walk([{ x: 0.6, z: 8.0 }, { x: 1.8, z: 7.6 }, LEVEL.growthSpots.milk2]); // through the pool
     sim.expectPlaying();
     sim.press("toggleTowel"); // back on the head
     const ev = sim.press("dipTowel");

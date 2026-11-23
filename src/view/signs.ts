@@ -31,7 +31,7 @@ export function sentoSigns(level: Level): SentoSign[] {
     { id: "dry-before-changing", title: "脱衣所へ戻る前に", lines: ["からだを", "拭きましょう"], icon: "towel",
       position: { x: changing.maxX + .47, y: 1.55, z: changing.maxZ + .025 }, yaw: 0,
       width: .72, height: .92, color: "#236c78" },
-    { id: "dry-before-sauna", title: "サウナに入る前に", lines: ["からだを", "拭きましょう", "室内は静かに・押さずに"], icon: "towel",
+    { id: "dry-before-sauna", title: "サウナに入る前に", lines: ["からだを拭きましょう", "この銭湯では", "子どもは大人と一緒に"], icon: "towel",
       position: { x: sauna.minX - .025, y: 1.55, z: sauna.maxZ + .52 }, yaw: -Math.PI / 2,
       width: .72, height: .92, color: "#236c78" },
     { id: "sauna-manners", title: "サウナのお約束", lines: ["静かに・押さずに", "具合が悪いときは", "周りに知らせてください"], icon: "quiet",

@@ -1,7 +1,7 @@
 // Level data, in meters on the XZ plane (x → right, z → down on the map).
 // Realistic sento layout (2026-11-20, provisional): genkan/reception/lobby →
 // screened changing room → bath hall (drying mat, kakeyu, washing stations,
-// rear tub, trough joined to it, kids' corner with the milk bottles (2026-11-21),
+// rear tub, trough joined to it, kids' corner with a milk bottle (2026-11-23),
 // cold plunge) → compact sauna; open-air bath and
 // terrace → garden → pond with a low edge. Diagram and dimensions:
 // .kiro/specs/prototype-core-gameplay/design.md "Realistic sento layout".
@@ -113,7 +113,7 @@ export interface Level {
   start: Vec2;
   /**
    * Water surfaces where Duck can swim: the tub, the trough joined to it, the
-   * kids' pool with milk1, and the NarrowHole. Duck's center must stay inside
+   * kids' pool with milk2, and the NarrowHole. Duck's center must stay inside
    * their union. Splash (wet floor) is not swimmable. One source for movement,
    * wetting, F1 and rendering.
    */
@@ -128,7 +128,7 @@ export interface Level {
   waypoints: Readonly<typeof WAYPOINTS>;
   /** Safe spot per bottle where the grown player is placed when it does not fit where it stood (and on checkpoint restore). */
   growthSpots: Record<MilkId, Vec2>;
-  /** Checked dry-floor spots the guardian walks between, in chain order: pool, room, rest. */
+  /** Checked floor path around the kids partition to its gate, across the bath and into the sauna. */
   guardianPath: readonly Vec2[];
   highDoors: Record<HighDoorId, HighDoor>;
 }
@@ -200,7 +200,7 @@ const BATHWATER_BOX = box(4.6, 5.4, 10.6, 8.8);
 const TROUGH_BOX = box(-0.1, NH_Z0, 4.7, NH_Z1);
 
 // Kids' corner (2026-11-21, provisional; design "Growth and exit"): pool with
-// milk1 → child passage (0.60 m) → room with milk2 → high-latch gate (1.0 m).
+// milk2 → child passage (0.60 m) → meeting room → adult-assisted gate (1.0 m).
 const KIDS_X1 = 2.3; // inner east face (partition x 2.3–2.5)
 const KIDS_POOL = box(0.3, 7.3, 2.1, NH_Z1);
 const KIDS_GATE: [number, number] = [0.6, 1.6]; // in the room's north partition (z 2.8–3.0)
@@ -356,16 +356,17 @@ const walls: AABB[] = [
 
 /** Named floor points (provisional) for scripted routes and guidance. */
 const WAYPOINTS = {
-  // Duck: tub → trough → kids' pool.
+  // Duck: tub bottle → trough → pool bottle (either collection order).
+  tubMilkSwim: { x: 9.8, z: 5.65 },
   tubWestDeep: { x: 4.9, z: 8.5 },
   troughGap: { x: 2.4, z: 8.5 },
   poolIn: { x: 1.6, z: 8.5 },
   milk1Swim: { x: 1.2, z: 7.55 },
-  // Child: pool → passage → room.
+  // Child: pool → passage → room; historical milk2Stand now names the meeting spot.
   passageSouth: { x: 0.4, z: 7.0 },
   passageNorth: { x: 0.4, z: 4.3 },
   milk2Stand: { x: 1.4, z: 3.6 },
-  // Adult: gate → drying mat → changing → locker → reception → front exit.
+  // Child asks the adult across the gate; Adult later uses the drying/exit route.
   gateIn: { x: 1.1, z: 3.5 },
   gateOut: { x: 1.1, z: 2.3 },
   bathDoorDry: { x: 1.6, z: 1.4 },
@@ -377,15 +378,17 @@ const WAYPOINTS = {
   genkanIn: { x: 9.0, z: -7.0 },
   frontExitIn: { x: 10.4, z: -7.0 }, // genkan side of the street door, within reach of the handle
   streetIn: { x: 12.0, z: -7.0 },
-  // Optional areas and checks.
+  // Sauna and open-air bottle route; garden remains optional.
   tubNorth: { x: 7.0, z: 4.8 },
   bathAisle: { x: 4.2, z: 3.0 },
   bathMid: { x: 8.0, z: 2.6 },
   saunaDoorDry: { x: 11.3, z: 1.6 },
   saunaIn: { x: 12.9, z: 1.8 },
+  saunaMilkStand: { x: 13.2, z: 1.0 },
   eastAisle: { x: 11.2, z: 4.8 },
   openAirDoorBath: { x: 11.3, z: 7.2 },
   openAirIn: { x: 13.0, z: 7.2 },
+  openAirMilkStand: { x: 18.8, z: 10.6 },
   gardenGateOut: { x: 18.6, z: 8.0 },
   gardenIn: { x: 21.6, z: 8.0 },
 } satisfies Record<string, Vec2>;
@@ -427,8 +430,10 @@ export const LEVEL: Level = {
     { id: "genkan_street", a: "genkan", b: "street", box: FRONT_EXIT_BLOCKER },
   ],
   nodes: {
-    milk1: { x: 1.2, z: 7.05 }, // dry floor at the pool's north edge
-    milk2: { x: 1.7, z: 3.5 },
+    milk1: { x: 9.8, z: 5.15 }, // north tub edge, reachable while swimming
+    milk2: { x: 1.2, z: 7.05 }, // shallow pool edge
+    milk3: { x: 13.2, z: 0.8 }, // inside sauna, before the child-only crowd gaps
+    milk4: { x: 18.8, z: 10.6 }, // far side of the open-air bath
   },
   locker: { x: 1.2, z: -3.0 },
   // Beside washing station 3, off the aisle: running between the stools is F3, walking is safe.
@@ -437,18 +442,26 @@ export const LEVEL: Level = {
   duckWater: [
     BATHWATER_BOX,
     TROUGH_BOX, // joined to the tub and to the hole (0.40 m wide)
-    KIDS_POOL, // milk1 at its north edge
+    KIDS_POOL, // milk2 at its north edge
     box(NH_END_X, NH_Z0, 0, NH_Z1),
   ],
   womensEntrance: { doorway: box(-H, WOMENS_DOOR[0], H, WOMENS_DOOR[1]), step: WOMENS_STEP, inward: { x: -1, z: 0 } },
   growthSpots: {
-    milk1: { x: 1.2, z: 7.7 }, // in the pool, clear for Child
-    milk2: { x: 1.2, z: 3.75 }, // middle of the room, clear for Adult
+    milk1: { x: 9.8, z: 5.7 }, // water, clear for Duck or Child
+    milk2: { x: 1.2, z: 7.7 }, // pool, clear for Duck or Child
+    milk3: { x: 13.2, z: 1.0 }, // sauna entry fits Adult in either bottle order
+    milk4: { x: 18.8, z: 10.6 }, // open-air floor clear for Adult
   },
   guardianPath: [
     { x: 3.1, z: 7.6 }, // pool: beside the kids' pool, east of the partition
     { x: 3.1, z: 3.9 }, // room: beside the kids' room
-    { x: 3.6, z: 2.3 }, // rest: out of the Adult's way
+    { x: 3.1, z: 2.3 }, // turn north of the kids partition
+    { x: 1.1, z: 2.3 }, // gate: adult can speak across and open the high latch
+    { x: 3.1, z: 2.3 }, // back to the bath aisle after the request
+    { x: 8.0, z: 2.3 }, // clear of stools, bench and water
+    { x: 11.5, z: 1.8 }, // wait for Child at the sauna door
+    { x: 12.9, z: 1.8 }, // enter together through the actual doorway
+    { x: 13.1, z: 1.5 }, // remain in the sauna, outside the crowd
   ],
   highDoors: {
     kidsGate: { blocker: box(KIDS_GATE[0], 2.8, KIDS_GATE[1], 3.0), handle: { x: 1.1, z: 2.9 }, handleY: 1.5, label: "高い掛け金の戸（大人なら開く）" },

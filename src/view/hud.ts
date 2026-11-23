@@ -54,6 +54,8 @@ export function toastFor(e: GameEvent): string | null {
   if (e.kind === "prompt") return e.text;
   if (e.kind === "checkpointSaved") return `再開地点を保存：${CHECKPOINT_NAME[e.id]}`;
   if (e.kind === "grew") return MSG.grew(e.to);
+  if (e.kind === "guardianJoined") return "大人がいっしょにサウナへ来てくれます";
+  if (e.kind === "milkCollected") return `牛乳を飲んだ！ 成長まで ${e.collected}/${e.required}本`;
   if (e.kind === "doorOpened") return e.id === "frontExit" ? "玄関の戸が開きました" : "休憩所の戸が開きました";
   return null;
 }
@@ -235,7 +237,10 @@ export class Hud {
 
   /** Show growth, rejected actions and prompts briefly. */
   onEvents(events: readonly GameEvent[], now: number): void {
-    for (const e of events) {
+    // Milestone feedback wins over the checkpoint saved in the same tick.
+    const milestone = events.find(e => e.kind === "grew") ?? events.find(e => e.kind === "milkCollected") ??
+      events.find(e => e.kind === "guardianJoined");
+    for (const e of milestone ? [milestone] : events) {
       if (e.kind === "prompt" && !this.settings.enabled) continue;
       const text = toastFor(e);
       if (text) {
@@ -279,7 +284,7 @@ export class Hud {
       html =
         `<h2>クリア！</h2>` +
         `<p>アヒルから子ども、大人へと育って、銭湯の玄関から外へ出ました。</p>` +
-        `<p>体を拭いて、服を着て、マナーを守りながら進めました。</p>` +
+        `<p>大人とサウナに入り、露天風呂も探検して、4本の牛乳を集めました。</p>` +
         `<button type="button" class="hud-big-button" data-action="restart">最初から遊ぶ</button>` +
         (touch ? "" : `<p class="key">Rキーでも始められます</p>`);
     }

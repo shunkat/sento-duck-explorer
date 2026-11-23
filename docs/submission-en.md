@@ -2,9 +2,15 @@
 
 Draft for the Kiroween 2026 English description. It is a working draft, not a submitted entry.
 
-## Current visual update (2026-11-22)
+## Current exploration update (2026-11-23)
 
-The current game has one active character growing from Duck to Child to Adult through two milk pickups, with a final street exit. Independent visitors, a correctly oriented Fuji mural and an original tattooed visitor are combined with the current growth architecture. See [combined verification](combined-assets-release-verification.md). The complete environment and small props now use reviewed GLBs from approved free public sources and project-authored Blender geometry. Human v03 adds a corrected Adult face atlas and shared skeletal walking; detailed revision and verification boundaries are in [the human release record](human-face-walk-verification.md). The older route results below remain historical and are not claimed to validate this revision.
+Growth now requires two bottles per transition, four in total. Duck visits the main tub and shallow pool. Child asks the nearby adult for company, waits for the adult to reach the sauna entrance, dries off and enters together. The sauna and far side of the open-air bath each hold a required Child bottle; either order is supported, and the final pickup leaves an Adult-sized return path. Adult then dries, dresses and exits through the street door. Collection and escort checkpoints preserve partial progress. The same batch adds human-model visitors in the bath hall, with short surprise reactions to nearby growth and clear travel paths. Existing credited visitor assets are reused. This revision is Codex implementation; automated checks, independent review and the designated supervisor's final normal-input verification are separate activities, and earlier route results do not validate the new route. Requirement 11 and the current design are the source of truth.
+
+Accompaniment is a rule of this fictional facility, not a claim that sauna use is safe for every child with an adult present.
+
+## Visual update (2026-11-22 record)
+
+The 2026-11-22 game had one active character growing from Duck to Child to Adult through two milk pickups, with a final street exit. Independent visitors, a correctly oriented Fuji mural and an original tattooed visitor are combined with the current growth architecture. See [combined verification](combined-assets-release-verification.md). The complete environment and small props now use reviewed GLBs from approved free public sources and project-authored Blender geometry. Human v03 adds a corrected Adult face atlas and shared skeletal walking; detailed revision and verification boundaries are in [the human release record](human-face-walk-verification.md). The older route results below remain historical and are not claimed to validate this revision.
 
 ## Historical status (2026-11-20 merge integration)
 
@@ -94,7 +100,7 @@ Crew implemented the shoulder camera, contextual controls, water-only Duck movem
 
 ## Role of Codex
 
-Codex produced the original reference images, operated the authorized free Meshy workflow, adjusted and exported the models in Blender, and recorded their provenance. Codex supplied limited integration assistance after Crew communication failures, performed the recorded independent reviews and normal-input checks, and maintained publication checks and development records. During PR integration, Codex resolved overlapping model-loading paths, updated the earlier property tests to the current game rules and synchronized this draft. Kiro remains the primary game implementer; these contributions are recorded separately.
+Codex produced the original reference images, operated the authorized free Meshy workflow, adjusted and exported the models in Blender, and recorded their provenance. Codex supplied limited integration assistance after Crew communication failures, performed the recorded independent reviews and normal-input checks, and maintained publication checks and development records. During PR integration, Codex resolved overlapping model-loading paths, updated the earlier property tests to the current game rules and synchronized this draft. Kiro authored the original game and the recorded Crew work; the 2026-11-23 exploration/growth/escort revision is implemented by Codex and is recorded separately.
 
 ## Run it locally
 

@@ -13,6 +13,7 @@ import { CHARACTER_MODEL_URLS, ENVIRONMENT_MODEL_URLS, ITEM_MODEL_URLS } from ".
 import type { EnvironmentModels } from "../src/view/environmentModels";
 import type { WorldEnvironment } from "../src/view/worldEnvironment";
 import type { BathLighting } from "../src/view/bathLighting";
+import type { BathVisitors } from "../src/view/bathVisitors";
 import { NPC_SLOTS } from "../src/view/backgroundNpcs";
 import { OVERVIEW, type Pose } from "../src/view/camera";
 import { deriveView } from "../src/view/deriveView";
@@ -40,6 +41,7 @@ type Internals = {
   environmentModels: EnvironmentModels;
   worldEnvironment: WorldEnvironment;
   bathLighting: BathLighting;
+  bathVisitors: BathVisitors;
 };
 type Sample = { eye: [number, number, number]; overview: boolean; triangles: number };
 
@@ -95,7 +97,7 @@ describe("connected scene geometry budget", () => {
     const manifest = JSON.parse(readFileSync(new URL("../assets/manifest.json", import.meta.url), "utf8"));
     expect(manifest.scene_limits.stage2_triangles_drawn).toBe(LIMIT);
     // Fail rather than silently count placeholder geometry if promotion regresses.
-    // Growth version: the only item GLB is the milk bottle, drawn twice (milk1, milk2).
+    // Growth version: the only item GLB is the milk bottle, shared by four separate pickups.
     expect(Object.keys(ITEM_MODEL_URLS)).toEqual(["milk_bottle"]);
     for (const id of ["sento_environment", "soap", "towel", "bath_stool", "wash_basin",
       "bath_stool_lod_medium", "bath_stool_lod_far", "wash_basin_lod_medium", "wash_basin_lod_far",
@@ -117,6 +119,12 @@ describe("connected scene geometry budget", () => {
     game.useModels(library);
     const internal = game as unknown as Internals;
     const { scene } = internal;
+    const guests = scene.getObjectByName("bath_visitors")!;
+    expect(guests.children).toHaveLength(4);
+    for (const guest of guests.children) {
+      expect(guest.getObjectByName("visitor_high")?.userData.source).toBe(library.get("npc_bath_standing")!.root);
+      expect(guest.getObjectByName("visitor_fallback")!.visible).toBe(false);
+    }
     const notices = scene.getObjectByName("sento_wall_notices")!;
     expect(notices).toBeDefined();
     expect(notices.children.length).toBeGreaterThan(0);
@@ -163,6 +171,7 @@ describe("connected scene geometry budget", () => {
       internal.worldEnvironment.setView(sample.overview, false); // the sauna door is never locked (2026-11-21)
       internal.environmentModels.updateDetail(eye, sample.overview);
       internal.worldEnvironment.updateDetail(eye);
+      internal.bathVisitors.updateDetail(eye, sample.overview);
       internal.bathLighting.update(view, sample.overview);
       showPotentialOverlays(internal);
       for (const instance of washing) {

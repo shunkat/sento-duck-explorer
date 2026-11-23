@@ -21,7 +21,7 @@ it("applies mobile projection and active-body fade, and restores both for deskto
   const fixture = {
     setOverview: vi.fn(), chars, rings: { duck: ring },
     bathLighting: { update: vi.fn() },
-    items: { milk1: new THREE.Object3D(), milk2: new THREE.Object3D() },
+    items: { milk1: new THREE.Object3D(), milk2: new THREE.Object3D(), milk3: new THREE.Object3D(), milk4: new THREE.Object3D() },
     highDoors: { kidsGate: new THREE.Object3D(), frontExit: new THREE.Object3D() },
     worldEnvironment: { setView() {}, hasGrowthDoors: true, updateDetail() {} },
     growthFallback: new THREE.Group(), environmentModels: { updateDetail() {} },

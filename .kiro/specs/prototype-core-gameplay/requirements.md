@@ -21,7 +21,7 @@ Scope note: this spec ends when the full route is playable with placeholder shap
 | Pond movement | Continuous movement from water current plus directional input. Pond physics advances only while Duck is the ActiveCharacter. |
 | Item transfers | Allowlist: Coin Duck → Adult, Key Adult → Child. The Hat moves only by Child's Equip action onto Duck. |
 
-> **Current direction (2026-11-21).** Requirement 11 (growth and exit) is the current play contract. It supersedes Requirement 1 (character switching), Requirement 3 (the 10-step route and the pond goal), Requirement 4 (payment route), Requirement 5 (item transfers) and Requirement 8 (pond navigation) as required progress, and replaces the four checkpoints of Requirement 10 with three. Requirements 2 (sizes), 6 (wet and clothing), 7 (F1–F8), 9 and the rest of 10 apply to the one player. The superseded text stays as the record of the earlier versions.
+> **Current direction (2026-11-21).** Requirement 11 (growth and exit) is the current play contract. It supersedes Requirement 1 (character switching), Requirement 3 (the 10-step route and the pond goal), Requirement 4 (payment route), Requirement 5 (item transfers) and Requirement 8 (pond navigation) as required progress, and replaces the legacy checkpoints of Requirement 10 with the current collection/growth checkpoints. Requirements 2 (sizes), 6 (wet and clothing), 7 (F1–F8), 9 and the rest of 10 apply to the one player. The superseded text stays as the record of the earlier versions.
 
 ## Glossary
 
@@ -255,21 +255,24 @@ Scope note: this spec ends when the full route is playable with placeholder shap
 
 ---
 
-### Requirement 11: Growth and exit (2026-11-21)
+### Requirement 11: Growth, exploration and exit (2026-11-21; updated 2026-11-23)
 
-**User Story:** As a player, I want to start as Duck, grow into Child and then Adult by taking milk bottles, and clear by leaving the sento, so that the bathhouse is explored step by step through one character. (User: 「アヒルと子供と大人を切り替えるのではなく最初はアヒル、子供、大人とだんだんキャラが成長していく形」「各ポイントの牛乳瓶を取って成長」「銭湯から出たらクリア」.)
+**User Story:** As a player, I want to start as Duck, grow into Child and then Adult by taking milk bottles, and clear by leaving the sento. The 2026-11-23 user correction asks for two bottles before growth, more places to visit, bottles inside the sauna and at the open-air bath, and Child asking an adult to enter the sauna together.
+
+**Adopted interpretation:** two bottles for each transition, four unique bottles in total. The exact bottle positions, gate assistance, escort path and checkpoint details are provisional implementation choices; the user did not specify those details.
 
 #### Acceptance Criteria
 
 1. THE Game SHALL have one player whose stage is Duck, Child or Adult, starting as Duck, with no manual switching, no inactive bodies, no transfers, no carrying and no reverse growth.
-2. WHEN the player presses E within reach of an available milk bottle with a clear line to it and in the stage that bottle needs (milk1: Duck, milk2: Child), THE Game SHALL mark that bottle collected and grow the player to the next stage in the same tick. Otherwise THE Game SHALL refuse with a hint and change nothing.
-3. Growth SHALL keep the position when the new collider fits there (else a safe growth spot), keep the facing, reset velocity, and set Duck → Child to wet, unclothed, towel on the head, while Child → Adult keeps wetness, clothing and towel. Growth SHALL NOT move the player again, trigger a GameOverCondition, or skip the checkpoint in that tick.
-4. Duck SHALL reach milk1 only by swimming on water connected to the tub. The milk1 landing SHALL fit Child and have a Child-sized exit; the milk2 space SHALL fit Adult and have an Adult-sized exit, so no growth traps the player.
-5. THE street door from the genkan to the outside SHALL open only by the Adult's E at its high handle; Duck and Child SHALL get a hint. THE Game SHALL clear only when the Adult player crosses that door line from the genkan to the street, and SHALL NOT clear anywhere else (including reception, the genkan and the pond). *(Updated 2026-11-22, review R-1: the clear line was the reception–genkan doorway.)* A GameOverCondition on the same tick SHALL win.
-6. THE Game SHALL save checkpoints at start, after Child growth and after Adult growth, and restoring SHALL bring back stage, collected bottles, safe position, wetness, clothing, towel, doors and the guardian together, without repeating a failure at once.
-7. A non-player guardian SHALL stand on safe dry spots near the Child's area and SHALL never enter water, the kids' corner or the women's entrance, and SHALL never block the player.
-8. THE HUD SHALL show compact stage/progress and contextual controls according to Requirement 12, and SHALL NOT mention Tab, transfers or the pond goal. THE camera SHALL blend to the new stage's profile on growth. *(Updated 2026-11-22: the permanent next-objective walkthrough is removed.)*
-
+2. WHEN the player presses E within reach of an available milk bottle with a clear line to it and in the stage that bottle needs, THE Game SHALL collect that bottle exactly once. The first bottle for a stage SHALL leave the stage unchanged; the second SHALL grow the player in the same tick. Two Duck bottles SHALL be required for Child and two further Child bottles for Adult. A wrong-stage, unreachable or already-collected bottle SHALL NOT increase progress.
+3. Growth SHALL keep the position when the new collider fits there (else use a safe growth spot), keep the facing, reset velocity, and set Duck → Child to wet, unclothed, towel on the head, while Child → Adult keeps wetness, clothing and towel. Growth SHALL NOT move the player again, trigger a GameOverCondition, or skip the checkpoint in that tick.
+4. Duck SHALL reach its two bottles by swimming on water connected to the tub, visiting both the main tub and shallow kids' pool. Child's two bottles SHALL require entering the sauna and visiting the open-air bath. Either order of the Child bottles SHALL remain completable, including a safe Adult-sized exit from either final pickup. Growth SHALL NOT trap the player in water passages or sauna crowd gaps.
+5. THE street door from the genkan to the outside SHALL open only by the Adult's E at its high handle; Duck and Child SHALL get a hint. THE Game SHALL clear only when the Adult player crosses that door line from the genkan to the street, and SHALL NOT clear anywhere else (including reception, the genkan and the pond). A GameOverCondition on the same tick SHALL win.
+6. THE Game SHALL preserve collected bottles and growth in checkpoints, and restoring SHALL bring back stage, collected bottles, a safe position, wetness, clothing, towel, doors and guardian/escort state together, without duplicating milk or repeating a failure at once. Checkpoints SHALL remain in memory only.
+7. Child SHALL explicitly request the non-player adult's company using a nearby contextual E action. The guardian SHALL assist with the kids' gate and physically walk a collision-safe route to the sauna. Child SHALL NOT enter the sauna without a requested escort physically present at the entrance; a stale request flag alone SHALL NOT suffice. Successful entry SHALL bring both into the sauna. Ordinary adult-player entry SHALL remain independent of the escort.
+8. The guardian SHALL avoid water, the kids' passage, the women's entrance and solid fixtures, and SHALL NOT block the player. It SHALL remain a non-player adult, without switching or inventory. Requesting company SHALL NOT dry the player or bypass F1–F8; wet entry still has F5 semantics.
+9. THE HUD SHALL show compact stage/progress and contextual controls according to Requirement 12, including accurate partial milk progress and the nearby escort request, and SHALL NOT mention Tab, transfers or the pond goal. THE camera SHALL blend to the new stage's profile on growth. Permanent walkthrough text remains removed.
+10. Sauna accompaniment SHALL be described as a rule of this fictional facility. The game SHALL NOT imply that adult supervision makes sauna use safe for every age or at every real facility.
 
 
 ### Requirement 12: Contextual controls and physical notices (2026-11-22)
@@ -284,3 +287,14 @@ Scope note: this spec ends when the full route is playable with placeholder shap
 6. Drying notices SHALL be mounted in the world on the bath side of the changing-room and sauna entrances, readable before crossing a failure threshold. Other world notices SHALL communicate towels out of bathwater, walking on slippery floors, dressing before entering common areas, quiet sauna use and not pushing. They SHALL use facility wording and visual symbols, not keyboard instructions, billboards or screen overlays.
 7. Existing F1–F8, growth, exit and recovery behavior SHALL remain intact. Validation follows verification-ownership.md: focused automated tests, one independent review, and outstanding visual/normal-input checks joined to the designated supervisor's final batch.
 8. Contextual help SHALL look like non-interactive caption text, without button-like panels or borders. PC target instructions SHALL identify the keyboard action. Actual touch and settings buttons SHALL remain visually distinct and operable. (2026-11-23: the user mistook help for a button.)
+
+
+### Requirement 13: Bath-hall visitors and growth surprise (2026-11-23)
+
+**User request:** The bath hall feels unnaturally empty. Add human-model visitors and have nearby people look surprised when the player grows.
+
+1. THE bath hall SHALL contain visible human-model visitors, using existing credited visitor assets. Their placement SHALL preserve the playable water route, Child passage, guardian path, door approaches, drying spots and milk interactions.
+2. WHEN a `grew` event occurs, nearby visitors SHALL perform a short, visibly distinct surprise reaction. A first bottle without growth, distant growth, idle frames, checkpoint restore and scene refresh SHALL NOT start or replay the reaction.
+3. The surprise SHALL end automatically and return the visitor to its ordinary pose. A later genuine growth event MAY trigger a new reaction. The reaction SHALL NOT move a visitor into gameplay paths or change game rules, collection, collision, checkpoints or escort state.
+4. Exact visitor count, positions, proximity range and motion timing are provisional visual design choices. The existing scene geometry budget SHALL remain enforced, and existing asset provenance SHALL be preserved.
+5. Visitor readability and the nearby/distant reaction distinction SHALL join the same designated supervisor's final verification batch as Requirement 11. Automated animation/placement checks and independent review SHALL NOT be reported as browser evidence.

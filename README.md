@@ -24,7 +24,7 @@ npm run check:publication # 公開候補ファイルとGit indexの機密情報�
 | マウス / 右ドラッグ / J・L | 視点を回す。キャンバスをクリックするとポインターを捕捉（Escで解放して設定を開く）。設定で感度・上下反転・ドラッグのみを選べます |
 | Space | 視点を正面（キャラクターの向き）へ戻す |
 | Shift | 走る（石鹸を踏むとゲームオーバー） |
-| E / Enter | 光っている対象を1つ使う。牛乳びんを飲んで育つ／浴室の出口の前で体を拭く／ロッカー前で服を着る・脱ぐ／高い取っ手の戸を開ける（大人だけ）。対象がなければ何も起きません |
+| E / Enter | 光っている対象を1つ使う。牛乳びんを飲む（2本で育つ）／大人に同行をお願いする／浴室の出口の前で体を拭く／ロッカー前で服を着る・脱ぐ／高い取っ手の戸を開ける（大人だけ）。対象がなければ何も起きません |
 | T | タオルを手と頭で持ち替える（人間のみ） |
 | 右上のマップをタップ / C | 常時表示のミニマップを全画面に拡大。マップ表示中は一時停止 |
 | 閉じる / Esc / C | 全画面マップを閉じ、探検に戻る |
@@ -34,7 +34,7 @@ npm run check:publication # 公開候補ファイルとGit indexの機密情報�
 使える対象は輪郭と近くの文字で示します（文字が壁に隠れる・画面外に出るときは画面下の小さな表示になります）。設定の「操作ヘルプを表示」をオフにすると、輪郭と対象の表示も消えます（スマホの操作ボタン・地図・失敗理由・再開ボタンは残ります）。軽量描画（解像度を下げる）も設定にあります。スマホの描画解像度は標準で最大1.5倍、軽量で1.25倍に制限しますが、FPSの改善は実機で未測定です。実機（iPhone / Android）での確認はまだ行っていません。体を拭くなどの注意は、扉の手前や浴室のポスターを見てください。
 スマホではカメラを中央寄り・遠めに配置し、画面の縦横に合わせて視野を調整します。壁際でカメラが近づきすぎたときは操作中の体を一時的に薄くし、離れると戻します。モデルの実寸や当たり判定は共通です。
 操作系とスマホ対応の初期実装はKiroが担当しました。その後のEscape修正とスマホの構図改善は、ユーザーの明示的な承認を受けてCodexが担当しています（`.kiro/specs/shoulder-view` に仕様・設計・タスクを記録）。
-流れ（2026-11-21〜、配置は仮）：アヒルは水の上だけを泳げます。湯船から奥の水路を泳いで浅い湯だまりへ行き、牛乳びん（1本目）を飲むと子どもになります。子どもは子ども用のせまい通り道を通って広い休憩所の牛乳びん（2本目）を飲み、大人になります。大人は高い掛け金の戸を開け、体を拭いて更衣室で服を着て、受付と玄関（下足箱）を通り、外へ出る戸（取っ手が高い）を開けて外へ出るとクリアです。子どものあいだは見守りの大人がそばにいます。サウナ・露天風呂・庭と池は寄り道で、クリアには関係しません。再開地点は開始時・子どもに育った時・大人に育った時です。
+流れ（2026-11-23〜、配置は暫定）：成長ごとに牛乳びんが2本必要です（合計4本）。アヒルは湯船と浅い湯だまりの2本を集めて子どもになります。湯だまりで育ったら、子ども用の通り道から休憩所へ進み、近くの大人にEで同行をお願いすると、高い掛け金を開けてサウナまで付き添ってくれます。体を拭き、大人が入口まで来てから一緒にサウナへ入りましょう。サウナ内と露天風呂の奥の牛乳びんを集めると大人になります。この2か所はどちらを先に回ってもかまいません。体を拭いて更衣室で服を着て、受付・玄関を通り、外へ出る戸を開けて出るとクリアです。庭と池は寄り道です。開始時・各瓶の取得時・同行をお願いした時に再開地点が保存されます。浴室には来客がいて、近くで成長すると短く驚きます（成長しない1本目では反応しません）。今回の探索ルート変更はCodexによる実装で、通常入力の確認は担当監督の最終確認へまとめます。
 
 仮の間取りは、玄関（下足箱）→ 受付・ロビー → ついたてのある更衣室 → 浴室（拭く場所・かけ湯・洗い場・奥の湯船と水路）、浴室の東にサウナと露天、その先の庭と池です。遊べるのは男湯です。ロビーには女湯の入口（のれんと段差）だけがあり、中はありません。大人や子どもで入ろうとすると受付の人に注意されてゲームオーバー（F8）、アヒルは段差を越えられません。実在の建物の図面ではなく、設備は仮形状です。
 
@@ -53,7 +53,7 @@ ChromeのVimium拡張を有効にしていると、`D`・`J` などのキーをV
 - 仕様：`.kiro/specs/prototype-core-gameplay/`（requirements / design / tasks / progress）
 - 進め方：`.kiro/steering/project-autonomy.md`、企画：`KIRO_HANDOFF.md`
 
-ゲーム内の施設ルールは架空施設のものです（このゲームの施設ではサウナは入浴料に含まれる設定）。実在の銭湯に共通するルールとしては紹介しません。
+ゲーム内の施設ルールは架空施設のものです（サウナは入浴料に含まれ、子どもは大人と一緒に入る設定）。実在の施設に共通するルールや、大人が付けばどの年齢でも安全という説明ではありません。
 
 ## 公開前の確認
 
@@ -79,13 +79,13 @@ Use the npm commands above to run, test and build. See the [English submission d
 | WASD / arrows | Camera-relative movement; fixed map directions in the overview |
 | J / L or mouse drag | Turn the shoulder camera |
 | Shift | Run; stepping on soap causes F3 |
-| E / Enter | Perform the displayed contextual action: drink a milk bottle and grow, dry at a bath-side exit, change clothes at the locker, open a door with a high handle (Adult only). Otherwise move the human's towel between hand and head. |
+| E / Enter | Perform the displayed contextual action: drink milk (two bottles per growth), ask the adult for company, dry at a bath-side exit, change clothes at the locker, or open a door with a high handle (Adult only). With no target, nothing happens. |
 | Tap the top-right map / C | Expand the always-visible minimap; gameplay pauses while the map is open |
 | Close / Esc / C | Close the map and return to the same shoulder view |
 | R | Resume the last checkpoint after failure; start again after clearing |
 | Q / V / F | Conditional rule-break actions: a human dips a held towel in bath water, shouts in the sauna, or pushes a nearby person in the sauna. No microphone is used. |
 
-Duck swims only on water: from the tub along the trough into a shallow pool with the first milk bottle. The child walks a child-sized passage to a wider room with the second bottle. The adult opens a high-latch gate, dries off, dresses in the changing room, walks through reception and the shoe-locker entrance, and opens the street door (high handle) to step outside. A non-player adult watches over the child. The sauna, open-air bath, garden and pond are optional. Checkpoints: start, after growing into the child, after growing into the adult. If Vimium captures movement keys, enter its insert mode with I.
+Each growth needs two unique milk bottles: four in total. Duck swims to bottles by the main tub and shallow kids' pool. After growing in the pool, Child uses the narrow passage to the kids' room and asks the nearby adult for company; the adult opens the gate and walks to the sauna. Child must dry off and wait for the adult at the entrance before entering together. Child then needs both the sauna bottle and the far-side open-air bath bottle, in either order, to become Adult. Adult dries, dresses in changing, walks through reception and the shoe-locker entrance, opens the street door and steps outside. Garden and pond are optional. Checkpoints save the start, each bottle pickup and the accepted escort request. This is a fictional facility rule, not a claim that supervision makes sauna use safe for every child. Bath-hall visitors briefly react with surprise to nearby growth; the first bottle without growth causes no reaction. The exploration revision is Codex implementation; its normal-input check belongs to the designated supervisor's final batch. If Vimium captures movement keys, enter its insert mode with I.
 
 The provisional floor plan runs genkan (shoe lockers) → reception and lobby → screened changing room → bath hall (drying spot, kakeyu, washing stations, rear tub and coin trough), with the sauna and open-air area to the east and a garden leading to the pond. The playable wing is the men's bath. The lobby has only the entrance to the women's bath (noren and a raised step); trying to walk in as Adult or Child gets a reprimand from the receptionist and a game over (F8), and Duck cannot climb the step. It is an original design, not a real building's plan, and its fixtures are provisional shapes.
 

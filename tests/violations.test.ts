@@ -131,8 +131,8 @@ describe("priority and restart", () => {
     expect(sim.state.player.pos).toEqual(frozen);
     sim.press("restart");
     sim.expectPlaying();
-    expect(sim.state.player).toMatchObject({ stage: "adult", pos: LEVEL.growthSpots.milk2, wet: "wet", clothing: "unclothed" });
-    expect(sim.state.doors.kidsGate).toBe("closed");
+    expect(sim.state.player).toMatchObject({ stage: "adult", pos: LEVEL.growthSpots.milk4, wet: "wet", clothing: "unclothed" });
+    expect(sim.state.doors.kidsGate).toBe("open");
     sim.idle(30);
     sim.expectPlaying();
     R.adultDriesAndDresses(sim);

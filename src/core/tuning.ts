@@ -9,6 +9,8 @@ export const RUN_SPEED = 4.5; // humans only; Duck cannot run
 export const REACH = {
   /** E drinks a milk bottle within this distance (clear straight line). */
   milk: 0.6,
+  /** Talk to the adult, including across the kids gate when they are beside it. */
+  guardian: 1.35,
   /** E opens a high-handle door within this distance of its handle (Adult only). */
   handle: 1.0,
   locker: 1.0,

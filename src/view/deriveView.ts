@@ -2,7 +2,7 @@
 // (one body for the current stage, the bottles, doors, the guardian) is
 // testable without WebGL. Growth and exit (2026-11-21).
 import { CHARACTER_NAME } from "../core/text";
-import type { CharacterId, GameState, HighDoorId, MilkId } from "../core/types";
+import { MILK_IDS, type CharacterId, type GameState, type HighDoorId, type MilkId } from "../core/types";
 import { CHARACTER_RADIUS, type Level } from "../level/layout";
 
 export interface Vec3 {
@@ -66,7 +66,7 @@ export function deriveView(s: GameState, level: Level): View {
     adult: characterView(s, "adult"),
   };
   const milk = {} as View["milk"];
-  for (const id of ["milk1", "milk2"] as const) {
+  for (const id of MILK_IDS) {
     const n = level.nodes[id];
     milk[id] = { pos: { x: n.x, y: 0, z: n.z }, visible: s.milk[id] === "available" };
   }
@@ -84,6 +84,7 @@ export function deriveView(s: GameState, level: Level): View {
 /** Compact progress badge; location and route descriptions stay out of the HUD. */
 export function statusLines(s: GameState): string[] {
   const p = s.player;
-  const n = (["milk1", "milk2"] as const).filter((m) => s.milk[m] === "collected").length;
-  return [`${CHARACTER_NAME[p.stage]} · 牛乳 ${n}/2`];
+  const n = (MILK_IDS).filter((m) => s.milk[m] === "collected").length;
+  const progress = p.stage === "adult" ? "" : ` · 成長 ${n % 2}/2`;
+  return [`${CHARACTER_NAME[p.stage]}${progress} · 牛乳 ${n}/4`];
 }

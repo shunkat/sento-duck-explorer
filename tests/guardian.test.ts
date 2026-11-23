@@ -1,73 +1,106 @@
-// The guardian (Requirement 11.7): a scripted adult on checked dry spots
-// outside the kids' corner, never in water, the corner or the women's
-// entrance, never blocking the player.
+// Real movement, explicit consent and paired sauna entry for the guardian.
 import { describe, expect, it } from "vitest";
-import type { GameState } from "../src/core/types";
+import { createInitialState } from "../src/core/initialState";
+import { guardianInReach } from "../src/core/actions";
+import { guardianReadyForSauna } from "../src/core/guardian";
+import { tick } from "../src/core/tick";
+import { EMPTY_INPUT, type GameState } from "../src/core/types";
 import { CHARACTER_RADIUS, LEVEL } from "../src/level/layout";
 import { circleOverlapsBox, distance } from "../src/sim/geometry";
 import { wallsFor } from "../src/sim/movement";
-import { inBathWater, zoneAt } from "../src/sim/zones";
+import { inBathWater, isSauna, zoneAt } from "../src/sim/zones";
 import * as R from "./helpers/route";
 import { Sim } from "./helpers/sim";
 
+const W = LEVEL.waypoints;
 const r = CHARACTER_RADIUS.adult;
-const KIDS = new Set(["kids_pool", "kids_passage", "kids_room"]);
-
-/** The guardian's body is safe: dry bath floor outside the kids' corner, clear of walls and water. */
-function safe(s: GameState): string[] {
-  const g = s.guardian.pos;
-  const out: string[] = [];
-  if (zoneAt(LEVEL, g) !== "bath") out.push(`zone ${zoneAt(LEVEL, g)}`);
-  if (LEVEL.walls.some((w) => circleOverlapsBox(g, r, w))) out.push("overlaps a wall");
-  if (inBathWater(LEVEL, g) || LEVEL.duckWater.some((w) => circleOverlapsBox(g, r, w))) out.push("in water");
-  if (circleOverlapsBox(g, r, LEVEL.womensEntrance.step)) out.push("women's entrance");
-  for (const z of LEVEL.zones) if (KIDS.has(z.id) && circleOverlapsBox(g, r, z.box)) out.push(`in ${z.id}`);
-  return out;
+function safe(g: { x: number; z: number }): boolean {
+  return ![...LEVEL.walls, ...LEVEL.npcs].some((w) => circleOverlapsBox(g, r - 1e-3, w))
+    && !inBathWater(LEVEL, g) && !LEVEL.duckWater.some((w) => circleOverlapsBox(g, r - 1e-3, w));
+}
+function childAtDoor(): GameState {
+  const s = createInitialState(LEVEL);
+  s.milk.milk1 = s.milk.milk2 = "collected";
+  Object.assign(s.player, { stage: "child", wet: "dry", towel: "head", pos: { x: 11.98, z: 1.8 }, zone: "bath" });
+  return s;
 }
 
 describe("guardian", () => {
-  it("every spot and every segment between neighbouring spots is safe for an adult body", () => {
+  it("every path segment stays on dry, unobstructed floor for an adult", () => {
     const path = LEVEL.guardianPath;
     for (let i = 0; i + 1 < path.length; i++) {
-      const a = path[i]!;
-      const b = path[i + 1]!;
+      const a = path[i]!; const b = path[i + 1]!;
       for (let t = 0; t <= 1; t += 0.02) {
         const g = { x: a.x + (b.x - a.x) * t, z: a.z + (b.z - a.z) * t };
-        const s = { guardian: { pos: g, at: i } } as GameState;
-        expect(safe(s), JSON.stringify(g)).toEqual([]);
+        expect(safe(g), JSON.stringify(g)).toBe(true);
       }
     }
   });
 
-  it("follows the player's stage along the route: pool → room → rest, always safe", () => {
+  it("E asks the nearby adult, opens the kids gate, and both visibly walk into the sauna", () => {
     const sim = new Sim();
-    const seen = new Set<number>();
-    const orig = sim.step.bind(sim);
+    const original = sim.step.bind(sim);
     sim.step = (input) => {
-      const ev = orig(input);
-      expect(safe(sim.state)).toEqual([]);
-      if (distance(sim.state.guardian.pos, LEVEL.guardianPath[sim.state.guardian.at]!) < 1e-6) seen.add(sim.state.guardian.at);
-      return ev;
+      const before = sim.state.guardian.pos;
+      const events = original(input);
+      expect(safe(sim.state.guardian.pos)).toBe(true);
+      expect(distance(before, sim.state.guardian.pos)).toBeLessThanOrEqual(2.5 / 60 + 1e-4);
+      return events;
     };
-    expect(sim.state.guardian.at).toBe(0);
     R.duckDrinksMilk1(sim);
-    sim.walk([LEVEL.waypoints.passageSouth, LEVEL.waypoints.passageNorth]);
-    sim.idle(150);
-    expect(sim.state.guardian).toEqual({ pos: LEVEL.guardianPath[1], at: 1 });
-    R.childDrinksMilk2(sim);
-    sim.idle(150);
-    expect(sim.state.guardian).toEqual({ pos: LEVEL.guardianPath[2], at: 2 });
-    R.adultDriesAndDresses(sim);
-    R.adultOpensFrontExit(sim);
-    R.adultLeaves(sim);
-    expect([...seen].sort()).toEqual([0, 1, 2]);
+    R.childAsksGuardian(sim);
+    expect(sim.state.guardian.escortRequested).toBe(true);
+    expect(sim.state.doors.kidsGate).toBe("open");
+    R.childDrinksSaunaMilk(sim);
+    expect(isSauna(zoneAt(LEVEL, sim.state.guardian.pos)!)).toBe(true);
+    expect(sim.log.filter((e) => e.kind === "guardianJoined")).toHaveLength(1);
   });
 
-  it("never blocks the player: the guardian is not in any collision list", () => {
-    const sim = new Sim();
-    const g = sim.state.guardian.pos;
-    for (const d of [{ kidsGate: "closed", frontExit: "closed" }, { kidsGate: "open", frontExit: "open" }] as const) {
-      expect(wallsFor(LEVEL, d).some((w) => circleOverlapsBox(g, 0.01, w))).toBe(false);
+  it("dry Child cannot enter alone or ask the adult through a distant wall", () => {
+    let s = childAtDoor();
+    expect(guardianInReach(s, LEVEL)).toBe(false);
+    for (let i = 0; i < 40; i++) s = tick(s, { ...EMPTY_INPUT, move: { x: 1, z: 0 }, run: true }, LEVEL).state;
+    expect(s.player.zone).toBe("bath");
+    expect(s.outcome.kind).toBe("playing");
+    expect(s.guardian.escortRequested).toBe(false);
+    const wall = childAtDoor();
+    wall.player.pos = { x: 2.05, z: 4.0 };
+    wall.guardian.pos = { x: 2.9, z: 4.0 };
+    expect(guardianInReach(wall, LEVEL)).toBe(false);
+  });
+
+  it("request flag is insufficient while the adult is far away; wet entry still triggers F5", () => {
+    const s = childAtDoor();
+    s.guardian.escortRequested = true;
+    expect(guardianReadyForSauna(s, LEVEL)).toBe(false);
+    const waiting = tick(s, { ...EMPTY_INPUT, move: { x: 1, z: 0 } }, LEVEL);
+    expect(waiting.state.player.zone).toBe("bath");
+    expect(waiting.events.some((e) => e.kind === "prompt")).toBe(true);
+    s.player.wet = "wet";
+    expect(tick(s, { ...EMPTY_INPUT, move: { x: 1, z: 0 } }, LEVEL).state.outcome).toEqual({ kind: "gameOver", reason: "F5" });
+  });
+
+  it("running to the final sauna bottle cannot finish the escort before the adult crosses", () => {
+    let s = childAtDoor();
+    s.milk.milk4 = "collected";
+    s.guardian = { pos: { x: 10.95, z: 1.87857 }, at: 6, escortRequested: true };
+    let adultEntered = false;
+    let childEntered = false;
+    for (let i = 0; i < 120 && s.player.stage === "child"; i++) {
+      const delta = { x: LEVEL.nodes.milk3.x - s.player.pos.x, z: LEVEL.nodes.milk3.z - s.player.pos.z };
+      const length = Math.hypot(delta.x, delta.z);
+      const r = tick(s, { ...EMPTY_INPUT, run: true, move: { x: delta.x / length, z: delta.z / length }, interact: length <= 0.6 }, LEVEL);
+      s = r.state;
+      adultEntered ||= s.guardian.pos.x >= 12.45;
+      if (isSauna(s.player.zone)) { childEntered = true; expect(adultEntered).toBe(true); }
     }
+    expect(childEntered).toBe(true);
+    expect(adultEntered).toBe(true);
+    expect(s.player.stage).toBe("adult");
+  });
+
+  it("the guardian never becomes a player collision obstacle", () => {
+    const s = createInitialState(LEVEL);
+    expect(wallsFor(LEVEL, s.doors).some((w) => circleOverlapsBox(s.guardian.pos, 0.01, w))).toBe(false);
   });
 });

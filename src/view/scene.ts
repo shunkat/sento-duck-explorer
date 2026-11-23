@@ -1,7 +1,7 @@
 // Static level and fallback primitives, with pipeline-produced character/item
 // models following the view each frame. Gameplay state remains in core.
 import * as THREE from "three";
-import type { CharacterId, HighDoorId, HumanId, MilkId } from "../core/types";
+import { MILK_IDS, type CharacterId, type HighDoorId, type HumanId, type MilkId } from "../core/types";
 import { CHARACTER_RADIUS, type DecorKind, type FixtureKind, GROWTH_DECOR_KINDS, GROWTH_FIXTURE_KINDS, isStreetFixture, type Level } from "../level/layout";
 import type { AABB } from "../sim/geometry";
 import type { Pose } from "./camera";
@@ -21,6 +21,8 @@ import { CEILING_Y, type FacingTracker, HOLE_LID_Y, bodyOpacity, modelRotationY,
 import { createSentoSigns } from "./signs";
 import { effectivePixelRatio, DESKTOP_PIXEL_RATIO_CAP } from "./renderQuality";
 import { TargetFeedback } from "./targetFeedback";
+import { BathVisitors } from "./bathVisitors";
+import type { Vec2 } from "../core/types";
 import type { InteractTarget } from "../core/actions";
 import type { Margin, PromptPlace } from "./targetPlacement";
 
@@ -118,6 +120,7 @@ export class GameScene {
   private guardian = new THREE.Group();
   private guardianCapsule!: THREE.Mesh;
   private guardianModel: THREE.Object3D | null = null;
+  private bathVisitors?: BathVisitors;
   /** Growth-route primitives (partitions, storage, curb, doors); hidden when the export draws them. */
   private growthFallback = new THREE.Group();
   private growthCueUntil = -Infinity;
@@ -273,6 +276,7 @@ export class GameScene {
     this.guardian.add(gBody);
     this.guardianCapsule = gBody;
     this.scene.add(this.guardian);
+    this.bathVisitors = new BathVisitors(this.scene, level);
     for (const soap of level.soaps) {
       const m = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.08, 0.18), new THREE.MeshStandardMaterial({ color: 0xffffff }));
       m.position.set(soap.pos.x, 0.05, soap.pos.z);
@@ -332,7 +336,7 @@ export class GameScene {
 
     // Milk bottles: the final GLB (models/milk_bottle.glb) replaces this primitive
     // once loaded; the primitive stays as the load-failure fallback. Group origin = bottle base.
-    for (const id of ["milk1", "milk2"] as const) {
+    for (const id of MILK_IDS) {
       const g = new THREE.Group();
       const bottle = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.035, 0.17, 20), new THREE.MeshStandardMaterial({ color: 0xfbfbf5, roughness: 0.4 }));
       bottle.position.y = 0.085;
@@ -372,9 +376,10 @@ export class GameScene {
       }
     }
     this.useGuardianModel(lib);
+    this.bathVisitors?.use(lib);
     const milk = lib.get("milk_bottle");
     if (milk) {
-      for (const id of ["milk1", "milk2"] as const) {
+      for (const id of MILK_IDS) {
         if (this.itemModels[id]?.userData.source !== milk.root) {
           const root = milk.root.clone(true);
           root.userData.source = milk.root;
@@ -515,17 +520,21 @@ export class GameScene {
   }
 
   /** Start the short ring pulse that marks a growth. */
-  growthCue(timeSeconds: number): void {
+  growthCue(timeSeconds: number, pos?: Vec2): void {
+    if (pos) this.bathVisitors?.onGrowth(pos, timeSeconds);
     this.growthCueUntil = timeSeconds + GROWTH_CUE_SECONDS;
   }
 
   /** A checkpoint/new game must not inherit the previous swim's wake. */
   resetPresentation(): void {
     this.waterAppearance.update(0, null);
+    this.growthCueUntil = -Infinity;
+    this.bathVisitors?.reset();
   }
 
   /** Place the one visible body (the current stage) before computing the camera. */
   positionCharacters(view: View, timeSeconds: number, facing: FacingTracker): Vec3 {
+    this.bathVisitors?.update(timeSeconds);
     this.waterAppearance.update(timeSeconds, view.characters.duck.visible ? view.characters.duck.pos : null);
     const pulse = Math.max(0, this.growthCueUntil - timeSeconds) / GROWTH_CUE_SECONDS;
     for (const id of ["duck", "child", "adult"] as const) {
@@ -564,6 +573,9 @@ export class GameScene {
       ring.position.set(c.pos.x, 0.04, c.pos.z);
       ring.scale.setScalar(1 + 2.5 * pulse);
     }
+    const gx = view.guardian.x - this.guardian.position.x;
+    const gz = view.guardian.z - this.guardian.position.z;
+    if (Math.hypot(gx, gz) > 0.0001) this.guardian.rotation.y = Math.atan2(gx, gz);
     this.guardian.position.set(view.guardian.x, view.guardian.y, view.guardian.z);
     const focus = this.chars[view.active].position;
     return { x: focus.x, y: focus.y, z: focus.z };
@@ -584,7 +596,7 @@ export class GameScene {
         : bodyOpacity(pose.eye, act, this.chars[id].position, c.radius);
       setBodyOpacity(this.chars[id], fade);
     }
-    for (const id of ["milk1", "milk2"] as const) {
+    for (const id of MILK_IDS) {
       const it = view.milk[id];
       this.items[id].visible = it.visible;
       this.items[id].position.set(it.pos.x, it.pos.y, it.pos.z);
@@ -602,6 +614,7 @@ export class GameScene {
     this.camera.lookAt(pose.target.x, pose.target.y, pose.target.z);
     this.environmentModels.updateDetail(this.camera.position, overview);
     this.worldEnvironment.updateDetail(this.camera.position);
+    this.bathVisitors?.updateDetail(this.camera.position, overview);
     this.camera.updateMatrixWorld();
     let place: PromptPlace = "none";
     if (feedback && !overview) {

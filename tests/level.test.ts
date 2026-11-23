@@ -161,10 +161,12 @@ describe("Level data sanity", () => {
 
   it("start, bottles and growth spots are in the expected zones", () => {
     expect(zoneAt(LEVEL, LEVEL.start)).toBe("bathwater");
-    expect(zoneAt(LEVEL, LEVEL.nodes.milk1)).toBe("kids_pool");
-    expect(zoneAt(LEVEL, LEVEL.nodes.milk2)).toBe("kids_room");
-    expect(zoneAt(LEVEL, LEVEL.growthSpots.milk1)).toBe("kids_pool");
-    expect(zoneAt(LEVEL, LEVEL.growthSpots.milk2)).toBe("kids_room");
+    expect(zoneAt(LEVEL, LEVEL.nodes.milk1)).toBe("bath");
+    expect(zoneAt(LEVEL, LEVEL.nodes.milk2)).toBe("kids_pool");
+    expect(zoneAt(LEVEL, LEVEL.nodes.milk3)).toBe("sauna_entry");
+    expect(zoneAt(LEVEL, LEVEL.nodes.milk4)).toBe("open_air");
+    expect(zoneAt(LEVEL, LEVEL.growthSpots.milk1)).toBe("bathwater");
+    expect(zoneAt(LEVEL, LEVEL.growthSpots.milk2)).toBe("kids_pool");
   });
 
   it("the front exit door is the genkan ↔ street opening (the street door, review R-1)", () => {

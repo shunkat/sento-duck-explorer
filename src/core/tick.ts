@@ -5,7 +5,7 @@ import { stepDuckWater, stepWalk, wallsFor } from "../sim/movement";
 import { areaOf, inBathWater, isSauna, isWetSource, zoneAtOr } from "../sim/zones";
 import { type Ctx, interact } from "./actions";
 import { restoreLatest, saveCheckpointIfReached } from "./checkpoints";
-import { guardianTarget, stepGuardian } from "./guardian";
+import { guardianReadyForSauna, guardianTarget, stepGuardian } from "./guardian";
 import { crossesFrontExit, decideOutcome, entryViolation, npcWithinPushReach, pushesIntoWomensEntrance, stepsOnSoap } from "./rules";
 import { MSG } from "./text";
 import type { GameEvent, GameState, HumanId, InputFrame, TickResult } from "./types";
@@ -79,8 +79,14 @@ export function tick(state: GameState, input: InputFrame, level: Level): TickRes
         const toArea = areaOf(nextZone);
         const v = entryViolation(p, fromArea, toArea);
         if (v) c.pending.push(v);
-        p.pos = next;
-        p.zone = nextZone;
+        const soloSaunaEntry = human === "child" && !isSauna(p.zone) && isSauna(nextZone)
+          && !guardianReadyForSauna(s, level);
+        if (soloSaunaEntry && !v) {
+          events.push({ kind: "prompt", text: s.guardian.escortRequested ? MSG.guardianWait : MSG.guardianNeeded });
+        } else {
+          p.pos = next;
+          p.zone = nextZone;
+        }
         // Leaving the sauna makes a human sweaty (wet) (provisional).
         if ((fromArea === "sauna_entry" || fromArea === "sauna_crowd") && !isSauna(nextZone)) p.wet = "wet";
         if (input.run && stepsOnSoap(level, human, p.pos)) c.pending.push("F3");
@@ -93,7 +99,7 @@ export function tick(state: GameState, input: InputFrame, level: Level): TickRes
   if (isWetSource(p.zone) || inBathWater(level, p.pos)) p.wet = "wet";
 
   // 5. The guardian keeps watch (scripted; never blocks).
-  s.guardian = stepGuardian(s.guardian, guardianTarget(s), level);
+  s.guardian = stepGuardian(s.guardian, guardianTarget(s, level), level);
 
   // 6. Outcome: game over wins over clear; then checkpoints.
   s.outcome = decideOutcome(c.pending, cleared);

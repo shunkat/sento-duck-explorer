@@ -150,6 +150,8 @@ describe("attached keyboard events", () => {
       return next;
     };
     const sim = new Sim();
+    sim.walk([W.tubMilkSwim]);
+    sim.press("interact"); // first bottle leaves Duck; the real E event below takes the second
     sim.walk([W.tubWestDeep, W.troughGap, W.poolIn, W.milk1Swim]);
     let s = sim.state;
     const before = structuredClone(s.player);
