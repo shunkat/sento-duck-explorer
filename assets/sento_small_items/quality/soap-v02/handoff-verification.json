@@ -1,0 +1,21 @@
+{
+  "current_sha256": "778a302d2997b4f07ccd7716cccefd6110fc6308e610b91fa1dde3c6ff8ee4a1",
+  "candidate_sha256": "8875676814433e81ddb46cda32be494a5cc047aa6462064fdefe33ec3e763c45",
+  "bounds_m": [
+    -0.15000000596046448,
+    0,
+    -0.09000000357627869,
+    0.15000000596046448,
+    0.07999999821186066,
+    0.09000000357627869
+  ],
+  "bytes": 8928,
+  "meshes": 1,
+  "textures": 0,
+  "materials": 2,
+  "triangles": 284,
+  "node_transform": {
+    "mesh": 0,
+    "name": "soap"
+  }
+}

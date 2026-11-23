@@ -1,0 +1,105 @@
+{
+  "date": "2026-11-23",
+  "blender_version": "5.2.4 LTS",
+  "source_glb": "public/models/soap.glb",
+  "source_glb_sha256": "8875676814433e81ddb46cda32be494a5cc047aa6462064fdefe33ec3e763c45",
+  "editable_reimport": "assets/sento_small_items/blend/soap__v02_reimport.blend",
+  "blend_sha256": "ea2fbfd067298469fd290f13ec4adfa695a5e8eede39b3002a414012d847a2b5",
+  "blend_bytes": 95475,
+  "reopened_geometry_topology_normals_materials_bounds_identical": true,
+  "source_glb_unchanged": true,
+  "previous_sources_unchanged": {
+    "assets/sento_small_items/blend/soap__v01.blend": "12a6f234d9ff95f701dde931079d5e4de0d556fa1bc5838c63df2c35c7bbfe7d",
+    "assets/sento_small_items/blend/soap__v01.glb": "778a302d2997b4f07ccd7716cccefd6110fc6308e610b91fa1dde3c6ff8ee4a1"
+  },
+  "original_authoring_source_recovered": false,
+  "byte_identical_glb_reexport_claimed": false,
+  "facts": {
+    "object_name": "soap",
+    "mesh_name": "soap",
+    "matrix_world": [
+      1.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "vertices": 222,
+    "polygons": 284,
+    "triangles": 284,
+    "degenerate_triangles": 0,
+    "bounds_gltf_m": {
+      "min": [
+        -0.15000000596046448,
+        0.0,
+        -0.09000000357627869
+      ],
+      "max": [
+        0.15000000596046448,
+        0.07999999821186066,
+        0.09000000357627869
+      ]
+    },
+    "dimensions_gltf_m": [
+      0.30000001192092896,
+      0.07999999821186066,
+      0.18000000715255737
+    ],
+    "local_positions_sha256": "a566cbe03094cd0cbf9dcea056012abda366dae9e8996b34ee1eec544dcf422d",
+    "polygon_vertices_sha256": "5b4a64ea8d85b3116a53a27ff29365d7cbbf88e46ac5c197d5220f11a0fd740b",
+    "polygon_sizes_sha256": "197b28f7b19da5923d7ed1bed96f4857a7a25079015d8870dcb2200bd1980858",
+    "material_indices_sha256": "caa4e1669f9b1a1c0ce6c30c0475e10dab5e7fa09c6f0ba17ebd978d49e6eac7",
+    "corner_normals_sha256": "9132e227ef3de2043aec31b8676652cafeddf0440e7a0d5e6975422f06b42ae7",
+    "materials": [
+      {
+        "name": "Soap | warm porcelain ivory",
+        "base_color": [
+          0.8227857351303101,
+          0.6583748459815979,
+          0.38642942905426025,
+          1.0
+        ],
+        "metallic": 0.0,
+        "roughness": 0.36000001430511475,
+        "use_backface_culling": false
+      },
+      {
+        "name": "Soap | pressed mark",
+        "base_color": [
+          0.47353148460388184,
+          0.32314321398735046,
+          0.16202937066555023,
+          1.0
+        ],
+        "metallic": 0.0,
+        "roughness": 0.5600000023841858,
+        "use_backface_culling": false
+      }
+    ],
+    "images": 0,
+    "cameras": 0,
+    "lights": 0
+  },
+  "binary_metadata_audit": {
+    "decompressed_bytes": 560756,
+    "redacted_match_counts": {
+      "personal_absolute_paths": 0,
+      "private_operator_paths": 0,
+      "file_uris": 0,
+      "email_addresses": 0
+    },
+    "scope": "Heuristic private-path/email scan plus explicit scene/resource inspection; not a universal metadata guarantee"
+  },
+  "scope": "Editable GLB reimport and offline save/reopen audit only; no runtime asset re-export, GPU, game or normal-input verification"
+}

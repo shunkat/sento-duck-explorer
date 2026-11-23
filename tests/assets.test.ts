@@ -8,6 +8,8 @@ import { describe, expect, it } from "vitest";
 import { CHARACTER_MODEL_URLS, ENVIRONMENT_MODEL_URLS, ITEM_MODEL_URLS, MILK_MODEL_URL } from "../src/view/modelEntry";
 import { MILK_LABEL_Y, LABEL_CENTER_Y } from "../src/view/labels";
 import { modelRotationY, placeAtSocket } from "../src/view/shoulder";
+import { CHARACTER_RADIUS, LEVEL } from "../src/level/layout";
+import { stepsOnSoap } from "../src/core/rules";
 
 const file = (url: string) => readFileSync(new URL(`../public/${url}`, import.meta.url));
 const parse = (buf: Buffer): Promise<Object3D> =>
@@ -16,6 +18,71 @@ const parse = (buf: Buffer): Promise<Object3D> =>
       .parse(buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength) as ArrayBuffer, "", (g) => ok(g.scene), fail),
   );
 const size = (o: Object3D) => new Box3().setFromObject(o).getSize(new Vector3());
+
+describe("production soap", () => {
+  it("loads the integrated sculpted bar within its unchanged dimensions, origin and source budget", async () => {
+    const bytes = file(ENVIRONMENT_MODEL_URLS.soap!);
+    const asset = JSON.parse(readFileSync(new URL("../assets/manifest.json", import.meta.url), "utf8")).assets.soap;
+    expect(createHash("sha256").update(bytes).digest("hex"))
+      .toBe("8875676814433e81ddb46cda32be494a5cc047aa6462064fdefe33ec3e763c45");
+    expect(asset.measured.sha256).toBe(createHash("sha256").update(bytes).digest("hex"));
+    expect(bytes.length).toBe(8928);
+    expect(bytes.length).toBe(asset.measured.glb_bytes);
+    expect(asset.limits).toEqual({ triangles: 300, materials: 2, texture_px: 0, glb_mb: 0.05 });
+    expect(bytes.length / 1_000_000).toBeLessThanOrEqual(asset.limits.glb_mb);
+    const jsonLength = bytes.readUInt32LE(12);
+    const gltf = JSON.parse(bytes.subarray(20, 20 + jsonLength).toString());
+    expect(gltf.materials).toHaveLength(2);
+    expect(gltf.images ?? []).toHaveLength(0);
+    expect(gltf.textures ?? []).toHaveLength(0);
+    expect(gltf.animations ?? []).toHaveLength(0);
+    expect(gltf.buffers.every((buffer: { uri?: string }) => !buffer.uri)).toBe(true);
+    const root = await parse(bytes);
+    const box = new Box3().setFromObject(root, true);
+    const dimensions = box.getSize(new Vector3()).toArray();
+    for (const [axis, expected] of [0.30, 0.08, 0.18].entries()) {
+      expect(dimensions[axis]).toBeCloseTo(expected, 6);
+    }
+    dimensions.forEach((value, axis) => expect(value).toBeCloseTo(
+      [asset.measured.width, asset.measured.height, asset.measured.depth][axis], 6));
+    expect(box.min.y).toBeCloseTo(0, 6);
+    expect(box.getCenter(new Vector3()).x).toBeCloseTo(0, 6);
+    expect(box.getCenter(new Vector3()).z).toBeCloseTo(0, 6);
+    let triangles = 0;
+    root.traverse((object) => {
+      if (!(object instanceof Mesh)) return;
+      const positions = object.geometry.getAttribute("position");
+      const normals = object.geometry.getAttribute("normal");
+      expect(Array.from(positions.array).every(Number.isFinite)).toBe(true);
+      expect(Array.from(normals.array).every(Number.isFinite)).toBe(true);
+      const indices = object.geometry.index;
+      const count = indices?.count ?? positions.count;
+      triangles += count / 3;
+      for (let i = 0; i < count; i += 3) {
+        const [a, b, c] = [0, 1, 2].map(offset =>
+          new Vector3().fromBufferAttribute(positions, indices ? indices.getX(i + offset) : i + offset));
+        expect(b!.sub(a!).cross(c!.sub(a!)).lengthSq()).toBeGreaterThan(1e-16);
+      }
+    });
+    expect(triangles).toBe(284);
+    expect(triangles).toBe(asset.measured.triangles);
+    expect(triangles).toBeLessThanOrEqual(asset.limits.triangles);
+  });
+
+  it("keeps the gameplay slip circle independent of the bar's narrow visual depth", () => {
+    expect(LEVEL.soaps).toEqual([{ pos: { x: 7.6, z: 0.75 }, radius: 0.15 }]);
+    const soap = LEVEL.soaps[0]!;
+    for (const stage of ["child", "adult"] as const) {
+      const radius = CHARACTER_RADIUS[stage];
+      // The visual bar ends at z +/- 0.09 m. The logical hazard still extends
+      // to radius 0.15 m, including the human body's collision radius.
+      expect(stepsOnSoap(LEVEL, stage, { x: soap.pos.x, z: soap.pos.z + radius + 0.12 })).toBe(true);
+      expect(stepsOnSoap(LEVEL, stage, { x: soap.pos.x, z: soap.pos.z + radius + 0.151 })).toBe(false);
+      expect(stepsOnSoap(LEVEL, stage, { x: soap.pos.x + radius + 0.149, z: soap.pos.z })).toBe(true);
+      expect(stepsOnSoap(LEVEL, stage, { x: soap.pos.x + radius + 0.151, z: soap.pos.z })).toBe(false);
+    }
+  });
+});
 
 describe("production washing-station assets", () => {
   it.each(["bath_stool", "wash_basin"] as const)("%s has a self-contained, bounded export matching its production record", async (id) => {

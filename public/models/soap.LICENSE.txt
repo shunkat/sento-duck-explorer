@@ -3,6 +3,13 @@ soap — project-authored Blender model
 Project-held rights in new geometry and modifications: MIT, reproduced below.
 Method, changes and retained originals: assets/sento_small_items/README.md and provenance.json.
 
+Local v02-handoff (2026-11-23): supplied project-authored Blender revision with
+a shallow oval mark and two nonmetal materials. No external resource is added.
+Project-held geometry/material rights retain MIT. Original v02 editable source
+was not supplied; historical v01 is retained separately and is not that source.
+Verification and remaining acceptance: docs/blender-asset-rollout.md and
+assets/sento_small_items/quality/soap-v02/integration.json.
+
 The MIT License
 
 Copyright (c) 2026 shunkat

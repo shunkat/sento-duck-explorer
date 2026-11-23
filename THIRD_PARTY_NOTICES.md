@@ -226,6 +226,11 @@ record in `assets/sento_environment/quality/measurements.json`.
 
 `soap.glb` and `towel.glb` were authored in Blender for this project. The rounded
 soap, folded cotton form, materials and project-held rights are MIT licensed.
+The local soap v02 handoff adds a shallow oval mark and a warmer two-material
+finish within the original metric frame. Its original editable source was not
+supplied; the prior v01 GLB/Blend and measurements are retained as history.
+See `assets/sento_small_items/quality/soap-v02/integration.json` and
+`docs/blender-asset-rollout.md` for the measured export and pending acceptance.
 
 `coin_500.glb` and `sauna_key.glb` use actual **Quaternius** Coin and Key1 sources
 from the [Ultimate RPG Pack](https://quaternius.com/packs/ultimaterpg.html),

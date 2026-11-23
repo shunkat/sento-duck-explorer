@@ -1,0 +1,121 @@
+{
+  "revision": "v02-handoff",
+  "date": "2026-11-23",
+  "base_commit": "da6410480cbd12c0e86213e4edbb4af765daa14e",
+  "status": "asset regressions passed; editable reimport retained; final normal-input and game-view acceptance pending",
+  "runtime_file": "public/models/soap.glb",
+  "previous_file": "assets/sento_small_items/blend/soap__v01.glb",
+  "previous_sha256": "778a302d2997b4f07ccd7716cccefd6110fc6308e610b91fa1dde3c6ff8ee4a1",
+  "measured": {
+    "height": 0.07999999821186066,
+    "width": 0.30000001192092896,
+    "depth": 0.18000000715255737,
+    "max_width": 0.30000001192092896,
+    "triangles": 284,
+    "vertices": 222,
+    "materials": 2,
+    "textures": 0,
+    "texture_px": 0,
+    "glb_bytes": 8928,
+    "glb_mb": 0.008928,
+    "bounds": {
+      "min": [
+        -0.15000000596046448,
+        0.0,
+        -0.09000000357627869
+      ],
+      "max": [
+        0.15000000596046448,
+        0.07999999821186066,
+        0.09000000357627869
+      ]
+    },
+    "sha256": "8875676814433e81ddb46cda32be494a5cc047aa6462064fdefe33ec3e763c45",
+    "measured_date": "2026-11-23",
+    "tool": "Actual GLB binary accessors; Three.js regression (image-free); handoff generator Khronos glTF Blender I/O v4.3.47"
+  },
+  "metadata_audit": {
+    "json_reviewed": true,
+    "external_resources": false,
+    "embedded_images": 0,
+    "private_paths_or_identifiers_found": false,
+    "cameras": 0,
+    "lights": 0,
+    "animations": 0,
+    "skins": 0
+  },
+  "provenance": {
+    "route": "project-authored Blender handoff",
+    "generator": "Khronos glTF Blender I/O v4.3.47",
+    "handoff_verification": "assets/sento_small_items/quality/soap-v02/handoff-verification.json",
+    "editable_source_supplied": false,
+    "construction_script_supplied": false,
+    "historical_v01_blend_is_not_v02_source": true,
+    "project_rights": "MIT for project-held geometry/material rights; no new third-party input identified in supplied record",
+    "editable_reimport": "assets/sento_small_items/blend/soap__v02_reimport.blend",
+    "editable_reimport_audit": "assets/sento_small_items/quality/soap-v02/editable-source-audit.json",
+    "original_authoring_history_recovered": false
+  },
+  "preserved_contracts": [
+    "bottom-center origin; 0.30 x 0.08 x 0.18 m",
+    "LEVEL soap positions and independent slip radius",
+    "all other runtime models, daylight, signs, LOD and growth/escort rules; existing collision resolution corrected in followup"
+  ],
+  "normal_input_playthrough": "pending designated supervisor",
+  "gpu_and_cold_load": "not run",
+  "verification": {
+    "date_jst": "2026-11-23",
+    "executor": "Codex",
+    "target": "da6410480cbd12c0e86213e4edbb4af765daa14e plus uncommitted blender-asset-rollout diff",
+    "new_asset_tests_passed": 3,
+    "full_suite_initial": {
+      "files": 46,
+      "passed": 440,
+      "failed": 1,
+      "failure": "unchanged random-input wall overlap property"
+    },
+    "full_suite_repeat": {
+      "files": 46,
+      "passed": 441,
+      "failed": 0
+    },
+    "existing_property_issue": {
+      "baseline_reproduced": true,
+      "baseline_files_byte_verified": 106,
+      "seed": 594332710,
+      "path": "57:1:13:2:1:1:1:4:1:1:1:1:4:1:3:1:2:2:1:5:4:3:3:1:1:8:8",
+      "source_or_tolerance_modified": false,
+      "resolved": true,
+      "resolution": "full-radius validation with outward numerical margin and bounded safe slide fallback; no tolerance relaxation"
+    },
+    "typecheck": "passed",
+    "build": "passed; existing large-chunk warning",
+    "source_and_dist_publication_scan": "passed; zero heuristic findings",
+    "diff_check": "passed",
+    "independent_review": "no required findings; no duplicate full-suite/build/browser execution",
+    "other_runtime_sources_assets_and_scene_limits": "initial batch unchanged against baseline; followup changes only src/sim/collision.ts, preserving collider definitions and limits",
+    "followup": {
+      "full_suite": {
+        "files": 47,
+        "passed": 445,
+        "failed": 0
+      },
+      "python_tests": 21,
+      "original_failure_seed_and_path": "passed after collision fix; original failure record retained",
+      "same_seed_full_60_cases": "passed",
+      "collision_regressions": {
+        "before_fix": {
+          "passed": 1,
+          "failed": 3
+        },
+        "after_fix": {
+          "passed": 4,
+          "failed": 0
+        }
+      },
+      "typecheck": "passed",
+      "production_base_build": "passed",
+      "independent_review": "no required findings in collision or editable-source changes"
+    }
+  }
+}

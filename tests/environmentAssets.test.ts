@@ -32,6 +32,42 @@ describe("complete environment export", () => {
     console.info("Registered model download bytes:", totalBytes);
   });
 
+  it("keeps the source world's material, image and geometry allocations within the existing contract", () => {
+    const asset = JSON.parse(read("assets/manifest.json").toString()).assets.sento_environment;
+    // These are the whole-environment source allocations, separate from the
+    // stricter runtime scene budget. Count embedded images, not texture
+    // references: multiple samplers may refer to the same image payload.
+    expect(asset.limits).toEqual({
+      triangles: 22_200, architecture_triangles: 10_000, materials: 18,
+      textures: 11, texture_px: 2172, glb_mb: 7,
+    });
+    const bytes = read("public/models/sento_environment.glb");
+    const world = JSON.parse(bytes.subarray(20, 20 + bytes.readUInt32LE(12)).toString());
+    expect(world.materials.length).toBeLessThanOrEqual(asset.limits.materials);
+    expect(world.images.length).toBeLessThanOrEqual(asset.limits.textures);
+    expect(bytes.length).toBeLessThanOrEqual(asset.limits.glb_mb * 1_000_000);
+    let total = 0, architecture = 0;
+    const visit = (index: number, npc: boolean): void => {
+      const node = world.nodes[index];
+      npc ||= node.name?.startsWith("npc_slot_") ?? false;
+      if (node.mesh !== undefined) {
+        for (const primitive of world.meshes[node.mesh].primitives) {
+          expect(primitive.mode ?? 4).toBe(4);
+          const count = world.accessors[primitive.indices].count;
+          expect(count % 3).toBe(0);
+          total += count / 3;
+          if (!npc) architecture += count / 3;
+        }
+      }
+      for (const child of node.children ?? []) visit(child, npc);
+    };
+    for (const root of world.scenes[world.scene ?? 0].nodes) visit(root, false);
+    expect(total).toBe(asset.measured.triangles);
+    expect(architecture).toBe(asset.measured.architecture_triangles);
+    expect(total).toBeLessThanOrEqual(asset.limits.triangles);
+    expect(architecture).toBeLessThanOrEqual(asset.limits.architecture_triangles);
+  });
+
   it("keeps the inspected environment tied to the current authoritative layout and clear openings", () => {
     const report = JSON.parse(read("assets/sento_environment/quality/measurements.json").toString());
     const fixtureBoxes = new Set(LEVEL.fixtures.map(f => f.box));
