@@ -88,3 +88,24 @@ models, licenses, dependencies or gameplay rules changed. The existing independe
 reviewer and designated final-play supervisor retain their verification roles.
 See the shoulder-view Spec for scope and pending verification; this is not a
 hackathon submission or a claim of organizer approval for another AI tool.
+
+
+## Exploration, escort and surprised visitors — 2026-11-23
+
+Codex implemented the current user requests in `06a050a` on
+`codex/exploration-growth`, based on `b8a3161`: two bottles per growth (four
+total), required sauna/open-air exploration, an explicit adult escort with
+actual accompanied sauna entry, six partial-progress checkpoints, and four
+bath-hall visitors who visibly react to nearby growth. Existing credited
+models are reused; no asset binary, license or dependency version changed.
+This is Codex work, not additional Kiro execution or organizer approval.
+
+The full automated suite passed 437 tests; a final visitor-coordinate correction
+and one additional regression were validated with the affected visitor and
+scene-budget suites, then production build/typechecking. One independent
+reviewer closed the premature sauna-growth and visitor-clearance findings.
+Exact version boundaries, commands, publication checks and the pending final
+normal-input checklist are in `docs/exploration-growth-verification.md`. No
+browser was operated, server started, merge, push or deployment performed by
+this implementation session. The contest/readiness limitations in
+`docs/kiroween-review.md` remain open.
