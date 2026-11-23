@@ -2,7 +2,7 @@
   "revision": "v02-handoff",
   "date": "2026-11-23",
   "base_commit": "da6410480cbd12c0e86213e4edbb4af765daa14e",
-  "status": "asset regressions passed; editable reimport retained; final normal-input and game-view acceptance pending",
+  "status": "adopted; asset regressions, game-view and single normal-input route passed at fixed ac0168c",
   "runtime_file": "public/models/soap.glb",
   "previous_file": "assets/sento_small_items/blend/soap__v01.glb",
   "previous_sha256": "778a302d2997b4f07ccd7716cccefd6110fc6308e610b91fa1dde3c6ff8ee4a1",
@@ -61,8 +61,37 @@
     "LEVEL soap positions and independent slip radius",
     "all other runtime models, daylight, signs, LOD and growth/escort rules; existing collision resolution corrected in followup"
   ],
-  "normal_input_playthrough": "pending designated supervisor",
-  "gpu_and_cold_load": "not run",
+  "normal_input_playthrough": {
+    "commit": "ac0168c16e901748871250d3ce461602b425e58e",
+    "date_jst": "2026-11-23",
+    "executor": "Codex rollout chat; explicitly reassigned by user",
+    "result": "cleared; four bottles, child passage, escort, sauna, open-air bath, drying, clothing and front exit",
+    "full_route_runs": 1,
+    "state_injection": false,
+    "soap_checks": [
+      "visible at desktop and narrow viewports",
+      "running onto soap causes F3",
+      "restart restores adult checkpoint and four bottles",
+      "walking on soap does not cause F3"
+    ],
+    "viewports": [
+      [
+        880,
+        450
+      ],
+      [
+        390,
+        844
+      ],
+      [
+        1280,
+        720
+      ]
+    ],
+    "console_errors_or_warnings": 0,
+    "record": "docs/blender-asset-rollout.md"
+  },
+  "gpu_and_cold_load": "game rendered in browser; GPU/FPS and comparative cold-load benchmarking not run",
   "verification": {
     "date_jst": "2026-11-23",
     "executor": "Codex",
@@ -115,7 +144,8 @@
       },
       "typecheck": "passed",
       "production_base_build": "passed",
-      "independent_review": "no required findings in collision or editable-source changes"
+      "independent_review": "no required findings in collision or editable-source changes",
+      "fixed_commit": "ac0168c16e901748871250d3ce461602b425e58e"
     }
   }
 }

@@ -1,8 +1,8 @@
 # Small bathhouse props
 
-## Current local soap revision — 2026-11-23
+## Current soap revision — 2026-11-23
 
-The local runtime uses the supplied `v02-handoff` soap: 284 triangles, 222 exported
+The runtime uses the supplied `v02-handoff` soap: 284 triangles, 222 exported
 vertices, two materials, no textures and 8,928 bytes. Its 0.30 × 0.08 × 0.18 m
 frame and bottom-center origin are unchanged; LEVEL retains the separate 0.15 m
 slip radius. The shallow oval mark and warmer two-material finish are supplied
@@ -10,7 +10,8 @@ project Blender work. The exact GLB, rather than a re-export, is retained.
 
 [Integration record](quality/soap-v02/integration.json) and
 [ongoing rollout plan](../../docs/blender-asset-rollout.md) distinguish automated
-checks from pending visual/normal-input acceptance. The supplied package did not
+checks from the completed game-view and normal-input acceptance at `ac0168c`.
+The supplied package did not
 contain the v02 editable Blender file or authoring script. The v01 Blend below
 is **not** its editable source. An [editable reimport](blend/soap__v02_reimport.blend)
 now retains the actual v02 mesh and materials, saved and reopened in Blender
@@ -18,7 +19,9 @@ now retains the actual v02 mesh and materials, saved and reopened in Blender
 The [audit](quality/soap-v02/editable-source-audit.json) and
 [reimport script](../../scripts/save-soap-handoff-blend.py) distinguish this
 from recovery of the missing original construction history. The runtime GLB
-has not been re-exported. Final game-view acceptance is still pending.
+has not been re-exported. The final check observed the soap at desktop and narrow
+viewport sizes, walking without failure, running onto it causing F3, and recovery
+with all four bottles preserved. This is not mobile-device, FPS or cold-load benchmarking.
 The supplied generator metadata identifies Khronos
 glTF Blender I/O v4.3.47, not an independently confirmed Blender application build.
 
