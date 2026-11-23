@@ -95,14 +95,16 @@
       }
       .credits { position: fixed; top: 10px; right: 10px; z-index: 1; padding: 4px 8px; border-radius: 4px; background: rgba(0,0,0,0.72); color: #ddd; font-size: 11px; }
       #map { position: fixed; inset: 0; pointer-events: none; z-index: 3; }
-      .minimap-button { position: absolute; top: max(44px, env(safe-area-inset-top)); right: max(12px, env(safe-area-inset-right)); width: clamp(180px, 23vw, 260px); padding: 10px; border: 1px solid #9fc4b8; border-radius: 12px; background: rgba(20,42,46,.94); color: #f0faf6; box-shadow: 0 4px 18px #0004; font: inherit; cursor: pointer; pointer-events: auto; touch-action: manipulation; }
-      .minimap-button:hover { background: #234e50; border-color: #fff4bc; }
+      .minimap-button { position: absolute; top: max(48px, calc(env(safe-area-inset-top) + 12px)); right: max(12px, calc(env(safe-area-inset-right) + 12px)); width: clamp(160px, 19vw, 210px); min-height: 48px; padding: 0; border: 0; border-radius: 0; background: transparent; color: #f0faf6; box-shadow: none; font: inherit; cursor: pointer; pointer-events: auto; touch-action: manipulation; }
       .minimap-button:focus-visible, .minimap-close:focus-visible { outline: 3px solid #ffdd71; outline-offset: 3px; }
-      .minimap-button .minimap-title { display: block; font-size: 13px; font-weight: 700; text-align: left; }
-      .minimap-north { position: absolute; top: 10px; right: 10px; font-size: 11px; font-weight: 400; color: #bcd9d2; }
-      .minimap-caption { display: block; font-size: 11px; line-height: 1.5; color: #c7e5df; text-align: right; }
+      .minimap-button .minimap-title, .minimap-caption { display: none; }
+      .minimap-north { position: absolute; top: -12px; right: 0; font-size: 9px; font-weight: 400; color: #e1eee8; text-shadow: 0 1px 2px #000; }
       .minimap-svg { display: block; width: 100%; height: auto; min-height: 0; border-radius: 7px; background: #edf3e8; }
-      .minimap-button .minimap-svg { margin: 7px 0; pointer-events: none; }
+      .minimap-button .minimap-svg { margin: 0; border-radius: 0; background: transparent; opacity: .85; filter: drop-shadow(0 1px 2px #0005); pointer-events: none; }
+      .minimap-button:focus-visible .minimap-svg { opacity: 1; }
+      @media (hover: hover) and (pointer: fine) {
+        .minimap-button:hover .minimap-svg { opacity: 1; }
+      }
       .minimap-button .minimap-labels { display: none; }
       .minimap-dialog { position: fixed; inset: 0; box-sizing: border-box; width: 100vw; height: 100vh; height: 100dvh; max-width: none; max-height: none; margin: 0; border: 0; padding: max(18px, env(safe-area-inset-top)) max(24px, env(safe-area-inset-right)) max(18px, env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-left)); background: #122a30; color: #eff7ef; pointer-events: auto; }
       .minimap-dialog[open] { display: flex; flex-direction: column; gap: 14px; }
@@ -127,14 +129,11 @@
       .minimap-note { margin: 0; flex: 0 0 auto; text-align: center; color: #bcd9d2; font-size: 12px; }
       @media (max-width: 900px) {
         .hud-status { max-width: calc(100vw - 215px); font-size: 11px; }
-        .minimap-button { width: 178px; }
+        .minimap-button { width: 160px; }
       }
       @media (max-width: 520px) {
         .credits { max-width: 130px; font-size: 9px; }
-        .minimap-button { top: max(42px, env(safe-area-inset-top)); right: max(8px, env(safe-area-inset-right)); width: 142px; padding: 7px; }
-        .minimap-button .minimap-title { font-size: 11px; }
-        .minimap-north { top: 7px; right: 7px; font-size: 9px; }
-        .minimap-caption { font-size: 9px; }
+        .minimap-button { width: 132px; }
         .hud-status { max-width: calc(100vw - 182px); max-height: 160px; overflow: hidden; font-size: 10px; }
         .hud-toast { bottom: 185px; width: calc(100% - 44px); text-align: center; }
         .minimap-dialog { padding-left: max(12px, env(safe-area-inset-left)); padding-right: max(12px, env(safe-area-inset-right)); }
