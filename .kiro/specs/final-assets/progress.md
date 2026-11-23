@@ -2,7 +2,21 @@
 
 Last updated: 2026-11-21.
 
-## Current summary
+## Bath realism pilot — 2026-11-23, local branch
+
+The user approved a main-bath/washing-row pilot with Duck's existing appealing
+shape retained, and explicitly authorized temporary Codex implementation.
+Codex implemented scoped ceramic relief/wetness, water reflection normals and
+movement wakes, local light fixtures, soft contact shading and a shaped room
+probe. Original models, gameplay and input semantics are unchanged. One
+independent Codex reviewer found no required issue; its budget-coverage advisory
+was applied. This is not recorded as new Kiro work.
+
+Automatic results and the outstanding designated-supervisor visual/normal-input
+check are in `docs/bath-realism-verification.md`. The pilot is a local candidate,
+not visually accepted, deployed, submitted or extended to the remaining rooms.
+
+## Earlier summary (2026-11-21)
 
 Four character/item models are integrated in the existing baseline. The local finishing branch additionally contains Duck eye refinement and two produced washing-station models registered for the five existing pairs. See the asset ledger and finishing entry below. Independent review and the deferred game-view checks remain pending for this batch; the rest of the environment, props, animation and presentation remain unfinished.
 

@@ -36,6 +36,7 @@ vi.mock("../src/view/scene", () => ({ GameScene: class {
   renderer = { domElement: h.canvas, setAnimationLoop(f: (now: number) => void) { h.frame = f; } };
   hideFeedback = h.hideFeedback;
   setPixelRatioCap() {}
+  resetPresentation() {}
   resize = h.resize;
   positionCharacters(view: View) { return view.focus; }
   render = h.render;

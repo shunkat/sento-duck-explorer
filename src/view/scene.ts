@@ -10,6 +10,8 @@ import type { ModelLibrary } from "./models";
 import { GUARDIAN_MODEL_ID } from "./modelEntry";
 import { EnvironmentModels } from "./environmentModels";
 import { createEnvironmentLight } from "./environmentLight";
+import { BathLighting, BATH_FINISH_BOUNDS } from "./bathLighting";
+import { BathMaterials } from "./bathMaterials";
 import { WorldEnvironment } from "./worldEnvironment";
 import { SENTO_BACKGROUND_COLOR, WaterAppearance } from "./waterAppearance";
 import { batchOpaqueMeshes } from "./staticMeshes";
@@ -103,7 +105,9 @@ export class GameScene {
   private environmentFallback = new THREE.Group();
   private environmentModels = new EnvironmentModels(this.scene);
   private worldEnvironment = new WorldEnvironment(this.scene, this.environmentFallback);
-  private waterAppearance = new WaterAppearance();
+  private waterAppearance: WaterAppearance;
+  private bathLighting: BathLighting;
+  private bathMaterials = new BathMaterials(BATH_FINISH_BOUNDS);
   private fixtureWater: { mesh: THREE.Mesh; rimHeight: number }[] = [];
   private camera = new THREE.PerspectiveCamera(55, 1, 0.05, 200);
   private chars = {} as Record<CharacterId, THREE.Group>;
@@ -140,7 +144,11 @@ export class GameScene {
   private pixelRatioCap = DESKTOP_PIXEL_RATIO_CAP;
 
   constructor(container: HTMLElement, level: Level) {
+    this.waterAppearance = new WaterAppearance(level.zones.find(z => z.id === "bathwater")?.box);
+    this.bathLighting = new BathLighting(level);
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
+    this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    this.renderer.toneMappingExposure = 1.12;
     this.renderer.setPixelRatio(effectivePixelRatio(window.devicePixelRatio, this.pixelRatioCap));
     container.appendChild(this.renderer.domElement);
     this.scene.background = new THREE.Color(SENTO_BACKGROUND_COLOR);
@@ -150,6 +158,7 @@ export class GameScene {
     const sun = new THREE.DirectionalLight(0xffffff, 1.1);
     sun.position.set(10, 25, 12);
     this.scene.add(sun);
+    this.scene.add(this.bathLighting.root);
     this.environmentFallback.name = "environment_fallback";
     this.scene.add(this.environmentFallback);
     const staticSurfaces: THREE.Mesh[] = [];
@@ -340,6 +349,10 @@ export class GameScene {
     // The full world has a different geometry allocation. Keep the playable
     // fallback until every washing-station LOD can satisfy that allocation.
     if (this.environmentModels.hasWashingDetailSet()) this.worldEnvironment.use(lib);
+    if (this.worldEnvironment.active) {
+      const world = this.scene.getObjectByName("sento_environment");
+      if (world) this.bathMaterials.apply(world);
+    }
     // Authored hollow vessels need the water below their real rim. The legacy
     // solid-box fallback retains its original above-top surface until replaced.
     for (const { mesh, rimHeight } of this.fixtureWater) {
@@ -504,9 +517,14 @@ export class GameScene {
     this.growthCueUntil = timeSeconds + GROWTH_CUE_SECONDS;
   }
 
+  /** A checkpoint/new game must not inherit the previous swim's wake. */
+  resetPresentation(): void {
+    this.waterAppearance.update(0, null);
+  }
+
   /** Place the one visible body (the current stage) before computing the camera. */
   positionCharacters(view: View, timeSeconds: number, facing: FacingTracker): Vec3 {
-    this.waterAppearance.update(timeSeconds);
+    this.waterAppearance.update(timeSeconds, view.characters.duck.visible ? view.characters.duck.pos : null);
     const pulse = Math.max(0, this.growthCueUntil - timeSeconds) / GROWTH_CUE_SECONDS;
     for (const id of ["duck", "child", "adult"] as const) {
       const c = view.characters[id];
@@ -556,6 +574,7 @@ export class GameScene {
    */
   render(view: View, pose: Pose, overview: boolean, feedback?: { target: InteractTarget | null; enabled: boolean; margin: Margin }): PromptPlace {
     this.setOverview(overview);
+    this.bathLighting.update(view, overview);
     const act = this.chars[view.active].position;
     for (const id of ["duck", "child", "adult"] as const) {
       const c = view.characters[id];

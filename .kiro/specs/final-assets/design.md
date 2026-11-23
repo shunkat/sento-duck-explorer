@@ -11,6 +11,35 @@ This design defines how final assets are produced and how they replace the place
 
 **Status (2026-11-20):** asset production and branch integration are in progress. Codex generated original reference images with OpenAI and, with the user's explicit authorization, registered for Meshy Free and generated/downloaded Duck, hat, Child, and Adult with Meshy 6 Lite. Duck and hat have completed Blender adjustment, export, reimport, and independent review. Child and Adult clothed/bath variants have also been exported, reimported and measured. The initial human models are static meshes; a shared skeleton and animation remain open. The per-file production status and measured dimensions are recorded in `assets/ledger.csv` and `assets/manifest.json`. Game integration and normal-input playthrough are separate checks tracked by the shoulder-view Spec and `docs/crew-pilot.md`; main still renders primitives. Code is MIT; Meshy-generated and modified 3D assets are CC BY 4.0. Planned limits below remain provisional unless supported by recorded measurements.
 
+## Bath realism pilot — 2026-11-23
+
+This is a view-layer treatment of the main bath and adjacent washing row.
+`BathMaterials` clones only the three ceramic materials, retains their maps/UVs,
+and feathers the effect inside world-space bounds. Four tiles per source texture
+determine grout relief; floor wetness follows the main bath and washing stations.
+GLBs and their source records remain unchanged. The class owns and can restore
+and dispose its material clones.
+
+`WaterAppearance` retains the water meshes, transparency and depth settings. The
+main bath top gets two small normal waves, roughness 0.22 and dielectric water
+reflection. Twelve bounded samples add short-lived movement ripples and reset on
+restoration, hidden Duck and discontinuities. Other water areas retain their
+previous surface parameters. Reflections use an environment probe: this does not
+provide live mirrored characters, refraction or fluid simulation.
+
+`BathLighting` adds two finite-range warm lights, ceiling light faces and a
+frosted high-window face. Soft single-sided patches ground stools and people on
+dry flooring; moving patches hide before overlapping water. These are authored
+contact-shading approximations, not baked global illumination or shadow maps.
+The shared 64px reflection cube contains window/ceiling-strip shapes. ACES tone
+mapping and exposure affect the whole scene, so final visual checks must include
+other rooms, faces, posters and white objects. No live reflection or shadow
+rendering pass is added. Existing whole-scene limits are retained.
+
+Steam, audio, new character animation and new model generation are later work,
+after evaluation of this visual standard. Evidence and final-check scope are in
+`docs/bath-realism-verification.md`.
+
 ## Pipeline
 
 **User-confirmed update, 2026-11-21:** new architecture, environment, facilities and small props may be authored directly in Blender, with a preference for free public assets that improve quality. The original generated-model flow below remains the provenance of the six existing models and their source-derived LOD/NPC variants. Alternative final routes are (a) verified free public model/texture → preserved source and license → Blender adaptation → GLB, and (b) art reference → authored editable Blender scene → GLB. Public geometry is reused only where it fits the sento style and exact LEVEL envelopes; original construction covers the gaps. Source names, creator, URLs, redistribution terms, modifications and SHA-256 stay in the ledger. Do not relabel these routes as Image-to-3D generation.

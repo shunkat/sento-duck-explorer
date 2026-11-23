@@ -35,11 +35,12 @@ function materialContent(source: THREE.Material): unknown {
   const textures = new Map<string, unknown>();
   for (const value of Object.values(source)) {
     if (!(value instanceof THREE.Texture)) continue;
-    const image = value.image as { width: number; height: number; drawCommands?: unknown[] };
-    // These scenes use runtime-drawn sign textures. Fail if an unfamiliar image
-    // arrives so a new texture cannot be silently omitted from the comparison.
-    expect(image.drawCommands).toBeDefined();
-    const content = { width: image.width, height: image.height, drawing: image.drawCommands };
+    const image = value.image as { width: number; height: number; drawCommands?: unknown[]; data?: Uint8Array };
+    // Compare both sign drawing commands and the new authored contact/window
+    // pixels. Unknown texture types still fail rather than being omitted.
+    const drawing = value instanceof THREE.DataTexture ? Array.from(image.data!) : image.drawCommands;
+    expect(drawing).toBeDefined();
+    const content = { width: image.width, height: image.height, drawing };
     // Supply the recorded image content to Source.toJSON instead of asking a
     // canvas stub to encode pixels. Keep every other texture sampling property.
     meta.images[value.source.uuid] = { uuid: value.source.uuid, url: JSON.stringify(content) };
