@@ -2,7 +2,7 @@
 
 Last updated: 2026-11-21.
 
-## Bath realism pilot — 2026-11-23, local branch
+## Bath realism pilot — 2026-11-23, release candidate
 
 The user approved a main-bath/washing-row pilot with Duck's existing appealing
 shape retained, and explicitly authorized temporary Codex implementation.
@@ -12,9 +12,14 @@ probe. Original models, gameplay and input semantics are unchanged. One
 independent Codex reviewer found no required issue; its budget-coverage advisory
 was applied. This is not recorded as new Kiro work.
 
-Automatic results and the outstanding designated-supervisor visual/normal-input
-check are in `docs/bath-realism-verification.md`. The pilot is a local candidate,
-not visually accepted, deployed, submitted or extended to the remaining rooms.
+Automatic results and the fixed-version visual/normal-input release check are in
+`docs/bath-realism-verification.md`. The integrated 410 cases are accounted for by
+the full run and one corrected-fixture rerun. One normal-input growth-to-exit route,
+F1/checkpoint restoration, new game and standard/lightweight rendering passed on
+`2bd01d8`; the new integration review has no required findings. The user requested
+production publication through the existing Pages path. Frame-time measurements,
+physical-phone performance and expansion to the remaining rooms remain separate;
+this record does not claim final user acceptance of the art or submission.
 
 ## Earlier summary (2026-11-21)
 

@@ -86,11 +86,13 @@ Production status updated by Codex on 2026-11-20. Codex operates the image → M
 - [x] Add local lighting, ceiling/window faces, contact shading and a shaped static reflection probe.
 - [x] Pass targeted automatic checks and production build, including the unchanged geometry ceiling.
 - [x] Complete independent review and resolve required findings (one Codex reviewer; no required findings, conservative moving-contact budget coverage added).
-- [ ] Designated supervisor: fixed-batch visual comparison, GPU console/frame-time check and one final normal-input route.
+- [x] Fixed-batch sampled visual comparison, GPU console check and one normal-input growth-to-exit route, with F1/checkpoint/new-game spot checks on `2bd01d8`.
+- [ ] Measure GPU frame times/performance and the remaining optional-area/high-window/wake details; see the exact coverage limits in the release record.
 - [ ] Evaluate the visual standard before extending the treatment to other facilities.
 
 Details and limits: `docs/bath-realism-verification.md`. This work is authored by
-Codex; no new Kiro execution, visual acceptance, deployment or submission is claimed.
+Codex. The user authorized publication of this pilot through the existing Pages
+workflow; final art acceptance, remaining facilities and submission are separate.
 
 ## Finishing batch, 2026-11-21 (Codex)
 

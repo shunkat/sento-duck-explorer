@@ -47,13 +47,13 @@ Refraction, steam, sound and new character animation are not part of this pilot.
   the ceiling, with no observed embedding. Contact patches are 24 mm above the
   floor; their apparent attachment needs the final visual check.
 
-## Final fixed-version handoff — pending
+## Original final-check list
 
-Follow `.kiro/steering/verification-ownership.md`. The designated supervisor owns
-one combined final normal-input check after implementation and required review
-fixes are complete. This implementation session did not operate a browser or
-repeat any previously recorded route. No previous FPS or playthrough result is
-claimed for this new renderer configuration.
+The implementation handoff followed `.kiro/steering/verification-ownership.md`
+and reserved one combined final normal-input check until implementation and
+required review fixes were complete. No browser play was performed during that
+implementation stage, and no previous FPS or playthrough result was claimed for
+the new renderer configuration. The checklist handed to final verification was:
 
 1. Compare the same main-bath Duck view, washing close-up and wide bath view with
    the base version; confirm the new look is visibly better at actual game size.
@@ -70,4 +70,63 @@ claimed for this new renderer configuration.
    and browser during that check, and fix only discovered local issues afterward.
 
 The visual standard must be evaluated before extending this treatment to the
-remaining facilities. Publication and deployment are not part of this record.
+remaining facilities. The release observations and remaining limits follow.
+
+## Integrated release check — 2026-11-23
+
+The user explicitly requested production publication. Codex integrated the pilot
+with `bc36381`, preserving its mobile camera, touch direction and unframed map.
+The same independent reviewer checked only the new integration and reported no
+required issue. Of 410 tests across 45 files, 409 passed in the integrated run;
+the remaining camera test used a partial scene fixture without the new lighting
+dependency. Adding that fixture stub made its focused rerun pass. This test-only
+correction did not change runtime behavior or weaken any assertion. TypeScript,
+the repository-base production build and source/distribution scans passed (zero
+findings). The scanner inspected 2,814 source/index files and 53 built files.
+
+After confirming the previous supervisor's documented operation end and release
+of ownership, the Codex release supervisor completed one normal-input route on
+fixed `2bd01d8b3750f0d16bea49abcfa27bc3e82f4c39` in Mac Chrome. Source, assets,
+dependencies, HEAD and build stayed fixed. The preview base-path mismatch was
+corrected before gameplay began. Before/after hashes matched for all 153 sampled
+source, public and distribution files, and Git stayed clean during the check.
+
+- Duck swam through the tub/trough to milk1, grew into Child, traversed the narrow
+  passage, grew into Adult, opened the high latch, dried, dressed, crossed reception
+  and the genkan, opened the front door, and cleared only after moving outside.
+- F1 and the child-checkpoint button restore passed within that route; it resumed
+  from the checkpoint, without another complete run. The clear-screen new-game
+  button returned to Duck with both bottles. No state injection was used. Native
+  Alt-modified movement/action keys and normal UI clicks supplied the observed
+  input; a plain orbit key attempt had no observed effect.
+- Actual water/ceramic shaders rendered without captured console warnings or
+  errors. Duck retained its yellow rubber appearance. Warm ceiling fixtures,
+  varied tile light, white stools/soap/towels, human skin, Fuji art, posters,
+  changing-room wood and the entrance remained visible in sampled views. A
+  stationary comparison with the then-published `bc36381` showed the changed
+  water color and lighting; this was a qualitative comparison, not pixel-matched
+  image measurement or user approval of the final art direction.
+- Standard and lightweight rendering both displayed the bath. The temporary
+  lightweight option was restored to its prior off state. Map opening/closing,
+  settings and new game did not leave visible rendering remnants in these checks.
+- Desktop viewport checks at 390×844 and 844×390 retained the HUD, map and scene.
+  These did not emulate a coarse pointer: the desktop shoulder framing crops the
+  Duck at the narrow portrait width. They do not replace the separately recorded
+  mobile-camera checks or establish physical-phone behavior. The viewport override
+  was reset and both verification tabs and the release preview server were closed.
+
+Continuous FPS/frame times, GPU draw-call counts, physical-phone heat/performance,
+precise wake decay measurements, the high-window close-up, and optional sauna/
+outdoor areas were not measured in this pass. The prior all-F1–F8 record remains
+separate; only F1 was repeated here. The existing door toast briefly persisted
+after new game, as already documented in the mobile-camera record. These limits
+remain visible rather than being counted as completed acceptance criteria.
+
+## Publication
+
+This release uses the existing [Pages workflow](deployment.md). Production
+completion requires its build/deploy success and an exact byte comparison of
+the public files against the downloaded workflow artifact. The authoritative
+deployed commit is [version.json](https://shunkat.github.io/sento-duck-explorer/version.json).
+This publishes the bath pilot as a development release; it does not extend the
+treatment to every room or claim competition submission or new Kiro execution.
