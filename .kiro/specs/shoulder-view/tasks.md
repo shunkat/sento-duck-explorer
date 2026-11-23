@@ -122,7 +122,7 @@ The separate outdoor-bath WIP is not included in this branch. Its unfinished bat
 - [x] Coarse startup, late touch and actual canvas resize integration, preserving manual yaw/pitch and growth blending.
 - [x] Safe wall contraction, eased recovery and temporary active-body opacity with full restoration; rings remain opaque.
 - [x] Regression coverage for production model bounds, projection consumers, entry-point mode changes, safety and desktop invariance.
-- [ ] Unified automated validation and independent review of the fixed batch.
-- [ ] Designated supervisor's single combined normal-input route and local four-size camera checks.
-- [ ] Publish the checked camera revision through the existing main/Pages workflow.
+- [x] Integrated `f62bb5b`: 391 game tests in 43 files, TypeScript/build and publication checks passed; same independent B reported no required findings.
+- [x] Designated supervisor completed one normal-input CLEAR route, F1/F8 recovery and four-size camera checks on `f62bb5b`. Compression and device limits remain recorded in `docs/mobile-camera-verification.md`.
+- Publication uses the existing main/Pages workflow; the deployed revision is identified by its run and `version.json`.
 - [ ] Physical iPhone Safari/Android Chrome multitouch and performance remain unverified.

@@ -72,3 +72,8 @@ wording. Actual settings, map, touch and restart buttons are unchanged.
   main/Pages workflow. The deployed revision is recorded by `version.json` and
   its corresponding Actions run. No assets, dependencies or licensing terms
   changed; submission matters in `kiroween-review.md` remain open.
+
+The designated supervisor later checked this help-appearance follow-up together
+with the camera batch on `f62bb5b`: sampled bright/dark captions and narrow PC
+wording passed; oblique locker text remains a limitation. See
+[mobile camera verification](mobile-camera-verification.md) for the exact scope.

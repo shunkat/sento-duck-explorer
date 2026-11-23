@@ -50,3 +50,6 @@ The actual published revision is available in
 [version.json](https://shunkat.github.io/sento-duck-explorer/version.json).
 This records a playable development release, not a hackathon submission or
 physical-phone performance certification.
+
+The later user-approved Codex camera-framing batch and its own fixed-version
+checks are recorded in [mobile camera verification](mobile-camera-verification.md).
