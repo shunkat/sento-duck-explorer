@@ -249,6 +249,7 @@ const takeFrame = (s: GameState) => {
 function viewAlong(id: CheckpointId): void {
   camera.lookAlong(CHECKPOINT_VIEW_YAW[id]);
   facing.lookAlong(CHECKPOINT_VIEW_YAW[id]);
+  scene.resetPresentation();
 }
 viewAlong("start");
 let lastOutcome = state.outcome.kind;

@@ -33,6 +33,28 @@ The original pipeline remains the recorded provenance for the existing six model
 
 > **Update 2026-11-21.** The route to preserve is now the growth route (prototype-core-gameplay Requirement 11 and design "Growth and exit"): F1–F8, three stages, two milk bottles and the exit clear. The coin, key and hat models stay in the repository with their records but are no longer used in play. A new milk bottle prop is defined in that design's "Milk bottle asset contract".
 
+## Bath realism pilot — 2026-11-23
+
+The user chose to retain Duck's appealing rubber-toy character while making the
+sento more believable, and approved finishing one main bath and its washing row
+before extending the treatment. Codex is explicitly authorized to implement this
+batch temporarily; it must be recorded as Codex work, not Kiro execution.
+
+- Preserve existing GLBs, character silhouettes, collision envelopes, the growth
+  route, water movement rules, F1–F8 conditions and interaction targets.
+- Refine the main bath with changing reflection normals and a small wake driven
+  by actual Duck movement. Wakes decay at rest and reset on restoration, growth
+  and discontinuous movement.
+- Align tile-grout relief with the original color-map UVs; distinguish dry and
+  wet floor roughness near the bath and washing stations.
+- Add modest local light and contact shading while keeping notices, interaction
+  captions, water boundaries and the yellow Duck readable.
+- Keep the whole-scene geometry budget; distinguish shader/lighting cost from
+  triangles. Offline counts do not establish phone FPS.
+- Follow `verification-ownership.md`: automatic checks and one independent
+  review, then one combined final check of the fixed batch by the designated
+  supervisor. Shader compilation does not establish visual acceptance.
+
 ## Glossary
 
 - **Asset**: one model that ships in the game (e.g. `duck`, `hat_sauna_duck`, `bath_wall_2m`).

@@ -79,6 +79,19 @@ Production status updated by Codex on 2026-11-20. Codex operates the image → M
   - [x] 10.2 Reviewed current four GLBs, Blender sources and ledger before asset commits; independent cross-review complete (scanner alone does not inspect binaries)
     - _Requirements: 6.3, 7.2, 7.5, 7.6, 11.3_
 
+## Bath realism pilot, 2026-11-23 (Codex, user-authorized)
+
+- [x] Implement the main-bath water normal waves, bounded movement ripples and restart clearing.
+- [x] Refine original ceramic maps with aligned grout relief and scoped floor wetness.
+- [x] Add local lighting, ceiling/window faces, contact shading and a shaped static reflection probe.
+- [x] Pass targeted automatic checks and production build, including the unchanged geometry ceiling.
+- [x] Complete independent review and resolve required findings (one Codex reviewer; no required findings, conservative moving-contact budget coverage added).
+- [ ] Designated supervisor: fixed-batch visual comparison, GPU console/frame-time check and one final normal-input route.
+- [ ] Evaluate the visual standard before extending the treatment to other facilities.
+
+Details and limits: `docs/bath-realism-verification.md`. This work is authored by
+Codex; no new Kiro execution, visual acceptance, deployment or submission is claimed.
+
 ## Finishing batch, 2026-11-21 (Codex)
 
 The user deferred normal-input play and requested finishing work, then reported malformed Duck eyes and asked for better model fidelity.

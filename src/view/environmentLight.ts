@@ -1,12 +1,14 @@
 import * as THREE from "three";
 
-/** A small, continuous neutral sky/room probe for the PBR materials.
- * Metal has little diffuse response, so hemisphere lights alone leave it dark.
- * Three.js prefilters this static cube once; it adds no scene geometry/downloads.
+/** A compact authored room probe for PBR reflections. Frosted high windows and
+ * ceiling strips give the wet surfaces something shaped to reflect. This is a
+ * static approximation, not a capture of moving characters or the live scene.
+ * Three.js prefilters it once; no reflection-camera passes or downloads.
  */
 export function createEnvironmentLight(): THREE.CubeTexture {
-  const size = 32;
-  const windowDirection = new THREE.Vector3(.6, .65, .45).normalize();
+  const size = 64;
+  const softBox = (x: number, center: number, halfWidth: number, feather: number) =>
+    1 - THREE.MathUtils.smoothstep(Math.abs(x - center), halfWidth - feather, halfWidth);
   const faces: THREE.DataTexture[] = [];
   for (let face = 0; face < 6; face++) {
     const data = new Uint8Array(size * size * 4);
@@ -17,12 +19,16 @@ export function createEnvironmentLight(): THREE.CubeTexture {
         [u, -1, -v], [u, -v, 1], [-u, -v, -1],
       ][face]!;
       const ray = new THREE.Vector3(...direction).normalize();
-      const softWindow = Math.pow(Math.max(0, ray.dot(windowDirection)), 16) * .38;
-      const level = .24 + .43 * (ray.y + 1) / 2 + softWindow;
+      const window = ray.x > 0 ? softBox(ray.z / ray.x, -.08, .58, .055) *
+        softBox(ray.y / ray.x, .4, .19, .045) : 0;
+      const strip = ray.y > 0 ? softBox(ray.x / ray.y, .12, .48, .06) *
+        Math.max(softBox(ray.z / ray.y, -.6, .08, .035), softBox(ray.z / ray.y, .65, .08, .035)) : 0;
+      const level = .20 + .36 * (ray.y + 1) / 2;
+      const light = window * .52 + strip * .46;
       const i = (y * size + x) * 4;
-      data[i] = Math.round(255 * Math.min(1, level * 1.02));
-      data[i + 1] = Math.round(255 * Math.min(1, level));
-      data[i + 2] = Math.round(255 * Math.min(1, level * .97));
+      data[i] = Math.round(255 * Math.min(1, level * .99 + light));
+      data[i + 1] = Math.round(255 * Math.min(1, level * 1.03 + light * .98));
+      data[i + 2] = Math.round(255 * Math.min(1, level * 1.03 + light * .91));
       data[i + 3] = 255;
     }
     faces.push(new THREE.DataTexture(data, size, size));

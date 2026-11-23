@@ -28,6 +28,7 @@ vi.mock("../src/view/scene", () => ({ GameScene: class {
   renderer = { domElement: h.canvas, setAnimationLoop() {} };
   hideFeedback = h.hideFeedback;
   setPixelRatioCap() {}
+  resetPresentation() {}
   resize() {}
 } }));
 vi.mock("../src/view/minimap", () => ({ MiniMap: class { expanded = false; } }));

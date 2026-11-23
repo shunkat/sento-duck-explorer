@@ -12,6 +12,7 @@ import { ModelLibrary } from "../src/view/models";
 import { CHARACTER_MODEL_URLS, ENVIRONMENT_MODEL_URLS, ITEM_MODEL_URLS } from "../src/view/modelEntry";
 import type { EnvironmentModels } from "../src/view/environmentModels";
 import type { WorldEnvironment } from "../src/view/worldEnvironment";
+import type { BathLighting } from "../src/view/bathLighting";
 import { NPC_SLOTS } from "../src/view/backgroundNpcs";
 import { OVERVIEW, type Pose } from "../src/view/camera";
 import { deriveView } from "../src/view/deriveView";
@@ -38,6 +39,7 @@ type Internals = {
   rings: Record<CharacterId, THREE.Object3D>;
   environmentModels: EnvironmentModels;
   worldEnvironment: WorldEnvironment;
+  bathLighting: BathLighting;
 };
 type Sample = { eye: [number, number, number]; overview: boolean; triangles: number };
 
@@ -71,6 +73,8 @@ function triangleCounter(scene: THREE.Scene): () => number {
 function showPotentialOverlays(internal: Internals): void {
   internal.scene.traverse(o => { if (o instanceof THREE.Sprite) o.visible = true; });
   for (const ring of Object.values(internal.rings)) ring.visible = true;
+  // Include both moving contact patches even when this sample starts in water.
+  for (const name of ["player_contact", "guardian_contact"]) internal.scene.getObjectByName(name)!.visible = true;
 }
 function cameraPose(sample: Sample): Pose {
   const [x, y, z] = sample.eye;
@@ -159,6 +163,8 @@ describe("connected scene geometry budget", () => {
       internal.worldEnvironment.setView(sample.overview, false); // the sauna door is never locked (2026-11-21)
       internal.environmentModels.updateDetail(eye, sample.overview);
       internal.worldEnvironment.updateDetail(eye);
+      internal.bathLighting.update(view, sample.overview);
+      showPotentialOverlays(internal);
       for (const instance of washing) {
         if (instance.children.filter(o => o.visible).length !== 1) throw new Error(`Overlapping/missing washing LOD at ${sample.eye}`);
         seenWash.add(`${instance.name}/${instance.userData.detailLevel}`);

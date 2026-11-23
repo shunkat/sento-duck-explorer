@@ -7,6 +7,7 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import fc from "fast-check";
 import { GameScene } from "../src/view/scene";
 import { EnvironmentModels } from "../src/view/environmentModels";
+import { WorldEnvironment } from "../src/view/worldEnvironment";
 import { type GltfSource, type ManifestLimits, ModelLibrary, SOCKET_NAMES, checkBounds, copySocketPose, measureModel, placeHatOnSocket } from "../src/view/models";
 
 function fixtureBytes(): ArrayBuffer {
@@ -28,6 +29,7 @@ function sceneHarness() {
   items.milk1.add(hatPrimitive);
   Object.assign(scene, { chars, primitives, items, models: {}, itemModels: {}, fixtureWater: [],
     environmentModels: new EnvironmentModels(new THREE.Group()),
+    worldEnvironment: new WorldEnvironment(new THREE.Group(), new THREE.Group()),
     humanBody: {}, humanMotion: {}, towels: {}, clothing: { child: "unclothed", adult: "unclothed" } });
   return { scene, chars, primitives, items, hatPrimitive };
 }
