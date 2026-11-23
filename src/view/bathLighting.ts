@@ -1,10 +1,15 @@
 import * as THREE from "three";
+import { RectAreaLightUniformsLib } from "three/addons/lights/RectAreaLightUniformsLib.js";
 import type { Level } from "../level/layout";
 import { containsPoint, type AABB } from "../sim/geometry";
 import type { View } from "./deriveView";
 
 /** The first finished area: the main bath and the adjacent washing row. */
 export const BATH_FINISH_BOUNDS: AABB = { minX: 4.0, minZ: -.25, maxX: 12.25, maxZ: 9.25 };
+
+// Three's initializer allocates four shared LTC lookup textures each time it is
+// called. Keep them for the renderer lifetime, not one set per BathLighting.
+let areaLightUniformsReady = false;
 
 function contactTexture(): THREE.DataTexture {
   const size = 64, data = new Uint8Array(size * size * 4);
@@ -62,6 +67,10 @@ export class BathLighting {
   private water: readonly AABB[];
 
   constructor(private level: Level) {
+    if (!areaLightUniformsReady) {
+      RectAreaLightUniformsLib.init();
+      areaLightUniformsReady = true;
+    }
     this.root.name = "sento_bath_lighting";
     this.fixtures.name = "bath_ceiling_lights";
     this.contacts.name = "bath_contact_shading";
@@ -74,7 +83,14 @@ export class BathLighting {
     window.rotation.y = -Math.PI / 2;
     window.scale.set(2.3, .56, 1);
     this.fixtures.add(window);
-    for (const [x, z, intensity] of [[7.5, 2.5, 5.5], [7.8, 6.8, 4]] as const) {
+    // Match the visible frosted pane with a broad daylight source. Rect lights
+    // emit along local -Z, opposite a PlaneGeometry's front normal (+Z).
+    const daylight = new THREE.RectAreaLight(0xf1f7ff, 5, 2.3, .56);
+    daylight.name = "bath_window_daylight";
+    daylight.position.copy(window.position);
+    daylight.rotation.y = Math.PI / 2; // west, into the room
+    this.root.add(daylight);
+    for (const [x, z, intensity] of [[7.5, 2.5, 3.2], [7.8, 6.8, 2.6]] as const) {
       // Flush ceiling fixtures agree with the local light positions.
       const frame = new THREE.Mesh(this.geometry, this.frameMaterial);
       frame.position.set(x, 2.679, z); frame.rotation.x = Math.PI / 2;
@@ -85,7 +101,8 @@ export class BathLighting {
       this.fixtures.add(frame, panel);
       const light = new THREE.PointLight(0xffebd0, intensity, 4.8, 2);
       light.name = "bath_warm_fill";
-      light.position.set(x, 2.48, z);
+      // Move the small fills away from the ceiling to soften its hot spots.
+      light.position.set(x, 2.28, z);
       this.root.add(light);
     }
     for (const fixture of level.fixtures) {
@@ -130,5 +147,7 @@ export class BathLighting {
     this.root.removeFromParent();
     this.geometry.dispose(); this.texture.dispose(); this.windowTexture.dispose();
     this.shadowMaterial.dispose(); this.panelMaterial.dispose(); this.frameMaterial.dispose(); this.windowMaterial.dispose();
+    // LTC lookup textures belong to Three's shared uniform library; disposing
+    // one room must not invalidate area lighting in another scene/room.
   }
 }

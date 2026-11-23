@@ -49,6 +49,10 @@ batch temporarily; it must be recorded as Codex work, not Kiro execution.
   wet floor roughness near the bath and washing stations.
 - Add modest local light and contact shading while keeping notices, interaction
   captions, water boundaries and the yellow Duck readable.
+- Brightness correction (user feedback, 2026-11-23): keep a bright, clean daytime
+  bath atmosphere. Fill the ceiling/shaded walls and make the frosted window
+  illuminate the room, preserving Duck's color and water/tile detail without
+  clipping white objects or relying on a global exposure increase.
 - Keep the whole-scene geometry budget; distinguish shader/lighting cost from
   triangles. Offline counts do not establish phone FPS.
 - Follow `verification-ownership.md`: automatic checks and one independent

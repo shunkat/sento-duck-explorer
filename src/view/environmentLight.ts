@@ -23,12 +23,15 @@ export function createEnvironmentLight(): THREE.CubeTexture {
         softBox(ray.y / ray.x, .4, .19, .045) : 0;
       const strip = ray.y > 0 ? softBox(ray.x / ray.y, .12, .48, .06) *
         Math.max(softBox(ray.z / ray.y, -.6, .08, .035), softBox(ray.z / ray.y, .65, .08, .035)) : 0;
-      const level = .20 + .36 * (ray.y + 1) / 2;
-      const light = window * .52 + strip * .46;
+      // Bright plaster/tile bounce fills the room, including its lower hemisphere.
+      // Keep shaped highlights distinct without making unlit directions murky.
+      const level = .32 + .38 * (ray.y + 1) / 2;
+      const daylight = window * .48;
+      const warmStrip = strip * .34;
       const i = (y * size + x) * 4;
-      data[i] = Math.round(255 * Math.min(1, level * .99 + light));
-      data[i + 1] = Math.round(255 * Math.min(1, level * 1.03 + light * .98));
-      data[i + 2] = Math.round(255 * Math.min(1, level * 1.03 + light * .91));
+      data[i] = Math.round(255 * Math.min(1, level * 1.02 + daylight * .97 + warmStrip));
+      data[i + 1] = Math.round(255 * Math.min(1, level * 1.015 + daylight + warmStrip * .96));
+      data[i + 2] = Math.round(255 * Math.min(1, level + daylight * 1.04 + warmStrip * .88));
       data[i + 3] = 255;
     }
     faces.push(new THREE.DataTexture(data, size, size));

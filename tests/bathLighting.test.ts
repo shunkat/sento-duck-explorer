@@ -58,6 +58,35 @@ describe("bath lighting and contact shading", () => {
     lighting.dispose();
   });
 
+  it("points the window's emitting face into the bath and preserves shared area-light resources", () => {
+    const lighting = new BathLighting(LEVEL);
+    const daylight = lighting.root.getObjectByName("bath_window_daylight") as THREE.RectAreaLight;
+    const pane = lighting.root.getObjectByName("bath_frosted_window")!;
+    expect(daylight).toBeInstanceOf(THREE.RectAreaLight);
+    expect(daylight.position.equals(pane.position)).toBe(true);
+    expect(daylight.width).toBe(pane.scale.x);
+    expect(daylight.height).toBe(pane.scale.y);
+    const emission = new THREE.Vector3(0, 0, -1).applyQuaternion(daylight.quaternion);
+    const paneFront = new THREE.Vector3(0, 0, 1).applyQuaternion(pane.quaternion);
+    expect(emission.dot(paneFront)).toBeCloseTo(1);
+    expect(emission.x).toBeCloseTo(-1); // A copied pane rotation would illuminate outside.
+    expect(daylight.castShadow).toBe(false);
+
+    const uniforms = THREE.UniformsLib as unknown as Record<string, THREE.DataTexture>;
+    const lookupNames = ["LTC_FLOAT_1", "LTC_FLOAT_2", "LTC_HALF_1", "LTC_HALF_2"];
+    const textures = lookupNames.map(name => uniforms[name]!);
+    let disposed = 0;
+    for (const texture of textures) {
+      expect(texture).toBeInstanceOf(THREE.DataTexture);
+      texture.addEventListener("dispose", () => { disposed++; });
+    }
+    const second = new BathLighting(LEVEL);
+    expect(lookupNames.every((name, i) => uniforms[name] === textures[i])).toBe(true);
+    lighting.dispose();
+    second.dispose();
+    expect(disposed).toBe(0);
+  });
+
   it("builds a finite six-face linear reflection probe without a live camera", () => {
     const probe = createEnvironmentLight();
     expect(probe.colorSpace).toBe(THREE.LinearSRGBColorSpace);

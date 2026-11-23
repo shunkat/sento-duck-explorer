@@ -36,6 +36,14 @@ mapping and exposure affect the whole scene, so final visual checks must include
 other rooms, faces, posters and white objects. No live reflection or shadow
 rendering pass is added. Existing whole-scene limits are retained.
 
+The user-requested brightness correction restores broad pale tile/plaster bounce
+in the shared reflection probe and hemisphere ground color. ACES and exposure
+1.12 stay fixed. A rectangular light at the existing frosted window illuminates
+the bath interior, while the two ceiling lights use softer local fill. The
+window light uses the installed Three.js LTC tables; no new dependency, model,
+shadow map or reflection-camera pass is added. The probe/hemisphere changes are
+global, so shaded faces, white props and other rooms need scoped visual checks.
+
 Steam, audio, new character animation and new model generation are later work,
 after evaluation of this visual standard. Evidence and final-check scope are in
 `docs/bath-realism-verification.md`.

@@ -154,7 +154,9 @@ export class GameScene {
     this.scene.background = new THREE.Color(SENTO_BACKGROUND_COLOR);
     this.scene.environment = createEnvironmentLight();
     this.scene.environmentIntensity = .65;
-    this.scene.add(new THREE.HemisphereLight(0xffffff, 0x445566, 1.3));
+    // Pale tiles bounce daylight onto downward-facing ceilings and shaded faces.
+    // Keep the direct-light contrast, but avoid the old dark blue ground fill.
+    this.scene.add(new THREE.HemisphereLight(0xffffff, 0xb8b3a8, 1.3));
     const sun = new THREE.DirectionalLight(0xffffff, 1.1);
     sun.position.set(10, 25, 12);
     this.scene.add(sun);
